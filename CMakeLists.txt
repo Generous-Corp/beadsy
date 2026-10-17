@@ -6,6 +6,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Pulp CONFIG REQUIRED)
 
+add_library(grainfield_beads_dsp STATIC
+    third_party/beads_dsp/beads/dsp/synth.cc
+    third_party/beads_dsp/beads/dsp/trigger_generator.cc
+    third_party/beads_dsp/beads/resources.cc
+)
+target_include_directories(grainfield_beads_dsp PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/beads_dsp
+)
+target_compile_features(grainfield_beads_dsp PUBLIC cxx_std_20)
+
 # Tests
 include(FetchContent)
 FetchContent_Declare(Catch2
@@ -18,7 +28,7 @@ list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 include(Catch)
 
 add_executable(Grainfield-test test_grainfield.cpp)
-target_link_libraries(Grainfield-test PRIVATE Pulp::format Catch2::Catch2WithMain)
+target_link_libraries(Grainfield-test PRIVATE Pulp::format Catch2::Catch2WithMain grainfield_beads_dsp)
 target_include_directories(Grainfield-test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 catch_discover_tests(Grainfield-test)
 
@@ -34,3 +44,9 @@ pulp_add_plugin(Grainfield
     AAX_PRODUCT_CODE "GraP"
     AAX_NATIVE_CODE "Grai"
 )
+
+foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AAX Standalone)
+    if(TARGET Grainfield_${_fmt})
+        target_link_libraries(Grainfield_${_fmt} PRIVATE grainfield_beads_dsp)
+    endif()
+endforeach()
