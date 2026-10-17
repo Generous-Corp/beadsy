@@ -8,7 +8,7 @@
     "project_license": "MIT"
   },
   "heads": {
-    "pulp_origin_main": "c0bda8741a8b3e7b452ccaa91ff19b606e3662e9",
+    "pulp_origin_main": "0eadeac05ed8176abcce566edadbcd7cc2fafd29",
     "beads": "f4cfa7697095a28d292bff758beb51deb49b5a86",
     "stmlib": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
   },
@@ -55,5 +55,28 @@
     "mutable_instruments_trademark_non_affiliation_review",
     "converter_version_and_output_hash",
     "source_to_port_notice_map"
+  ],
+  "conversion_probe": {
+    "tool": "/opt/homebrew/bin/pdftocairo",
+    "version": "26.07.0",
+    "input": "/Users/danielraffel/Code/eurorack/beads/hardware_design/panel/beads.ai",
+    "svg_output_sha256": "24f895b0cb3744ea41d45b1e34494513d493090680a793104b8b7400836fb05d",
+    "png_output_sha256": "d84f66bbe5c6cc09e853a8e001703ba28dd72421bb629c8304eec25029150070",
+    "status": "probe_only_not_release_asset"
+  },
+  "stmlib_reachable_files": [
+    "stmlib.h",
+    "dsp/dsp.h",
+    "dsp/filter.h",
+    "dsp/parameter_interpolator.h",
+    "dsp/sample_rate_converter.h",
+    "dsp/hysteresis_filter.h",
+    "dsp/hysteresis_quantizer.h",
+    "dsp/units.h",
+    "dsp/cosine_oscillator.h",
+    "dsp/delay_line.h",
+    "utils/random.h",
+    "utils/dsp.h",
+    "utils/gate_flags.h"
   ]
 }
