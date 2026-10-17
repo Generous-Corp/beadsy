@@ -10,12 +10,16 @@
       "width": 70.8,
       "height": 128.5
     },
-    "coordinate_system": "DXF WCS; origin is drawing origin; y orientation must be verified by affine fit against AI/PDF and mounting holes"
+    "coordinate_system": "DXF WCS; panel physical origin is bottom-left. For UI top-left normalized coordinates use x_ui=x_mm/70.8 and y_ui=(128.5-y_mm)/128.5."
   },
   "normalization": {
     "x": "x_mm / 70.8",
-    "y": "y_mm / 128.5",
-    "ui_origin": "deferred until source orientation fit is recorded"
+    "y": "(128.5 - y_mm) / 128.5",
+    "ui_origin": "top-left after vertical flip from DXF bottom-left",
+    "viewbox_pt": {
+      "x": "x_mm * (200.693 / 70.8)",
+      "y": "(128.5 - y_mm) * (364.252 / 128.5)"
+    }
   },
   "controls": [
     {

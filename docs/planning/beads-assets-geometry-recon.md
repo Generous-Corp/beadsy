@@ -36,7 +36,7 @@ The DXF has 27 `CIRCLE` entities on layer `Knobs` with positive radius:
 
 The zero-radius `Knobs` circles are construction/reference points and must not be rendered as controls. The DXF also contains panel, PCB, construction, dimension, scale-help, and proxy entities; it is a mechanical/placement source, not a knob material or shading source.
 
-The complete machine-readable inventory is in [`beads-control-map.draft.json`](beads-control-map.draft.json). It deliberately leaves the UI y-origin and semantic IDs for the small/auxiliary controls unresolved until a source-to-render affine fit is recorded.
+The complete machine-readable inventory is in [`beads-control-map.draft.json`](beads-control-map.draft.json). The DXF panel dimensions and AI page dimensions establish the initial affine transform: x maps linearly by `200.693 / 70.8` pt/mm and y maps by `(128.5 - y_mm) * (364.252 / 128.5)` pt, so the UI uses a top-left origin after the explicit vertical flip. A screenshot overlay must still verify residuals before shipping; semantic IDs for small/auxiliary controls remain provisional.
 
 ## Proposed reusable control-map contract
 
