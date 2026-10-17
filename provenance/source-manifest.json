@@ -1,0 +1,59 @@
+{
+  "schema": "grainfield.source-manifest.v1",
+  "status": "incomplete",
+  "captured_at": "2026-10-17",
+  "product": {
+    "name": "Grainfield",
+    "affiliation": "independent",
+    "project_license": "MIT"
+  },
+  "heads": {
+    "pulp_origin_main": "c0bda8741a8b3e7b452ccaa91ff19b606e3662e9",
+    "beads": "f4cfa7697095a28d292bff758beb51deb49b5a86",
+    "stmlib": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
+  },
+  "inputs": [
+    {
+      "path": "/Users/danielraffel/Code/eurorack/beads/hardware_design/panel/beads.ai",
+      "sha256": "bdc4e394703fa99e6e7997683e1b4dee2bada5cc6eff95af36d40086f6f86c5e",
+      "kind": "illustrator_pdf_compatible_panel",
+      "license_status": "pending_rights_review",
+      "redistribution": "blocked_until_cleared"
+    },
+    {
+      "path": "/Users/danielraffel/Code/eurorack/beads/hardware_design/panel/beads.dwg",
+      "sha256": "82f184f0cfef7f5f09cda6f2aa76aa4642a47304dd54051b6fa2509161c38ed7",
+      "kind": "cad_panel",
+      "license_status": "pending_rights_review",
+      "redistribution": "blocked_until_cleared"
+    },
+    {
+      "path": "/Users/danielraffel/Code/eurorack/beads/hardware_design/beads.dxf",
+      "sha256": "caa755bf680939221683d9b3113fa467a4f1cf382780e80b074c32e785639667",
+      "kind": "cad_geometry_mm",
+      "license_status": "pending_rights_review",
+      "redistribution": "blocked_until_cleared"
+    },
+    {
+      "path": "/Users/danielraffel/Documents/beads-panel.png",
+      "sha256": "6ba7ede50ad6baab8d6c96bb41eb51355026ac9a3fd012fc6fe0ff96214664db",
+      "kind": "straight_on_reference",
+      "license_status": "pending_rights_review",
+      "redistribution": "blocked_until_cleared"
+    },
+    {
+      "path": "/Users/danielraffel/Code/eurorack/beads/resources/waves.bin",
+      "sha256": "c672fccb061496d0229bfc5c2d55ec61f367e1539dda5870fd667a059c90f634",
+      "kind": "shared_wavetable_resource",
+      "license_status": "lineage_and_notice_review",
+      "redistribution": "blocked_until_cleared"
+    }
+  ],
+  "required_before_release": [
+    "stmlib_submodule_license_audit",
+    "hardware_artwork_cc_by_sa_attribution_and_share_alike_decision",
+    "mutable_instruments_trademark_non_affiliation_review",
+    "converter_version_and_output_hash",
+    "source_to_port_notice_map"
+  ]
+}
