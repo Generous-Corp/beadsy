@@ -1,4 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
+#include <pulp/format/headless.hpp>
 #include <pulp/audio/buffer.hpp>
 #include <pulp/midi/buffer.hpp>
 #include "grainfield.hpp"
