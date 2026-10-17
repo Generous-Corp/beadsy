@@ -1,0 +1,351 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "pulp.beads.control-map.draft.v1",
+  "status": "geometry-only-draft",
+  "source": {
+    "dxf": "/Users/danielraffel/Code/eurorack/beads/hardware_design/beads.dxf",
+    "dxf_sha256": "caa755bf680939221683d9b3113fa467a4f1cf382780e80b074c32e785639667",
+    "units": "millimetres (DXF $INSUNITS=4)",
+    "panel_mm": {
+      "width": 70.8,
+      "height": 128.5
+    },
+    "coordinate_system": "DXF WCS; origin is drawing origin; y orientation must be verified by affine fit against AI/PDF and mounting holes"
+  },
+  "normalization": {
+    "x": "x_mm / 70.8",
+    "y": "y_mm / 128.5",
+    "ui_origin": "deferred until source orientation fit is recorded"
+  },
+  "controls": [
+    {
+      "id": "density",
+      "role": "primary_parameter",
+      "geometry_ref": {
+        "center_mm": {
+          "x": 35.735,
+          "y": 104.4
+        },
+        "radius_mm": 9.25
+      }
+    },
+    {
+      "id": "time",
+      "role": "primary_parameter",
+      "geometry_ref": {
+        "center_mm": {
+          "x": 11.915,
+          "y": 90.1
+        },
+        "radius_mm": 9.25
+      }
+    },
+    {
+      "id": "pitch",
+      "role": "primary_parameter",
+      "geometry_ref": {
+        "center_mm": {
+          "x": 59.515,
+          "y": 90.1
+        },
+        "radius_mm": 9.25
+      }
+    },
+    {
+      "id": "size",
+      "role": "primary_parameter",
+      "geometry_ref": {
+        "center_mm": {
+          "x": 24.615,
+          "y": 67.9
+        },
+        "radius_mm": 7.2
+      }
+    },
+    {
+      "id": "shape",
+      "role": "primary_parameter",
+      "geometry_ref": {
+        "center_mm": {
+          "x": 46.865,
+          "y": 67.9
+        },
+        "radius_mm": 7.2
+      }
+    }
+  ],
+  "dxf_knob_geometry": [
+    {
+      "handle": "2472",
+      "class": "major-ornate",
+      "center_mm": {
+        "x": 35.735,
+        "y": 104.4
+      },
+      "radius_mm": 9.25,
+      "diameter_mm": 18.5,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "2473",
+      "class": "major-ornate",
+      "center_mm": {
+        "x": 11.915,
+        "y": 90.1
+      },
+      "radius_mm": 9.25,
+      "diameter_mm": 18.5,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "2474",
+      "class": "major-ornate",
+      "center_mm": {
+        "x": 59.515,
+        "y": 90.1
+      },
+      "radius_mm": 9.25,
+      "diameter_mm": 18.5,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "2477",
+      "class": "auxiliary",
+      "center_mm": {
+        "x": 7.115,
+        "y": 67.9
+      },
+      "radius_mm": 3.0,
+      "diameter_mm": 6.0,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "2470",
+      "class": "major-large",
+      "center_mm": {
+        "x": 24.615,
+        "y": 67.9
+      },
+      "radius_mm": 7.2,
+      "diameter_mm": 14.4,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "2471",
+      "class": "major-large",
+      "center_mm": {
+        "x": 46.865,
+        "y": 67.9
+      },
+      "radius_mm": 7.2,
+      "diameter_mm": 14.4,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "247A",
+      "class": "auxiliary",
+      "center_mm": {
+        "x": 64.365,
+        "y": 67.9
+      },
+      "radius_mm": 3.0,
+      "diameter_mm": 6.0,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "247B",
+      "class": "auxiliary",
+      "center_mm": {
+        "x": 64.365,
+        "y": 51.7
+      },
+      "radius_mm": 3.0,
+      "diameter_mm": 6.0,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "2475",
+      "class": "auxiliary",
+      "center_mm": {
+        "x": 18.565,
+        "y": 47.9
+      },
+      "radius_mm": 3.0,
+      "diameter_mm": 6.0,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "2476",
+      "class": "auxiliary",
+      "center_mm": {
+        "x": 30.015,
+        "y": 47.9
+      },
+      "radius_mm": 3.0,
+      "diameter_mm": 6.0,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "2478",
+      "class": "auxiliary",
+      "center_mm": {
+        "x": 41.465,
+        "y": 47.9
+      },
+      "radius_mm": 3.0,
+      "diameter_mm": 6.0,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "2479",
+      "class": "auxiliary",
+      "center_mm": {
+        "x": 52.915,
+        "y": 47.9
+      },
+      "radius_mm": 3.0,
+      "diameter_mm": 6.0,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "1ADA",
+      "class": "small",
+      "center_mm": {
+        "x": 7.115,
+        "y": 32.0
+      },
+      "radius_mm": 4.4,
+      "diameter_mm": 8.8,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "1ADB",
+      "class": "small",
+      "center_mm": {
+        "x": 18.565,
+        "y": 32.0
+      },
+      "radius_mm": 4.4,
+      "diameter_mm": 8.8,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "1ADC",
+      "class": "small",
+      "center_mm": {
+        "x": 30.015,
+        "y": 32.0
+      },
+      "radius_mm": 4.4,
+      "diameter_mm": 8.8,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "1ADD",
+      "class": "small",
+      "center_mm": {
+        "x": 41.465,
+        "y": 32.0
+      },
+      "radius_mm": 4.4,
+      "diameter_mm": 8.8,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "1ADE",
+      "class": "small",
+      "center_mm": {
+        "x": 52.915,
+        "y": 32.0
+      },
+      "radius_mm": 4.4,
+      "diameter_mm": 8.8,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "1ADF",
+      "class": "small",
+      "center_mm": {
+        "x": 64.365,
+        "y": 32.0
+      },
+      "radius_mm": 4.4,
+      "diameter_mm": 8.8,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "1AE0",
+      "class": "small",
+      "center_mm": {
+        "x": 7.115,
+        "y": 17.4
+      },
+      "radius_mm": 4.4,
+      "diameter_mm": 8.8,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "1AE1",
+      "class": "small",
+      "center_mm": {
+        "x": 18.565,
+        "y": 17.4
+      },
+      "radius_mm": 4.4,
+      "diameter_mm": 8.8,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "1AE2",
+      "class": "small",
+      "center_mm": {
+        "x": 30.015,
+        "y": 17.4
+      },
+      "radius_mm": 4.4,
+      "diameter_mm": 8.8,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "1AE3",
+      "class": "small",
+      "center_mm": {
+        "x": 41.465,
+        "y": 17.4
+      },
+      "radius_mm": 4.4,
+      "diameter_mm": 8.8,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "1AE4",
+      "class": "small",
+      "center_mm": {
+        "x": 52.915,
+        "y": 17.4
+      },
+      "radius_mm": 4.4,
+      "diameter_mm": 8.8,
+      "layer": "Knobs"
+    },
+    {
+      "handle": "1AE5",
+      "class": "small",
+      "center_mm": {
+        "x": 64.365,
+        "y": 17.4
+      },
+      "radius_mm": 4.4,
+      "diameter_mm": 8.8,
+      "layer": "Knobs"
+    }
+  ],
+  "validation": {
+    "required_before_shipping": [
+      "affine fit with AI/SVG and panel PNG",
+      "straight-on photograph material/color calibration",
+      "parameter-to-control binding review",
+      "screenshot pixel/geometry diff"
+    ]
+  }
+}
