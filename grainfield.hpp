@@ -58,11 +58,11 @@ public:
         float gain = std::pow(10.0f, gain_db / 20.0f);
 
         for (const auto& event : midi_in) {
-            if (event.event.is_note_on()) {
-                float freq = 440.0f * std::pow(2.0f, (event.event.note() - 69) / 12.0f);
+            if (event.is_note_on()) {
+                float freq = 440.0f * std::pow(2.0f, (event.note() - 69) / 12.0f);
                 osc_.set_frequency(freq);
                 env_.note_on();
-            } else if (event.event.is_note_off()) {
+            } else if (event.is_note_off()) {
                 env_.note_off();
             }
         }
