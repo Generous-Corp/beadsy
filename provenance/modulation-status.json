@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.modulation-status.v1",
   "status": "product_local_partial",
-  "source_head": "42e5f6571bb55cf6a58287629aaf692c1f497247",
+  "source_head": "e1af1d36d0fb1d1ffa18cb449f50e26c3d349c13",
   "base_parameter_contract": "StateStore base values remain host-automatable; LFO offsets are applied through get_modulated",
   "state": "GFMD v1 plugin-state payload persists enabled, rate, depth, and phase",
   "native_editor": {
