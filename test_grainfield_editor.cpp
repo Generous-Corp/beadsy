@@ -56,8 +56,10 @@ TEST_CASE("Grainfield modulation context menu updates and resets the selected LF
         grainfield::kDensity, pulp::view::Point{12.0f, 12.0f});
     REQUIRE(menu != nullptr);
     REQUIRE(native->modulation_context_target() == grainfield::kDensity);
-    REQUIRE(menu->items().size() == 2);
-    REQUIRE(menu->items()[0].label == "Enable LFO");
+    REQUIRE(menu->items().size() == 7);
+    REQUIRE_FALSE(menu->items()[0].enabled);
+    REQUIRE(menu->items()[0].label == "LFO → Density");
+    REQUIRE(menu->items()[1].label == "Enable LFO");
 
     menu->on_close(1);
     REQUIRE(processor.lfo(grainfield::kDensity).enabled);
@@ -67,7 +69,19 @@ TEST_CASE("Grainfield modulation context menu updates and resets the selected LF
     menu = native->show_modulation_context_menu(
         grainfield::kDensity, pulp::view::Point{12.0f, 12.0f});
     REQUIRE(menu != nullptr);
-    REQUIRE(menu->items()[0].label == "Disable LFO");
+    REQUIRE(menu->items()[1].label == "Disable LFO");
+    const auto initial_rate = processor.lfo(grainfield::kDensity).rate_hz;
+    const auto initial_depth = processor.lfo(grainfield::kDensity).depth;
+    menu->on_close(4);
+    REQUIRE(processor.lfo(grainfield::kDensity).rate_hz > initial_rate);
+    menu = native->show_modulation_context_menu(
+        grainfield::kDensity, pulp::view::Point{12.0f, 12.0f});
+    REQUIRE(menu != nullptr);
+    menu->on_close(6);
+    REQUIRE(processor.lfo(grainfield::kDensity).depth > initial_depth);
+    menu = native->show_modulation_context_menu(
+        grainfield::kDensity, pulp::view::Point{12.0f, 12.0f});
+    REQUIRE(menu != nullptr);
     menu->on_close(2);
     REQUIRE_FALSE(processor.lfo(grainfield::kDensity).enabled);
     REQUIRE(processor.lfo(grainfield::kDensity).depth == 0.0f);

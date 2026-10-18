@@ -18,6 +18,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <sstream>
 #include <vector>
 
 namespace grainfield {
@@ -139,10 +140,25 @@ public:
         auto* root = detail::root_view(this);
         if (!root) return nullptr;
         const auto current = processor_.lfo(id);
+        const auto* info = store_.info(id);
+        const std::string target_name = info ? info->name : "Parameter";
+        const auto rate_label = [&current] {
+            std::ostringstream text;
+            text << "Rate: " << current.rate_hz << " Hz";
+            return text.str();
+        };
+        const auto depth_label = [&current] {
+            std::ostringstream text;
+            text << "Depth: " << current.depth;
+            return text.str();
+        };
         auto alive = import_binding_lifetime_token();
         return pulp::view::ContextMenu::show(
             root, detail::local_to_root(this, position),
-            {{1, current.enabled ? "Disable LFO" : "Enable LFO"},
+            {{0, "LFO → " + target_name, false},
+             {1, current.enabled ? "Disable LFO" : "Enable LFO"},
+             {3, rate_label() + " −"}, {4, rate_label() + " +"},
+             {5, depth_label() + " −"}, {6, depth_label() + " +"},
              {2, "Reset LFO"}},
             [alive, this, id](std::optional<int> command) {
                 if (alive.expired()) return;
@@ -151,6 +167,14 @@ public:
                     if (*command == 1) {
                         modulation.enabled = !modulation.enabled;
                         if (modulation.depth == 0.0f) modulation.depth = 0.1f;
+                        processor_.set_lfo(id, modulation);
+                    } else if (*command == 3 || *command == 4) {
+                        modulation.rate_hz += *command == 3 ? -0.25f : 0.25f;
+                        modulation.rate_hz = std::clamp(modulation.rate_hz, 0.01f, 20.0f);
+                        processor_.set_lfo(id, modulation);
+                    } else if (*command == 5 || *command == 6) {
+                        modulation.depth += *command == 5 ? -0.05f : 0.05f;
+                        modulation.depth = std::clamp(modulation.depth, 0.0f, 1.0f);
                         processor_.set_lfo(id, modulation);
                     } else if (*command == 2) {
                         processor_.clear_lfo(id);
