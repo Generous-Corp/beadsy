@@ -1,6 +1,6 @@
 {
   "schema": "beasy.host-format-validation.v1",
-  "source_head": "acfd8d8605fc98934c91e126f6d160821a91156d",
+  "source_head": "6697254517635c294d0f556c0b646a894c6c9cc7",
   "clap": {
     "status": "pass",
     "command": "clap-validator validate build-beasy-renamed/CLAP/Beasy.clap",
@@ -36,8 +36,12 @@
     "bundle_id": "com.independent-audio.beasy"
   },
   "vst3": {
-    "status": "not_run",
-    "reason": "pluginval executable unavailable in this environment"
+    "status": "pass",
+    "command": "/Applications/pluginval.app/Contents/MacOS/pluginval --validate build-beasy-renamed/VST3/Beasy.vst3 --strictness-level 5 --timeout-ms 10000",
+    "result": "SUCCESS",
+    "strictness_level": 5,
+    "timeout_ms": 10000,
+    "binary": "/Applications/pluginval.app/Contents/MacOS/pluginval"
   },
   "lv2": {
     "status": "not_run",

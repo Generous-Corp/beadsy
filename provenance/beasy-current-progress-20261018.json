@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "acfd8d8605fc98934c91e126f6d160821a91156d",
+  "source_head": "6697254517635c294d0f556c0b646a894c6c9cc7",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -84,7 +84,7 @@
       "path": "provenance/beasy-host-format-validation-current-20261018.json",
       "clap": "pass (21 run, 18 pass, 3 skip)",
       "au": "pass (governed GUI-bootstrap auval; instrument, UI, parameters, render, MIDI)",
-      "vst3": "not_run",
+      "vst3": "pass (pluginval strictness 5)",
       "lv2": "not_run",
       "standalone": "partial",
       "au_control": "Pulp Hot-Reload Synth passes auval; Beasy remains undiscoverable"
@@ -109,7 +109,7 @@
     {
       "id": "host_formats",
       "status": "partial",
-      "next": "obtain VST3 pluginval, run LV2 host/state probe, and validate installed standalone behavior"
+      "next": "run LV2 host/state probe and validate installed standalone behavior"
     },
     {
       "id": "release",
