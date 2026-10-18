@@ -4,7 +4,7 @@
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
-    "git_head": "6c1deb5c288f02347b088d0af930e40824d2974c"
+    "git_head": "ced81b323a0fd1ddc11a2c1c56bf5b947c915ba"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build",
@@ -65,7 +65,7 @@
     {
       "format": "AU",
       "status": "supported",
-      "reason": "declared target produced an artifact; packaging metadata passes, but AU registration and pulp host load are blocked",
+      "reason": "declared target produced an artifact and metadata passes; reversible user registration/auval and pulp host load remain blocked",
       "evidence": {
         "artifact": {
           "path": "AU/Grainfield.component/Contents/MacOS/Grainfield",
@@ -95,7 +95,7 @@
     {
       "format": "Standalone",
       "status": "supported",
-      "reason": "declared target produced an artifact; bounded launch/editor probe passed, while state/audio/clean-shutdown evidence remains incomplete",
+      "reason": "declared target produced an artifact; launch/editor and CoreAudio open pass, but controlled shutdown/state evidence remains incomplete",
       "evidence": {
         "artifact": {
           "path": "Grainfield.app/Contents/MacOS/Grainfield",
@@ -110,5 +110,5 @@
     }
   ],
   "host_validation_receipt": "provenance/host-validation-matrix.txt",
-  "host_validation_receipt_sha256": "330c2c31e252b65e7b9a7922a25d2693b28075f947cb9c94bebd4b261e1b16a6"
+  "host_validation_receipt_sha256": "f61ad8fe04e0de3f039d52d15017d2d26ecc4824b124827c9992dedb57bca68b"
 }

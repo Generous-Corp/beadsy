@@ -21,3 +21,11 @@ result: Bundle exposes no audio ports in TTLs and host lacks LV2_URID__map; inst
 Standalone (partial)
 command: timeout 5s build/Grainfield.app/Contents/MacOS/Grainfield
 result: CoreAudio opened at 48 kHz/256 frames, MIDI connected, and editor window opened; bounded probe timed out, so state/audio/clean-shutdown evidence is incomplete.
+
+AU registration path (blocked)
+command: python3 scripts/validate_packaging.py --register-au --output /tmp/grainfield-packaging-current.json
+result: Temporary user registration and AudioComponentRegistrar restart completed; auval 1.10.0 exited 2 twice with “FATAL ERROR: didn't find the component”. Temporary user bundle was removed.
+
+Standalone controlled shutdown (partial)
+command: launch build/Grainfield.app/Contents/MacOS/Grainfield; wait 8s; kill -TERM; wait
+result: CoreAudio opened at 48 kHz/256 frames, MIDI connected, and editor window opened; SIGTERM produced exit 143 with no clean-shutdown/state receipt.

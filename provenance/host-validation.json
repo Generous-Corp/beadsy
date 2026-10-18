@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.host-validation.v1",
   "project": "Grainfield",
-  "source_head": "6c1deb5c288f02347b088d0af930e40824d2974c",
+  "source_head": "ced81b323a0fd1ddc11a2c1c56bf5b947c915ba",
   "status": "partial",
   "checks": [
     {
@@ -44,7 +44,7 @@
       "result": "component not registered; auval could not find the component",
       "receipt": "provenance/auval.txt",
       "receipt_sha256": "892ea3f8a0bb0fb38116e7a63b04d8e35a42ae1b9de69eddd1b90dca72b6d3fb",
-      "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f"
+      "source_head": "7b04c4fcd1592d1cb621fc235e94e68b6a458f93"
     },
     {
       "format": "AUv2",
@@ -128,10 +128,10 @@
       "check": "governed host matrix",
       "status": "partial",
       "command": "pulp host probes plus bounded standalone launch (see receipt)",
-      "result": "CLAP and external VST3 load/audio probes pass; AUv2 and LV2 host probes blocked; Standalone launch/editor partial with state/audio/clean-shutdown incomplete",
+      "result": "CLAP and external VST3 host load/audio probes pass; AUv2 registration/host probes are blocked; LV2 host instantiation is blocked; Standalone launch/editor is partial and controlled SIGTERM showed no clean-shutdown/state receipt",
       "receipt": "provenance/host-validation-matrix.txt",
-      "receipt_sha256": "330c2c31e252b65e7b9a7922a25d2693b28075f947cb9c94bebd4b261e1b16a6",
-      "source_head": "6c1deb5c288f02347b088d0af930e40824d2974c"
+      "receipt_sha256": "f61ad8fe04e0de3f039d52d15017d2d26ecc4824b124827c9992dedb57bca68b",
+      "source_head": "ced81b323a0fd1ddc11a2c1c56bf5b947c915ba"
     }
   ],
   "open_gates": [
@@ -144,7 +144,9 @@
     "VST3 moduleinfo.json absent",
     "VST3 SDK provenance is development, not release",
     "LV2 audio-port/URID host evidence",
-    "Standalone state/save/restore and clean shutdown evidence"
+    "Standalone state/save/restore and clean shutdown evidence",
+    "AU registration/auval remains blocked after reversible user registration path",
+    "Standalone clean shutdown/state persistence evidence"
   ],
   "metadata_note": {
     "status": "descriptor-updated",

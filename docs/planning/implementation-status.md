@@ -1,13 +1,13 @@
 # Grainfield implementation status
 
 Updated 2026-10-18 against Grainfield source head
-`2c1f09549dec3bd3bc9d232f479004de6ea3aed9`.
+`ced81b323a0fd1ddc11a2c1c56bf5b947c915ba`.
 
 ## Current executable slice
 
 - Independent product name: Grainfield.
 - Project license: MIT for original project code.
-- Provenance: the source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings, `waves.bin` lineage, and stmlib upstream license metadata are recorded. The stmlib audit is metadata-only: copied bytes and per-file notices remain unverified, with legal redistribution blocked.
+- Provenance: the source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings, `waves.bin` lineage, and stmlib upstream license metadata are recorded. Hash verification now records 29 Beads matches and 7 mismatches, plus 14 stmlib matches and 1 mismatch; mismatch paths remain explicit in `provenance/source-to-port.json`. The stmlib audit is metadata-only, and copied-byte/internal-license redistribution remains blocked.
 - DSP boundary: the Beads synth path only, with the reachable MIT-noticed
   source subset recorded under `third_party/beads_dsp`; the live-input effect
   path is now wired through the same noticed processor subset.
@@ -56,7 +56,7 @@ Updated 2026-10-18 against Grainfield source head
 3. Complete host editor/audio/state receipts where the current matrix is partial
    or blocked, retaining explicit negative evidence for AU/LV2/Standalone gaps,
    VST3 moduleinfo/Steinberg validator, and AAX.
-4. Resolve panel artwork permission and trademark clearance; verify copied stmlib bytes and per-file notices, complete legal redistribution review, and resolve converter feature diagnostics (currently inconclusive).
+4. Resolve panel artwork permission and trademark clearance; resolve the seven Beads and one stmlib hash gaps, verify copied stmlib bytes/per-file notices, complete legal redistribution review, and resolve converter diagnostics (currently inconclusive).
 
 ## Release gates
 

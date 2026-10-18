@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "2c1f09549dec3bd3bc9d232f479004de6ea3aed9",
+  "source_head": "ced81b323a0fd1ddc11a2c1c56bf5b947c915ba",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -47,8 +47,8 @@
       "id": "source-provenance",
       "status": "partial",
       "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, and provenance/converter-report.json",
-      "result": "Source-to-port inventory is complete for recorded port files; Beads notices, waves lineage, and stmlib upstream license metadata are recorded",
-      "reason": "stmlib license audit verifies upstream metadata only; copied stmlib bytes and per-file notices are not verified, and converter diagnostics remain inconclusive"
+      "result": "Source-to-port inventory is complete for recorded files; byte verification found 29 Beads equal and 7 mismatches, plus 14 stmlib equal and 1 mismatch; notices and upstream license metadata are recorded",
+      "reason": "Beads mismatches are granular_processor.h, processor.cc, processor.h, synth.cc, synth.h, trigger_generator.cc, and trigger_generator.h; stmlib mismatch is dsp.h; copied-byte redistribution and internal license audit remain blocked, and converter diagnostics are inconclusive"
     },
     {
       "id": "aax",
@@ -60,8 +60,8 @@
       "id": "rights-and-release",
       "status": "blocked",
       "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, ATTRIBUTION.md, LICENSES.md, and provenance/converter-report.json",
-      "reason": "Panel artwork/reference permission and trademark clearance are pending; copied stmlib byte verification, per-file notice mapping, and legal redistribution review remain open; converter diagnostics are inconclusive",
-      "result": "Local source-to-port and upstream license metadata are recorded, while copied-byte and legal redistribution gates remain unresolved"
+      "reason": "Panel artwork/reference permission and trademark clearance are pending; hash gaps (7 Beads, 1 stmlib) and copied-byte/internal GPL redistribution review remain open; converter diagnostics are inconclusive",
+      "result": "Hash verification is explicit, with 29 Beads and 14 stmlib matches; unresolved byte mismatches and legal/artwork gates keep redistribution blocked"
     }
   ],
   "historical_receipts": [
@@ -89,6 +89,11 @@
       "path": "provenance/stmlib-license-audit.json",
       "source_head": "2c1f09549dec3bd3bc9d232f479004de6ea3aed9",
       "note": "metadata-only stmlib license audit; upstream classifications recorded but copied bytes and redistribution remain unverified"
+    },
+    {
+      "path": "provenance/source-to-port.json",
+      "source_head": "ced81b323a0fd1ddc11a2c1c56bf5b947c915ba",
+      "note": "current hash verification: 29 Beads equal/7 mismatches and 14 stmlib equal/1 mismatch; mismatch paths are recorded in hash_verification.gaps"
     }
   ],
   "release_decision": "blocked"
