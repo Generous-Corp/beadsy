@@ -1,0 +1,19 @@
+{
+  "schema": "beasy.standalone-state-cli.v1",
+  "project": "Beasy",
+  "source_head": "e14f77cf837d7ebdf4385bc3ff22d96a75c63ae0",
+  "binary": "build-beasy-renamed/Beasy.app/Contents/MacOS/Beasy",
+  "save": {
+    "command": "Beasy --save-state <file>",
+    "exit_code": 0,
+    "state_file_exists": true,
+    "bytes": 386,
+    "sha256": "61512913ce1670840e49b6cd698b100f21e6e70c199e8119ce86821d06ddbc62"
+  },
+  "load": {
+    "command": "Beasy --load-state <file>",
+    "exit_code": 0
+  },
+  "startup_mode": "screenshot-only bounded startup; no audio device opened",
+  "status": "pass"
+}

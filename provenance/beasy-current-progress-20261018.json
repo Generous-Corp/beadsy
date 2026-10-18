@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "c181bcc51b8d733a4653f920203b829087f31a57",
+  "source_head": "e14f77cf837d7ebdf4385bc3ff22d96a75c63ae0",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -88,6 +88,14 @@
       "lv2": "partial (binary descriptor and TTL probe; no external host)",
       "standalone": "partial (real CoreAudio/MIDI/editor launch observed; app state and clean shutdown unproven)",
       "au_control": "Pulp Hot-Reload Synth passes auval; Beasy remains undiscoverable"
+    },
+    "standalone_state_cli": {
+      "path": "provenance/beasy-standalone-state-cli-current-20261018.json",
+      "status": "pass",
+      "save_exit_code": 0,
+      "load_exit_code": 0,
+      "state_bytes": 386,
+      "startup_mode": "screenshot-only bounded startup; no audio device opened"
     }
   },
   "open_gates": [
@@ -109,7 +117,7 @@
     {
       "id": "host_formats",
       "status": "partial",
-      "next": "expose or validate standalone clean shutdown/state bridge and run external LV2 host/state probe"
+      "next": "run external LV2 host/state probe; refresh exact-head format receipt; retain AU discovery limitation if reproducible"
     },
     {
       "id": "release",
