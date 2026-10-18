@@ -1,0 +1,67 @@
+{
+  "schema": "grainfield.native-editor-audio-state-audit.v1",
+  "generated_at": "2026-10-18",
+  "source_head": "62286f18f7065501a9920be0fa28b7c1a755b5bd",
+  "worktree": "/Users/danielraffel/Code/agent-worktrees/grainfield-native-evidence-20261018",
+  "scope": "fresh exact-head standalone/editor/audio/state audit",
+  "build": {
+    "status": "pass",
+    "command": "PULP_SOURCE_DIR=/Users/danielraffel/Code/pulp pulp build --target Grainfield-editor-test",
+    "target": "Grainfield-editor-test",
+    "sdk": "Pulp package configuration; GPU/Skia/Dawn capability not established by this build"
+  },
+  "editor": {
+    "status": "pass_provisional_native_capture",
+    "test_command": "GRAINFIELD_EDITOR_CAPTURE=build/native-audit/grainfield-editor.png ./build/Grainfield-editor-test --reporter compact",
+    "result": "6 test cases, 37 assertions passed",
+    "capture": {
+      "path": "build/native-audit/grainfield-editor.png",
+      "sha256": "94e08857907db83e617756851ebf3f5dfca7772bd6549e269277ff0e0efeedae",
+      "size": [
+        402,
+        728
+      ],
+      "unique_colors": 554,
+      "luma_stddev": 49.64115151168368,
+      "opaque_fraction": 1.0
+    },
+    "proven": [
+      "native editor binds and renders controls",
+      "capture is non-empty and content-rich",
+      "knob/modulation/automation focused tests pass"
+    ],
+    "not_proven": [
+      "pixel diff against rights-cleared straight-on reference",
+      "Skia/Graphite or Dawn GPU backend selection",
+      "full-panel visual fidelity"
+    ]
+  },
+  "audio": {
+    "status": "not_observed",
+    "reason": "No standalone or external-host audio measurement was run in this focused audit; existing audio receipts are historical and separately scoped."
+  },
+  "state": {
+    "status": "headless_only",
+    "reason": "Existing HeadlessHost state roundtrip is not a standalone/DAW state bridge; no standalone save/restore command is exposed."
+  },
+  "standalone": {
+    "status": "partial_historical",
+    "evidence": "provenance/standalone-app-validation.json",
+    "reason": "Prior launch/quit receipt reports zero windows and no audio/state observation; no fresh standalone host run was claimed."
+  },
+  "validation": {
+    "control_map": "pass: 24 controls, 5 bound, 19 provisional",
+    "git_diff_check": "pass",
+    "assets": "blocked: provenance/generated/beads-panel.svg unavailable in clean checkout"
+  },
+  "input_hashes": {
+    "grainfield_editor.hpp": "cf2f863e8611ea06320be268119d3df18536dc4c620dabe4e3ea7ad23c771218",
+    "test_grainfield_editor.cpp": "0cc05675072d757b09f66918f676286216169808ea0e3b4a7ad3543a7acfc3e8",
+    "provenance/control-map.json": "6e99b2a0324a3211fa318d5bf6a7dcb743804afa10585c5c22c2f6f9d508bee5",
+    "provenance/standalone-app-validation.json": "8641c39a93d3d6e485fc4eeaeca7aa09f2f4aca4dd2933346ba8c62654f62304",
+    "provenance/state-roundtrip.json": "b03479cce29f302219f360ec4adc93263bf7fb42dc58c1cdce6eadd368df086d",
+    "provenance/editor-automation-gesture.json": "9b7cb295e4bac521682e63664aaa955108ecc765ed932941944bf7bce005ca83"
+  },
+  "release_claim": "none",
+  "next_action": "Run a configured Pulp Skia/Dawn GPU editor capture and real standalone/DAW audio+state probes, then compare against a rights-cleared straight-on reference."
+}
