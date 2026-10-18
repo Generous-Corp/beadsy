@@ -1,0 +1,36 @@
+{
+  "schema": "beasy.host-format-validation.v1",
+  "source_head": "5b36f85e1acadff89bed15d7441329894c3066a0",
+  "clap": {
+    "status": "pass",
+    "command": "clap-validator validate build-beasy-renamed/CLAP/Beasy.clap",
+    "tests_run": 21,
+    "passed": 18,
+    "failed": 0,
+    "skipped": 3,
+    "warnings": 0
+  },
+  "au": {
+    "status": "blocked_not_installed",
+    "command": "auval -v aumu Bead Inde",
+    "result": "component not registered; auval could not find the component",
+    "metadata": {
+      "type": "aumu",
+      "subtype": "Bead",
+      "manufacturer": "Inde"
+    }
+  },
+  "vst3": {
+    "status": "not_run",
+    "reason": "pluginval executable unavailable in this environment"
+  },
+  "lv2": {
+    "status": "not_run",
+    "reason": "LV2 host/validator unavailable; build receipt remains artifact-only"
+  },
+  "standalone": {
+    "status": "partial",
+    "reason": "headless and state bridge pass; installed GUI/device routing not validated"
+  },
+  "release_boundary": "No format is release-complete from this receipt alone."
+}

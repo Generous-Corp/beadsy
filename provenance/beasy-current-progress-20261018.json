@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "2aebb8964c75bc2ac56c6711ee890f9e3b90671d",
+  "source_head": "5b36f85e1acadff89bed15d7441329894c3066a0",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -79,6 +79,14 @@
       "finite": true,
       "audible": true,
       "state_restored": true
+    },
+    "host_format_validation": {
+      "path": "provenance/beasy-host-format-validation-current-20261018.json",
+      "clap": "pass (21 run, 18 pass, 3 skip)",
+      "au": "blocked_not_installed",
+      "vst3": "not_run",
+      "lv2": "not_run",
+      "standalone": "partial"
     }
   },
   "open_gates": [
@@ -100,7 +108,7 @@
     {
       "id": "host_formats",
       "status": "partial",
-      "next": "AU registration, VST3 validator, LV2 state/MIDI host, AAX SDK/validator"
+      "next": "install/register AU for auval, obtain VST3 pluginval, run LV2 host/state probe, and validate installed standalone behavior"
     },
     {
       "id": "release",
