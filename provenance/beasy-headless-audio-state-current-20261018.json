@@ -1,0 +1,26 @@
+{
+  "schema": "beasy.headless-audio-state.v1",
+  "generated_at": "2026-10-18",
+  "source_head": "9bb8255",
+  "harness": {
+    "target": "Beasy-headless-harness",
+    "binary": "build-beasy-renamed/Beasy-headless-harness",
+    "binary_sha256": "a6735002487d517f66fdd0a07510601e40591a9d0cbfbc528a5ca70050a0d0ad"
+  },
+  "run": {
+    "sample_rate_hz": 48000,
+    "frames": 512,
+    "channels": 2,
+    "finite": true,
+    "audible": true,
+    "peak": 0.0904571,
+    "rms": 0.0351001,
+    "state_bytes": 386,
+    "state_restored": true
+  },
+  "status": "pass_headless_audio_and_state",
+  "evidence_boundary": [
+    "This proves the in-tree HeadlessHost path only.",
+    "Standalone GUI device routing, external DAW behavior, and installed host state remain separate gates."
+  ]
+}
