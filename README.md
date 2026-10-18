@@ -17,7 +17,14 @@ pulp build
 pulp test
 ```
 
-The first product milestone targets CLAP, VST3, AU, and standalone. AAX remains opt-in and blocked until the Avid SDK, entry point, validator, and Pro Tools evidence are available.
+The first product milestone declares CLAP, VST3, AU, LV2, and standalone.
+Current validation is intentionally scoped: CLAP, VST3, LV2 host/audio, and
+standalone state evidence are present; AU registration remains blocked in the
+GUI `AudioComponentRegistrar` path; LV2 state round-trip is not implemented;
+and AAX remains blocked until the Avid SDK, entry point, validator, and Pro
+Tools evidence are available. See the current [gate matrix](provenance/current-gate-matrix-20261018.json)
+and [packaging reconciliation](provenance/exact-head-packaging-reconciliation-20261018.json)
+before treating any format as release-ready.
 
 To inspect the formats declared by `pulp_add_plugin` against a particular build
 tree, generate the machine-readable receipt with:
