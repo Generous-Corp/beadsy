@@ -1,19 +1,19 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "0e0471c835ce2476f026bbe29d53764e0d65c039",
+  "source_head": "a108feb35afd7c26572d0eceeafaadb52b90df72",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
       "id": "control-map",
       "status": "pass",
-      "evidence": "python3 tools/validate_control_map.py",
+      "evidence": "python3 tools/validate_control_map.py; provenance/control-binding-gap.json",
       "result": "24 controls; 5 bound; 19 provisional"
     },
     {
       "id": "native-editor",
       "status": "pass",
-      "evidence": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build/Grainfield-editor-test",
+      "evidence": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build/Grainfield-editor-test; provenance/knob-skin-renders.json",
       "result": "29 assertions in 4 test cases"
     },
     {
@@ -60,7 +60,7 @@
     {
       "id": "source-provenance",
       "status": "partial",
-      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, provenance/converter-report.json, and Pulp commit f9752e4 importer diagnostics, provenance/realtime-allocation-probe.json",
+      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, provenance/converter-report.json, and Pulp commit f9752e4 importer diagnostics, provenance/realtime-allocation-probe.json, provenance/source-port-reference-gap.json",
       "result": "Source-to-port inventory is complete for recorded files; all 8 hash mismatches are classified as intentional portability adaptations with deterministic unified-diff metadata (29 Beads equal/7 mismatches; 14 stmlib equal/1 mismatch); notices and upstream license metadata are recorded",
       "reason": "Intentional adaptations have deterministic diff evidence, but source/legal redistribution remains blocked pending internal license review and copied-byte provenance closure; external pdftocairo feature diagnostics remain inconclusive, while Pulp importer fail-closed behavior is proven"
     },
@@ -73,7 +73,7 @@
     {
       "id": "rights-and-release",
       "status": "blocked",
-      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, provenance/converter-report.json, provenance/au-registration-diagnostic.json, ATTRIBUTION.md, and LICENSES.md",
+      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, provenance/converter-report.json, provenance/au-registration-diagnostic.json, ATTRIBUTION.md, and LICENSES.md, provenance/legal-attribution-audit.json, and provenance/source-port-reference-gap.json",
       "reason": "Panel artwork/reference permission and trademark clearance are pending; legal/source redistribution and internal GPL review remain open; external pdftocairo feature diagnostics are inconclusive, and importer validation-only behavior does not provide Illustrator conversion support",
       "result": "Pulp commit f9752e4 proves fail-closed aliases and preconverted-SVG validation-only behavior; artwork, legal/source redistribution, and external conversion gates keep release blocked"
     }
@@ -167,5 +167,23 @@
     "live_input_status": "experimental_deferred",
     "live_input_release_claim": false,
     "note": "Live-input receipts remain historical validation evidence and do not widen the first-release claim."
-  }
+  },
+  "current_receipts": [
+    {
+      "path": "provenance/control-binding-gap.json",
+      "role": "current control binding coverage and unresolved geometry"
+    },
+    {
+      "path": "provenance/legal-attribution-audit.json",
+      "role": "current rights, attribution, and trademark blockers"
+    },
+    {
+      "path": "provenance/source-port-reference-gap.json",
+      "role": "current missing authorized source-vs-port reference fixture"
+    },
+    {
+      "path": "provenance/knob-skin-renders.json",
+      "role": "current provisional procedural knob render evidence"
+    }
+  ]
 }
