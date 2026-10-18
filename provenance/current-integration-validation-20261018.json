@@ -1,12 +1,13 @@
 {
   "schema": "grainfield.current-integration-validation.v1",
-  "status": "pass_with_sdk_test_gap",
-  "grainfield_head": "bb3d8529363b2dd38d071d9822c982201744556d",
+  "status": "pass_with_open_format_gates",
+  "grainfield_head": "0493ed2",
   "product_base_head": "6235f0c8f955f0f78691662a0d09e130d1710b7e",
   "integrated_commits": [
     "4807c36 source-backed auxiliary controls and jack regions",
     "c79f526 auxiliary control and port tests",
-    "bb3d852 LV2 atom minimum-size metadata"
+    "bb3d852 LV2 atom minimum-size metadata",
+    "0493ed2 current integration validation receipt"
   ],
   "build": {
     "configure": "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/Users/danielraffel/Code/agent-worktrees/pulp-lv2-sdk-prefix-20261018 -DPULP_BUILD_TESTS=ON -DPULP_BUILD_EXAMPLES=OFF",
@@ -17,7 +18,8 @@
   "tests": {
     "core": "1964 assertions in 18 cases passed",
     "editor": "123 assertions in 9 cases passed",
-    "ctest": "27 Grainfield tests passed; standalone state target was not built by this LV2 SDK prefix and is not-run"
+    "ctest": "27 Grainfield tests passed",
+    "standalone_state": "5 assertions in 1 test case passed"
   },
   "lv2": {
     "host": "pass; Loaded Grainfield, 12 params, peak 0.190",
@@ -41,7 +43,6 @@
     "rights": "panel artwork, AI/PDF/CAD, logos, and reference photos remain external and rights-gated"
   },
   "open_gates": [
-    "standalone state target in an SDK prefix that provides it",
     "exact-head LV2 audio render harness",
     "AU registration/auval",
     "AAX SDK/validator",
