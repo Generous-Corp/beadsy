@@ -26,6 +26,10 @@
     "ui_fidelity": {
       "path": "provenance/ui-fidelity-current-audit-20261018.json",
       "sha256": "e137cefffa1b3422a3f73e70753a05c15264fe7e6f6d830bd4632c2f92eecc99"
+    },
+    "standalone_probe": {
+      "path": "provenance/standalone-current-build-probe-20261018.json",
+      "sha256": "9c90a313c51d21991047257df56e5c972931437ebd7fbdc2e0cda68e3bb97106"
     }
   },
   "gates": [
@@ -62,7 +66,7 @@
     {
       "id": "formats",
       "status": "partial_with_explicit_blockers",
-      "evidence": "VST3/CLAP/LV2/Standalone evidence current; AU registration and AAX unavailable; LV2 state not-run",
+      "evidence": "VST3/CLAP/LV2 evidence current; standalone state passes in the standalone SDK export but the combined GPU/view prefix lacks the state-file API; AU registration and AAX unavailable; LV2 state not-run",
       "next": "GUI AU validation, LV2 state strategy, or explicit release-scope decision"
     },
     {
