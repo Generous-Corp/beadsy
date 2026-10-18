@@ -5,7 +5,7 @@
   "receipts": {
     "integration": {
       "path": "provenance/current-integration-validation-20261018.json",
-      "sha256": "70d6fb708de0aea5b3c0c984c3b9995ed5485f02b0fbc2de473d0355bdee7546"
+      "sha256": "b7a69b397f6414e71935ff22e0cfd43cb6f55b927b47398d5e2820e26dee27c6"
     },
     "packaging": {
       "path": "provenance/exact-head-packaging-reconciliation-20261018.json",
@@ -25,7 +25,7 @@
     },
     "ui_fidelity": {
       "path": "provenance/ui-fidelity-current-audit-20261018.json",
-      "sha256": "e137cefffa1b3422a3f73e70753a05c15264fe7e6f6d830bd4632c2f92eecc99"
+      "sha256": "9908995d784b48fe3cd4f5795c09b9a144eecf8dad7837da154e0da8f8ab3dd7"
     },
     "standalone_probe": {
       "path": "provenance/standalone-current-build-probe-20261018.json",
