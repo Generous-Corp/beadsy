@@ -1,6 +1,6 @@
 {
   "schema": "beasy.host-format-validation.v1",
-  "source_head": "7c26114d0a42c4caecd0fdfbcc6c6e43239d9c22",
+  "source_head": "9f318f9ab2f231be73b62152bb2fd0c74bcbece5",
   "clap": {
     "status": "pass",
     "command": "clap-validator validate build-beasy-renamed/CLAP/Beasy.clap",
@@ -46,7 +46,12 @@
     "result": "SUCCESS",
     "strictness_level": 5,
     "timeout_ms": 10000,
-    "binary": "/Applications/pluginval.app/Contents/MacOS/pluginval"
+    "binary": "/Applications/pluginval.app/Contents/MacOS/pluginval",
+    "current_head_probe": {
+      "command": "/Applications/pluginval.app/Contents/MacOS/pluginval --validate build-beasy-renamed/VST3/Beasy.vst3 --strictness-level 5 --timeout-ms 10000",
+      "status": "pass",
+      "result": "SUCCESS"
+    }
   },
   "lv2": {
     "status": "partial_binary_ttl_probe",
