@@ -228,6 +228,6 @@ inline std::unique_ptr<pulp::format::Processor> create_grainfield() {
 #if defined(GRAINFIELD_NATIVE_EDITOR) && !defined(PULP_HEADLESS)
 #include "grainfield_editor.hpp"
 inline std::unique_ptr<pulp::view::View> grainfield::Grainfield::create_view() {
-    return std::make_unique<grainfield::GrainfieldEditor>(state());
+    return std::make_unique<grainfield::GrainfieldEditor>(*this, state());
 }
 #endif

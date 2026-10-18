@@ -42,3 +42,34 @@ TEST_CASE("Grainfield editor exposes a right-click modulation target seam") {
     native->clear_modulation_context();
     REQUIRE_FALSE(native->modulation_context_target().has_value());
 }
+
+TEST_CASE("Grainfield modulation context menu updates and resets the selected LFO") {
+    grainfield::Grainfield processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<grainfield::GrainfieldEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+
+    auto* menu = native->show_modulation_context_menu(
+        grainfield::kDensity, pulp::view::Point{12.0f, 12.0f});
+    REQUIRE(menu != nullptr);
+    REQUIRE(native->modulation_context_target() == grainfield::kDensity);
+    REQUIRE(menu->items().size() == 2);
+    REQUIRE(menu->items()[0].label == "Enable LFO");
+
+    menu->on_close(1);
+    REQUIRE(processor.lfo(grainfield::kDensity).enabled);
+    REQUIRE(processor.lfo(grainfield::kDensity).depth > 0.0f);
+    REQUIRE_FALSE(native->modulation_context_target().has_value());
+
+    menu = native->show_modulation_context_menu(
+        grainfield::kDensity, pulp::view::Point{12.0f, 12.0f});
+    REQUIRE(menu != nullptr);
+    REQUIRE(menu->items()[0].label == "Disable LFO");
+    menu->on_close(2);
+    REQUIRE_FALSE(processor.lfo(grainfield::kDensity).enabled);
+    REQUIRE(processor.lfo(grainfield::kDensity).depth == 0.0f);
+    REQUIRE_FALSE(native->modulation_context_target().has_value());
+}

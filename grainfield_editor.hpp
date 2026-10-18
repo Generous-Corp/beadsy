@@ -7,12 +7,14 @@
 
 #include <pulp/canvas/canvas.hpp>
 #include <pulp/canvas/svg.hpp>
+#include <pulp/view/context_menu.hpp>
 #include <pulp/view/parameter_binding.hpp>
 #include <pulp/view/view.hpp>
 #include <pulp/view/widgets.hpp>
 
 #include <algorithm>
 #include <cmath>
+#include <functional>
 #include <memory>
 #include <optional>
 #include <string>
@@ -22,6 +24,22 @@ namespace grainfield {
 
 namespace detail {
 
+inline pulp::view::View* root_view(pulp::view::View* view) {
+    if (!view) return nullptr;
+    while (view->parent()) view = view->parent();
+    return view;
+}
+
+inline pulp::view::Point local_to_root(pulp::view::View* view,
+                                       pulp::view::Point point) {
+    for (auto* current = view; current; current = current->parent()) {
+        const auto bounds = current->bounds();
+        point.x += bounds.x;
+        point.y += bounds.y;
+    }
+    return point;
+}
+
 class PanelKnob final : public pulp::view::Knob {
 public:
     PanelKnob(std::string caption, float diameter)
@@ -29,6 +47,10 @@ public:
         set_show_label(false);
         set_render_style(pulp::view::WidgetRenderStyle::standard);
         set_id("grainfield-" + caption_);
+    }
+
+    void set_modulation_indicator(std::function<bool()> active) {
+        modulation_active_ = std::move(active);
     }
 
     void paint(pulp::canvas::Canvas& canvas) override {
@@ -55,19 +77,28 @@ public:
                            cx + radius * 0.76f * std::cos(angle),
                            cy + radius * 0.76f * std::sin(angle));
 
+        // A restrained amber outer arc makes an enabled product-local LFO
+        // visible without changing the original panel's black-and-brass knob.
+        if (modulation_active_ && modulation_active_()) {
+            canvas.set_stroke_color(pulp::canvas::Color::rgba8(216, 155, 69));
+            canvas.set_line_width(std::max(1.0f, radius * 0.06f));
+            canvas.stroke_arc(cx, cy, radius * 1.18f, -2.35f, 0.78f);
+        }
+
     }
 
 private:
     std::string caption_;
     float diameter_ = 0.0f;
+    std::function<bool()> modulation_active_;
 };
 
 } // namespace detail
 
 class GrainfieldEditor final : public pulp::view::View {
 public:
-    explicit GrainfieldEditor(pulp::state::StateStore& store)
-        : store_(store), panel_(pulp::canvas::SvgImage::from_string(kGrainfieldPanelSvg)) {
+    GrainfieldEditor(Grainfield& processor, pulp::state::StateStore& store)
+        : processor_(processor), store_(store), panel_(pulp::canvas::SvgImage::from_string(kGrainfieldPanelSvg)) {
         set_id("grainfield-editor");
         set_background_color(pulp::canvas::Color::rgba8(22, 21, 19));
         build_controls();
@@ -99,6 +130,36 @@ public:
     void open_modulation_context(pulp::state::ParamID id) { context_target_ = id; }
     void clear_modulation_context() { context_target_.reset(); }
 
+    /// Show the same menu used by a knob's real secondary-click handler.
+    /// This is public so host/editor characterization tests can exercise the
+    /// complete menu lifecycle without synthesizing platform pointer events.
+    pulp::view::ContextMenu* show_modulation_context_menu(
+        pulp::state::ParamID id, pulp::view::Point position) {
+        open_modulation_context(id);
+        auto* root = detail::root_view(this);
+        if (!root) return nullptr;
+        const auto current = processor_.lfo(id);
+        auto alive = import_binding_lifetime_token();
+        return pulp::view::ContextMenu::show(
+            root, detail::local_to_root(this, position),
+            {{1, current.enabled ? "Disable LFO" : "Enable LFO"},
+             {2, "Reset LFO"}},
+            [alive, this, id](std::optional<int> command) {
+                if (alive.expired()) return;
+                if (command) {
+                    auto modulation = processor_.lfo(id);
+                    if (*command == 1) {
+                        modulation.enabled = !modulation.enabled;
+                        if (modulation.depth == 0.0f) modulation.depth = 0.1f;
+                        processor_.set_lfo(id, modulation);
+                    } else if (*command == 2) {
+                        processor_.clear_lfo(id);
+                    }
+                }
+                clear_modulation_context();
+            });
+    }
+
 private:
     struct Placement { pulp::state::ParamID id; const char* name; float x; float y; float r; };
 
@@ -114,8 +175,11 @@ private:
             const float diameter = p.r * 2.0f;
             auto knob = std::make_unique<detail::PanelKnob>(p.name, diameter);
             auto* raw = knob.get();
-            raw->on_context_menu = [this, id = p.id](pulp::view::Point) {
-                open_modulation_context(id);
+            raw->set_modulation_indicator([this, id = p.id] {
+                return processor_.lfo(id).enabled;
+            });
+            raw->on_context_menu = [this, id = p.id](pulp::view::Point position) {
+                show_modulation_context_menu(id, position);
             };
             add_child(std::move(knob));
             bindings_.push_back(pulp::view::bind_parameter(*raw, store_, p.id));
@@ -140,6 +204,7 @@ private:
     }
 
     struct Control { detail::PanelKnob* knob; float x; float y; float radius; };
+    Grainfield& processor_;
     pulp::state::StateStore& store_;
     pulp::canvas::SvgImage panel_;
     std::vector<Control> controls_;
