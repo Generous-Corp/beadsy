@@ -15,7 +15,8 @@ TEST_CASE("Grainfield descriptor is an instrument") {
     REQUIRE(desc.manufacturer == "Independent Audio");
     REQUIRE(desc.category == pulp::format::PluginCategory::Instrument);
     REQUIRE(desc.accepts_midi);
-    REQUIRE(desc.input_buses.empty());
+    REQUIRE(desc.input_buses.size() == 1);
+    REQUIRE(desc.input_buses[0].default_channels == 2);
     REQUIRE(desc.output_buses.size() == 1);
 }
 
@@ -187,6 +188,45 @@ TEST_CASE("Grainfield produces audio from one global MIDI trigger") {
     bool audible = false;
     for (float sample : output.channel(0))
         audible |= std::isfinite(sample) && std::abs(sample) > 0.0001f;
+    REQUIRE(audible);
+}
+
+TEST_CASE("Grainfield live-input mode processes stereo input") {
+    auto proc = grainfield::create_grainfield();
+    pulp::state::StateStore store;
+    proc->set_state_store(&store);
+    proc->define_parameters(store);
+    store.set_value(grainfield::kMode, 1.0f);
+    store.set_value(grainfield::kDryWet, 0.5f);
+    pulp::format::PrepareContext prep{.sample_rate = 48000.0,
+                                      .max_buffer_size = 256,
+                                      .input_channels = 2,
+                                      .output_channels = 2};
+    proc->prepare(prep);
+
+    pulp::audio::Buffer<float> input(2, 256);
+    for (std::size_t i = 0; i < 256; ++i) {
+        input.channel(0)[i] = 0.25f;
+        input.channel(1)[i] = -0.125f;
+    }
+    pulp::audio::Buffer<float> output(2, 256);
+    pulp::midi::MidiBuffer midi_in;
+    pulp::midi::MidiBuffer midi_out;
+    const float* input_channels[] = {input.channel(0).data(), input.channel(1).data()};
+    pulp::audio::BufferView<const float> input_view(input_channels, 2, 256);
+    auto output_view = output.view();
+    pulp::format::ProcessContext context{.sample_rate = 48000.0,
+                                         .num_samples = 256};
+    for (int block = 0; block < 32; ++block)
+        proc->process(output_view, input_view, midi_in, midi_out, context);
+
+    bool audible = false;
+    for (std::size_t i = 0; i < 256; ++i) {
+        REQUIRE(std::isfinite(output.channel(0)[i]));
+        REQUIRE(std::isfinite(output.channel(1)[i]));
+        audible |= std::abs(output.channel(0)[i]) > 0.0001f ||
+                   std::abs(output.channel(1)[i]) > 0.0001f;
+    }
     REQUIRE(audible);
 }
 

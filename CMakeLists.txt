@@ -25,6 +25,10 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/grainfield_panel_svg.hpp.in
                ${CMAKE_CURRENT_BINARY_DIR}/grainfield_panel_svg.hpp @ONLY)
 
 add_library(grainfield_beads_dsp STATIC
+    third_party/beads_dsp/beads/dsp/processor.cc
+    third_party/beads_dsp/beads/dsp/delay_controller.cc
+    third_party/beads_dsp/beads/dsp/delay_clock.cc
+    third_party/beads_dsp/beads/dsp/mu_law.cc
     third_party/beads_dsp/beads/dsp/synth.cc
     third_party/beads_dsp/beads/dsp/trigger_generator.cc
     third_party/beads_dsp/beads/resources.cc

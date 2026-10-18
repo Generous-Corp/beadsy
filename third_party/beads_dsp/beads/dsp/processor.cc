@@ -108,7 +108,9 @@ void Processor::Process(
     const MixParameters& mix_parameters,
     const FloatFrame* in,
     FloatFrame* out,
-    size_t size) {
+    size_t size,
+    Scratch& scratch) {
+  if (size > scratch.capacity || !in || !out) return;
   const float delay_mode = delay_mode_transition_ > 0.0f;
   const float threshold = delay_mode ? 0.98f : 0.99f;
   const float direction = parameters.size.base > threshold ? 1.0f : -1.0f;
@@ -121,12 +123,8 @@ void Processor::Process(
   float expo_fm_amount = 20.0f * (fabsf(density.base - 0.5f) - 0.225f);
   CONSTRAIN(expo_fm_amount, 0.0f, 1.0f);
 
-  TriggerGenerator::Output triggers_buffer[size];
-  DelayController::Output taps_buffer[size];
-  bool gate_out[size];
-
-  TriggerGenerator::Output* triggers = &triggers_buffer[0];
-  DelayController::Output* taps = &taps_buffer[0];
+  TriggerGenerator::Output* triggers = scratch.triggers.data();
+  DelayController::Output* taps = scratch.taps.data();
   
   // Extract grain triggers.
   if (delay_mode) {
@@ -143,7 +141,7 @@ void Processor::Process(
         taps,
         size);
     for (size_t i = 0; i < size; ++i) {
-      gate_out[i] = taps[i].gate;
+      scratch.gate_out[i] = taps[i].gate;
     }
   } else {
     taps = NULL;
@@ -154,13 +152,14 @@ void Processor::Process(
         (1.0f - expo_fm_amount) * density.cv,
         expo_fm_amount * density.cv,
         triggers,
+        scratch.merged_gate_flags,
         size);
     for (size_t i = 0; i < size; ++i) {
-      gate_out[i] = triggers[i].gate;
+      scratch.gate_out[i] = triggers[i].gate;
     }
   }
   
-  FloatFrame dry_signal[size];
+  FloatFrame* dry_signal = scratch.dry_signal.data();
   
   // Granular processing.
   const float feedback = mix_parameters.feedback;
@@ -168,7 +167,7 @@ void Processor::Process(
     case MEDIA_DIGITAL:
       processor_digital_.Process(
           triggers, taps, freeze, parameters, feedback, mono_, in, out, size);
-      copy(&in[0], &in[size], &dry_signal[0]);
+      copy(&in[0], &in[size], dry_signal);
       break;
     
     case MEDIA_VINTAGE_DIGITAL:
@@ -184,7 +183,7 @@ void Processor::Process(
       processor_clean_tape_.Process(
           triggers, taps, freeze, parameters, feedback, mono_, in, out,
           size);
-      copy(&in[0], &in[size], &dry_signal[0]);
+      copy(&in[0], &in[size], dry_signal);
       break;
     
     case MEDIA_DIRTY_TAPE:
@@ -248,7 +247,7 @@ void Processor::Process(
   if (mix_parameters.output_gate) {
     for (size_t i = 0; i < size; ++i) {
       out[i].l = (out[i].l + out[i].r) * 0.5f;
-      out[i].r = gate_out[i] ? -0.8f : 0.0f;
+      out[i].r = scratch.gate_out[i] ? -0.8f : 0.0f;
     }
   }
 }

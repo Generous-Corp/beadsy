@@ -36,6 +36,8 @@
 #include "beads/dsp/fx/reverb.h"
 #include "beads/dsp/fx/wow_and_flutter.h"
 
+#include <vector>
+
 // Setting this flag slows down the codec to 24kHz for the MEDIA_DIRTY_TAPE
 // setting. The codec becomes very hissy at this sample rate, but this has
 // a certain charm!
@@ -67,6 +69,27 @@ class Processor {
     float dry_wet;
     float reverb_amount;
     bool output_gate;
+  };
+
+  // Pulp hosts prepare one maximum block size before entering the real-time
+  // callback. Keep the effect's per-block working storage there instead of
+  // using the original firmware VLA scratch arrays in Process().
+  struct Scratch {
+    void Prepare(size_t size) {
+      triggers.resize(size);
+      taps.resize(size);
+      gate_out.resize(size);
+      dry_signal.resize(size);
+      merged_gate_flags.resize(size);
+      capacity = size;
+    }
+
+    std::vector<TriggerGenerator::Output> triggers;
+    std::vector<DelayController::Output> taps;
+    std::vector<bool> gate_out;
+    std::vector<FloatFrame> dry_signal;
+    std::vector<stmlib::GateFlags> merged_gate_flags;
+    size_t capacity = 0;
   };
   
   void Init(uint8_t* buffers[], uint16_t* reverb_buffer);
@@ -161,7 +184,8 @@ class Processor {
       const MixParameters& mix_parameters,
       const FloatFrame* in,
       FloatFrame* out,
-      size_t size);
+      size_t size,
+      Scratch& scratch);
   
  private:
   GranularProcessor<

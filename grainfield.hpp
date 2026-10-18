@@ -31,6 +31,7 @@ enum ParamIDs : pulp::state::ParamID {
     kGain,
     kQuality,
     kFreeze,
+    kMode,
 };
 
 /// Product-local LFO modulation.  The base StateStore value remains the host
@@ -49,7 +50,7 @@ inline pulp::format::PluginDescriptor make_descriptor() {
         .bundle_id = "com.independent_audio.grainfield",
         .version = "1.0.0",
         .category = pulp::format::PluginCategory::Instrument,
-        .input_buses = {},
+        .input_buses = {{"Main In", 2, false}},
         .output_buses = {{"Main Out", 2, false}},
         .accepts_midi = true,
     };
@@ -58,6 +59,28 @@ inline pulp::format::PluginDescriptor make_descriptor() {
 class Grainfield : public pulp::format::Processor {
 public:
     pulp::format::PluginDescriptor descriptor() const override { return make_descriptor(); }
+
+    pulp::format::PrepareResourceUsage estimate_prepare_resources(
+        const pulp::format::PrepareContext& ctx) const override {
+        const auto block = static_cast<std::size_t>(std::max(ctx.max_buffer_size, 0));
+        const auto frame_storage = block * sizeof(beads::FloatFrame) * 2;
+        const auto synth_storage = block *
+            (sizeof(beads::TriggerGenerator::Output) +
+             sizeof(stmlib::GateFlags) * 2 + sizeof(bool));
+        const auto effect_storage = block *
+            (sizeof(beads::TriggerGenerator::Output) +
+             sizeof(beads::DelayController::Output) + sizeof(bool) +
+             sizeof(beads::FloatFrame) + sizeof(stmlib::GateFlags));
+        return {
+            .persistent_bytes = kDelayStorageBytes +
+                sizeof(reverb_buffer_) + sizeof(effect_reverb_buffer_) +
+                frame_storage + synth_storage + effect_storage,
+            .block_scratch_bytes = 0,
+            .block_size = ctx.max_buffer_size,
+            .input_channels = 2,
+            .output_channels = 2,
+        };
+    }
 
 #if defined(GRAINFIELD_NATIVE_EDITOR) && !defined(PULP_HEADLESS)
     pulp::format::ViewSize view_size() const override { return {201, 364, 201, 364, 401, 729}; }
@@ -79,6 +102,8 @@ public:
         store.add_parameter({.id = kQuality, .name = "Quality", .unit = "mode",
                              .range = pulp::state::ParamRange::linear(0.0f, 3.0f, 3.0f, 1.0f)});
         store.add_parameter({.id = kFreeze, .name = "Freeze", .unit = "toggle",
+                             .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
+        store.add_parameter({.id = kMode, .name = "Mode", .unit = "mode",
                              .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
     }
 
@@ -141,9 +166,18 @@ public:
         current_note_ = 60;
         velocity_gain_ = 1.0f;
         pitch_bend_semitones_ = 0.0f;
-        if (!supported_rate_) return;
+        resources_ok_ = check_prepare_resource_limits(ctx) ==
+            pulp::format::PrepareResourceLimit::None;
+        if (!supported_rate_ || !resources_ok_) return;
         synth_.Init(reverb_buffer_.data());
+        delay_buffers_[0] = delay_storage_.data();
+        delay_buffers_[1] = delay_storage_.data() + kDelayBankBytes;
+        delay_buffers_[2] = delay_storage_.data() + 2 * kDelayBankBytes;
+        effect_.Init(delay_buffers_.data(), effect_reverb_buffer_.data());
+        effect_.Configure(beads::Processor::MEDIA_DIGITAL, false);
+        effect_scratch_.Prepare(max_block_size_);
         frames_.resize(max_block_size_);
+        input_frames_.resize(max_block_size_);
         triggers_.resize(max_block_size_);
         seed_gate_flags_.resize(max_block_size_);
         merged_gate_flags_.resize(max_block_size_);
@@ -152,12 +186,13 @@ public:
     }
 
     void process(pulp::audio::BufferView<float>& output,
-                 const pulp::audio::BufferView<const float>&,
+                 const pulp::audio::BufferView<const float>& input,
                  pulp::midi::MidiBuffer& midi_in,
                  pulp::midi::MidiBuffer&,
                  const pulp::format::ProcessContext&) override {
         output.clear();
-        if (!supported_rate_ || output.num_channels() < 2 || output.num_samples() > frames_.size()) return;
+        if (!supported_rate_ || !resources_ok_ || output.num_channels() < 2 ||
+            output.num_samples() > frames_.size()) return;
 
         update_modulation(output.num_samples());
 
@@ -263,6 +298,18 @@ public:
         for (std::size_t i = 0; i < n; ++i) frames_[i] = 0.0f;
         const bool frozen = state().get_modulated(kFreeze) >= 0.5f;
         std::fill_n(freeze_.get(), n, frozen);
+        const bool live_input = state().get_modulated(kMode) >= 0.5f;
+        if (live_input) {
+            if (input.num_channels() < 2 || input.num_samples() < n) return;
+            for (std::size_t i = 0; i < n; ++i) {
+                input_frames_[i].l = input.channel(0)[i];
+                input_frames_[i].r = input.channel(1)[i];
+            }
+            effect_.Process(beads::SEED_BUTTON_STATE_OFF, seed_gate_flags_.data(),
+                            freeze_.get(), density, parameters, mix,
+                            input_frames_.data(), frames_.data(), n,
+                            effect_scratch_);
+        } else {
         const auto seed = beads::SEED_BUTTON_STATE_OFF;
         const auto quality_index = std::clamp(
             static_cast<int>(std::lround(state().get_modulated(kQuality))), 0, 3);
@@ -270,6 +317,7 @@ public:
         synth_.Render(seed, seed_gate_flags_.data(), freeze_.get(), quality,
                       density, parameters, mix, triggers_, merged_gate_flags_,
                       frames_.data(), n);
+        }
 
         const float gain = std::pow(10.0f, state().get_modulated(kGain) / 20.0f);
         for (std::size_t i = 0; i < n; ++i) {
@@ -301,15 +349,24 @@ private:
     }
 
     beads::Synth synth_;
+    static constexpr std::size_t kDelayBankBytes = 262144;
+    static constexpr std::size_t kDelayStorageBytes = kDelayBankBytes * 3;
+    alignas(16) std::array<std::uint8_t, kDelayStorageBytes> delay_storage_{};
+    std::array<std::uint8_t*, 3> delay_buffers_{};
     std::array<std::uint16_t, 32768> reverb_buffer_{};
+    std::array<std::uint16_t, 32768> effect_reverb_buffer_{};
     std::vector<beads::FloatFrame> frames_;
+    std::vector<beads::FloatFrame> input_frames_;
     std::vector<beads::TriggerGenerator::Output> triggers_;
     std::vector<stmlib::GateFlags> seed_gate_flags_;
     std::vector<stmlib::GateFlags> merged_gate_flags_;
     std::unique_ptr<bool[]> freeze_;
+    beads::Processor effect_;
+    beads::Processor::Scratch effect_scratch_;
     double sample_rate_ = 48000.0;
     std::size_t max_block_size_ = 0;
     bool supported_rate_ = false;
+    bool resources_ok_ = false;
     bool gate_ = false;
     std::uint8_t current_note_ = 60;
     std::array<bool, 128> active_notes_{};
