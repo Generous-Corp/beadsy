@@ -29,6 +29,7 @@ enum ParamIDs : pulp::state::ParamID {
     kDryWet,
     kReverb,
     kGain,
+    kQuality,
 };
 
 /// Product-local LFO modulation.  The base StateStore value remains the host
@@ -72,6 +73,10 @@ public:
         store.add_parameter({.id = kDryWet, .name = "Dry/Wet", .unit = "%", .range = {0.0f, 1.0f, 0.5f}});
         store.add_parameter({.id = kReverb, .name = "Reverb", .unit = "%", .range = {0.0f, 1.0f, 0.0f}});
         store.add_parameter({.id = kGain, .name = "Gain", .unit = "dB", .range = {-60.0f, 12.0f, 0.0f}});
+        // The four values map directly to Beads' synth Resolution enum:
+        // 4-bit, 16/6-bit, 7-bit, and full 16-bit output paths.
+        store.add_parameter({.id = kQuality, .name = "Quality", .unit = "mode",
+                             .range = pulp::state::ParamRange::linear(0.0f, 3.0f, 3.0f, 1.0f)});
     }
 
     void set_lfo(pulp::state::ParamID id, LfoModulation lfo) {
@@ -200,7 +205,10 @@ public:
         const std::size_t n = output.num_samples();
         for (std::size_t i = 0; i < n; ++i) frames_[i] = 0.0f;
         const auto seed = beads::SEED_BUTTON_STATE_OFF;
-        synth_.Render(seed, seed_gate_flags_.data(), freeze_.get(), beads::Synth::RESOLUTION_16_BIT,
+        const auto quality_index = std::clamp(
+            static_cast<int>(std::lround(state().get_modulated(kQuality))), 0, 3);
+        const auto quality = static_cast<beads::Synth::Resolution>(quality_index);
+        synth_.Render(seed, seed_gate_flags_.data(), freeze_.get(), quality,
                       density, parameters, mix, triggers_, merged_gate_flags_,
                       frames_.data(), n);
 

@@ -1,4 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
+#include <array>
 #include <cmath>
 #include <vector>
 #include <pulp/format/headless.hpp>
@@ -124,12 +125,13 @@ struct RenderedBlocks {
     std::vector<float> right;
 };
 
-RenderedBlocks render_seeded_note() {
+RenderedBlocks render_seeded_note(int quality = 3) {
     stmlib::Random::Seed(0x12345678u);
     auto proc = grainfield::create_grainfield();
     pulp::state::StateStore store;
     proc->set_state_store(&store);
     proc->define_parameters(store);
+    store.set_value(grainfield::kQuality, static_cast<float>(quality));
 
     pulp::format::PrepareContext prep;
     prep.sample_rate = 48000.0;
@@ -169,6 +171,19 @@ TEST_CASE("Grainfield seeded renders are deterministic") {
     REQUIRE(std::any_of(first.left.begin(), first.left.end(), [](float sample) {
         return std::abs(sample) > 0.0001f;
     }));
+}
+
+TEST_CASE("Grainfield quality selects the four Beads synth resolutions") {
+    std::array<RenderedBlocks, 4> renders;
+    for (int quality = 0; quality < 4; ++quality) {
+        renders[quality] = render_seeded_note(quality);
+        REQUIRE(std::all_of(renders[quality].left.begin(), renders[quality].left.end(),
+                            [](float sample) { return std::isfinite(sample); }));
+    }
+
+    // The resolution paths quantize different stages of the source DSP. The
+    // lowest and highest modes must therefore remain observably distinct.
+    REQUIRE(renders[0].left != renders[3].left);
 }
 
 TEST_CASE("Grainfield 48 kHz contract is finite and rejects other rates") {
