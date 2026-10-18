@@ -1,0 +1,37 @@
+{
+  "schema": "beasy.macos-arm64-artifact-audit.v1",
+  "source_head": "fc22095a3438c02f38feb9bc431c2729c6345dc2",
+  "host": {
+    "machine": "arm64",
+    "macos": "27.0.1",
+    "xcode": "Xcode 27.1"
+  },
+  "artifacts": [
+    {
+      "path": "AU/Beasy.component/Contents/MacOS/Beasy",
+      "bytes": 44558968,
+      "sha256": "4f4a55d0dcb88d246ab13318dc709d5ccb645ed7b15336b12ac8ea02795eb02b",
+      "architecture": "arm64"
+    },
+    {
+      "path": "VST3/Beasy.vst3/Contents/MacOS/Beasy",
+      "bytes": 44717544,
+      "sha256": "c50befe14c3bc0f15933c011eef4210fceb88ce5624f2e39428b22c69265c728",
+      "architecture": "arm64"
+    },
+    {
+      "path": "CLAP/Beasy.clap/Contents/MacOS/Beasy",
+      "bytes": 44499576,
+      "sha256": "a03a7cb7f6749f31604d79d9b9eaedc92548143a2d79f77fb16b4ad36a727184",
+      "architecture": "arm64"
+    },
+    {
+      "path": "Beasy.app/Contents/MacOS/Beasy",
+      "bytes": 46417272,
+      "sha256": "4fa603a307d0b0934b37cf129fbf834bb92c284416bba909776528b32f243af6",
+      "architecture": "arm64"
+    }
+  ],
+  "status": "pass_architecture_and_hashes",
+  "scope": "binary architecture/provenance only; host installation and DAW validation remain separate"
+}
