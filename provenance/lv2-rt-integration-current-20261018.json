@@ -1,0 +1,19 @@
+{
+  "schema": "grainfield.lv2-rt-integration.v1",
+  "grainfield_head": "6235f0c8f955f0f78691662a0d09e130d1710b7e",
+  "pulp_sdk_prefix": "/Users/danielraffel/Code/agent-worktrees/pulp-lv2-sdk-prefix-20261018",
+  "pulp_sdk_source_git_sha": "e43326867305c842b9e9a65d9b86d503d9c3c4cf",
+  "ttl_fix": "lv2/Grainfield.ttl atom port 16 lv2:minimumSize 32768",
+  "build_command": "/Users/danielraffel/Code/agent-worktrees/lv2-rt-integration-20261018/tools/ci/governed-build.sh cmake --build grainfield-build-lv2-rt-current-20261018 --target Grainfield_LV2 --clean-first",
+  "probes": {
+    "host": "pass exit 0; Loaded Grainfield; params=12; peak=0.190",
+    "audio_render": "pass exit 0; 150ms MIDI render 7200 frames, no NaN/Inf/clipped",
+    "state": "not_run: no LV2 state extension declared and pulp-cpp has no state round-trip command"
+  },
+  "artifacts": {
+    "grainfield-build-lv2-rt-current-20261018/LV2/Grainfield.lv2/Grainfield.so": "5812f0fc8c6accff4011d4782997f3da252aac511bfcc9e83c3bf4d8457e6086",
+    "grainfield-build-lv2-rt-current-20261018/LV2/Grainfield.lv2/manifest.ttl": "7e5adeca8e4b8c7c8cfb73d994404c7ef3784b8f367a11d59250a21e60624180",
+    "grainfield-build-lv2-rt-current-20261018/LV2/Grainfield.lv2/Grainfield.ttl": "8fe7304354a6c33788f450ae9ac54e1d991c80033d9cf83bc54d6b6077f4e3b5",
+    "grainfield-lv2-current-render-20261018.wav": "eb2055b2b4cc395b4e6b5372c8b4b8bf7468cc4abb43cb3bcd163758dffc458e"
+  }
+}
