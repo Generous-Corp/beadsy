@@ -1,26 +1,28 @@
 # Grainfield implementation status
 
-Updated 2026-10-17 against the current Grainfield `main` checkout.
+Updated 2026-10-18 against Grainfield source head
+`e44066f4e8c0c978dd5aa50130b9ca03ec47e010`.
 
 ## Current executable slice
 
 - Independent product name: Grainfield.
 - Project license: MIT for original project code.
 - DSP boundary: the Beads synth path only, with the reachable MIT-noticed
-  source subset recorded under `third_party/beads_dsp`.
-- Host contract: stereo MIDI instrument, global/mono voice semantics, and an
-  explicit 48 kHz support gate. Unsupported host rates must remain silent until
-  a tested resampling layer exists.
+  source subset recorded under `third_party/beads_dsp`; the live-input effect
+  path is now wired through the same noticed processor subset.
+- Host contract: required stereo Main In/Main Out, global/mono MIDI voice
+  semantics, live-input effect mode, and tested 24/32/48 kHz media selection.
+  Other host rates remain fail-closed.
 - Documentation alignment: the local Beads manual and image set are recorded
   in `docs/planning/beads-documentation-review.md`; this release slice is
-  explicitly the internal wavetable branch and does not claim the documented
-  live-input, freeze-buffer restore, attenurandomizer, or delay behavior.
+  includes a tested live-input path; freeze-buffer restore, attenurandomizer,
+  and full delay parity remain unclaimed.
 - MIDI pitch: the bound PITCH parameter is now -24 to +24 semitones, with MIDI
   note 60 as the neutral reference and note offsets applied to the synth path.
 - Quality: the product-local QUALITY parameter now selects all four upstream
   Beads synth `Resolution` paths (4-bit, 16/6-bit, 7-bit, and 16-bit). This is
-  deterministic coverage of the internal wavetable synth branch only; it does
-  not claim the documented live-input processor's 24/32/48 kHz quality modes.
+  deterministic coverage of the internal wavetable branch; the external-input
+  processor has separate finite 24/32/48 kHz matrix receipts.
 - Freeze: the product-local FREEZE toggle now feeds the upstream synth's
   per-sample freeze input and persists through the normal Pulp parameter state.
   Freeze-buffer serialization/restore remains unavailable because the
@@ -34,8 +36,10 @@ Updated 2026-10-17 against the current Grainfield `main` checkout.
   calibration source. Clean checkouts without the rights-gated panel probe use
   a deterministic neutral fallback for compilation; that fallback is not
   visual fidelity evidence.
-- Formats declared by the scaffold: VST3, CLAP, LV2, AU, standalone. AAX is
-  declared only as a future validation lane; it is not a release claim.
+- Formats declared by the scaffold: VST3, CLAP, LV2, AU, standalone. VST3
+  builds against the installed development SDK and passes pluginval 1.0.4;
+  moduleinfo and Steinberg validator evidence remain open. AAX is declared
+  only as a future validation lane; it is not a release claim.
 
 ## Work in flight
 
@@ -45,7 +49,8 @@ Updated 2026-10-17 against the current Grainfield `main` checkout.
    reference, including ornate knob faces, pointer angles, labels, and pixel
    residuals.
 3. Add host load/editor/audio/state receipts for each supported format and
-   retain explicit negative evidence for VST3 and AAX.
+   retain explicit negative evidence for missing VST3 moduleinfo/Steinberg
+   validator and for AAX.
 4. Resolve panel artwork and knob reference rights before redistribution.
 
 ## Release gates

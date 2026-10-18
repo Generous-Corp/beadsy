@@ -1,58 +1,70 @@
 {
   "schema": "grainfield.vst3-validation.v1",
-  "status": "blocked",
-  "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f",
+  "status": "partial",
+  "source_head": "e44066f4e8c0c978dd5aa50130b9ca03ec47e010",
   "source": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
-  "build": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build",
+  "build": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3",
   "configure": {
-    "command": "pulp build --target Grainfield_VST3",
-    "status": "blocked",
-    "result": "Pulp configured formats as CLAP;AU;LV2;Standalone; Grainfield_VST3 was not generated",
-    "sdk_package": "/Users/danielraffel/pulp-sdk/lib/cmake/Pulp",
-    "sdk_vst3_include": "/Users/danielraffel/pulp-sdk/external/vst3sdk",
-    "sdk_vst3_include_exists": false,
-    "candidate_source_checkout": "/Users/danielraffel/Code/pulp/external/vst3sdk",
-    "candidate_source_checkout_resolves_to": "/Users/danielraffel/Library/Caches/Pulp/fetchcontent-src/vst3sdk-v3.8.0_build_66",
-    "candidate_source_checkout_git_head": "9fad9770f2ae8542ab1a548a68c1ad1ac690abe0",
-    "candidate_used": false,
-    "reason": "The available SDK package does not contain the VST3 SDK; the source checkout was not injected into the build because that would mix SDK provenance."
+    "command": "cmake -S /Users/danielraffel/Code/grainfield-quality-mode-integration -B /Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0; /Users/danielraffel/Code/pulp/tools/ci/governed-build.sh cmake --build build-vst3 --target Grainfield_VST3",
+    "status": "pass",
+    "result": "Grainfield_VST3 built successfully against installed development SDK",
+    "sdk_prefix": "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0",
+    "sdk_version": "0.990.1",
+    "sdk_source_git_sha": "dcfc23f487a2a54e5e4a57a341eabad7c8963161",
+    "sdk_provenance_kind": "development",
+    "vst3_sdk_present": true
   },
   "artifact": {
-    "path": "VST3/Grainfield.vst3",
-    "exists": false,
-    "binary": "VST3/Grainfield.vst3/Contents/MacOS/Grainfield",
-    "binary_exists": false
+    "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3",
+    "exists": true,
+    "binary": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3/Contents/MacOS/Grainfield",
+    "binary_exists": true,
+    "binary_bytes": 44788600,
+    "binary_sha256": "8893a78e8248849109512b32db2ae4d72c85f03c39ab8135ce089530b489c72f"
   },
   "validators": {
     "pluginval": {
       "path": "/Applications/pluginval.app/Contents/MacOS/pluginval",
       "version": "pluginval - 1.0.4",
-      "status": "not_run",
-      "reason": "No VST3 artifact was available. Running pluginval against the CLAP bundle is invalid and returned no types found."
+      "status": "pass",
+      "result": "SUCCESS",
+      "receipt": "provenance/vst3-pluginval.txt",
+      "receipt_sha256": "dac9dc4aed38493d3d52dc20b770eb2484ff7abfc3439fdfe3baac3adb020871"
     },
     "vst3validator": {
       "path": null,
-      "status": "unavailable"
+      "status": "unavailable",
+      "reason": "Steinberg vst3validator executable was not found"
     }
   },
   "bundle_inspection": {
     "moduleinfo": {
-      "path": "VST3/Grainfield.vst3/Contents/Resources/moduleinfo.json",
-      "exists": false
+      "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3/Contents/Resources/moduleinfo.json",
+      "exists": false,
+      "reason": "SDK build emitted no moduleinfo.json"
     },
     "info_plist": {
-      "path": "VST3/Grainfield.vst3/Contents/Info.plist",
-      "exists": false
+      "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3/Contents/Info.plist",
+      "exists": true,
+      "sha256": "b6da748f0e372d32b1cebae2ef19750f5019320fe632b9641dcad8566044926b2"
     },
     "control_shipping": {
-      "path": "VST3/Grainfield.vst3/Contents/MacOS/Grainfield.VST3.control-shipping.json",
-      "exists": false
+      "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3/Contents/Resources/Grainfield.VST3.control-shipping.json",
+      "exists": true,
+      "sha256": "47ceb36af178b4088d981eb936b279c6036753d4e4645f1e3e3a40cabba5c652"
+    },
+    "control_shipping_report": {
+      "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3/Contents/Resources/Grainfield.VST3.control-shipping-report.json",
+      "exists": true,
+      "sha256": "bdb0fdce2afee461262473f1ea7f8efbd731b54784e4ed2c00675163d5b138cd"
     }
   },
   "open_gates": [
-    "provide a Pulp SDK package with the exact intended VST3 SDK provenance",
-    "build the Grainfield VST3 target without mixing SDK checkouts",
-    "inspect moduleinfo.json, Info.plist, and control-shipping receipt",
-    "run pluginval and Steinberg validator against the VST3 artifact"
-  ]
+    "Steinberg vst3validator unavailable",
+    "moduleinfo.json absent from bundle resources",
+    "SDK provenance is development, not release",
+    "VST3 host/editor/audio/state evidence beyond pluginval is not included",
+    "AAX SDK and validator unavailable"
+  ],
+  "sdk": "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0"
 }

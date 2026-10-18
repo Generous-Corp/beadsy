@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.host-validation.v1",
   "project": "Grainfield",
-  "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f",
+  "source_head": "e44066f4e8c0c978dd5aa50130b9ca03ec47e010",
   "status": "partial",
   "checks": [
     {
@@ -112,15 +112,26 @@
           "sha256": "ff6382b426037d0a1c2a2e66737d0544e458670ae29d885bd55545652e9204f2"
         }
       ]
+    },
+    {
+      "format": "VST3",
+      "check": "VST3 pluginval",
+      "status": "pass",
+      "command": "/Applications/pluginval.app/Contents/MacOS/pluginval --validate /Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3",
+      "result": "SUCCESS; pluginval 1.0.4, strictness 5; 1 plugin, editor/audio/automation/state/bus checks passed",
+      "receipt": "provenance/vst3-pluginval.txt",
+      "receipt_sha256": "dac9dc4aed38493d3d52dc20b770eb2484ff7abfc3439fdfe3baac3adb020871"
     }
   ],
   "open_gates": [
     "AU registration/auval host evidence",
-    "VST3 validator/artifact",
     "AAX SDK and validator",
     "DAW editor/audio/state smoke",
     "ratio-2 upstream runtime is separately qualified by direct Processor test; Grainfield host matrix selects ratio-1 media at 24/32 kHz",
-    "MPE/aftertouch support is not implemented"
+    "MPE/aftertouch support is not implemented",
+    "VST3 Steinberg validator unavailable",
+    "VST3 moduleinfo.json absent",
+    "VST3 SDK provenance is development, not release"
   ],
   "metadata_note": {
     "status": "descriptor-updated",
