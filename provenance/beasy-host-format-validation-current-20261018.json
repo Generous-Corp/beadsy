@@ -1,6 +1,6 @@
 {
   "schema": "beasy.host-format-validation.v1",
-  "source_head": "6697254517635c294d0f556c0b646a894c6c9cc7",
+  "source_head": "61692ae68d8daa2b01b85c1216402266d35ae64d",
   "clap": {
     "status": "pass",
     "command": "clap-validator validate build-beasy-renamed/CLAP/Beasy.clap",
@@ -44,8 +44,16 @@
     "binary": "/Applications/pluginval.app/Contents/MacOS/pluginval"
   },
   "lv2": {
-    "status": "not_run",
-    "reason": "LV2 host/validator unavailable; build receipt remains artifact-only"
+    "status": "partial_binary_ttl_probe",
+    "command": "python3 ctypes probe of build-beasy-renamed/LV2/Beasy.so plus TTL inspection",
+    "descriptor_count": 1,
+    "first_descriptor_nonnull": true,
+    "uri_present": true,
+    "audio_ports": 4,
+    "control_ports": 14,
+    "atom_ports": 1,
+    "manifest_binary_present": true,
+    "limitation": "No external LV2 host/validator; MIDI/state host behavior remains unproven"
   },
   "standalone": {
     "status": "partial",
