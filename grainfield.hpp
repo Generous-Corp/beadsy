@@ -34,6 +34,14 @@ enum ParamIDs : pulp::state::ParamID {
     kMode,
 };
 
+// Parameter IDs are intentionally 1-based.  Keep the LFO table sized by the
+// declared parameter range rather than by an unrelated historical count so a
+// newly added control cannot silently become non-modulatable.
+inline constexpr pulp::state::ParamID kFirstModulatableParam = kTime;
+inline constexpr pulp::state::ParamID kLastModulatableParam = kMode;
+inline constexpr std::size_t kModulatableParamCount =
+    static_cast<std::size_t>(kLastModulatableParam - kFirstModulatableParam + 1);
+
 /// Product-local LFO modulation.  The base StateStore value remains the host
 /// automation value; the offset is applied through StateStore's modulation API.
 struct LfoModulation {
@@ -108,19 +116,21 @@ public:
     }
 
     void set_lfo(pulp::state::ParamID id, LfoModulation lfo) {
-        if (id < lfo_.size()) lfo_[id] = lfo;
+        if (is_modulatable(id)) lfo_[id] = lfo;
     }
     LfoModulation lfo(pulp::state::ParamID id) const {
-        return id < lfo_.size() ? lfo_[id] : LfoModulation{};
+        return is_modulatable(id) ? lfo_[id] : LfoModulation{};
     }
     void clear_lfo(pulp::state::ParamID id) {
-        if (id < lfo_.size()) lfo_[id] = {};
+        if (!is_modulatable(id)) return;
+        lfo_[id] = {};
         state().set_mod_offset(id, 0.0f);
     }
 
     std::vector<std::uint8_t> serialize_plugin_state() const override {
         std::vector<std::uint8_t> out{'G', 'F', 'M', 'D', 1, 0};
-        for (std::size_t id = 0; id < lfo_.size(); ++id) {
+        for (pulp::state::ParamID id = kFirstModulatableParam;
+             id <= kLastModulatableParam; ++id) {
             const auto& l = lfo_[id];
             out.push_back(static_cast<std::uint8_t>(l.enabled));
             const auto append_float = [&out](float value) {
@@ -137,11 +147,21 @@ public:
     bool deserialize_plugin_state(std::span<const std::uint8_t> data) override {
         if (data.empty()) { lfo_.fill({}); return true; }
         constexpr std::size_t stride = 1 + sizeof(float) * 3;
-        if (data.size() != 6 + stride * lfo_.size() || data[0] != 'G' ||
+        constexpr std::size_t current_size = 6 + stride * kModulatableParamCount;
+        // GFMD v1 originally emitted ten slots (including unused slot zero).
+        // Accept that payload so existing presets retain IDs 1..9 while the
+        // current form adds the three controls that were previously omitted.
+        constexpr std::size_t legacy_size = 6 + stride * 10;
+        const bool current = data.size() == current_size;
+        const bool legacy = data.size() == legacy_size;
+        if ((!current && !legacy) || data[0] != 'G' ||
             data[1] != 'F' || data[2] != 'M' || data[3] != 'D' || data[4] != 1)
             return false;
         std::size_t offset = 6;
-        for (auto& l : lfo_) {
+        lfo_.fill({});
+        const auto slots = current ? kModulatableParamCount : std::size_t{10};
+        for (std::size_t slot = 0; slot < slots; ++slot) {
+            auto& l = lfo_[current ? slot + kFirstModulatableParam : slot];
             l.enabled = data[offset++] != 0;
             const auto read_float = [&data, &offset]() {
                 float value = 0.0f;
@@ -329,13 +349,14 @@ public:
 private:
     void update_modulation(std::size_t samples) {
         if (!sample_rate_) return;
-        for (std::size_t id = 0; id < lfo_.size(); ++id) {
+        for (pulp::state::ParamID id = kFirstModulatableParam;
+             id <= kLastModulatableParam; ++id) {
             auto& l = lfo_[id];
             if (!l.enabled || l.depth == 0.0f) {
-                state().set_mod_offset(static_cast<pulp::state::ParamID>(id), 0.0f);
+                state().set_mod_offset(id, 0.0f);
                 continue;
             }
-            state().set_mod_offset(static_cast<pulp::state::ParamID>(id),
+            state().set_mod_offset(id,
                                    std::sin(l.phase * 6.28318530718f) * l.depth);
             l.phase = std::fmod(l.phase + l.rate_hz * static_cast<float>(samples) /
                                              static_cast<float>(sample_rate_), 1.0f);
@@ -376,7 +397,13 @@ private:
     bool sustain_down_ = false;
     float velocity_gain_ = 1.0f;
     float pitch_bend_semitones_ = 0.0f;
-    std::array<LfoModulation, 10> lfo_{};
+    static constexpr bool is_modulatable(pulp::state::ParamID id) {
+        return id >= kFirstModulatableParam && id <= kLastModulatableParam;
+    }
+
+    // Slot zero is deliberately unused because Pulp parameter IDs are
+    // 1-based.  This makes indexing safe for every declared parameter ID.
+    std::array<LfoModulation, static_cast<std::size_t>(kLastModulatableParam) + 1> lfo_{};
 
     static bool select_effect_media(double sample_rate, beads::Processor::Media& media) {
         if (std::abs(sample_rate - 24000.0) < 0.5) {

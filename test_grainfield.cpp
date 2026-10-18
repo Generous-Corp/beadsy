@@ -1,4 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <vector>
@@ -322,6 +323,70 @@ TEST_CASE("Grainfield LFO modulation leaves base automation intact and persists"
     const auto restored = restored_processor.lfo(grainfield::kDensity);
     REQUIRE(restored.enabled);
     REQUIRE(restored.depth == 0.1f);
+}
+
+TEST_CASE("Grainfield exposes every declared parameter as a bounded LFO target") {
+    grainfield::Grainfield processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+
+    for (pulp::state::ParamID id = grainfield::kFirstModulatableParam;
+         id <= grainfield::kLastModulatableParam; ++id) {
+        processor.set_lfo(id, {.enabled = true, .rate_hz = 2.0f,
+                                .depth = 0.25f, .phase = 0.125f});
+        const auto modulation = processor.lfo(id);
+        REQUIRE(modulation.enabled);
+        REQUIRE(modulation.rate_hz == 2.0f);
+        REQUIRE(modulation.depth == 0.25f);
+        REQUIRE(modulation.phase == 0.125f);
+    }
+
+    // Slot zero and IDs beyond the declared range must not alias a real
+    // parameter or grow the product-local modulation surface accidentally.
+    processor.set_lfo(0, {.enabled = true, .depth = 1.0f});
+    processor.set_lfo(grainfield::kLastModulatableParam + 1,
+                      {.enabled = true, .depth = 1.0f});
+    REQUIRE_FALSE(processor.lfo(0).enabled);
+    REQUIRE_FALSE(processor.lfo(grainfield::kLastModulatableParam + 1).enabled);
+
+    const auto payload = processor.serialize_plugin_state();
+    grainfield::Grainfield restored;
+    pulp::state::StateStore restored_store;
+    restored.set_state_store(&restored_store);
+    restored.define_parameters(restored_store);
+    REQUIRE(restored.deserialize_plugin_state(payload));
+    for (pulp::state::ParamID id = grainfield::kFirstModulatableParam;
+         id <= grainfield::kLastModulatableParam; ++id)
+        REQUIRE(restored.lfo(id).enabled);
+}
+
+TEST_CASE("Grainfield accepts legacy ten-slot modulation state") {
+    grainfield::Grainfield source;
+    pulp::state::StateStore source_store;
+    source.set_state_store(&source_store);
+    source.define_parameters(source_store);
+    source.set_lfo(grainfield::kDensity,
+                   {.enabled = true, .rate_hz = 3.0f, .depth = 0.2f, .phase = 0.4f});
+    constexpr std::size_t stride = 1 + sizeof(float) * 3;
+    const auto current = source.serialize_plugin_state();
+    std::vector<std::uint8_t> legacy(6 + stride * 10, 0);
+    std::copy_n(current.begin(), 6, legacy.begin());
+    // The old format included slot zero before IDs 1..9; reconstruct that
+    // layout explicitly instead of truncating the current ID-ordered form.
+    std::copy_n(current.begin() + 6 +
+                    (static_cast<std::size_t>(grainfield::kDensity) - 1) * stride,
+                stride, legacy.begin() + 6 +
+                    static_cast<std::size_t>(grainfield::kDensity) * stride);
+
+    grainfield::Grainfield restored;
+    pulp::state::StateStore restored_store;
+    restored.set_state_store(&restored_store);
+    restored.define_parameters(restored_store);
+    REQUIRE(restored.deserialize_plugin_state(legacy));
+    REQUIRE(restored.lfo(grainfield::kDensity).enabled);
+    REQUIRE(restored.lfo(grainfield::kDensity).depth == 0.2f);
+    REQUIRE_FALSE(restored.lfo(grainfield::kMode).enabled);
 }
 
 
