@@ -2,7 +2,7 @@
   "schema": "grainfield.editor-capture.v3",
   "status": "rendered-provisional-calibration",
   "project": "Grainfield",
-  "source_head": "1b101e2fc66e2c4fafb855333d156e40ba1d0fec",
+  "source_head": "d177e1150c2487dde148928796277a23229360db",
   "renderer": "pulp::view::capture_view",
   "backend": "auto_select",
   "logical_size": [201, 364],
