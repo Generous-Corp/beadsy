@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.midi-event-validation.v1",
   "status": "pass",
-  "source_head": "a23d07288ea7befae5b9af2be580eb4eefcb386a",
+  "source_head": "e6a2c87e81b3fb3c6bcb3bce7b7ac8750de8756d",
   "test": "Grainfield sustain and overlap handling is deterministic",
   "command": "pulp test -- -R '^Grainfield sustain and overlap handling is deterministic$' --output-on-failure",
   "events": [
@@ -55,10 +55,10 @@
   ],
   "result": "deterministic finite output; equivalent channel-15 events match channel-0 output and event offsets are consumed within one 256-frame process call",
   "scope_note": "This validates Grainfield's declared mono/global MIDI policy and all-channel acceptance. The upstream Beads Synth has no MIDI API, so this is adapter-contract evidence rather than source-vs-port MIDI parity.",
-  "audited_base_head": "a23d07288ea7befae5b9af2be580eb4eefcb386a",
+  "audited_base_head": "e6a2c87e81b3fb3c6bcb3bce7b7ac8750de8756d",
   "current_checkout": {
-    "head": "a23d07288ea7befae5b9af2be580eb4eefcb386a",
-    "note": "Receipt evidence was generated against this audited checkout; subsequent metadata-only commits do not alter the test."
+    "head": "e6a2c87e81b3fb3c6bcb3bce7b7ac8750de8756d",
+    "note": "All-channel MIDI and 48 kHz fail-closed evidence was generated against this audited checkout; later receipt-only commits do not alter the test."
   },
   "midi_channel_policy": "all_channels_accepted; channel filtering is unsupported/not implemented"
 }
