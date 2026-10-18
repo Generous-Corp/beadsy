@@ -341,6 +341,12 @@
       "sha256": "363fcbc93e659fa33e458cf882ed0e01cf6941388c32eecca82ec4ba3afa8a31",
       "source_head": "0a2bcbae4fceb41b2ced46cc9a26c5d960944076",
       "evidence_freshness": "current_exact_head_with_historical_external_evidence"
+    },
+    {
+      "path": "provenance/control-evidence-manifest-20261018.json",
+      "sha256": "03ee7e8186ac12b5f3d237e138c4756b249558f0d12969dee0c0c62451ffe4f6",
+      "source_head": "f6d278f10d388044f6f437ac0744c81ebae15ce2",
+      "evidence_freshness": "current_exact_head"
     }
   ],
   "non_claims": [

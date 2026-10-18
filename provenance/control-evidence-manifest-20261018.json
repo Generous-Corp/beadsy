@@ -1,0 +1,270 @@
+{
+  "schema": "grainfield.control-evidence-manifest.v1",
+  "generated_at": "2026-10-18",
+  "source_head": "f6d278f10d388044f6f437ac0744c81ebae15ce2",
+  "scope": "Beads manual/documentation and panel geometry audit for 19 provisional control-map candidates",
+  "decision": "No provisional control was promoted to a Grainfield product parameter. Seven auxiliary candidates have authoritative hardware semantics but lack product parameter contracts; twelve small candidates remain grouped socket evidence only.",
+  "source_files": {
+    "manual_markdown": {
+      "path": "/Users/danielraffel/Code/mutable-instruments-documentation/docs/modules/beads/manual.md",
+      "sha256": "67f311be1c926491e173f16b81b5f3a9ac00ef0a8cd33ce11a730b310372b0fb"
+    },
+    "index_markdown": {
+      "path": "/Users/danielraffel/Code/mutable-instruments-documentation/docs/modules/beads/index.md",
+      "sha256": "4334a6636e2b0ba042f61806ff28bf57153df417e5ea6324181e91b424a7c25a"
+    },
+    "manual_diagram": {
+      "path": "/Users/danielraffel/Code/mutable-instruments-documentation/docs/modules/beads/images/manual.png",
+      "sha256": "cac1417d67262373a3ca3f4813ff0943cbb5ffa7fbc0f9f6de643155b37f8bcf"
+    },
+    "front_reference": {
+      "path": "/Users/danielraffel/Code/mutable-instruments-documentation/docs/modules/beads/images/front.jpg",
+      "sha256": "4346619e9d47cb8d8ac9604d3661776b7ce5dcc37cfe74f36d3d7f3d62b031bf"
+    },
+    "control_map": {
+      "path": "provenance/control-map.json",
+      "sha256": "6e99b2a0324a3211fa318d5bf6a7dcb743804afa10585c5c22c2f6f9d508bee5"
+    },
+    "ai_geometry": {
+      "path": "provenance/ai-control-geometry-evidence.json",
+      "sha256": "240c20b8d587b34f871e6cf3c9bf837f579e60d1aec5ddf53f1c637371225ea1"
+    }
+  },
+  "controls": [
+    {
+      "id": "aux-01",
+      "hardware_label": "J / Feedback",
+      "role": "major_aux_knob",
+      "evidence_refs": [
+        "manual.md \u00a7 Mixing and audio output, J",
+        "manual.png callout J"
+      ],
+      "semantic_status": "authoritative_hardware_semantics",
+      "product_binding_status": "provisional",
+      "reason": "Manual and diagram identify J as Feedback; Grainfield has no feedback parameter contract, so no product binding is authorized."
+    },
+    {
+      "id": "aux-02",
+      "hardware_label": "K / Dry-Wet",
+      "role": "major_aux_knob",
+      "evidence_refs": [
+        "manual.md \u00a7 Mixing and audio output, K",
+        "manual.png callout K"
+      ],
+      "semantic_status": "authoritative_hardware_semantics",
+      "product_binding_status": "provisional",
+      "reason": "Manual and diagram identify K as dry/wet; Grainfield has no dry/wet parameter contract, so no product binding is authorized."
+    },
+    {
+      "id": "aux-03",
+      "hardware_label": "L / Reverb",
+      "role": "major_aux_knob",
+      "evidence_refs": [
+        "manual.md \u00a7 Mixing and audio output, L",
+        "manual.png callout L"
+      ],
+      "semantic_status": "authoritative_hardware_semantics",
+      "product_binding_status": "provisional",
+      "reason": "Manual and diagram identify L as reverb; Grainfield has no reverb parameter contract, so no product binding is authorized."
+    },
+    {
+      "id": "aux-04",
+      "hardware_label": "I / TIME attenurandomizer",
+      "role": "attenurandomizer",
+      "evidence_refs": [
+        "manual.md \u00a7 Grain playback control, I",
+        "manual.png callout I"
+      ],
+      "semantic_status": "authoritative_hardware_semantics",
+      "product_binding_status": "provisional",
+      "reason": "Manual defines four I controls but the flattened artwork does not provide a machine-readable one-to-one label for this candidate; product modulation contract is also absent."
+    },
+    {
+      "id": "aux-05",
+      "hardware_label": "I / SIZE attenurandomizer",
+      "role": "attenurandomizer",
+      "evidence_refs": [
+        "manual.md \u00a7 Grain playback control, I",
+        "manual.png callout I"
+      ],
+      "semantic_status": "authoritative_hardware_semantics",
+      "product_binding_status": "provisional",
+      "reason": "Manual defines four I controls but the flattened artwork does not provide a machine-readable one-to-one label for this candidate; product modulation contract is also absent."
+    },
+    {
+      "id": "aux-06",
+      "hardware_label": "I / SHAPE attenurandomizer",
+      "role": "attenurandomizer",
+      "evidence_refs": [
+        "manual.md \u00a7 Grain playback control, I",
+        "manual.png callout I"
+      ],
+      "semantic_status": "authoritative_hardware_semantics",
+      "product_binding_status": "provisional",
+      "reason": "Manual defines four I controls but the flattened artwork does not provide a machine-readable one-to-one label for this candidate; product modulation contract is also absent."
+    },
+    {
+      "id": "aux-07",
+      "hardware_label": "I / PITCH attenurandomizer",
+      "role": "attenurandomizer",
+      "evidence_refs": [
+        "manual.md \u00a7 Grain playback control, I",
+        "manual.png callout I"
+      ],
+      "semantic_status": "authoritative_hardware_semantics",
+      "product_binding_status": "provisional",
+      "reason": "Manual defines four I controls but the flattened artwork does not provide a machine-readable one-to-one label for this candidate; product modulation contract is also absent."
+    },
+    {
+      "id": "small-01",
+      "hardware_label": null,
+      "role": "jack_or_port_candidate",
+      "evidence_refs": [
+        "manual.md \u00a7\u00a7 Recording quality and audio input, Mixing and audio output",
+        "manual.png callouts 1\u20138"
+      ],
+      "semantic_status": "grouped_manual_evidence_only",
+      "product_binding_status": "provisional",
+      "reason": "Manual documents the numbered audio/CV/gate/output socket classes, but the flattened panel and current DXF candidate inventory do not provide a machine-readable one-to-one label for this small control ID; keep unbound until the socket map is independently authored and checked."
+    },
+    {
+      "id": "small-02",
+      "hardware_label": null,
+      "role": "jack_or_port_candidate",
+      "evidence_refs": [
+        "manual.md \u00a7\u00a7 Recording quality and audio input, Mixing and audio output",
+        "manual.png callouts 1\u20138"
+      ],
+      "semantic_status": "grouped_manual_evidence_only",
+      "product_binding_status": "provisional",
+      "reason": "Manual documents the numbered audio/CV/gate/output socket classes, but the flattened panel and current DXF candidate inventory do not provide a machine-readable one-to-one label for this small control ID; keep unbound until the socket map is independently authored and checked."
+    },
+    {
+      "id": "small-03",
+      "hardware_label": null,
+      "role": "jack_or_port_candidate",
+      "evidence_refs": [
+        "manual.md \u00a7\u00a7 Recording quality and audio input, Mixing and audio output",
+        "manual.png callouts 1\u20138"
+      ],
+      "semantic_status": "grouped_manual_evidence_only",
+      "product_binding_status": "provisional",
+      "reason": "Manual documents the numbered audio/CV/gate/output socket classes, but the flattened panel and current DXF candidate inventory do not provide a machine-readable one-to-one label for this small control ID; keep unbound until the socket map is independently authored and checked."
+    },
+    {
+      "id": "small-04",
+      "hardware_label": null,
+      "role": "jack_or_port_candidate",
+      "evidence_refs": [
+        "manual.md \u00a7\u00a7 Recording quality and audio input, Mixing and audio output",
+        "manual.png callouts 1\u20138"
+      ],
+      "semantic_status": "grouped_manual_evidence_only",
+      "product_binding_status": "provisional",
+      "reason": "Manual documents the numbered audio/CV/gate/output socket classes, but the flattened panel and current DXF candidate inventory do not provide a machine-readable one-to-one label for this small control ID; keep unbound until the socket map is independently authored and checked."
+    },
+    {
+      "id": "small-05",
+      "hardware_label": null,
+      "role": "jack_or_port_candidate",
+      "evidence_refs": [
+        "manual.md \u00a7\u00a7 Recording quality and audio input, Mixing and audio output",
+        "manual.png callouts 1\u20138"
+      ],
+      "semantic_status": "grouped_manual_evidence_only",
+      "product_binding_status": "provisional",
+      "reason": "Manual documents the numbered audio/CV/gate/output socket classes, but the flattened panel and current DXF candidate inventory do not provide a machine-readable one-to-one label for this small control ID; keep unbound until the socket map is independently authored and checked."
+    },
+    {
+      "id": "small-06",
+      "hardware_label": null,
+      "role": "jack_or_port_candidate",
+      "evidence_refs": [
+        "manual.md \u00a7\u00a7 Recording quality and audio input, Mixing and audio output",
+        "manual.png callouts 1\u20138"
+      ],
+      "semantic_status": "grouped_manual_evidence_only",
+      "product_binding_status": "provisional",
+      "reason": "Manual documents the numbered audio/CV/gate/output socket classes, but the flattened panel and current DXF candidate inventory do not provide a machine-readable one-to-one label for this small control ID; keep unbound until the socket map is independently authored and checked."
+    },
+    {
+      "id": "small-07",
+      "hardware_label": null,
+      "role": "jack_or_port_candidate",
+      "evidence_refs": [
+        "manual.md \u00a7\u00a7 Recording quality and audio input, Mixing and audio output",
+        "manual.png callouts 1\u20138"
+      ],
+      "semantic_status": "grouped_manual_evidence_only",
+      "product_binding_status": "provisional",
+      "reason": "Manual documents the numbered audio/CV/gate/output socket classes, but the flattened panel and current DXF candidate inventory do not provide a machine-readable one-to-one label for this small control ID; keep unbound until the socket map is independently authored and checked."
+    },
+    {
+      "id": "small-08",
+      "hardware_label": null,
+      "role": "jack_or_port_candidate",
+      "evidence_refs": [
+        "manual.md \u00a7\u00a7 Recording quality and audio input, Mixing and audio output",
+        "manual.png callouts 1\u20138"
+      ],
+      "semantic_status": "grouped_manual_evidence_only",
+      "product_binding_status": "provisional",
+      "reason": "Manual documents the numbered audio/CV/gate/output socket classes, but the flattened panel and current DXF candidate inventory do not provide a machine-readable one-to-one label for this small control ID; keep unbound until the socket map is independently authored and checked."
+    },
+    {
+      "id": "small-09",
+      "hardware_label": null,
+      "role": "jack_or_port_candidate",
+      "evidence_refs": [
+        "manual.md \u00a7\u00a7 Recording quality and audio input, Mixing and audio output",
+        "manual.png callouts 1\u20138"
+      ],
+      "semantic_status": "grouped_manual_evidence_only",
+      "product_binding_status": "provisional",
+      "reason": "Manual documents the numbered audio/CV/gate/output socket classes, but the flattened panel and current DXF candidate inventory do not provide a machine-readable one-to-one label for this small control ID; keep unbound until the socket map is independently authored and checked."
+    },
+    {
+      "id": "small-10",
+      "hardware_label": null,
+      "role": "jack_or_port_candidate",
+      "evidence_refs": [
+        "manual.md \u00a7\u00a7 Recording quality and audio input, Mixing and audio output",
+        "manual.png callouts 1\u20138"
+      ],
+      "semantic_status": "grouped_manual_evidence_only",
+      "product_binding_status": "provisional",
+      "reason": "Manual documents the numbered audio/CV/gate/output socket classes, but the flattened panel and current DXF candidate inventory do not provide a machine-readable one-to-one label for this small control ID; keep unbound until the socket map is independently authored and checked."
+    },
+    {
+      "id": "small-11",
+      "hardware_label": null,
+      "role": "jack_or_port_candidate",
+      "evidence_refs": [
+        "manual.md \u00a7\u00a7 Recording quality and audio input, Mixing and audio output",
+        "manual.png callouts 1\u20138"
+      ],
+      "semantic_status": "grouped_manual_evidence_only",
+      "product_binding_status": "provisional",
+      "reason": "Manual documents the numbered audio/CV/gate/output socket classes, but the flattened panel and current DXF candidate inventory do not provide a machine-readable one-to-one label for this small control ID; keep unbound until the socket map is independently authored and checked."
+    },
+    {
+      "id": "small-12",
+      "hardware_label": null,
+      "role": "jack_or_port_candidate",
+      "evidence_refs": [
+        "manual.md \u00a7\u00a7 Recording quality and audio input, Mixing and audio output",
+        "manual.png callouts 1\u20138"
+      ],
+      "semantic_status": "grouped_manual_evidence_only",
+      "product_binding_status": "provisional",
+      "reason": "Manual documents the numbered audio/CV/gate/output socket classes, but the flattened panel and current DXF candidate inventory do not provide a machine-readable one-to-one label for this small control ID; keep unbound until the socket map is independently authored and checked."
+    }
+  ],
+  "authority_rules": [
+    "Manual text and callout diagram establish hardware semantics only.",
+    "A Grainfield binding requires a product parameter/port contract plus geometry evidence; positional inference alone is insufficient.",
+    "The upstream panel artwork and photographs remain references and are not redistributed."
+  ],
+  "next_action": "Add explicit Grainfield contracts for feedback, dry/wet, reverb, attenurandomizer/modulation, and named audio/CV ports; then bind candidates with a reviewed socket map and rerun control-map validation.",
+  "release_claim": "none"
+}
