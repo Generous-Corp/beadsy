@@ -87,7 +87,7 @@
         "provenance/au-registration-diagnostic.json",
         "provenance/au-host.txt"
       ],
-      "result": "AU metadata and reversible registration/auval evidence pass in prior receipts; Pulp AU host discovery remains blocked."
+      "result": "Current integrated-head AU metadata is valid, but reversible registration/auval exits 2 and Pulp host discovery fails AudioComponentFindNext; AU remains blocked."
     },
     {
       "id": "vst3",
@@ -97,13 +97,16 @@
         "provenance/vst3-pluginval.txt",
         "provenance/vst3-toolchain-diagnostic.json"
       ],
-      "result": "External pluginval and host probes pass in historical evidence; Steinberg moduleinfo/validator and current release artifact provenance remain unavailable."
+      "result": "Current integrated checkout has no Grainfield_VST3 target or VST3 artifact; installed development SDK still lacks moduleinfo generator and Steinberg validator. Historical external VST3 artifact passes pluginval and Pulp host load but remains partial."
     },
     {
       "id": "lv2",
       "status": "blocked",
-      "evidence": "provenance/lv2-capability-audit.md",
-      "result": "Bundle metadata/audio ports are present, but Pulp host lacks LV2_URID__map and atom MIDI connection support."
+      "evidence": [
+        "provenance/lv2-capability-audit.md",
+        "provenance/lv2-host.txt"
+      ],
+      "result": "Current LV2 bundle builds with manifest, TTL, and Grainfield.so, but Pulp host provides no LV2_URID__map and instantiation/prepare fails; LV2 remains blocked."
     },
     {
       "id": "standalone",
@@ -214,9 +217,9 @@
     },
     {
       "path": "provenance/packaging-validation.json",
-      "sha256": "04a3bc6b2e2bab6309ac23392e0c2fc2cc60da1552441609499efc890dd05416",
-      "source_head": null,
-      "evidence_freshness": "historical_or_prior_checkout"
+      "sha256": "984990f908489a77873ecbb93d966f958d17efa82b6ddf549ab04b987aa8f496",
+      "source_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
+      "evidence_freshness": "current_exact_head"
     },
     {
       "path": "provenance/source-port-comparison-matrix.json",
@@ -271,6 +274,36 @@
       "sha256": "9ccf05171ba9d867b618239a2a2c847c82184e2c0655bc11ee0931a2a45ebac2",
       "source_head": null,
       "evidence_freshness": "historical_or_prior_checkout"
+    },
+    {
+      "path": "provenance/realtime-allocation-probe-v2.json",
+      "sha256": "08fca250ae699d6ef06678e81ce9fda75a927d86fae05e590cb31a609a647fb1",
+      "source_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
+      "evidence_freshness": "current_exact_head"
+    },
+    {
+      "path": "provenance/au-registration-diagnostic.json",
+      "sha256": "9e2ad8e8f056538831cb934e3ed21634e271d741440d007e06ecfe566215a5c7",
+      "source_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
+      "evidence_freshness": "current_exact_head"
+    },
+    {
+      "path": "provenance/au-host.txt",
+      "sha256": "49ded66b6d9992f45f9755bbc41a64f4cc19c4e100455d3b851b2265d9b1ca69",
+      "source_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
+      "evidence_freshness": "current_exact_head"
+    },
+    {
+      "path": "provenance/lv2-host.txt",
+      "sha256": "d515e2141c2cd66efdc2aa8189d95f5230cb988233c7ca18bd7d4b23c1222250",
+      "source_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
+      "evidence_freshness": "current_exact_head"
+    },
+    {
+      "path": "provenance/vst3-toolchain-diagnostic.json",
+      "sha256": "db19b082702b139193f34a225533e1ab60e51e7d6178c140c601db537eee6573",
+      "source_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
+      "evidence_freshness": "current_exact_head_with_historical_external_evidence"
     }
   ],
   "non_claims": [

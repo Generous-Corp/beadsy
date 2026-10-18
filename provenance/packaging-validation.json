@@ -1,23 +1,26 @@
 {
   "schema": "grainfield.packaging-validation.v1",
-  "build_dir": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build",
+  "build_dir": "/Users/danielraffel/Code/grainfield-closure-20261018/build",
+  "checked_at": "2026-10-18T04:13:31Z",
   "checks": [
     {
       "format": "AUv2",
-      "bundle": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/AU/Grainfield.component",
-      "status": "metadata-pass",
+      "bundle": "/Users/danielraffel/Code/grainfield-closure-20261018/build/AU/Grainfield.component",
+      "status": "blocked",
       "metadata": {
         "type": "aumu",
         "subtype": "Grai",
         "manufacturer": "Inde"
       },
-      "reason": "bundle metadata is valid; registration not requested"
+      "registration_status": "blocked",
+      "auval_exit_code": 2,
+      "reason": "Metadata is valid, but temporary user registration failed auval twice; see provenance/au-registration-diagnostic.json."
     },
     {
       "format": "VST3",
-      "bundle": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/VST3/Grainfield.vst3",
+      "bundle": "/Users/danielraffel/Code/grainfield-closure-20261018/build/VST3/Grainfield.vst3",
       "status": "blocked",
-      "reason": "VST3 artifact absent; the installed SDK did not provide a VST3 target"
+      "reason": "VST3 artifact absent; Grainfield_VST3 is not a configured build target and installed development SDK exposes no validator/moduleinfo generator."
     }
   ],
   "status": "partial"

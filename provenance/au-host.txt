@@ -1,4 +1,4 @@
 [pulp:error] AU load: AudioComponentFindNext failed for 'aumu:Grai:Inde'
-pulp host: failed to load 'build/AU/Grainfield.component'
+pulp host: failed to load '/Users/danielraffel/Code/grainfield-closure-20261018/build/AU/Grainfield.component'
   The plug-in bundle may be malformed, unsigned, or ABI-incompatible.
   Re-scan with `pulp scan` for a structured diagnosis.

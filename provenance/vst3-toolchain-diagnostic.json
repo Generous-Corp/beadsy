@@ -28,5 +28,23 @@
   "standalone_build_attempt": {
     "status": "blocked",
     "reason": "No creator implementation source or CMake target is present, so a standalone generator cannot be built from this SDK checkout without inventing a tool outside the SDK"
+  },
+  "checked_at": "2026-10-18T04:13:31Z",
+  "project_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
+  "current_build": {
+    "target": "Grainfield_VST3",
+    "status": "blocked",
+    "command": "PULP_SOURCE_DIR=/Users/danielraffel/Code/pulp pulp build --target Grainfield_VST3",
+    "result": "ninja: error: unknown target Grainfield_VST3; configure exposes CLAP, AU, LV2, and Standalone only",
+    "artifact": "/Users/danielraffel/Code/grainfield-closure-20261018/build/VST3/Grainfield.vst3"
+  },
+  "external_evidence": {
+    "bundle": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3",
+    "source_head": "a48fe2ec9cca5e360901d48f7c7c6398c37493df",
+    "binary_sha256": "84d1afee197ba073c1d2dbc56e011b1664008432d3f521f9a3178463b2344a3a",
+    "pluginval": "pass (1.0.4)",
+    "pulp_host": "pass (finite peak 0.190; 13 parameters reported)",
+    "moduleinfo": "absent",
+    "evidence_scope": "historical_external_or_prior_checkout"
   }
 }

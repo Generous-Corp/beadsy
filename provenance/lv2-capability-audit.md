@@ -19,9 +19,11 @@ has two independent gaps:
 The recorded probe is therefore an honest host limitation, not evidence that
 Grainfield's LV2 descriptor or DSP is invalid:
 
-- Command: `pulp host build/LV2/Grainfield.lv2 --format lv2`
+- Command: `pulp host /Users/danielraffel/Code/grainfield-closure-20261018/build/LV2/Grainfield.lv2 --format lv2`
 - Receipt: `provenance/lv2-host.txt`
-- Receipt SHA-256: `1da496986ae49210ee362fe4a03b3df842ed76aac9ad809c6764649dd5410ddd`
+- Project head: `73163d15d43a42cf6b0b8059f38de3713f68132f`
+- Bundle: manifest, TTL, and `Grainfield.so` are present; host probe exits 2 during `prepare()`.
+- Receipt SHA-256: `d515e2141c2cd66efdc2aa8189d95f5230cb988233c7ca18bd7d4b23c1222250`
 - Recorded result: the host did not provide `LV2_URID__map`; instantiation was
   refused.
 
