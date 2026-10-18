@@ -51,11 +51,13 @@
     "DAW editor/audio/state smoke"
   ],
   "metadata_note": {
-    "status": "inconclusive",
+    "status": "inconclusive-host-tool-discrepancy",
     "direct_processor_test": "Grainfield descriptor reports Instrument, zero input buses, stereo output",
     "host_inspect": "pulp-cpp plugin-inspect currently reports effect=true and inputs=2 while host load logs zero-input operation",
     "action": "investigate SDK host-inspect metadata path before release",
     "receipt": "provenance/clap-inspect.json",
-    "receipt_sha256": "cdeca4d04d1128d14325938c8f26cf7c37625759614d55b98c19c3ea2efb67f8"
+    "receipt_sha256": "cdeca4d04d1128d14325938c8f26cf7c37625759614d55b98c19c3ea2efb67f8",
+    "direct_clap_entry_receipt": "provenance/clap-entry-features.txt",
+    "direct_clap_entry_receipt_sha256": "3bfc4ef748eca6de3a6abb5149b27674856c4951f449cf6cdf57c52f4454c5d8"
   }
 }
