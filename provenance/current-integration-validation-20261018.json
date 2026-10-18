@@ -1,7 +1,8 @@
 {
   "schema": "grainfield.current-integration-validation.v1",
   "status": "pass_with_open_format_gates",
-  "grainfield_head": "0493ed2",
+  "grainfield_head": "bb3d8529363b2dd38d071d9822c982201744556d",
+  "receipt_head": "3086950",
   "product_base_head": "6235f0c8f955f0f78691662a0d09e130d1710b7e",
   "integrated_commits": [
     "4807c36 source-backed auxiliary controls and jack regions",
