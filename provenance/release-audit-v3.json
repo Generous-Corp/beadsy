@@ -188,7 +188,7 @@
     },
     {
       "path": "provenance/lv2-capability-audit.md",
-      "sha256": "c3e7a4a52c9eb40cc5cf0a46e93994a0d8cb3dae5ab97ce55b4252f57de27426",
+      "sha256": "d828e4b19746c01d473c064f738fb3cc22be73fbc03664c81d9608fd6632cbdd",
       "source_head": null,
       "evidence_freshness": "historical_or_prior_checkout"
     },
@@ -278,7 +278,7 @@
     },
     {
       "path": "provenance/realtime-allocation-probe-v2.json",
-      "sha256": "08fca250ae699d6ef06678e81ce9fda75a927d86fae05e590cb31a609a647fb1",
+      "sha256": "a403b0a895ca805370bbb1dbc4fe91b3a2513a0f82d4fcd008fc958fd4b3ac1b",
       "source_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
       "evidence_freshness": "current_exact_head"
     },
