@@ -2,7 +2,7 @@
   "schema": "grainfield.realtime-allocation-probe.v1",
   "status": "inconclusive",
   "verified_at": "2026-10-18T01:45:00Z",
-  "grainfield_head": "9fdad092f9d6aa93383fd3ac3eeeee28d59f22c9",
+  "grainfield_head": "9fdad092f9d6aa93383fd3ac3eeeee28d59f22c",
   "claim": "A prior 192-byte allocation observation remains unresolved; ten- and fifty-run bounded audits of the rebuilt committed baseline passed, so the failure is not currently reproducible.",
   "available_pulp_surface": {
     "pulp_head": "86c10d19989810394b56d6e592ad00acd557b307",
@@ -109,5 +109,98 @@
     "exit_codes": "all_zero",
     "backtrace": "not triggered because no failure occurred",
     "result": "No allocation failure recurred in the bounded fifty-run audit."
-  }
+  },
+  "matrix_diagnostic": {
+    "temporary_test_only": true,
+    "verified_at": "2026-10-18T02:00:00Z",
+    "command": "./build/Grainfield-test '[matrix]' --reporter console",
+    "runs": 10,
+    "result": "all ten matrix runs passed; no allocations observed at any tested block size",
+    "per_size": {
+      "64": {
+        "runs": 10,
+        "allocation_counts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "allocated_bytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "256": {
+        "runs": 10,
+        "allocation_counts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "allocated_bytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "1024": {
+        "runs": 10,
+        "allocation_counts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "allocated_bytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "exit_codes": "all_zero",
+    "notes": "Temporary matrix used max_buffer_size and num_samples equal to each tested block size; probe counters were copied after each scope ended before printing."
+  },
+  "notes_matrix_followup": "A ten-run finite 64/256/1024 block-size matrix passed with zero allocations and zero bytes for every size. The committed baseline assertion remains unchanged; the prior intermittent 192-byte observation is still unresolved."
 }
