@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "9fdad092f9d6aa93383fd3ac3eeeee28d59f22c9",
+  "source_head": "d92ae1429eebf910c7d93643927079b4a1f295d6",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -20,8 +20,8 @@
       "id": "realtime-allocation",
       "status": "inconclusive",
       "evidence": "provenance/realtime-allocation-probe.json",
-      "result": "Fifty repeated temporary diagnostic runs passed 50/50 with no allocation failure or backtrace; prior 1 allocation/192-byte observations at 256/1024 (and prior 64 attempt) remain unresolved",
-      "reason": "The committed assertion does not expose allocation counts and no backtrace was triggered; retain the gate and require cross-toolchain 64/256/1024 evidence before closure"
+      "result": "Ten runs at each 64/256/1024 block size passed with zero allocations and zero bytes; prior 1 allocation/192-byte observation remains unresolved",
+      "reason": "Committed assertion does not expose the prior failure backtrace; retain inconclusive status and repeat across supported toolchains"
     },
     {
       "id": "panel-asset",
@@ -39,8 +39,8 @@
     {
       "id": "vst3",
       "status": "partial",
-      "evidence": "provenance/vst3-validation.json, provenance/vst3-pluginval.txt, and provenance/host-validation-matrix.txt",
-      "reason": "SDK provenance is development; moduleinfo.json is absent; Steinberg vst3validator is unavailable; host load/audio passes but full installed editor/audio/state release evidence is not included",
+      "evidence": "provenance/vst3-validation.json, provenance/vst3-pluginval.txt, and provenance/host-validation-matrix.txt, provenance/vst3-toolchain-diagnostic.json",
+      "reason": "Development SDK exposes moduleinfo/validator headers only; no moduleinfo generator or vst3validator executable/target was found; host load/audio passes but full release evidence remains unavailable",
       "result": "VST3 bundle built against installed development SDK; pluginval 1.0.4 passes (SUCCESS); pulp host load/audio probe passes; moduleinfo.json and Steinberg vst3validator evidence remain unavailable"
     },
     {
@@ -131,6 +131,11 @@
       "path": "provenance/realtime-allocation-probe.json",
       "source_head": "9fdad092f9d6aa93383fd3ac3eeeee28d59f22c9",
       "note": "50/50 repeated temporary diagnostic passes with no failure/backtrace; prior 192-byte observation remains unresolved"
+    },
+    {
+      "path": "provenance/realtime-allocation-probe.json",
+      "source_head": "d92ae1429eebf910c7d93643927079b4a1f295d6",
+      "note": "10 runs each at 64/256/1024 pass with zero allocations; prior intermittent 192-byte observation remains unresolved"
     }
   ],
   "release_decision": "blocked"

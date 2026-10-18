@@ -7,7 +7,7 @@ Updated 2026-10-18 against Grainfield source head
 
 - Independent product name: Grainfield.
 - Project license: MIT for original project code.
-- Provenance: the source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings, `waves.bin` lineage, and stmlib upstream license metadata are recorded. Hash verification records 29 Beads matches and 7 mismatches, plus 14 stmlib matches and 1 mismatch; all eight mismatches are classified as intentional portability adaptations with deterministic unified-diff metadata in `provenance/source-to-port.json`. The stmlib audit is metadata-only, and legal/source redistribution remains blocked. The existing Pulp `RtAllocationProbe` is linked into Grainfield-test. Fifty repeated temporary diagnostic runs pass 50/50 with no allocation failure or backtrace, but prior one-allocation/192-byte failures at 256/1024 (and the prior 64 attempt) remain unresolved; the allocation/realtime gate is inconclusive pending exposed counts/backtrace and cross-toolchain matrix evidence. Pulp commit `f9752e4` proves fail-closed `illustrator`/`ai`/`pdf` aliases with preconverted-SVG validation-only behavior; this does not claim Illustrator conversion support. External `pdftocairo` feature diagnostics remain inconclusive.
+- Provenance: the source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings, `waves.bin` lineage, and stmlib upstream license metadata are recorded. Hash verification records 29 Beads matches and 7 mismatches, plus 14 stmlib matches and 1 mismatch; all eight mismatches are classified as intentional portability adaptations with deterministic unified-diff metadata in `provenance/source-to-port.json`. The stmlib audit is metadata-only, and legal/source redistribution remains blocked. The existing Pulp `RtAllocationProbe` is linked into Grainfield-test. A ten-run matrix at 64/256/1024 passes with zero allocations and zero bytes at every size, but the prior one-allocation/192-byte observation remains unresolved; the allocation/realtime gate is inconclusive pending a backtrace and repeat coverage across supported toolchains. Pulp commit `f9752e4` proves fail-closed `illustrator`/`ai`/`pdf` aliases with preconverted-SVG validation-only behavior; this does not claim Illustrator conversion support. External `pdftocairo` feature diagnostics remain inconclusive.
 - DSP boundary: the Beads synth path only, with the reachable MIT-noticed
   source subset recorded under `third_party/beads_dsp`; the live-input effect
   path is now wired through the same noticed processor subset.
@@ -42,7 +42,7 @@ Updated 2026-10-18 against Grainfield source head
   CLAP and VST3 host load/audio probes pass. AU metadata and packaging pass, but reversible registration/auval and host load are blocked by host discovery (see `provenance/au-registration-diagnostic.json`); LV2 host instantiation is blocked by missing
   usable audio ports/URID mapping; the Standalone launch/editor probe is partial
   pending state/audio/clean-shutdown evidence. VST3 moduleinfo and Steinberg
-  validator evidence remain open. AAX is declared only as a future validation
+  validator evidence remain open; the development SDK exposes headers only, with no generator or validator executable/target (see `provenance/vst3-toolchain-diagnostic.json`). AAX is declared only as a future validation
   lane; it is not a release claim.
 
 ## Work in flight

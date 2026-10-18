@@ -2,8 +2,8 @@
   "schema": "grainfield.realtime-allocation-probe.v1",
   "status": "inconclusive",
   "verified_at": "2026-10-18T01:45:00Z",
-  "grainfield_head": "9fdad092f9d6aa93383fd3ac3eeeee28d59f22c",
-  "claim": "A prior 192-byte allocation observation remains unresolved; ten- and fifty-run bounded audits of the rebuilt committed baseline passed, so the failure is not currently reproducible.",
+  "grainfield_head": "d92ae1429eebf910c7d93643927079b4a1f295d6",
+  "claim": "A prior 192-byte allocation observation remains unresolved; a ten-run matrix at 64/256/1024 passed with zero allocations at every size.",
   "available_pulp_surface": {
     "pulp_head": "86c10d19989810394b56d6e592ad00acd557b307",
     "probe_type": "pulp::test::RtAllocationProbe",
