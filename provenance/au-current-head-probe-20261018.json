@@ -1,0 +1,22 @@
+{
+  "schema": "grainfield.au-current-head-probe.v1",
+  "source_head": "bb3d8529363b2dd38d071d9822c982201744556d",
+  "build_directory": "build-allocation-current",
+  "component": "build-allocation-current/AU/Grainfield.component",
+  "executable_sha256": "0e5f5446baef188f4bc9c3ddbd7719d3a9cad325efeaa3aeb6fb47dbc910ce15",
+  "metadata": {
+    "type": "aumu",
+    "subtype": "Grai",
+    "manufacturer": "Inde",
+    "factoryFunction": "GrainfieldAUFactory",
+    "bundle_identifier": "com.independent_audio.grainfield.au"
+  },
+  "preflight": "pass; metadata and permissions valid; linker-only ad-hoc signature requires isolated-copy resign",
+  "registration": {
+    "status": "blocked",
+    "command": "bash /Users/danielraffel/Code/pulp/tools/ci/run-auval-component.sh build-allocation-current/AU/Grainfield.component aumu Grai Inde",
+    "exit_code": 2,
+    "output": "no worker result was emitted in this non-GUI invocation; isolated manual auval receipt remains the authoritative pass path",
+    "next_evidence": "run the helper from the auto-login GUI launchd session or retain the existing isolated manual auval pass"
+  }
+}
