@@ -311,6 +311,24 @@
       "sha256": "2e4f8f21f7a3c6e9f50914fc282b1a2cfc0c8788f380e13f7b046e79bf99af82",
       "source_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
       "evidence_freshness": "current_exact_head"
+    },
+    {
+      "path": "provenance/rights-attribution-audit-v2.json",
+      "sha256": "dcf6142ee0b1589f954ab474adb8338b888505a0cb3b3adc59d4f80230a04491",
+      "source_head": "9768d06ed8ee3cefbf23ec30b4b0c4dec5f10216",
+      "evidence_freshness": "historical_or_prior_checkout"
+    },
+    {
+      "path": "provenance/vst3-current-head-packaging-20261018.json",
+      "sha256": "9820b5a563fb2d50a143206b814728b7e03e6c32e7327562d1cef780c98e69e1",
+      "source_head": "0a2bcbae4fceb41b2ced46cc9a26c5d960944076",
+      "evidence_freshness": "current_exact_head_with_historical_external_evidence"
+    },
+    {
+      "path": "provenance/vst3-current-head-pluginval-20261018.txt",
+      "sha256": "ef5d8677276c2d4a9bdfa59b3d10d0a83f72cec20c01953f03fe4ed752404a44",
+      "source_head": "0a2bcbae4fceb41b2ced46cc9a26c5d960944076",
+      "evidence_freshness": "current_exact_head_with_historical_external_evidence"
     }
   ],
   "non_claims": [
