@@ -5,7 +5,7 @@
   "receipts": {
     "integration": {
       "path": "provenance/current-integration-validation-20261018.json",
-      "sha256": "b29355e9116b597a8a54ca9e2dece04be42deab9bd0d5b8f334fa2168bf015b9"
+      "sha256": "54c577967cf0586558c450c2b0623c223152a3f2b124e6bdc6cba51e262eecb1"
     },
     "packaging": {
       "path": "provenance/exact-head-packaging-reconciliation-20261018.json",
@@ -25,14 +25,14 @@
     },
     "ui_fidelity": {
       "path": "provenance/ui-fidelity-current-audit-20261018.json",
-      "sha256": "a6adde1f3e27514ac5663ae53f9007cc1f6043c33080818311f119fe74b3c504"
+      "sha256": "0fa06bff2c3a179d120a469d59d60d8e3ccbc6f77078bdce3191daafeb24e8ef"
     }
   },
   "gates": [
     {
       "id": "native-ux",
       "status": "pass_with_fidelity_gate",
-      "evidence": "132 editor assertions; procedural min/mid/max knob captures; automation and contextual LFO paths",
+      "evidence": "133 editor assertions; exact-head panel and procedural min/mid/max knob captures; automation and contextual LFO paths",
       "next": "rights-cleared straight-on reference and exact geometry/pixel comparison"
     },
     {
