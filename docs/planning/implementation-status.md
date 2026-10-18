@@ -14,13 +14,17 @@ Updated 2026-10-17 against the current Grainfield `main` checkout.
 - Documentation alignment: the local Beads manual and image set are recorded
   in `docs/planning/beads-documentation-review.md`; this release slice is
   explicitly the internal wavetable branch and does not claim the documented
-  live-input, freeze, quality-mode, attenurandomizer, or delay behavior.
+  live-input, freeze-buffer restore, attenurandomizer, or delay behavior.
 - MIDI pitch: the bound PITCH parameter is now -24 to +24 semitones, with MIDI
   note 60 as the neutral reference and note offsets applied to the synth path.
 - Quality: the product-local QUALITY parameter now selects all four upstream
   Beads synth `Resolution` paths (4-bit, 16/6-bit, 7-bit, and 16-bit). This is
   deterministic coverage of the internal wavetable synth branch only; it does
   not claim the documented live-input processor's 24/32/48 kHz quality modes.
+- Freeze: the product-local FREEZE toggle now feeds the upstream synth's
+  per-sample freeze input and persists through the normal Pulp parameter state.
+  Freeze-buffer serialization/restore remains unavailable because the
+  internal `beads::Synth` exposes no buffer snapshot API.
 - Native editor prototype: the converted panel SVG is embedded at build time,
   all 24 DXF-derived knob placements are rendered at the calibrated centres
   and diameters, and five controls are parameter-bound. The bound knobs have

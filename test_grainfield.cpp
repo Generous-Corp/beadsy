@@ -89,10 +89,13 @@ TEST_CASE("Grainfield state round trips") {
     pulp::format::HeadlessHost host(grainfield::create_grainfield);
     host.prepare(48000, 512, 0, 2);
     host.state().set_value(grainfield::kGain, -12.0f);
+    host.state().set_value(grainfield::kFreeze, 1.0f);
     const auto data = host.save_state();
     host.state().set_value(grainfield::kGain, 0.0f);
+    host.state().set_value(grainfield::kFreeze, 0.0f);
     REQUIRE(host.load_state(data));
     REQUIRE(host.state().get_value(grainfield::kGain) == -12.0f);
+    REQUIRE(host.state().get_value(grainfield::kFreeze) == 1.0f);
 }
 
 TEST_CASE("Grainfield LFO modulation leaves base automation intact and persists") {
@@ -125,13 +128,14 @@ struct RenderedBlocks {
     std::vector<float> right;
 };
 
-RenderedBlocks render_seeded_note(int quality = 3) {
+RenderedBlocks render_seeded_note(int quality = 3, bool freeze = false) {
     stmlib::Random::Seed(0x12345678u);
     auto proc = grainfield::create_grainfield();
     pulp::state::StateStore store;
     proc->set_state_store(&store);
     proc->define_parameters(store);
     store.set_value(grainfield::kQuality, static_cast<float>(quality));
+    store.set_value(grainfield::kFreeze, freeze ? 1.0f : 0.0f);
 
     pulp::format::PrepareContext prep;
     prep.sample_rate = 48000.0;
@@ -184,6 +188,14 @@ TEST_CASE("Grainfield quality selects the four Beads synth resolutions") {
     // The resolution paths quantize different stages of the source DSP. The
     // lowest and highest modes must therefore remain observably distinct.
     REQUIRE(renders[0].left != renders[3].left);
+}
+
+TEST_CASE("Grainfield freeze toggle reaches the internal Beads synth path") {
+    const auto live = render_seeded_note(3, false);
+    const auto frozen = render_seeded_note(3, true);
+    REQUIRE(std::all_of(frozen.left.begin(), frozen.left.end(),
+                        [](float sample) { return std::isfinite(sample); }));
+    REQUIRE(frozen.left != live.left);
 }
 
 TEST_CASE("Grainfield 48 kHz contract is finite and rejects other rates") {

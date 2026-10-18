@@ -30,6 +30,7 @@ enum ParamIDs : pulp::state::ParamID {
     kReverb,
     kGain,
     kQuality,
+    kFreeze,
 };
 
 /// Product-local LFO modulation.  The base StateStore value remains the host
@@ -77,6 +78,8 @@ public:
         // 4-bit, 16/6-bit, 7-bit, and full 16-bit output paths.
         store.add_parameter({.id = kQuality, .name = "Quality", .unit = "mode",
                              .range = pulp::state::ParamRange::linear(0.0f, 3.0f, 3.0f, 1.0f)});
+        store.add_parameter({.id = kFreeze, .name = "Freeze", .unit = "toggle",
+                             .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
     }
 
     void set_lfo(pulp::state::ParamID id, LfoModulation lfo) {
@@ -204,6 +207,8 @@ public:
 
         const std::size_t n = output.num_samples();
         for (std::size_t i = 0; i < n; ++i) frames_[i] = 0.0f;
+        const bool frozen = state().get_modulated(kFreeze) >= 0.5f;
+        std::fill_n(freeze_.get(), n, frozen);
         const auto seed = beads::SEED_BUTTON_STATE_OFF;
         const auto quality_index = std::clamp(
             static_cast<int>(std::lround(state().get_modulated(kQuality))), 0, 3);
