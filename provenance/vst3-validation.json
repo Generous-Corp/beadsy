@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.vst3-validation.v1",
   "status": "partial",
-  "source_head": "e44066f4e8c0c978dd5aa50130b9ca03ec47e010",
+  "source_head": "a48fe2ec9cca5e360901d48f7c7c6398c37493df",
   "source": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
   "build": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3",
   "configure": {
@@ -20,7 +20,7 @@
     "binary": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3/Contents/MacOS/Grainfield",
     "binary_exists": true,
     "binary_bytes": 44788600,
-    "binary_sha256": "8893a78e8248849109512b32db2ae4d72c85f03c39ab8135ce089530b489c72f"
+    "binary_sha256": "84d1afee197ba073c1d2dbc56e011b1664008432d3f521f9a3178463b2344a3a"
   },
   "validators": {
     "pluginval": {
