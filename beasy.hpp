@@ -9,6 +9,7 @@
 #include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <limits>
 #include <memory>
 #include <optional>
 #include <span>
@@ -232,6 +233,8 @@ public:
         triggers_.resize(max_block_size_);
         seed_gate_flags_.resize(max_block_size_);
         merged_gate_flags_.resize(max_block_size_);
+        velocity_gain_events_.resize(max_block_size_);
+        velocity_gain_stream_.resize(max_block_size_);
         freeze_.reset(new bool[max_block_size_]);
         std::fill_n(freeze_.get(), max_block_size_, false);
     }
@@ -243,6 +246,7 @@ public:
                  const pulp::format::ProcessContext&) override {
         output.clear();
         last_gate_size_ = 0;
+        last_velocity_gain_size_ = 0;
         if (!supported_rate_ || !resources_ok_ || output.num_channels() < 2 ||
             output.num_samples() > frames_.size()) return;
 
@@ -250,6 +254,17 @@ public:
 
         std::fill(seed_gate_flags_.begin(), seed_gate_flags_.begin() + output.num_samples(),
                   stmlib::GATE_FLAG_LOW);
+        const std::size_t n = output.num_samples();
+        // Keep the gain that was active at the block boundary separate from
+        // the final note state. MIDI velocity events can arrive in the middle
+        // of a block, so applying the final gain to every output sample would
+        // retroactively change audio before the event. This prepared timeline
+        // is filled while walking the ordered event stream below, then read
+        // without allocation in the output loop.
+        const float velocity_gain_at_block_start = velocity_gain_;
+        const float no_velocity_event = std::numeric_limits<float>::quiet_NaN();
+        std::fill(velocity_gain_events_.begin(),
+                  velocity_gain_events_.begin() + n, no_velocity_event);
         const bool gate_at_block_start = gate_;
         bool gate = gate_at_block_start;
         for (const auto& event : midi_in) {
@@ -262,6 +277,7 @@ public:
                 note_velocity_gain_[event.note()] = static_cast<float>(event.velocity()) / 127.0f;
                 current_note_ = event.note();
                 velocity_gain_ = note_velocity_gain_[event.note()];
+                velocity_gain_events_[offset] = velocity_gain_;
                 gate = true;
                 seed_gate_flags_[offset] = static_cast<stmlib::GateFlags>(
                     seed_gate_flags_[offset] | stmlib::GATE_FLAG_RISING);
@@ -275,6 +291,7 @@ public:
                         if (active_notes_[static_cast<std::size_t>(note)]) {
                             current_note_ = static_cast<std::uint8_t>(note);
                             velocity_gain_ = note_velocity_gain_[static_cast<std::size_t>(note)];
+                            velocity_gain_events_[offset] = velocity_gain_;
                             replacement = true;
                             break;
                         }
@@ -295,6 +312,7 @@ public:
                             if (active_notes_[static_cast<std::size_t>(note)]) {
                                 current_note_ = static_cast<std::uint8_t>(note);
                                 velocity_gain_ = note_velocity_gain_[static_cast<std::size_t>(note)];
+                                velocity_gain_events_[offset] = velocity_gain_;
                                 replacement = true;
                                 break;
                             }
@@ -327,6 +345,14 @@ public:
         }
         last_gate_size_ = output.num_samples();
 
+        float velocity_gain = velocity_gain_at_block_start;
+        for (std::size_t i = 0; i < n; ++i) {
+            const float event_gain = velocity_gain_events_[i];
+            if (!std::isnan(event_gain)) velocity_gain = event_gain;
+            velocity_gain_stream_[i] = velocity_gain;
+        }
+        last_velocity_gain_size_ = n;
+
         beads::Parameters parameters{};
         parameters.time = randomized(kTime);
         parameters.size = randomized(kSize);
@@ -347,7 +373,6 @@ public:
             false,
         };
 
-        const std::size_t n = output.num_samples();
         for (std::size_t i = 0; i < n; ++i) frames_[i] = 0.0f;
         const bool frozen = state().get_modulated(kFreeze) >= 0.5f;
         std::fill_n(freeze_.get(), n, frozen);
@@ -374,8 +399,8 @@ public:
 
         const float gain = std::pow(10.0f, state().get_modulated(kGain) / 20.0f);
         for (std::size_t i = 0; i < n; ++i) {
-            output.channel(0)[i] = frames_[i].l * gain * velocity_gain_;
-            output.channel(1)[i] = frames_[i].r * gain * velocity_gain_;
+            output.channel(0)[i] = frames_[i].l * gain * velocity_gain_stream_[i];
+            output.channel(1)[i] = frames_[i].r * gain * velocity_gain_stream_[i];
         }
     }
 
@@ -428,6 +453,8 @@ private:
     std::vector<stmlib::GateFlags> seed_gate_flags_;
     std::vector<stmlib::GateFlags> merged_gate_flags_;
     std::unique_ptr<bool[]> freeze_;
+    std::vector<float> velocity_gain_events_;
+    std::vector<float> velocity_gain_stream_;
     beads::Processor effect_;
     beads::Processor::Scratch effect_scratch_;
     double sample_rate_ = 48000.0;
@@ -444,10 +471,14 @@ private:
     float velocity_gain_ = 1.0f;
     float pitch_bend_semitones_ = 0.0f;
     std::size_t last_gate_size_ = 0;
+    std::size_t last_velocity_gain_size_ = 0;
 #if defined(BEASY_TESTING)
 public:
     std::span<const stmlib::GateFlags> debug_seed_gate_flags() const {
         return {seed_gate_flags_.data(), last_gate_size_};
+    }
+    std::span<const float> debug_velocity_gain_stream() const {
+        return {velocity_gain_stream_.data(), last_velocity_gain_size_};
     }
 
 private:

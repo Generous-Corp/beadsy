@@ -291,6 +291,79 @@ TEST_CASE("Beasy MIDI gate transitions occur at event sample offsets") {
     REQUIRE((flags[7] & stmlib::GATE_FLAG_HIGH) == 0);
 }
 
+TEST_CASE("Beasy MIDI velocity gain changes at a mid-block note-on") {
+    beasy::Beasy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+
+    pulp::format::PrepareContext prep{.sample_rate = 48000.0,
+                                      .max_buffer_size = 8,
+                                      .input_channels = 0,
+                                      .output_channels = 2};
+    processor.prepare(prep);
+
+    pulp::midi::MidiBuffer midi_in;
+    pulp::midi::MidiBuffer midi_out;
+    auto note_on = pulp::midi::MidiEvent::note_on(0, 60, 64);
+    note_on.sample_offset = 3;
+    REQUIRE(midi_in.add(note_on));
+
+    pulp::audio::Buffer<float> output(2, 8);
+    auto output_view = output.view();
+    pulp::audio::BufferView<const float> empty_input(nullptr, 0, 0);
+    pulp::format::ProcessContext context{.sample_rate = 48000.0,
+                                         .num_samples = 8};
+    processor.process(output_view, empty_input, midi_in, midi_out, context);
+
+    const auto gains = processor.debug_velocity_gain_stream();
+    REQUIRE(gains.size() == 8);
+    for (std::size_t i = 0; i < 3; ++i) REQUIRE(gains[i] == 1.0f);
+    for (std::size_t i = 3; i < gains.size(); ++i)
+        REQUIRE(gains[i] == static_cast<float>(64.0f / 127.0f));
+}
+
+TEST_CASE("Beasy MIDI note replacement restores the active note velocity") {
+    beasy::Beasy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+
+    pulp::format::PrepareContext prep{.sample_rate = 48000.0,
+                                      .max_buffer_size = 8,
+                                      .input_channels = 0,
+                                      .output_channels = 2};
+    processor.prepare(prep);
+
+    pulp::midi::MidiBuffer midi_in;
+    pulp::midi::MidiBuffer midi_out;
+    auto first = pulp::midi::MidiEvent::note_on(0, 60, 100);
+    first.sample_offset = 0;
+    auto replacement = pulp::midi::MidiEvent::note_on(0, 64, 32);
+    replacement.sample_offset = 2;
+    auto release = pulp::midi::MidiEvent::note_off(0, 64);
+    release.sample_offset = 5;
+    REQUIRE(midi_in.add(first));
+    REQUIRE(midi_in.add(replacement));
+    REQUIRE(midi_in.add(release));
+
+    pulp::audio::Buffer<float> output(2, 8);
+    auto output_view = output.view();
+    pulp::audio::BufferView<const float> empty_input(nullptr, 0, 0);
+    pulp::format::ProcessContext context{.sample_rate = 48000.0,
+                                         .num_samples = 8};
+    processor.process(output_view, empty_input, midi_in, midi_out, context);
+
+    const auto gains = processor.debug_velocity_gain_stream();
+    REQUIRE(gains.size() == 8);
+    for (std::size_t i = 0; i < 2; ++i)
+        REQUIRE(gains[i] == static_cast<float>(100.0f / 127.0f));
+    for (std::size_t i = 2; i < 5; ++i)
+        REQUIRE(gains[i] == static_cast<float>(32.0f / 127.0f));
+    for (std::size_t i = 5; i < gains.size(); ++i)
+        REQUIRE(gains[i] == static_cast<float>(100.0f / 127.0f));
+}
+
 TEST_CASE("Beasy produces audio from one global MIDI trigger") {
     auto proc = beasy::create_beasy();
     pulp::state::StateStore store;
