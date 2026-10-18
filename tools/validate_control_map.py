@@ -4,7 +4,18 @@ from __future__ import annotations
 import argparse, json, math
 from pathlib import Path
 
-EXPECTED_BOUND = {"density", "time", "pitch", "size", "shape"}
+# These are the controls the current Beasy editor actually binds.  The five
+# grain controls are joined by seven source-audited auxiliary pots whose
+# product parameter contracts now exist in beasy.hpp.  Keep the allow-list
+# here as a deliberate release gate: a placement alone must never promote a
+# geometry candidate to an automatable control.
+EXPECTED_BOUND = {
+    "density", "time", "pitch", "size", "shape",
+    "feedback", "dry_wet", "reverb",
+    "time_cv_amount", "size_cv_amount", "shape_cv_amount",
+    "pitch_cv_amount",
+}
+EXPECTED_PROVISIONAL = 12
 EXPECTED_SKINS = {"major-ornate", "major-large", "small-black", "auxiliary"}
 
 def validate(control_path: Path, skin_path: Path) -> list[str]:
@@ -35,10 +46,19 @@ def validate(control_path: Path, skin_path: Path) -> list[str]:
         if not all(isinstance(v,(int,float)) and 0 <= v <= 1 for v in (n.get("x"),n.get("y"),nr)): errors.append(f"{cid}: normalized geometry must be in [0,1]")
         skin_ref=c.get("skin_ref")
         if skin_ref not in EXPECTED_SKINS: errors.append(f"{cid}: unknown skin_ref {skin_ref!r}")
-        if c.get("binding_status") == "bound": bound.add(cid)
+        if c.get("binding_status") == "bound":
+            bound.add(cid)
+            if not isinstance(c.get("parameter_id"), str) or not c.get("parameter_id"):
+                errors.append(f"{cid}: bound controls require parameter_id")
+            if not isinstance(c.get("automation_id"), str) or not c.get("automation_id"):
+                errors.append(f"{cid}: bound controls require automation_id")
         elif c.get("binding_status") != "provisional": errors.append(f"{cid}: binding_status must be bound or provisional")
     if bound != EXPECTED_BOUND: errors.append(f"bound controls mismatch: {sorted(bound)}")
-    if control.get("validation",{}).get("parameter_binding_review",{}).get("provisional_count") != 19: errors.append("parameter review must record 19 provisional controls")
+    provisional = sum(c.get("binding_status") == "provisional" for c in controls)
+    if provisional != EXPECTED_PROVISIONAL: errors.append(f"expected {EXPECTED_PROVISIONAL} provisional controls, found {provisional}")
+    review = control.get("validation",{}).get("parameter_binding_review", {})
+    if set(review.get("bound_ids", [])) != EXPECTED_BOUND: errors.append("parameter review bound_ids must match the 12 editor-bound controls")
+    if review.get("provisional_count") != EXPECTED_PROVISIONAL: errors.append(f"parameter review must record {EXPECTED_PROVISIONAL} provisional controls")
     skins = skin.get("skins", []); skin_ids = {s.get("id") for s in skins}
     if skin_ids != EXPECTED_SKINS: errors.append(f"skin families mismatch: {sorted(skin_ids)}")
     if skin.get("source_boundary",{}).get("rights",{}).get("state") != "pending_rights_review": errors.append("skin rights state must remain pending_rights_review")
@@ -50,6 +70,6 @@ def main() -> int:
     if errors:
         for error in errors: print(f"ERROR: {error}")
         return 1
-    print(f"OK: {args.control_map} and {args.skins} validated (24 controls; 5 bound; 19 provisional)")
+    print(f"OK: {args.control_map} and {args.skins} validated (24 controls; 12 bound; 12 provisional)")
     return 0
 if __name__ == "__main__": raise SystemExit(main())
