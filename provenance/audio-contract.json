@@ -2,7 +2,7 @@
   "schema": "grainfield.audio-contract.v1",
   "status": "partial",
   "project": "Grainfield",
-  "source_head": "cbe44cd",
+  "source_head": "fb3e1969a2ccaf6d489810fc7881e0fbe92a9f66",
   "engine": {
     "implementation": "beads::Synth",
     "internal_sample_rate_hz": 48000,
