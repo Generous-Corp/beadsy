@@ -1,0 +1,12 @@
+{
+  "schema": "beasy.vst3-arm64-pluginval.v1",
+  "captured_at": "2026-10-18T20:30:30.895561Z",
+  "source_head": "38b9f7d73a0233d981ea42c9220c6cc8033417cb",
+  "host_architecture": "arm64",
+  "command": "pluginval --validate build-beasy-renamed/VST3/Beasy.vst3 --strictness-level 5 --skip-gui-tests",
+  "log_sha256": "5f9c5b22717ac6f72a4fb6c9bc4517a98ac0e005e1eab7d1891ff5ec8cc20703",
+  "strictness": 5,
+  "result": "PASS",
+  "vst3validator": "not_run; executable unavailable",
+  "scope": "pluginval compatibility/automation/state/audio checks"
+}
