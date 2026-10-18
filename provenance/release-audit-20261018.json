@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "93b1590118bb7245eac1ca33aa649a3e3a1ce487",
+  "source_head": "3f63d5a029622492b9777c92e9980b04cf919ef0",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -15,6 +15,13 @@
       "status": "pass",
       "evidence": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build/Grainfield-editor-test",
       "result": "29 assertions in 4 test cases"
+    },
+    {
+      "id": "realtime-allocation",
+      "status": "blocked",
+      "evidence": "provenance/realtime-allocation-probe.json",
+      "result": "Pulp RtAllocationProbe is available, but Grainfield-test does not link it and no Grainfield allocation/realtime test is registered; ordinary Grainfield validation passes 18/18 without measuring allocation",
+      "reason": "Allocation and realtime safety gate remains open until a Grainfield target links rt_allocation_probe.cpp and runs repeated Processor::process calls under the scoped probe"
     },
     {
       "id": "panel-asset",
@@ -46,7 +53,7 @@
     {
       "id": "source-provenance",
       "status": "partial",
-      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, provenance/converter-report.json, and Pulp commit f9752e4 importer diagnostics",
+      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, provenance/converter-report.json, and Pulp commit f9752e4 importer diagnostics, provenance/realtime-allocation-probe.json",
       "result": "Source-to-port inventory is complete for recorded files; all 8 hash mismatches are classified as intentional portability adaptations with deterministic unified-diff metadata (29 Beads equal/7 mismatches; 14 stmlib equal/1 mismatch); notices and upstream license metadata are recorded",
       "reason": "Intentional adaptations have deterministic diff evidence, but source/legal redistribution remains blocked pending internal license review and copied-byte provenance closure; external pdftocairo feature diagnostics remain inconclusive, while Pulp importer fail-closed behavior is proven"
     },
@@ -99,6 +106,11 @@
       "path": "provenance/au-registration-diagnostic.json",
       "source_head": "93b1590118bb7245eac1ca33aa649a3e3a1ce487",
       "note": "current AU metadata pass with reversible registration/auval host-discovery blocker"
+    },
+    {
+      "path": "provenance/realtime-allocation-probe.json",
+      "source_head": "3f63d5a029622492b9777c92e9980b04cf919ef0",
+      "note": "Pulp RtAllocationProbe availability recorded; Grainfield integration and allocation claim remain unavailable"
     }
   ],
   "release_decision": "blocked"
