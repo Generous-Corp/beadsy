@@ -2,7 +2,7 @@
   "schema": "grainfield.realtime-allocation-probe.v1",
   "status": "inconclusive",
   "verified_at": "2026-10-18T01:45:00Z",
-  "grainfield_head": "d92ae1429eebf910c7d93643927079b4a1f295d6",
+  "grainfield_head": "7602281d76350a9f7db489cd7379a02b8616ff7a",
   "claim": "A prior 192-byte allocation observation remains unresolved; a ten-run matrix at 64/256/1024 passed with zero allocations at every size.",
   "available_pulp_surface": {
     "pulp_head": "86c10d19989810394b56d6e592ad00acd557b307",
@@ -202,5 +202,115 @@
     "exit_codes": "all_zero",
     "notes": "Temporary matrix used max_buffer_size and num_samples equal to each tested block size; probe counters were copied after each scope ended before printing."
   },
-  "notes_matrix_followup": "A ten-run finite 64/256/1024 block-size matrix passed with zero allocations and zero bytes for every size. The committed baseline assertion remains unchanged; the prior intermittent 192-byte observation is still unresolved."
+  "notes_matrix_followup": "A ten-run finite 64/256/1024 block-size matrix passed with zero allocations and zero bytes for every size. The committed baseline assertion remains unchanged; the prior intermittent 192-byte observation is still unresolved.",
+  "alternate_configuration_diagnostic": {
+    "temporary_test_only": true,
+    "configuration": {
+      "build_dir": "build-debug",
+      "build_type": "Debug",
+      "compiler": "AppleClang 21.0.0.21000334",
+      "architecture": "arm64",
+      "pulp_harness": "/Users/danielraffel/Code/pulp/test/harness",
+      "configure_command": "cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug -DGRAINFIELD_PULP_TEST_HARNESS_DIR=/Users/danielraffel/Code/pulp/test/harness",
+      "build_command": "/Users/danielraffel/Code/pulp/tools/ci/governed-build.sh cmake --build build-debug --target Grainfield-test"
+    },
+    "focused_probe": {
+      "command": "./build-debug/Grainfield-test 'Grainfield prepared processing allocates no realtime memory' --reporter console",
+      "runs": 1,
+      "passes": 1,
+      "failures": 0,
+      "allocation_count": 0,
+      "allocated_bytes": 0,
+      "historical_192_byte_failure_recurred": false,
+      "result": "focused assertion passed; no allocation was observed."
+    },
+    "matrix": {
+      "command": "./build-debug/Grainfield-test '[debug-matrix]' --reporter console",
+      "runs": 10,
+      "per_size": {
+        "64": {
+          "allocation_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "allocated_bytes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "256": {
+          "allocation_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "allocated_bytes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "1024": {
+          "allocation_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "allocated_bytes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "exit_codes": "all_zero",
+      "historical_192_byte_failure_recurred": false,
+      "result": "All ten temporary Debug matrix runs passed with zero allocations and zero bytes at every tested block size."
+    },
+    "restoration": "Temporary matrix source was restored to the committed test contract; build-debug was removed with trash after capture."
+  }
 }
