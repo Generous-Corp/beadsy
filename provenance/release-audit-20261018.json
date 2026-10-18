@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "a108feb35afd7c26572d0eceeafaadb52b90df72",
+  "source_head": "417294acc27da003004aa6825fed6d51139dcdaf",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -184,6 +184,10 @@
     {
       "path": "provenance/knob-skin-renders.json",
       "role": "current provisional procedural knob render evidence"
+    },
+    {
+      "path": "provenance/standalone-app-validation.json",
+      "role": "current standalone launch/quit evidence and explicit structured-evidence gap"
     }
   ]
 }
