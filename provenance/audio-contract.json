@@ -7,8 +7,6 @@
     "implementation": "beads::Synth",
     "internal_sample_rate_hz": 48000,
     "supported_host_sample_rates_hz": [
-      24000,
-      32000,
       48000
     ],
     "unsupported_host_sample_rates_behavior": "clear_output_and_return",
@@ -20,8 +18,6 @@
       "live_input_value": 1
     },
     "media_by_host_sample_rate": {
-      "24000": "MEDIA_DIRTY_TAPE",
-      "32000": "MEDIA_VINTAGE_DIGITAL",
       "48000": "MEDIA_DIGITAL"
     }
   },
@@ -39,7 +35,7 @@
     "test_target": "Grainfield-test + Grainfield-editor-test",
     "tests": [
       "Grainfield seeded renders are deterministic",
-      "Grainfield 48 kHz contract is finite and rejects other rates",
+      "Grainfield 48 kHz contract is finite and rejects non-48 kHz rates",
       "Grainfield modulation context menu updates and resets the selected LFO",
       "Grainfield maps MIDI velocity to deterministic output gain",
       "Grainfield maps pitch bend to the Beads pitch offset",
@@ -56,7 +52,7 @@
   },
   "open_gates": [
     "ratio-2 direct Processor runtime is finite, but Grainfield host matrix does not select the ratio-2 CLEAN_TAPE path",
-    "sample rates other than 24/32/48 kHz are rejected",
+    "sample rates other than 48 kHz are rejected because the port's Synth and Processor initialization are fixed at 48 kHz",
     "allocation/real-time probe is not included",
     "source-vs-port reference render is not included",
     "MPE/aftertouch support is not implemented"

@@ -406,14 +406,10 @@ private:
     std::array<LfoModulation, static_cast<std::size_t>(kLastModulatableParam) + 1> lfo_{};
 
     static bool select_effect_media(double sample_rate, beads::Processor::Media& media) {
-        if (std::abs(sample_rate - 24000.0) < 0.5) {
-            media = beads::Processor::MEDIA_DIRTY_TAPE;
-            return true;
-        }
-        if (std::abs(sample_rate - 32000.0) < 0.5) {
-            media = beads::Processor::MEDIA_VINTAGE_DIGITAL;
-            return true;
-        }
+        // Beads::Synth::Init() and Beads::Processor::Init() hard-code their
+        // internal timing/filter constants to 48 kHz. The processor's
+        // hardware-oriented 24/32 kHz media modes do not resample the synth
+        // path, so accepting those host rates would produce incorrect timing.
         if (std::abs(sample_rate - 48000.0) < 0.5) {
             media = beads::Processor::MEDIA_DIGITAL;
             return true;

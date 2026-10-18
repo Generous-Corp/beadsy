@@ -506,18 +506,22 @@ TEST_CASE("Grainfield sample-rate and mode matrix is finite and fail-closed") {
         return output;
     };
 
-    for (double sample_rate : {24000.0, 32000.0, 48000.0}) {
-        for (bool live_input : {false, true}) {
-            const auto rendered = render_at(sample_rate, live_input);
-            bool has_signal = false;
-            for (std::size_t channel = 0; channel < rendered.num_channels(); ++channel) {
-                for (float sample : rendered.channel(channel)) {
-                    REQUIRE(std::isfinite(sample));
-                    has_signal = has_signal || std::abs(sample) > 1.0e-7f;
-                }
+    for (bool live_input : {false, true}) {
+        const auto rendered = render_at(48000.0, live_input);
+        bool has_signal = false;
+        for (std::size_t channel = 0; channel < rendered.num_channels(); ++channel) {
+            for (float sample : rendered.channel(channel)) {
+                REQUIRE(std::isfinite(sample));
+                has_signal = has_signal || std::abs(sample) > 1.0e-7f;
             }
-            REQUIRE(has_signal);
         }
+        REQUIRE(has_signal);
+    }
+
+    for (double sample_rate : {24000.0, 32000.0}) {
+        const auto rendered = render_at(sample_rate, false);
+        for (std::size_t channel = 0; channel < rendered.num_channels(); ++channel)
+            for (float sample : rendered.channel(channel)) REQUIRE(sample == 0.0f);
     }
 
     const auto unsupported = render_at(44100.0, false);

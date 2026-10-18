@@ -1,7 +1,7 @@
 # Grainfield implementation status
 
 Updated 2026-10-18 against the integrated checkout head
-`3aac5d0ec42942f4c2ce8b178093f32585458212`.
+`d7ebdfa5b74614a37cc519542ecab62e3f870dfb`.
 
 ## Current executable slice
 
@@ -14,8 +14,9 @@ Updated 2026-10-18 against the integrated checkout head
   MIT-noticed source subset recorded under `third_party/beads_dsp`. The
   live-input effect path remains experimental/deferred validation code; its
   receipts are retained for future parity work and do not expand the v1 claim.
-- Host contract: v1 uses global/mono MIDI voice semantics and tested 24/32/48
-  kHz synth media selection. Other host rates remain fail-closed. Stereo
+- Host contract: v1 uses global/mono MIDI voice semantics and accepts 48 kHz
+  only; non-48 kHz hosts remain fail-closed because the port's synth and
+  processor initialization are fixed at 48 kHz. Stereo
   Main In/live-input behavior is exercised only by the deferred experimental
   path.
 - Documentation alignment: the local Beads manual and image set are recorded
@@ -27,7 +28,8 @@ Updated 2026-10-18 against the integrated checkout head
 - Quality: the product-local QUALITY parameter now selects all four upstream
   Beads synth `Resolution` paths (4-bit, 16/6-bit, 7-bit, and 16-bit). This is
   deterministic coverage of the internal wavetable branch; the external-input
-  processor has separate finite 24/32/48 kHz matrix receipts.
+  processor has historical 24/32/48 kHz matrix receipts; they are not v1 host
+  support because the synth path is fixed at 48 kHz.
 - Freeze: the product-local FREEZE toggle now feeds the upstream synth's
   per-sample freeze input and persists through the normal Pulp parameter state.
   Freeze-buffer serialization/restore remains unavailable because the
