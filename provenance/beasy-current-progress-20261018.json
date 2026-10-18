@@ -2,12 +2,12 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "2f70d6316b6cdcc6d94c4d7fa729ff39d47beece",
+  "source_head": "f794015bee27c74b7878e09ee4099d6dd73c9614",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
       "command": "ctest --test-dir build-beasy-renamed --output-on-failure",
-      "passed": 37,
+      "passed": 38,
       "failed": 0
     },
     "control_map": {
@@ -22,9 +22,9 @@
       "status": "pass"
     },
     "editor_capture": {
-      "path": "build-beasy-renamed/beasy-editor-ui-fidelity-final.png",
-      "sha256": "c6774866b426d74aa68a2026a6467cbdf121fcf0f3cd1f9f8bfa19414e299d52",
-      "status": "partial_visual_fidelity_pass; procedural reference-aligned layout"
+      "path": "build-beasy-renamed/beasy-editor-knob-aesthetic-pass.png",
+      "sha256": "f0b911c38c6434fe93f1b2547cbbe1278f240ed86e98cdfa1134b5e9622f57dc",
+      "status": "partial_visual_fidelity_pass; procedural reference-aligned layout with knob calibration"
     },
     "attenuverter": {
       "status": "implemented",
@@ -86,7 +86,7 @@
       "clap": "pass with scan-time warning (20 run, 17 pass, 3 skip, 0 fail)",
       "au": "pass (current-head governed GUI-bootstrap auval; installed registration remains separate)",
       "vst3": "pass (current-head pluginval strictness 5)",
-      "lv2": "partial (custom ABI/URID/audio/state probe pass; no third-party host installed)",
+      "lv2": "partial (custom ABI/URID/audio/state probe pass; no third-party host installed; current-head availability receipt)",
       "standalone": "partial (real CoreAudio/MIDI/editor launch observed; app state and clean shutdown unproven)",
       "au_control": "Pulp Hot-Reload Synth passes auval; Beasy remains undiscoverable"
     },
@@ -123,6 +123,12 @@
       "status": "partial",
       "au": "blocked_existing_user_install_hash_mismatch",
       "vst3": "blocked_vst3validator_unavailable"
+    },
+    "knob_aesthetic": {
+      "path": "provenance/beasy-knob-aesthetic-current-20261018.json",
+      "status": "procedural_calibration_pass_visual_release_gate_open",
+      "focused_tests": 4,
+      "capture_sha256": "f0b911c38c6434fe93f1b2547cbbe1278f240ed86e98cdfa1134b5e9622f57dc"
     }
   },
   "open_gates": [
@@ -144,7 +150,7 @@
     {
       "id": "host_formats",
       "status": "partial",
-      "next": "resolve LV2 audible MIDI path and third-party host availability; refresh exact-head format receipt"
+      "next": "obtain independent third-party LV2 host evidence when a reproducible host is available; keep custom ABI scope explicit"
     },
     {
       "id": "release",
