@@ -18,6 +18,42 @@ TEST_CASE("Grainfield descriptor is an instrument") {
     REQUIRE(desc.output_buses.size() == 1);
 }
 
+TEST_CASE("Grainfield exposes Beads semitone pitch range and maps MIDI note offsets") {
+    auto render_note = [](std::uint8_t note) {
+        auto proc = grainfield::create_grainfield();
+        pulp::state::StateStore store;
+        proc->set_state_store(&store);
+        proc->define_parameters(store);
+        pulp::format::PrepareContext prep;
+        prep.sample_rate = 48000.0;
+        prep.max_buffer_size = 512;
+        prep.input_channels = 0;
+        prep.output_channels = 2;
+        proc->prepare(prep);
+        pulp::midi::MidiBuffer input;
+        pulp::midi::MidiBuffer output_midi;
+        input.add(pulp::midi::MidiEvent::note_on(0, note, 100));
+        pulp::audio::Buffer<float> output(2, 512);
+        auto view = output.view();
+        pulp::audio::BufferView<const float> empty(nullptr, 0, 0);
+        pulp::format::ProcessContext context;
+        context.sample_rate = 48000.0;
+        context.num_samples = 512;
+        proc->process(view, empty, input, output_midi, context);
+        float energy = 0.0f;
+        for (float sample : output.channel(0)) energy += std::abs(sample);
+        return energy;
+    };
+
+    auto proc = grainfield::create_grainfield();
+    pulp::state::StateStore store;
+    proc->set_state_store(&store);
+    proc->define_parameters(store);
+    REQUIRE(store.info(grainfield::kPitch)->range.min == -24.0f);
+    REQUIRE(store.info(grainfield::kPitch)->range.max == 24.0f);
+    REQUIRE(render_note(60) != render_note(72));
+}
+
 TEST_CASE("Grainfield produces audio from one global MIDI trigger") {
     auto proc = grainfield::create_grainfield();
     pulp::state::StateStore store;

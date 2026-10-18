@@ -66,7 +66,7 @@ public:
         store.add_parameter({.id = kTime, .name = "Time", .unit = "%", .range = {0.0f, 1.0f, 0.5f}});
         store.add_parameter({.id = kSize, .name = "Size", .unit = "%", .range = {0.0f, 1.0f, 0.5f}});
         store.add_parameter({.id = kShape, .name = "Shape", .unit = "%", .range = {0.0f, 1.0f, 0.5f}});
-        store.add_parameter({.id = kPitch, .name = "Pitch", .unit = "semitones", .range = {0.0f, 1.0f, 0.5f}});
+        store.add_parameter({.id = kPitch, .name = "Pitch", .unit = "semitones", .range = {-24.0f, 24.0f, 0.0f}});
         store.add_parameter({.id = kDensity, .name = "Density", .unit = "%", .range = {0.0f, 1.0f, 0.5f}});
         store.add_parameter({.id = kFeedback, .name = "Feedback", .unit = "%", .range = {0.0f, 1.0f, 0.0f}});
         store.add_parameter({.id = kDryWet, .name = "Dry/Wet", .unit = "%", .range = {0.0f, 1.0f, 0.5f}});
@@ -159,7 +159,11 @@ public:
         parameters.time = randomized(kTime);
         parameters.size = randomized(kSize);
         parameters.shape = randomized(kShape);
-        parameters.pitch = randomized(kPitch);
+        // Beads' pitch control is a ±24-semitone offset. MIDI note 60 is the
+        // neutral reference for the software instrument, so note changes add
+        // a musical transposition without overwriting host automation.
+        parameters.pitch = randomized(kPitch,
+                                      static_cast<float>(current_note_) - 60.0f);
         parameters.monophonic_mode = false;
 
         beads::ModulatedParameter density{state().get_modulated(kDensity), 0.0f};
@@ -201,8 +205,9 @@ private:
         }
     }
 
-    beads::RandomizedParameter randomized(pulp::state::ParamID id) const {
-        return {state().get_modulated(id), 0.0f, 0.0f, false};
+    beads::RandomizedParameter randomized(pulp::state::ParamID id,
+                                          float offset = 0.0f) const {
+        return {state().get_modulated(id) + offset, 0.0f, 0.0f, false};
     }
 
     beads::Synth synth_;
@@ -215,7 +220,7 @@ private:
     std::size_t max_block_size_ = 0;
     bool supported_rate_ = false;
     bool gate_ = false;
-    std::uint8_t current_note_ = 0;
+    std::uint8_t current_note_ = 60;
     std::array<LfoModulation, 10> lfo_{};
 };
 
