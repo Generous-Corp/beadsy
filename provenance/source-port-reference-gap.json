@@ -9,15 +9,19 @@
     "provenance/matrix-32000-synth.wav",
     "provenance/matrix-48000-synth.wav"
   ],
-  "missing": "An authorized, byte-identifiable Beads reference render with matching input, seed, sample rate, and block contract; the local source test harness cannot be built until pinned stmlib is acquired.",
+  "missing": "An authorized, byte-identifiable Beads reference render with matching input, seed, sample rate, and block contract; the upstream harness now builds and runs, but its render calls are disabled and no fixture is emitted.",
   "decision": "No source-vs-port comparison or parity claim is made. Existing deterministic render receipts remain product-only evidence.",
   "next_evidence": "Obtain permission and a reference fixture, then record source hash, input events, seed, rate, block size, aligned render hashes, and numerical residual metrics.",
   "source_path": "/Users/danielraffel/Code/eurorack/beads",
   "source_worktree_note": "Source checkout is at the recorded commit; untracked hardware_design DWG/DXF files are excluded from DSP comparison and redistribution.",
   "source_harness": {
-    "path": "/Users/danielraffel/Code/eurorack/beads/test/beads_test.cc",
+    "path": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/test/beads_test.cc",
     "present": true,
-    "build_status": "blocked",
-    "reason": "pinned stmlib submodule is uninitialized; no independent source render was produced"
+    "build_status": "pass",
+    "build_command": "clang++ -std=c++11 -DTEST -O0 -g -I. -I.. -Istmlib ...; clang++ -o build/direct/beads_test ...",
+    "binary": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/beads_test",
+    "binary_exists": true,
+    "run_status": "pass",
+    "run_result": "upstream test binary exits 0 but its main has all render calls disabled; no WAV fixture is emitted"
   }
 }
