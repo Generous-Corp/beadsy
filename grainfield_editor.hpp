@@ -147,6 +147,25 @@ private:
 
 } // namespace detail
 
+class PortRegion final : public pulp::view::View {
+public:
+    explicit PortRegion(std::string label) : label_(std::move(label)) {
+        set_id("grainfield-port-" + label_);
+        set_access_label(label_ + " (I/O port; non-automatable)");
+        set_access_disabled("false");
+    }
+    void paint(pulp::canvas::Canvas& canvas) override {
+        const auto b = local_bounds();
+        const float r = std::min(b.width, b.height) * 0.34f;
+        canvas.set_stroke_color(pulp::canvas::Color::rgba8(181, 171, 151));
+        canvas.set_line_width(std::max(1.0f, r * 0.12f));
+        canvas.stroke_circle(b.width * 0.5f, b.height * 0.5f, r);
+    }
+    const std::string& label() const { return label_; }
+private:
+    std::string label_;
+};
+
 class GrainfieldEditor final : public pulp::view::View {
 public:
     GrainfieldEditor(Grainfield& processor, pulp::state::StateStore& store)
@@ -288,28 +307,36 @@ private:
             {kPitch, "Pitch", 59.515f, 90.1f, 9.25f},
             {kSize, "Size", 24.615f, 67.9f, 7.2f},
             {kShape, "Shape", 46.865f, 67.9f, 7.2f},
-            {0, "Aux 01", 7.115f, 67.9f, 3.0f},
-            {0, "Aux 02", 64.365f, 67.9f, 3.0f},
-            {0, "Aux 03", 64.365f, 51.7f, 3.0f},
-            {0, "Aux 04", 18.565f, 47.9f, 3.0f},
-            {0, "Aux 05", 30.015f, 47.9f, 3.0f},
-            {0, "Aux 06", 41.465f, 47.9f, 3.0f},
-            {0, "Aux 07", 52.915f, 47.9f, 3.0f},
-            {0, "Small 01", 7.115f, 32.0f, 4.4f},
-            {0, "Small 02", 18.565f, 32.0f, 4.4f},
-            {0, "Small 03", 30.015f, 32.0f, 4.4f},
-            {0, "Small 04", 41.465f, 32.0f, 4.4f},
-            {0, "Small 05", 52.915f, 32.0f, 4.4f},
-            {0, "Small 06", 64.365f, 32.0f, 4.4f},
-            {0, "Small 07", 7.115f, 17.4f, 4.4f},
-            {0, "Small 08", 18.565f, 17.4f, 4.4f},
-            {0, "Small 09", 30.015f, 17.4f, 4.4f},
-            {0, "Small 10", 41.465f, 17.4f, 4.4f},
-            {0, "Small 11", 52.915f, 17.4f, 4.4f},
-            {0, "Small 12", 64.365f, 17.4f, 4.4f},
+            {kFeedback, "Feedback", 7.115f, 67.9f, 3.0f},
+            {kDryWet, "Dry Wet", 64.365f, 67.9f, 3.0f},
+            {kReverb, "Reverb", 64.365f, 51.7f, 3.0f},
+            {kTimeAmount, "Time CV Amount", 18.565f, 47.9f, 3.0f},
+            {kSizeAmount, "Size CV Amount", 30.015f, 47.9f, 3.0f},
+            {kShapeAmount, "Shape CV Amount", 41.465f, 47.9f, 3.0f},
+            {kPitchAmount, "Pitch CV Amount", 52.915f, 47.9f, 3.0f},
+            {0, "TIME CV (J1)", 7.115f, 32.0f, 4.4f},
+            {0, "SIZE CV (J2)", 18.565f, 32.0f, 4.4f},
+            {0, "SHAPE CV (J3)", 30.015f, 32.0f, 4.4f},
+            {0, "PITCH CV (J4)", 41.465f, 32.0f, 4.4f},
+            {0, "ASSIGN CV (J5)", 52.915f, 32.0f, 4.4f},
+            {0, "DENSITY CV (J6)", 64.365f, 32.0f, 4.4f},
+            {0, "AUDIO IN L (J7)", 7.115f, 17.4f, 4.4f},
+            {0, "AUDIO IN R (J8)", 18.565f, 17.4f, 4.4f},
+            {0, "FREEZE GATE (J9)", 30.015f, 17.4f, 4.4f},
+            {0, "SEED GATE (J10)", 41.465f, 17.4f, 4.4f},
+            {0, "AUDIO OUT L (J11)", 52.915f, 17.4f, 4.4f},
+            {0, "AUDIO OUT R (J12)", 64.365f, 17.4f, 4.4f},
         };
         for (const auto& p : placements) {
             const float diameter = p.r * 2.0f;
+            const bool is_port = p.r == 4.4f;
+            if (is_port) {
+                auto port = std::make_unique<PortRegion>(p.name);
+                auto* raw_port = port.get();
+                add_child(std::move(port));
+                ports_.push_back({raw_port, p.x, p.y, p.r});
+                continue;
+            }
             auto knob = std::make_unique<detail::PanelKnob>(p.name, diameter);
             auto* raw = knob.get();
             if (p.id != 0) {
@@ -351,13 +378,22 @@ private:
             c.knob->flex().preferred_width = diameter;
             c.knob->flex().preferred_height = diameter * 1.25f;
         }
+        for (const auto& p : ports_) {
+            const float diameter = p.radius * 2.0f * std::min(sx, sy);
+            const float x = p.x * sx - diameter * 0.5f;
+            const float y = (128.5f - p.y) * sy - diameter * 0.5f;
+            p.view->set_position(pulp::view::View::Position::absolute);
+            p.view->set_bounds({x, y, diameter, diameter});
+        }
     }
 
     struct Control { detail::PanelKnob* knob; float x; float y; float radius; };
+    struct Port { PortRegion* view; float x; float y; float radius; };
     Grainfield& processor_;
     pulp::state::StateStore& store_;
     pulp::canvas::SvgImage panel_;
     std::vector<Control> controls_;
+    std::vector<Port> ports_;
     std::vector<pulp::view::ParameterBinding> bindings_;
     std::optional<pulp::state::ParamID> context_target_;
 };

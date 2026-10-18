@@ -140,7 +140,7 @@ TEST_CASE("Grainfield editor exposes a right-click modulation target seam") {
     REQUIRE_FALSE(native->modulation_context_target().has_value());
 }
 
-TEST_CASE("Grainfield leaves geometry-only controls visibly provisional") {
+TEST_CASE("Grainfield binds source-backed auxiliary controls and labels ports") {
     grainfield::Grainfield processor;
     pulp::state::StateStore store;
     processor.set_state_store(&store);
@@ -150,19 +150,24 @@ TEST_CASE("Grainfield leaves geometry-only controls visibly provisional") {
     REQUIRE(native != nullptr);
     REQUIRE(native->child_count() == 24);
 
-    // The first five controls are the only source-backed parameter bindings.
-    for (std::size_t i = 0; i < native->child_count(); ++i) {
+    // Five primary controls plus seven PCB-net-backed auxiliary pots are
+    // automatable. The twelve remaining regions are physical I/O ports.
+    for (std::size_t i = 0; i < 12; ++i) {
         auto* knob = dynamic_cast<grainfield::detail::PanelKnob*>(native->child_at(i));
         REQUIRE(knob != nullptr);
-        if (i < 5) {
-            REQUIRE(knob->enabled());
-            REQUIRE(knob->access_disabled().empty());
-        } else {
-            REQUIRE_FALSE(knob->enabled());
-            REQUIRE(knob->access_disabled() == "true");
-            REQUIRE(knob->access_label().find(
-                        " (Provisional control mapping)") != std::string::npos);
-        }
+        REQUIRE(knob->enabled());
+        REQUIRE(knob->access_disabled().empty());
+    }
+    const char* ports[] = {"TIME CV (J1)", "SIZE CV (J2)", "SHAPE CV (J3)",
+                           "PITCH CV (J4)", "ASSIGN CV (J5)", "DENSITY CV (J6)",
+                           "AUDIO IN L (J7)", "AUDIO IN R (J8)",
+                           "FREEZE GATE (J9)", "SEED GATE (J10)",
+                           "AUDIO OUT L (J11)", "AUDIO OUT R (J12)"};
+    for (std::size_t i = 0; i < 12; ++i) {
+        auto* port = dynamic_cast<grainfield::PortRegion*>(native->child_at(i + 12));
+        REQUIRE(port != nullptr);
+        REQUIRE(port->access_label().find(ports[i]) != std::string::npos);
+        REQUIRE(port->access_label().find("non-automatable") != std::string::npos);
     }
 }
 

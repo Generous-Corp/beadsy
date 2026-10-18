@@ -32,13 +32,17 @@ enum ParamIDs : pulp::state::ParamID {
     kQuality,
     kFreeze,
     kMode,
+    kTimeAmount,
+    kSizeAmount,
+    kShapeAmount,
+    kPitchAmount,
 };
 
 // Parameter IDs are intentionally 1-based.  Keep the LFO table sized by the
 // declared parameter range rather than by an unrelated historical count so a
 // newly added control cannot silently become non-modulatable.
 inline constexpr pulp::state::ParamID kFirstModulatableParam = kTime;
-inline constexpr pulp::state::ParamID kLastModulatableParam = kMode;
+inline constexpr pulp::state::ParamID kLastModulatableParam = kPitchAmount;
 inline constexpr std::size_t kModulatableParamCount =
     static_cast<std::size_t>(kLastModulatableParam - kFirstModulatableParam + 1);
 
@@ -113,6 +117,16 @@ public:
                              .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
         store.add_parameter({.id = kMode, .name = "Mode", .unit = "mode",
                              .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
+        // Source-backed Beads attenurandomizer amounts. These are separate
+        // host parameters so automation remains explicit and stable.
+        store.add_parameter({.id = kTimeAmount, .name = "Time CV Amount", .unit = "%",
+                             .range = {0.0f, 1.0f, 0.0f}});
+        store.add_parameter({.id = kSizeAmount, .name = "Size CV Amount", .unit = "%",
+                             .range = {0.0f, 1.0f, 0.0f}});
+        store.add_parameter({.id = kShapeAmount, .name = "Shape CV Amount", .unit = "%",
+                             .range = {0.0f, 1.0f, 0.0f}});
+        store.add_parameter({.id = kPitchAmount, .name = "Pitch CV Amount", .unit = "%",
+                             .range = {0.0f, 1.0f, 0.0f}});
     }
 
     void set_lfo(pulp::state::ParamID id, LfoModulation lfo) {
@@ -150,7 +164,9 @@ public:
         constexpr std::size_t current_size = 6 + stride * kModulatableParamCount;
         // GFMD v1 originally emitted ten slots (including unused slot zero).
         // Accept that payload so existing presets retain IDs 1..9 while the
-        // current form adds the three controls that were previously omitted.
+        // current form adds the six controls that were previously omitted (the
+        // four source-backed CV amounts plus the two formerly unmodulated
+        // mix controls are represented in the expanded range).
         constexpr std::size_t legacy_size = 6 + stride * 10;
         const bool current = data.size() == current_size;
         const bool legacy = data.size() == legacy_size;
@@ -368,7 +384,19 @@ private:
 
     beads::RandomizedParameter randomized(pulp::state::ParamID id,
                                           float offset = 0.0f) const {
-        return {state().get_modulated(id) + offset, 0.0f, 0.0f, false};
+        // Source-backed Beads attenurandomizer amounts are retained as the
+        // DSP attenuverter value. No CV input is synthesized here; a future
+        // host/CV bridge can provide it without changing this mapping.
+        pulp::state::ParamID amount_id = 0;
+        switch (id) {
+            case kTime: amount_id = kTimeAmount; break;
+            case kSize: amount_id = kSizeAmount; break;
+            case kShape: amount_id = kShapeAmount; break;
+            case kPitch: amount_id = kPitchAmount; break;
+            default: break;
+        }
+        const float amount = amount_id ? state().get_modulated(amount_id) : 0.0f;
+        return {state().get_modulated(id) + offset, amount, 0.0f, false};
     }
 
     beads::Synth synth_;
