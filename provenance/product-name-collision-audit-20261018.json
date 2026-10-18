@@ -22,13 +22,21 @@
       "name": "Textureloom",
       "status": "preliminary_clear",
       "evidence": "No exact GitHub repository result in the checked search; trademark, domain, app-store, plugin-directory, and company-name checks remain outstanding."
+    },
+    {
+      "name": "Beasy",
+      "status": "collision_risk_preliminary",
+      "evidence": "Live GitHub repository search returned 72 results, including an exact /beasy repository and software project (BEAST analysis). npm search returned an exact beasy package for benchmark tooling. No exact audio-plugin collision was identified in the inspected top GitHub results. beasy.app returned HTTP 404 at audit time; registration/trademark/plugin-directory checks remain outstanding."
     }
   ],
   "queries": [
     "https://api.github.com/search/repositories?q=Grainfield",
     "https://api.github.com/search/repositories?q=Pellets",
     "https://api.github.com/search/repositories?q=Pelletfield",
-    "https://api.github.com/search/repositories?q=Textureloom"
+    "https://api.github.com/search/repositories?q=Textureloom",
+    "https://api.github.com/search/repositories?q=Beasy",
+    "https://registry.npmjs.org/-/v1/search?text=beasy&size=10",
+    "https://beasy.app"
   ],
-  "decision": "Do not treat Grainfield or Pellets as final branding until a broader name/trademark/domain review is complete. Continue implementation under the provisional Grainfield code name."
+  "decision": "Beasy is usable as an internal product name with explicit independent branding, but it is not collision-free. Complete trademark, domain, app-store, and plugin-directory review before public release."
 }
