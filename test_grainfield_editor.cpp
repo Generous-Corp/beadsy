@@ -67,6 +67,30 @@ TEST_CASE("Grainfield native editor captures a non-empty faithful panel frame") 
     }
 }
 
+TEST_CASE("Grainfield explicit GPU capture reports its actual backend") {
+    if (!std::getenv("GRAINFIELD_GPU_CAPTURE_PROBE")) return;
+
+    grainfield::Grainfield processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    REQUIRE(editor != nullptr);
+
+    REQUIRE(pulp::view::has_gpu_capture());
+    const auto capture = pulp::view::capture_view(
+        *editor, 201, 364, 2.0f, pulp::view::ScreenshotBackend::gpu);
+    REQUIRE(capture.ok);
+    REQUIRE(capture.used == pulp::view::ScreenshotBackend::gpu);
+    REQUIRE(capture.png.size() > 1000);
+    if (const char* path = std::getenv("GRAINFIELD_GPU_CAPTURE_OUTPUT")) {
+        std::ofstream out(path, std::ios::binary);
+        out.write(reinterpret_cast<const char*>(capture.png.data()),
+                  static_cast<std::streamsize>(capture.png.size()));
+        REQUIRE(static_cast<bool>(out));
+    }
+}
+
 TEST_CASE("Grainfield procedural knob skin renders deterministic min mid max references") {
     const char* capture_dir = std::getenv("GRAINFIELD_KNOB_SKIN_CAPTURE_DIR");
     if (!capture_dir) return;
