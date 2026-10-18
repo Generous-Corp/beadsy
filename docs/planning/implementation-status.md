@@ -12,25 +12,25 @@ Updated 2026-10-17 against the current Grainfield `main` checkout.
   explicit 48 kHz support gate. Unsupported host rates must remain silent until
   a tested resampling layer exists.
 - Native editor prototype: the converted panel SVG is embedded at build time,
-  the five bound controls use the DXF-derived centres and diameters, and a
-  headless capture is recorded at 402 x 728 pixels. The knob skin is still
-  provisional; the straight-on reference remains the material calibration
-  source.
+  all 24 DXF-derived knob placements are rendered at the calibrated centres
+  and diameters, and five controls are parameter-bound. The bound knobs have
+  working Pulp context menus for LFO enable/reset, host automation bindings,
+  and a visible modulation arc. A headless capture is recorded at 402 x 728
+  pixels. Knob material remains provisional; the straight-on reference is the
+  calibration source.
 - Formats declared by the scaffold: VST3, CLAP, LV2, AU, standalone. AAX is
   declared only as a future validation lane; it is not a release claim.
 
 ## Work in flight
 
-1. Complete the exact stmlib link boundary (`units.cc` and `random.cc`) and
-   make the clean project build green.
-2. Add seeded, finite-output, unsupported-rate, and MIDI overlap tests through
-   Pulp's headless/audio test surfaces.
-3. Remove variable-length real-time scratch from the imported render path by
-   preparing bounded storage before the callback.
-4. Calibrate the native panel capture against the straight-on reference,
-   including the ornate knob faces, pointer angles, labels, and pixel residuals.
-5. Add automation and the Spectr-compatible right-click modulation interaction
-   after its API boundary is proven.
+1. Add the remaining source-vs-port audio comparison, real-time allocation
+   probe, and MIDI overlap receipts.
+2. Calibrate the native panel capture against a rights-cleared straight-on
+   reference, including ornate knob faces, pointer angles, labels, and pixel
+   residuals.
+3. Add host load/editor/audio/state receipts for each supported format and
+   retain explicit negative evidence for VST3 and AAX.
+4. Resolve panel artwork and knob reference rights before redistribution.
 
 ## Release gates
 
