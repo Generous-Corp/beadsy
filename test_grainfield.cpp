@@ -58,6 +58,28 @@ TEST_CASE("Grainfield state round trips") {
     REQUIRE(host.state().get_value(grainfield::kGain) == -12.0f);
 }
 
+TEST_CASE("Grainfield LFO modulation leaves base automation intact and persists") {
+    grainfield::Grainfield first;
+    pulp::state::StateStore first_store;
+    first.set_state_store(&first_store);
+    first.define_parameters(first_store);
+    first_store.set_value(grainfield::kDensity, 0.25f);
+    first.set_lfo(grainfield::kDensity,
+                             {.enabled = true, .rate_hz = 2.0f, .depth = 0.1f, .phase = 0.0f});
+    const auto data = first.serialize_plugin_state();
+    REQUIRE(first_store.get_value(grainfield::kDensity) == 0.25f);
+    grainfield::Grainfield restored_processor;
+    pulp::state::StateStore restored_store;
+    restored_processor.set_state_store(&restored_store);
+    restored_processor.define_parameters(restored_store);
+    REQUIRE(restored_processor.deserialize_plugin_state(data));
+    REQUIRE(restored_store.deserialize(first_store.serialize()));
+    REQUIRE(restored_store.get_value(grainfield::kDensity) == 0.25f);
+    const auto restored = restored_processor.lfo(grainfield::kDensity);
+    REQUIRE(restored.enabled);
+    REQUIRE(restored.depth == 0.1f);
+}
+
 
 namespace {
 

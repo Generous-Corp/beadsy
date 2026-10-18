@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <cmath>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -90,6 +91,14 @@ public:
         }
     }
 
+    /// Target selected by the native right-click context interaction. Hosts
+    /// can use this seam to present their native modulation menu.
+    std::optional<pulp::state::ParamID> modulation_context_target() const {
+        return context_target_;
+    }
+    void open_modulation_context(pulp::state::ParamID id) { context_target_ = id; }
+    void clear_modulation_context() { context_target_.reset(); }
+
 private:
     struct Placement { pulp::state::ParamID id; const char* name; float x; float y; float r; };
 
@@ -105,6 +114,9 @@ private:
             const float diameter = p.r * 2.0f;
             auto knob = std::make_unique<detail::PanelKnob>(p.name, diameter);
             auto* raw = knob.get();
+            raw->on_context_menu = [this, id = p.id](pulp::view::Point) {
+                open_modulation_context(id);
+            };
             add_child(std::move(knob));
             bindings_.push_back(pulp::view::bind_parameter(*raw, store_, p.id));
             controls_.push_back({raw, p.x, p.y, p.r});
@@ -132,6 +144,7 @@ private:
     pulp::canvas::SvgImage panel_;
     std::vector<Control> controls_;
     std::vector<pulp::view::ParameterBinding> bindings_;
+    std::optional<pulp::state::ParamID> context_target_;
 };
 
 } // namespace grainfield

@@ -8,7 +8,9 @@
 #include <array>
 #include <cmath>
 #include <cstdint>
+#include <cstring>
 #include <memory>
+#include <optional>
 #include <span>
 #include <vector>
 
@@ -27,6 +29,15 @@ enum ParamIDs : pulp::state::ParamID {
     kDryWet,
     kReverb,
     kGain,
+};
+
+/// Product-local LFO modulation.  The base StateStore value remains the host
+/// automation value; the offset is applied through StateStore's modulation API.
+struct LfoModulation {
+    bool enabled = false;
+    float rate_hz = 1.0f;
+    float depth = 0.0f;
+    float phase = 0.0f;
 };
 
 inline pulp::format::PluginDescriptor make_descriptor() {
@@ -63,6 +74,53 @@ public:
         store.add_parameter({.id = kGain, .name = "Gain", .unit = "dB", .range = {-60.0f, 12.0f, 0.0f}});
     }
 
+    void set_lfo(pulp::state::ParamID id, LfoModulation lfo) {
+        if (id < lfo_.size()) lfo_[id] = lfo;
+    }
+    LfoModulation lfo(pulp::state::ParamID id) const {
+        return id < lfo_.size() ? lfo_[id] : LfoModulation{};
+    }
+    void clear_lfo(pulp::state::ParamID id) {
+        if (id < lfo_.size()) lfo_[id] = {};
+        state().set_mod_offset(id, 0.0f);
+    }
+
+    std::vector<std::uint8_t> serialize_plugin_state() const override {
+        std::vector<std::uint8_t> out{'G', 'F', 'M', 'D', 1, 0};
+        for (std::size_t id = 0; id < lfo_.size(); ++id) {
+            const auto& l = lfo_[id];
+            out.push_back(static_cast<std::uint8_t>(l.enabled));
+            const auto append_float = [&out](float value) {
+                const auto* bytes = reinterpret_cast<const std::uint8_t*>(&value);
+                out.insert(out.end(), bytes, bytes + sizeof(float));
+            };
+            append_float(l.rate_hz);
+            append_float(l.depth);
+            append_float(l.phase);
+        }
+        return out;
+    }
+
+    bool deserialize_plugin_state(std::span<const std::uint8_t> data) override {
+        if (data.empty()) { lfo_.fill({}); return true; }
+        constexpr std::size_t stride = 1 + sizeof(float) * 3;
+        if (data.size() != 6 + stride * lfo_.size() || data[0] != 'G' ||
+            data[1] != 'F' || data[2] != 'M' || data[3] != 'D' || data[4] != 1)
+            return false;
+        std::size_t offset = 6;
+        for (auto& l : lfo_) {
+            l.enabled = data[offset++] != 0;
+            const auto read_float = [&data, &offset]() {
+                float value = 0.0f;
+                std::memcpy(&value, data.data() + offset, sizeof(float));
+                offset += sizeof(float);
+                return value;
+            };
+            l.rate_hz = read_float(); l.depth = read_float(); l.phase = read_float();
+        }
+        return true;
+    }
+
     void prepare(const pulp::format::PrepareContext& ctx) override {
         sample_rate_ = ctx.sample_rate;
         max_block_size_ = static_cast<std::size_t>(ctx.max_buffer_size);
@@ -84,6 +142,8 @@ public:
         output.clear();
         if (!supported_rate_ || output.num_channels() < 2 || output.num_samples() > frames_.size()) return;
 
+        update_modulation(output.num_samples());
+
         bool trigger = false;
         for (const auto& event : midi_in) {
             if (event.is_note_on() && event.velocity() > 0) {
@@ -102,11 +162,11 @@ public:
         parameters.pitch = randomized(kPitch);
         parameters.monophonic_mode = false;
 
-        beads::ModulatedParameter density{state().get_value(kDensity), 0.0f};
+        beads::ModulatedParameter density{state().get_modulated(kDensity), 0.0f};
         beads::Processor::MixParameters mix{
-            state().get_value(kFeedback),
-            state().get_value(kDryWet),
-            state().get_value(kReverb),
+            state().get_modulated(kFeedback),
+            state().get_modulated(kDryWet),
+            state().get_modulated(kReverb),
             false,
         };
 
@@ -117,7 +177,7 @@ public:
                       density, parameters, mix, triggers_, merged_gate_flags_,
                       frames_.data(), n);
 
-        const float gain = std::pow(10.0f, state().get_value(kGain) / 20.0f);
+        const float gain = std::pow(10.0f, state().get_modulated(kGain) / 20.0f);
         for (std::size_t i = 0; i < n; ++i) {
             output.channel(0)[i] = frames_[i].l * gain;
             output.channel(1)[i] = frames_[i].r * gain;
@@ -125,8 +185,24 @@ public:
     }
 
 private:
+    void update_modulation(std::size_t samples) {
+        if (!sample_rate_) return;
+        for (std::size_t id = 0; id < lfo_.size(); ++id) {
+            auto& l = lfo_[id];
+            if (!l.enabled || l.depth == 0.0f) {
+                state().set_mod_offset(static_cast<pulp::state::ParamID>(id), 0.0f);
+                continue;
+            }
+            state().set_mod_offset(static_cast<pulp::state::ParamID>(id),
+                                   std::sin(l.phase * 6.28318530718f) * l.depth);
+            l.phase = std::fmod(l.phase + l.rate_hz * static_cast<float>(samples) /
+                                             static_cast<float>(sample_rate_), 1.0f);
+            if (l.phase < 0.0f) l.phase += 1.0f;
+        }
+    }
+
     beads::RandomizedParameter randomized(pulp::state::ParamID id) const {
-        return {state().get_value(id), 0.0f, 0.0f, false};
+        return {state().get_modulated(id), 0.0f, 0.0f, false};
     }
 
     beads::Synth synth_;
@@ -140,6 +216,7 @@ private:
     bool supported_rate_ = false;
     bool gate_ = false;
     std::uint8_t current_note_ = 0;
+    std::array<LfoModulation, 10> lfo_{};
 };
 
 inline std::unique_ptr<pulp::format::Processor> create_grainfield() {
