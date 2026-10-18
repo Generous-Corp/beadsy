@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "3e961e69d1180dacb57058abb08cbac45567b40a",
+  "source_head": "c43022882d784d77c4fd56a7f1f9a7dfebfb4141",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -70,6 +70,15 @@
         "LOCKED"
       ],
       "panel_binding": "deferred; host-automation-only until a source-backed button/LED mapping is reviewed"
+    },
+    "headless_audio_state": {
+      "path": "provenance/beasy-headless-audio-state-current-20261018.json",
+      "status": "pass_headless_audio_and_state",
+      "sample_rate_hz": 48000,
+      "frames": 512,
+      "finite": true,
+      "audible": true,
+      "state_restored": true
     }
   },
   "open_gates": [
