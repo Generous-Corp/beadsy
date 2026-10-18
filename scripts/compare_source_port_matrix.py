@@ -47,6 +47,16 @@ def git_head(path: Path) -> str:
     return run(["git", "-C", str(path), "rev-parse", "HEAD"])
 
 
+def has_tracked_changes(path: Path) -> bool:
+    result = subprocess.run(
+        ["git", "-C", str(path), "diff", "--quiet", "HEAD", "--"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return result.returncode != 0
+
+
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -207,7 +217,7 @@ def main() -> int:
         "port": {
             "repository": str(repo),
             "head": current_head,
-            "worktree_dirty": bool(run(["git", "-C", str(repo), "status", "--porcelain"])),
+            "tracked_changes": has_tracked_changes(repo),
             "dsp_root": str(port_root),
         },
         "source": {
