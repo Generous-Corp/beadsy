@@ -90,6 +90,12 @@ def verify(receipt_path: Path, source: Path | None = None,
     source = (source or Path(receipt.get("source", {}).get("path", "."))).resolve()
     build = (build or Path(receipt.get("build", {}).get("path", "build"))).resolve()
     errors: list[str] = []
+    # A matching commit hash alone is insufficient when the checkout has
+    # tracked edits: the built artifact and receipt may describe the committed
+    # tree while the source being reviewed is already different. Keep the
+    # exact-head gate closed until those edits are committed (or discarded).
+    if has_tracked_changes(source):
+        errors.append("source has tracked changes; receipt cannot be treated as exact-head")
     expected_head = receipt.get("source", {}).get("git_head")
     try:
         actual_head = current_head(source)

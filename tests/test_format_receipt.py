@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -16,14 +17,32 @@ _spec.loader.exec_module(_verify)
 
 
 class FormatReceiptTests(unittest.TestCase):
-    def _receipt(self, root: Path, source_head: str | None = None) -> tuple[Path, Path]:
+    def _source_fixture(self, root: Path) -> Path:
+        source = root / "source"
+        source.mkdir()
+        run = lambda *args: subprocess.run(
+            args, cwd=source, check=True,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        run("git", "init", "-q")
+        run("git", "config", "user.email", "beasy-tests@example.invalid")
+        run("git", "config", "user.name", "Beasy tests")
+        tracked = source / "tracked.txt"
+        tracked.write_text("committed\n", encoding="utf-8")
+        run("git", "add", "tracked.txt")
+        run("git", "commit", "-qm", "fixture")
+        return source
+
+    def _receipt(self, root: Path, source_head: str | None = None,
+                 source: Path | None = None) -> tuple[Path, Path]:
         build = root / "build"
         artifact = build / "VST3" / "Beasy.vst3" / "Contents" / "MacOS" / "Beasy"
         artifact.parent.mkdir(parents=True)
         artifact.write_bytes(b"known artifact")
+        source = source or ROOT
         receipt = {
             "schema": "beasy.format-status.v1",
-            "source": {"path": str(ROOT), "git_head": source_head or _verify.current_head(ROOT)},
+            "source": {"path": str(source),
+                       "git_head": source_head or _verify.current_head(source)},
             "build": {"path": str(build)},
             "formats": [{
                 "format": "VST3", "status": "supported",
@@ -47,31 +66,49 @@ class FormatReceiptTests(unittest.TestCase):
 
     def test_current_head_and_hashes_pass(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            receipt, build = self._receipt(Path(directory))
-            self.assertEqual([], _verify.verify(receipt, ROOT, build))
+            root = Path(directory)
+            source = self._source_fixture(root)
+            receipt, build = self._receipt(root, source=source)
+            self.assertEqual([], _verify.verify(receipt, source, build))
 
     def test_stale_head_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            receipt, build = self._receipt(Path(directory), "0" * 40)
-            errors = _verify.verify(receipt, ROOT, build)
+            root = Path(directory)
+            source = self._source_fixture(root)
+            receipt, build = self._receipt(root, "0" * 40, source=source)
+            errors = _verify.verify(receipt, source, build)
             self.assertTrue(any("stale source head" in error for error in errors))
 
     def test_artifact_hash_change_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            receipt, build = self._receipt(Path(directory))
+            root = Path(directory)
+            source = self._source_fixture(root)
+            receipt, build = self._receipt(root, source=source)
             artifact = build / "VST3" / "Beasy.vst3" / "Contents" / "MacOS" / "Beasy"
             artifact.write_bytes(b"changed artifact")
-            errors = _verify.verify(receipt, ROOT, build)
+            errors = _verify.verify(receipt, source, build)
             self.assertTrue(any("SHA-256 changed" in error for error in errors))
 
     def test_path_escape_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            receipt, build = self._receipt(Path(directory))
+            root = Path(directory)
+            source = self._source_fixture(root)
+            receipt, build = self._receipt(root, source=source)
             payload = json.loads(receipt.read_text(encoding="utf-8"))
             payload["formats"][0]["evidence"]["artifact"]["path"] = "../../outside"
             receipt.write_text(json.dumps(payload), encoding="utf-8")
-            errors = _verify.verify(receipt, ROOT, build)
+            errors = _verify.verify(receipt, source, build)
             self.assertTrue(any("escapes build directory" in error for error in errors))
+
+    def test_tracked_source_changes_are_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = self._source_fixture(root)
+            tracked = source / "tracked.txt"
+            receipt, build = self._receipt(root, source=source)
+            tracked.write_text("modified\n", encoding="utf-8")
+            errors = _verify.verify(receipt, source, build)
+            self.assertTrue(any("tracked changes" in error for error in errors))
 
 
 if __name__ == "__main__":
