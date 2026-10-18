@@ -1,10 +1,10 @@
 {
   "schema": "grainfield.format-status.v1",
-  "generated_at": "2026-10-18T00:08:58.581668Z",
+  "generated_at": "2026-10-18T00:19:22.150367Z",
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield",
-    "git_head": "8ac908f12278d8bd9b1c85367f006c5ecfd015f7"
+    "git_head": "19f97bc3c9f6f90e7ccb9b609131101f5d1b07b1"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield/build",
@@ -37,8 +37,8 @@
           "path": "CLAP/Grainfield.clap/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
-          "bytes": 7147768,
-          "sha256": "ce4f1d423bc8b7b628a4ac1ec4eba0a54bed4102d699c3306ab8545da6710d10"
+          "bytes": 7172344,
+          "sha256": "63cae4bb2d278d65d35524a4103284ef1458172cc41628d85cf234e481ed0f57"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -53,8 +53,8 @@
           "path": "LV2/Grainfield.lv2/Grainfield.so",
           "exists": true,
           "is_file": true,
-          "bytes": 1923616,
-          "sha256": "2738a07ba2d810f581734f15b93874644ed652227f74485c16cf45f4ca28be84"
+          "bytes": 1948320,
+          "sha256": "f276dea752998110ce4146026c35bc79d801bd7cbad674770875c964ddbbee7d"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -69,8 +69,8 @@
           "path": "AU/Grainfield.component/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
-          "bytes": 6484072,
-          "sha256": "1f6aac47096ec62182fae0e20704fb490dc7aaaf2f3d9fd63d1b37833acb88a3"
+          "bytes": 6508648,
+          "sha256": "79fd36ea8bd49d0cffe1fb7f6970892a6611e466f39beed11c89674ed99e2374"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -99,8 +99,8 @@
           "path": "Grainfield.app/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
-          "bytes": 6652056,
-          "sha256": "fc3d2a60a6baadc68bf50c21babf963dbe81b772ab6b21552f4b9c0b7c86ec99"
+          "bytes": 6676632,
+          "sha256": "657ac8550bef145892cb346db201b7ab17947731c5697f2564498854615f9e90"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
