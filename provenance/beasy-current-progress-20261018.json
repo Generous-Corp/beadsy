@@ -2,12 +2,12 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "2e8a1b3",
+  "source_head": "20090e9f4eeb5cc07a2a4c89a15872157f573428",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
       "command": "ctest --test-dir build-beasy-renamed --output-on-failure",
-      "passed": 32,
+      "passed": 35,
       "failed": 0
     },
     "control_map": {
@@ -38,13 +38,32 @@
         "Beasy MIDI note replacement restores the active note velocity"
       ],
       "allocation": "prepared event/stream buffers; no callback allocation"
+    },
+    "source_port_parity": {
+      "path": "provenance/beasy-source-port-comparison-current-20261018.json",
+      "status": "pass_internal_reference_only",
+      "fixtures_checked": 48,
+      "byte_identical": 48,
+      "max_abs_error": 0.0,
+      "max_rmse": 0.0,
+      "scope": "direct adapted DSP only; adapter and host contracts remain separate"
+    },
+    "seed_mode": {
+      "status": "implemented_source_backed",
+      "parameter": "kSeedMode",
+      "states": [
+        "OFF",
+        "ON",
+        "LOCKED"
+      ],
+      "panel_binding": "deferred; host-automation-only until a source-backed button/LED mapping is reviewed"
     }
   },
   "open_gates": [
     {
       "id": "source_dsp_parity",
-      "status": "partial",
-      "next": "regenerate broad source-vs-port matrix at this head; cover seed/mode, CV, freeze, MIDI ordering"
+      "status": "pass_internal_reference_only",
+      "next": "extend fixtures to adapter MIDI ordering, CV, freeze persistence, effect path, and supported host rates"
     },
     {
       "id": "ui_fidelity",
