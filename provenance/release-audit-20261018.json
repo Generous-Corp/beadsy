@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "126f4202beec3495f344526921f0618dd0a966ad",
+  "source_head": "194e9705d9745e7a9c87c1ae4a2709d4642e3522",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -46,9 +46,9 @@
     {
       "id": "source-provenance",
       "status": "partial",
-      "evidence": "provenance/source-manifest.json and provenance/converter-report.json",
-      "result": "Adapted DSP notice mappings, reachable stmlib origin commit, and waves.bin generator lineage are recorded locally",
-      "reason": "stmlib internal audit, complete source-to-port map, and Illustrator feature diagnostics remain open/inconclusive"
+      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, and provenance/converter-report.json",
+      "result": "Source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings and waves.bin lineage are recorded",
+      "reason": "stmlib origins are unavailable locally; internal GPL/third-party audit and redistribution clearance remain blocked; converter feature diagnostics are inconclusive"
     },
     {
       "id": "aax",
@@ -59,9 +59,9 @@
     {
       "id": "rights-and-release",
       "status": "blocked",
-      "evidence": "provenance/source-manifest.json, ATTRIBUTION.md, LICENSES.md, and provenance/converter-report.json",
-      "reason": "Panel artwork/reference permission and trademark clearance are pending; stmlib internal third-party audit and source-to-port map remain open; converter feature diagnostics are inconclusive",
-      "result": "Local notice mappings for adapted DSP and reachable stmlib subset, plus waves.bin lineage, are recorded; artwork permission and trademark clearance remain unresolved"
+      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, ATTRIBUTION.md, LICENSES.md, and provenance/converter-report.json",
+      "reason": "Panel artwork/reference permission and trademark clearance are pending; unavailable stmlib origins and internal GPL/third-party audit block redistribution; converter feature diagnostics are inconclusive",
+      "result": "Source-to-port inventory and local notice mappings are recorded, but redistribution remains blocked pending source-origin, internal-license, and artwork/trademark clearance"
     }
   ],
   "historical_receipts": [
@@ -79,6 +79,11 @@
       "path": "provenance/vst3-validation.json",
       "source_head": "6080f7d0b6ec8fa9d5024fbc3590f95eae577c89",
       "note": "current-head VST3 receipt: pluginval passes; moduleinfo/Steinberg validator and release-SDK gates remain open"
+    },
+    {
+      "path": "provenance/source-to-port.json",
+      "source_head": "194e9705d9745e7a9c87c1ae4a2709d4642e3522",
+      "note": "current source-to-port inventory; local Beads origins are verified, stmlib origins are unavailable, and redistribution remains blocked"
     }
   ],
   "release_decision": "blocked"

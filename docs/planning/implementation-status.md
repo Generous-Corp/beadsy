@@ -1,13 +1,13 @@
 # Grainfield implementation status
 
 Updated 2026-10-18 against Grainfield source head
-`126f4202beec3495f344526921f0618dd0a966ad`.
+`194e9705d9745e7a9c87c1ae4a2709d4642e3522`.
 
 ## Current executable slice
 
 - Independent product name: Grainfield.
 - Project license: MIT for original project code.
-- Provenance: local notice mappings now cover the adapted Beads DSP and reachable stmlib subset, and `waves.bin` generator lineage is recorded. The stmlib internal third-party audit and complete source-to-port map remain open.
+- Provenance: the source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings and `waves.bin` generator lineage are recorded. stmlib origins are unavailable locally, and internal GPL/third-party audit and redistribution remain blocked.
 - DSP boundary: the Beads synth path only, with the reachable MIT-noticed
   source subset recorded under `third_party/beads_dsp`; the live-input effect
   path is now wired through the same noticed processor subset.
@@ -56,7 +56,7 @@ Updated 2026-10-18 against Grainfield source head
 3. Complete host editor/audio/state receipts where the current matrix is partial
    or blocked, retaining explicit negative evidence for AU/LV2/Standalone gaps,
    VST3 moduleinfo/Steinberg validator, and AAX.
-4. Resolve panel artwork permission and trademark clearance before redistribution; complete the stmlib internal audit, source-to-port map, and converter feature diagnostics (currently inconclusive).
+4. Resolve panel artwork permission and trademark clearance before redistribution; obtain unavailable stmlib origins, complete the internal GPL/third-party audit, and resolve converter feature diagnostics (currently inconclusive).
 
 ## Release gates
 
