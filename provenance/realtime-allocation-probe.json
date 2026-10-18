@@ -71,5 +71,12 @@
       }
     },
     "notes": "The allocation remained after 32 warmup process calls and after clearing MIDI input; no DSP code was changed."
+  },
+  "diagnostic_attempt": {
+    "method": "temporary copy of the existing Pulp rt_allocation_probe.cpp with backtrace_symbols_fd at record_allocation",
+    "source_api_unchanged": true,
+    "result": "no allocation occurred during the diagnostic run, so no call stack was captured",
+    "fixed_seed_runs": "1 through 8 all passed in the diagnostic build",
+    "conclusion": "The 192-byte allocation is intermittent or run-state dependent; no stable owner was identified and no fix was attempted."
   }
 }
