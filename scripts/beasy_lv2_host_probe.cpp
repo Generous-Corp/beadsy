@@ -33,7 +33,7 @@ int main(int argc,char**argv) {
   LV2_Handle h=d->instantiate(d,48000.0,bundle.c_str(),features); if(!h) die("instantiate failed");
   constexpr uint32_t frames=256; std::vector<std::vector<float>> audio(4,std::vector<float>(frames,0.0f));
   std::vector<float> ctl(15,0.0f); // ports 4..18 (latency output is index 18)
-  ctl[0]=0.5f; ctl[1]=0.5f; ctl[2]=0.5f; ctl[3]=0.0f; ctl[4]=0.5f; ctl[5]=0.0f; ctl[6]=0.5f; ctl[7]=0.0f; ctl[8]=0.0f; ctl[9]=0.0f; ctl[10]=0.0f; ctl[11]=3.0f; ctl[12]=0.0f; ctl[13]=0.0f; ctl[14]=0.0f;
+  ctl[0]=0.5f; ctl[1]=0.5f; ctl[2]=0.5f; ctl[3]=0.0f; ctl[4]=0.5f; ctl[5]=0.0f; ctl[6]=0.5f; ctl[7]=0.0f; ctl[8]=0.0f; ctl[9]=0.0f; ctl[9]=3.0f; ctl[10]=0.0f; ctl[11]=0.0f; ctl[12]=1.0f; ctl[13]=0.0f; ctl[14]=0.0f;
   for(uint32_t i=0;i<4;i++) d->connect_port(h,i,audio[i].data());
   for(uint32_t i=0;i<15;i++) d->connect_port(h,4+i,&ctl[i]);
   std::vector<uint8_t> atom(32768,0); auto* seq=reinterpret_cast<LV2_Atom_Sequence*>(atom.data()); seq->atom.size=sizeof(LV2_Atom_Sequence_Body); seq->atom.type=map_uri(&map,LV2_ATOM__Sequence); seq->body.unit=0; seq->body.pad=0;

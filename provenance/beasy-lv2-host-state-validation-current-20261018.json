@@ -38,18 +38,18 @@
       "connected_ports": 19,
       "urid_ids": 20,
       "finite_output_frames": "102400/102400",
-      "peak": "0.0 (no audible render admitted; MIDI event path output remained silent in this probe)",
+      "peak": "0.664628983",
       "state_extension": "present",
       "state_save_status": 0,
       "state_restore_status": 0,
       "state_values": 1
     },
-    "scope": "Proves dynamic loading, descriptor/URID negotiation, port connection, repeated run calls, finite output, and LV2 state save/restore ABI. It is not a third-party host, and does not prove audible MIDI rendering or DAW integration."
+    "scope": "Proves dynamic loading, descriptor/URID negotiation, all 19 port connections, repeated processing with synthesizer seed mode ON and instrument mode, finite audible MIDI-driven output, and LV2 state save/restore ABI. It is not a third-party host, and does not prove DAW integration."
   },
-  "overall_status": "partial",
+  "overall_status": "partial_third_party_host_blocked",
   "blockers": [
-    "No installed third-party LV2 host/validator available.",
-    "Custom host MIDI probe produced finite silence, so audible MIDI behavior remains unproven."
+    "No installed third-party LV2 host/validator available."
   ],
-  "next_action": "Run the same bundle under an installed third-party LV2 host (Jalv/Carla/Ardour or a working REAPER LV2 project) and capture audible MIDI plus state round-trip evidence."
+  "next_action": "Run the same bundle under an installed third-party LV2 host (Jalv/Carla/Ardour or a working REAPER LV2 project) for independent DAW evidence.",
+  "probe_debug_note": "Initial zero-peak run used an incorrect control index (quality value was written to mode, selecting live-input effect mode). Correct mapping is quality port 13/value 3, mode port 15/value 0, seed_mode port 16/value 1; corrected run produced peak 0.664628983."
 }
