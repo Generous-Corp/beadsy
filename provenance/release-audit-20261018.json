@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "7602281d76350a9f7db489cd7379a02b8616ff7a",
+  "source_head": "03bab9e7a88fd871211d13bddf7e8d4ba6f84451",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -20,8 +20,8 @@
       "id": "realtime-allocation",
       "status": "inconclusive",
       "evidence": "provenance/realtime-allocation-probe.json",
-      "result": "Ten runs at each 64/256/1024 block size passed with zero allocations and zero bytes; prior 1 allocation/192-byte observation remains unresolved",
-      "reason": "Committed assertion does not expose the prior failure backtrace; retain inconclusive status and repeat across supported toolchains"
+      "result": "Release configuration and alternate Debug arm64 AppleClang configuration each pass focused 1/1 and 10 runs at 64/256/1024 with zero allocations/bytes; prior 1 allocation/192-byte observation remains unresolved",
+      "reason": "No failure/backtrace recurred in either configuration; retain inconclusive status pending recurrence capture and broader cross-toolchain evidence"
     },
     {
       "id": "state-roundtrip",
@@ -153,6 +153,11 @@
       "path": "provenance/state-roundtrip.json",
       "source_head": "06a26857f3176ba9191a94eac3aa8d8249585599",
       "note": "HeadlessHost state roundtrip passed 10/10; Standalone app state bridge is unexposed"
+    },
+    {
+      "path": "provenance/realtime-allocation-probe.json",
+      "source_head": "03bab9e7a88fd871211d13bddf7e8d4ba6f84451",
+      "note": "release and Debug AppleClang focused/matrix probes pass; prior 192-byte observation remains unresolved"
     }
   ],
   "release_decision": "blocked"

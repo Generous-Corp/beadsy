@@ -2,8 +2,8 @@
   "schema": "grainfield.realtime-allocation-probe.v1",
   "status": "inconclusive",
   "verified_at": "2026-10-18T01:45:00Z",
-  "grainfield_head": "7602281d76350a9f7db489cd7379a02b8616ff7a",
-  "claim": "A prior 192-byte allocation observation remains unresolved; a ten-run matrix at 64/256/1024 passed with zero allocations at every size.",
+  "grainfield_head": "03bab9e7a88fd871211d13bddf7e8d4ba6f84451",
+  "claim": "A prior 192-byte allocation observation remains unresolved; release and Debug AppleClang configurations each pass their bounded focused/matrix probes, so the gate remains inconclusive pending recurrence backtrace and cross-toolchain closure.",
   "available_pulp_surface": {
     "pulp_head": "86c10d19989810394b56d6e592ad00acd557b307",
     "probe_type": "pulp::test::RtAllocationProbe",
