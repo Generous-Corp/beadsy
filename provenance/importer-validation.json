@@ -1,0 +1,28 @@
+{
+  "schema": "grainfield.importer-validation.v1",
+  "status": "validated_separate_worktree",
+  "project": "Grainfield",
+  "importer_worktree": "/Users/danielraffel/Code/agent-worktrees/pulp-importer-current-main-20261018",
+  "importer_branch": "chore/importer-sidecar-current-main-20261018",
+  "importer_head": "715def8a8f633300816b162fcab96b1197a9676b",
+  "integration_status": "not_integrated_into_grainfield_or_pulp_main",
+  "tests": [
+    {
+      "command": "pulp test -- -R '^pulp-import-design refuses unconverted Illustrator and PDF sources$' --output-on-failure",
+      "status": "pass",
+      "result": "1/1"
+    },
+    {
+      "command": "pulp test -- -R 'import-design-ir-observe' --output-on-failure",
+      "status": "pass",
+      "result": "4/4"
+    }
+  ],
+  "capabilities_verified": [
+    "Illustrator and PDF aliases fail closed with an explicit preconverted-SVG diagnostic",
+    "preconverted SVG validation is validation-only",
+    "malformed DesignIR and unsafe asset paths are rejected",
+    "asset and interaction observation diagnostics pass"
+  ],
+  "scope_note": "This receipt proves the importer worktree behavior only; it does not claim that Grainfield or Pulp main currently contains these commits."
+}
