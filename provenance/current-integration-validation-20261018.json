@@ -18,24 +18,30 @@
   },
   "tests": {
     "core": "1964 assertions in 18 cases passed",
-    "editor": "132 assertions in 9 cases passed",
+    "editor": "133 assertions in 9 cases passed",
     "ctest": "27 Grainfield tests passed",
     "standalone_state": "5 assertions in 1 test case passed"
   },
   "ux": {
     "editor": "native Skia/Dawn editor; source-backed primary and auxiliary controls; automation gesture and contextual LFO paths covered by editor tests",
+    "panel_capture": {
+      "path": "build-editor-current/grainfield-editor-current-20261018.png",
+      "sha256": "e5e71a9e08be0c96019084b091f63949c0d9becdaa39168a99fbd836c846f64a",
+      "logical_size": [201, 364],
+      "backend": "native editor capture"
+    },
     "knob_captures": {
       "min": {
-        "path": "build/knob-captures-current/grainfield-knob-min.png",
-        "sha256": "64fdc305089697be69a0cb561ee43879f6c78bf843bdb4a61c6fcc77dd5bc9bb"
+        "path": "build-editor-current/knob-captures/grainfield-knob-min.png",
+        "sha256": "1a7d393ce7a38f2806b56eb05ccfab8a6cfaf0a8243b78b4e34edb65eb503247"
       },
       "mid": {
-        "path": "build/knob-captures-current/grainfield-knob-mid.png",
-        "sha256": "af4485651264ca50d6cf7eaac0c8b30d91f7060f211ec164d3917dc6e685217d"
+        "path": "build-editor-current/knob-captures/grainfield-knob-mid.png",
+        "sha256": "127337228faae0391d82a120cb1b68c461a1f2b7ba6b61df0e66bb0aaf7bb95e"
       },
       "max": {
-        "path": "build/knob-captures-current/grainfield-knob-max.png",
-        "sha256": "ead877f9d0db5e6513bc168cf6baa6ddae197925e26787ccfc6f6ecd1aead8f3"
+        "path": "build-editor-current/knob-captures/grainfield-knob-max.png",
+        "sha256": "a7d29c0a1220454c803301abd1e633986ba54834f485e2972d10e86c0c6f0040"
       }
     },
     "fidelity": "rights-cleared straight-on reference and exact pixel/geometry residual comparison remain open"
