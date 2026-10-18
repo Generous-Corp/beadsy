@@ -112,3 +112,14 @@ foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AAX Standalone)
         endif()
     endif()
 endforeach()
+
+# The installed Pulp SDK builds the LV2 shared object but does not emit the
+# discovery TTL files. Keep this product-local manifest in the bundle so LV2
+# hosts can discover Grainfield's audio, control, and MIDI ports.
+if(TARGET Grainfield_LV2)
+    add_custom_command(TARGET Grainfield_LV2 POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/lv2"
+            "${CMAKE_BINARY_DIR}/LV2/Grainfield.lv2"
+        VERBATIM)
+endif()
