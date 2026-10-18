@@ -1,9 +1,9 @@
 {
   "schema": "grainfield.realtime-allocation-probe.v1",
-  "status": "passed",
-  "verified_at": "2026-10-18T01:36:17Z",
-  "grainfield_head": "74f50bdd36d6487da3ec25008e4333cd93b7980a",
-  "claim": "Grainfield prepared processing performed one focused no-realtime-allocation probe; the probe passed.",
+  "status": "blocked",
+  "verified_at": "2026-10-18T01:45:00Z",
+  "grainfield_head": "e34969ed21d28b15ca5e1f44ca6b60ee9e48269a",
+  "claim": "The existing focused probe is not reproducibly allocation-free in the current build; matrix extension is blocked by a 192-byte realtime allocation.",
   "available_pulp_surface": {
     "pulp_head": "86c10d19989810394b56d6e592ad00acd557b307",
     "probe_type": "pulp::test::RtAllocationProbe",
@@ -28,23 +28,48 @@
   },
   "probe_attempt": {
     "command": "pulp test -- -R 'prepared processing allocates no realtime memory' --output-on-failure",
-    "exit_code": 0,
-    "result": "1/1 passed",
-    "registered_test_count": 1
+    "exit_code": 8,
+    "result": "1 test failed: allocation observed",
+    "registered_test_count": 1,
+    "allocation_count": 1,
+    "allocated_bytes": 192
   },
   "ordinary_grainfield_validation": {
     "command": "pulp test -- -R 'Grainfield' --output-on-failure",
-    "result": "19/19 tests passed",
-    "allocation_claim": "the focused probe passed; all ordinary Grainfield tests passed"
+    "result": "not rerun after blocker was reproduced",
+    "allocation_claim": "not established"
   },
   "missing_probe_command": {
     "exact_command": "pulp test -- -R 'prepared processing allocates no realtime memory' --output-on-failure",
-    "blocked_by": null,
-    "next_evidence": "Repeat the focused probe on each supported host/toolchain and retain the exact Pulp harness source commit."
+    "blocked_by": "Current baseline probe reports one 192-byte allocation in steady-state processing; do not weaken or skip the probe.",
+    "next_evidence": "Capture an allocation backtrace or fix the owning runtime allocation, then rerun 64/256/1024."
   },
   "build_configuration": {
     "configure_command": "cmake -S . -B build -DGRAINFIELD_PULP_TEST_HARNESS_DIR=/Users/danielraffel/Code/pulp/test/harness",
     "build_command": "pulp build --target Grainfield-test",
     "test_filter": "[realtime][allocation]"
+  },
+  "matrix_attempt": {
+    "requested_block_sizes": [
+      64,
+      256,
+      1024
+    ],
+    "tested_block_sizes": [
+      256,
+      1024
+    ],
+    "result": "blocked before a passing matrix could be committed",
+    "observations": {
+      "256": {
+        "allocation_count": 1,
+        "allocated_bytes": 192
+      },
+      "1024": {
+        "allocation_count": 1,
+        "allocated_bytes": 192
+      }
+    },
+    "notes": "The allocation remained after 32 warmup process calls and after clearing MIDI input; no DSP code was changed."
   }
 }
