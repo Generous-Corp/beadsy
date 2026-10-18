@@ -1,14 +1,15 @@
 {
   "schema": "grainfield.ui-fidelity-current-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "a120135e877288f077b2a3fc38ef48678f8fb916",
+  "source_head": "dbc0841d55ac1e150dde03eddd5e65d66aa33cfb",
   "supersedes": "provenance/ui-fidelity-gate-audit-20261018.json",
   "evidence": {
     "provenance/control-map-source-audit-20261018.json": "7dcd3610f6d1089127fb9c79c8836e22b893a7fdc54d4f5942b00cb3b9635f7b",
     "provenance/current-integration-validation-20261018.json": "70d6fb708de0aea5b3c0c984c3b9995ed5485f02b0fbc2de473d0355bdee7546",
     "provenance/knob-render-audit-20261018.json": "c2e6dfc7c8d22d1c2929c74b0ab9475654ae87dda90c8f5653fc9acf7345326b",
     "provenance/knob-calibration-v2.json": "dd6756e015a4852eee96654326fbb5a18323bdc61758f4eb765f22903a8ae2d8",
-    "provenance/current-provenance-reconciliation-20261018.json": "c0b76e6c12b69991ecf0b7b0fe36a972aa8f9f990f0906bd65a0572421d82ffc"
+    "provenance/current-provenance-reconciliation-20261018.json": "c0b76e6c12b69991ecf0b7b0fe36a972aa8f9f990f0906bd65a0572421d82ffc",
+    "provenance/procedural-jack-render-audit-20261018.json": "5a2320b2600c7ab92519e7cc74123b3394678b59e7ce587efe5d6ea081faf26f"
   },
   "gates": {
     "geometry_placement": {
@@ -30,12 +31,17 @@
     "rights_reference": {
       "status": "blocked_pending_external_decision",
       "evidence": "straight-on reference and panel/CAD/AI/PDF inputs remain outside shipped bundle and rights-gated"
+    },
+    "procedural_jacks": {
+      "status": "pass_asset_free_render",
+      "evidence": "Twelve non-automatable jack regions render procedural metal collars and sockets; see provenance/procedural-jack-render-audit-20261018.json"
     }
   },
   "decision": "Current native UX and source-backed mapping are implementation evidence; no full-panel visual-fidelity or rights clearance claim is made.",
   "next_evidence": [
     "rights-cleared straight-on reference or explicit permission/share-alike decision",
     "fresh exact-head full-panel capture and geometry/pixel residual report",
-    "final procedural knob acceptance"
+    "final procedural knob acceptance",
+    "rights-cleared reference for final panel artwork comparison"
   ]
 }

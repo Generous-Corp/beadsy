@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.current-integration-validation.v1",
   "status": "pass_with_open_format_gates",
-  "grainfield_head": "a120135e877288f077b2a3fc38ef48678f8fb916",
+  "grainfield_head": "dbc0841d55ac1e150dde03eddd5e65d66aa33cfb",
   "receipt_head": "3086950",
   "product_base_head": "6235f0c8f955f0f78691662a0d09e130d1710b7e",
   "integrated_commits": [
@@ -53,6 +53,11 @@
       "status": "pass",
       "receipt": "provenance/combined-sdk-bridge-validation-20261018.json",
       "evidence": "single Release SDK prefix exposes Pulp::view and standalone state API; editor/core/state targets pass"
+    },
+    "procedural_jacks": {
+      "status": "pass",
+      "receipt": "provenance/procedural-jack-render-audit-20261018.json",
+      "evidence": "capture and editor test run show twelve asset-free metal socket regions"
     }
   },
   "realtime_allocation": {

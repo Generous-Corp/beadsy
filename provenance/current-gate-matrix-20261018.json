@@ -1,11 +1,11 @@
 {
   "schema": "grainfield.current-gate-matrix.v1",
   "verified_at": "2026-10-18",
-  "source_head": "a120135e877288f077b2a3fc38ef48678f8fb916",
+  "source_head": "dbc0841d55ac1e150dde03eddd5e65d66aa33cfb",
   "receipts": {
     "integration": {
       "path": "provenance/current-integration-validation-20261018.json",
-      "sha256": "b7a69b397f6414e71935ff22e0cfd43cb6f55b927b47398d5e2820e26dee27c6"
+      "sha256": "de22bea115cfcb7d3007f4a074d4708be15a3e0ccd775c18feeadb7cebdd5863"
     },
     "packaging": {
       "path": "provenance/exact-head-packaging-reconciliation-20261018.json",
@@ -25,7 +25,7 @@
     },
     "ui_fidelity": {
       "path": "provenance/ui-fidelity-current-audit-20261018.json",
-      "sha256": "9908995d784b48fe3cd4f5795c09b9a144eecf8dad7837da154e0da8f8ab3dd7"
+      "sha256": "6e3f82bb4d733489bcef246cf9babba5da6934cca540b3aca479e7b1c7d4dcf6"
     },
     "standalone_probe": {
       "path": "provenance/standalone-current-build-probe-20261018.json",
@@ -34,13 +34,17 @@
     "combined_sdk_bridge": {
       "path": "provenance/combined-sdk-bridge-validation-20261018.json",
       "sha256": "5f99096257e8b71ff646ab39bee95b5f9e7a97deaa50380f96bc529cd9510db5"
+    },
+    "procedural_jacks": {
+      "path": "provenance/procedural-jack-render-audit-20261018.json",
+      "sha256": "5a2320b2600c7ab92519e7cc74123b3394678b59e7ce587efe5d6ea081faf26f"
     }
   },
   "gates": [
     {
       "id": "native-ux",
       "status": "pass_with_fidelity_gate",
-      "evidence": "133 editor assertions; exact-head panel and procedural min/mid/max knob captures; automation and contextual LFO paths",
+      "evidence": "native editor, source-backed mapping, automation/LFO paths, and asset-free procedural jack render are current-head validated; exact artwork fidelity remains open",
       "next": "rights-cleared straight-on reference and exact geometry/pixel comparison"
     },
     {
