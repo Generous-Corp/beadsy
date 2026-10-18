@@ -55,7 +55,7 @@
       "small-11",
       "small-12"
     ],
-    "reason": "These controls remain geometry-only candidates; the rights-gated panel/artwork and current source manifest do not provide enough semantic evidence to bind them safely."
+    "reason": "The supplied DXF provides knob geometry and handles but no authoritative control-label text; these controls remain geometry-only candidates, and the rights-gated panel/artwork and current source manifest do not provide enough semantic evidence to bind them safely."
   },
   "evidence": {
     "existing_geometry_test": "Grainfield knob skin preserves mapped DXF diameter",
@@ -64,5 +64,11 @@
     "focused_test_command": "pulp test -- -R 'Grainfield (knob skin|native editor|modulation)' --output-on-failure",
     "rights_constraint": "provenance/control-map.json artwork_rights.redistribution=blocked_until_cleared"
   },
-  "next_evidence": "Obtain rights-cleared panel semantics or an authoritative control-to-parameter map before binding any of the 19 provisional controls."
+  "next_evidence": "Obtain rights-cleared panel semantics or an authoritative control-to-parameter map before binding any of the 19 provisional controls.",
+  "label_semantics": {
+    "source": "supplied DXF",
+    "status": "unavailable",
+    "result": "DXF contains knob geometry/handles but no authoritative control-label text",
+    "effect": "19 provisional controls remain unbound pending rights-cleared panel labels or source-backed mapping"
+  }
 }

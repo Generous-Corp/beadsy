@@ -24,6 +24,11 @@
       "state": "pending_rights_review",
       "redistribution": "blocked_until_cleared",
       "basis": "provenance/source-manifest.json"
+    },
+    "dxf_semantics": {
+      "geometry": "knob centres, radii, handles, and layers are available",
+      "control_label_text": "not present in supplied DXF",
+      "mapping_authority": "DXF geometry alone is insufficient to assign labels or parameter semantics"
     }
   },
   "normalization": {
