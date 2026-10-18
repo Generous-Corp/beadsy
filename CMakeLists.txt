@@ -133,3 +133,13 @@ if(TARGET Grainfield_LV2)
             "${CMAKE_BINARY_DIR}/LV2/Grainfield.lv2"
         VERBATIM)
 endif()
+
+# Standalone state command/control-thread integration against Pulp's state bridge.
+if(TARGET Pulp::standalone)
+    add_executable(Grainfield-standalone-state-test test_grainfield_standalone_state.cpp)
+    target_link_libraries(Grainfield-standalone-state-test PRIVATE
+        Pulp::standalone Catch2::Catch2WithMain grainfield_beads_dsp)
+    target_include_directories(Grainfield-standalone-state-test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR})
+    catch_discover_tests(Grainfield-standalone-state-test)
+endif()
