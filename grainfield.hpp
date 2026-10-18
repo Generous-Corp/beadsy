@@ -141,6 +141,16 @@ public:
         state().set_mod_offset(id, 0.0f);
     }
 
+#if defined(GRAINFIELD_TESTING)
+    // Test-only seam: expose the four source-backed Beads attenurandomizer
+    // values without widening the shipping processor API.  This keeps the
+    // control-to-DSP contract directly verifiable while the runtime remains
+    // allocation-free and private.
+    std::array<beads::RandomizedParameter, 4> debug_randomized_parameters() const {
+        return {randomized(kTime), randomized(kSize), randomized(kShape), randomized(kPitch)};
+    }
+#endif
+
     std::vector<std::uint8_t> serialize_plugin_state() const override {
         std::vector<std::uint8_t> out{'G', 'F', 'M', 'D', 1, 0};
         for (pulp::state::ParamID id = kFirstModulatableParam;

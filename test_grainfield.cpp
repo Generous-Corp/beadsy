@@ -454,6 +454,27 @@ TEST_CASE("Grainfield exposes every declared parameter as a bounded LFO target")
         REQUIRE(restored.lfo(id).enabled);
 }
 
+TEST_CASE("Grainfield maps source-backed CV amounts into Beads attenurandomizers") {
+    grainfield::Grainfield processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+
+    store.set_value(grainfield::kTimeAmount, 0.125f);
+    store.set_value(grainfield::kSizeAmount, 0.25f);
+    store.set_value(grainfield::kShapeAmount, 0.5f);
+    store.set_value(grainfield::kPitchAmount, 0.875f);
+    const auto values = processor.debug_randomized_parameters();
+    REQUIRE(values[0].attenuverter == 0.125f);
+    REQUIRE(values[1].attenuverter == 0.25f);
+    REQUIRE(values[2].attenuverter == 0.5f);
+    REQUIRE(values[3].attenuverter == 0.875f);
+    REQUIRE_FALSE(values[0].has_cv);
+    REQUIRE_FALSE(values[1].has_cv);
+    REQUIRE_FALSE(values[2].has_cv);
+    REQUIRE_FALSE(values[3].has_cv);
+}
+
 TEST_CASE("Grainfield accepts legacy ten-slot modulation state") {
     grainfield::Grainfield source;
     pulp::state::StateStore source_store;

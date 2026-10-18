@@ -1,0 +1,46 @@
+{
+  "schema": "grainfield.control-map-source-audit.v1",
+  "status": "source-backed-auxiliary-map; twelve-jacks-classified",
+  "product": "Grainfield",
+  "rights": {
+    "artwork": "pending-rights-review",
+    "use": "source geometry and semantic audit only; no panel artwork redistributed"
+  },
+  "sources": {
+    "dxf": {"path": "/Users/danielraffel/Code/eurorack/beads/hardware_design/beads.dxf", "sha256": "caa755bf680939221683d9b3113fa467a4f1cf382780e80b074c32e785639667"},
+    "pcb": {"path": "/Users/danielraffel/Code/eurorack/beads/hardware_design/pcb/beads_v51.brd", "sha256": "605736daa6165bc40f1bf25c0226a6cd25c7710a5902b55d175f32dbafe6b262"},
+    "schematic": {"path": "/Users/danielraffel/Code/eurorack/beads/hardware_design/pcb/beads_v51.sch", "sha256": "87ea593fd28addc81697ed51a7100ca0b33c0b441f216000fbb8b21b3618df9c"},
+    "pot_channels": {"path": "/Users/danielraffel/Code/eurorack/beads/drivers/pots_adc.h", "sha256": "0c2bf1ffabafacb2013a3de7061065648cb8ae44d88572ebfe94cbc56bebe8cc"},
+    "cv_channels": {"path": "/Users/danielraffel/Code/eurorack/beads/drivers/cv_adc.h", "sha256": "4a5542bbe87c61b42cbf61f4708c24d2c9d7e0e836abdeb9e9e31d440bce3a5b"},
+    "manual": {"path": "/Users/danielraffel/Code/mutable-instruments-documentation/docs/modules/beads/manual.md", "sha256": "67f311be1c926491e173f16b81b5f3a9ac00ef0a8cd33ce11a730b310372b0fb"}
+  },
+  "affine_fit": {
+    "meaning": "DXF panel coordinate = affine(Board coordinate)",
+    "x": {"scale": 1.0017497812773402, "offset_mm": 1.071944444444446, "max_fit_residual_mm": 0.000004},
+    "y": {"scale": 1.0, "offset_mm": 11.0475, "max_fit_residual_mm": 0.0025},
+    "basis": "all twelve J1-J12 PCB jack centers and corresponding DXF small circles"
+  },
+  "auxiliary_knob_map": [
+    {"dxf_id":"aux-01","dxf_center_mm":[7.115,67.9],"pcb_ref":"R43","pcb_center_mm":[6.0325,56.8325],"net":"FEEDBACK_POT","parameter":"feedback","status":"source-backed"},
+    {"dxf_id":"aux-02","dxf_center_mm":[64.365,67.9],"pcb_ref":"R46","pcb_center_mm":[63.1825,56.8325],"net":"WET_POT","parameter":"dry_wet","status":"source-backed"},
+    {"dxf_id":"aux-03","dxf_center_mm":[64.365,51.7],"pcb_ref":"R62","pcb_center_mm":[63.1825,40.64],"net":"REVERB_POT","parameter":"reverb","status":"source-backed"},
+    {"dxf_id":"aux-04","dxf_center_mm":[18.565,47.9],"pcb_ref":"R63","pcb_center_mm":[17.4625,36.830003125],"net":"POSITION_AMT_POT","parameter":"time_cv_amount","status":"source-backed"},
+    {"dxf_id":"aux-05","dxf_center_mm":[30.015,47.9],"pcb_ref":"R64","pcb_center_mm":[28.8925,36.830003125],"net":"SIZE_AMT_POT","parameter":"size_cv_amount","status":"source-backed"},
+    {"dxf_id":"aux-06","dxf_center_mm":[41.465,47.9],"pcb_ref":"R65","pcb_center_mm":[40.322496875,36.830003125],"net":"SHAPE_AMT_POT","parameter":"shape_cv_amount","status":"source-backed"},
+    {"dxf_id":"aux-07","dxf_center_mm":[52.915,47.9],"pcb_ref":"R66","pcb_center_mm":[51.7525,36.830003125],"net":"PITCH_AMT_POT","parameter":"pitch_cv_amount","status":"source-backed"}
+  ],
+  "small_geometry_classification": {
+    "status": "not-parameters",
+    "basis": "DXF small-circle centers affine-match PCB PJ301 jack footprints J1-J12; these are I/O, not controls",
+    "rows": [
+      {"ids":["small-01","small-02","small-03","small-04","small-05","small-06"],"pcb_refs":["J1","J2","J3","J4","J5","J6"],"functions":["time_cv","size_cv","shape_cv","pitch_cv","assign_cv","density_cv"]},
+      {"ids":["small-07","small-08","small-09","small-10","small-11","small-12"],"pcb_refs":["J7","J8","J9","J10","J11","J12"],"functions":["audio_in_l","audio_in_r","freeze_gate","seed_gate","audio_out_l","audio_out_r"]}
+    ],
+    "implementation": "Represent as jack/port hit regions and accessibility labels; do not create automatable parameters."
+  },
+  "grainfield_gap": {
+    "existing_declared_parameters": ["feedback","dry_wet","reverb"],
+    "missing_parameter_ids_for_authoritative_aux_knobs": ["time_cv_amount","size_cv_amount","shape_cv_amount","pitch_cv_amount"],
+    "required_next_change": "Add four CV amount parameters and bind aux-04..aux-07; expose twelve small circles as non-automatable ports."
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "schema": "grainfield.source-control-binding-validation.v1",
+  "generated_at": "2026-10-18T00:00:00-07:00",
+  "product": "Grainfield",
+  "worktree": "/Users/danielraffel/Code/agent-worktrees/grainfield-aux-control-impl-20261018",
+  "validated_source_commit": "e26d3121695b1f87cf8cc05ea0064a89158384cc",
+  "base_ux_commit": "6235f0c8f955f0f78691662a0d09e130d1710b7e",
+  "rights": {
+    "status": "pending-rights-review",
+    "scope": "source geometry and semantic audit only; no Beads panel artwork redistributed"
+  },
+  "source_audit": {
+    "path": "provenance/control-map-source-audit-20261018.json",
+    "sha256": "7dcd3610f6d1089127fb9c79c8836e22b893a7fdc54d4f5942b00cb3b9635f7b",
+    "status": "source-backed-auxiliary-map; twelve-jacks-classified",
+    "fit_max_residual_mm": {"x": 0.000004, "y": 0.0025}
+  },
+  "parameter_contract": [
+    {"id": 1, "name": "Time", "role": "primary"},
+    {"id": 2, "name": "Size", "role": "primary"},
+    {"id": 3, "name": "Shape", "role": "primary"},
+    {"id": 4, "name": "Pitch", "role": "primary"},
+    {"id": 5, "name": "Density", "role": "primary"},
+    {"id": 6, "name": "Feedback", "role": "aux-01 / R43 / FEEDBACK_POT"},
+    {"id": 7, "name": "Dry/Wet", "role": "aux-02 / R46 / WET_POT"},
+    {"id": 8, "name": "Reverb", "role": "aux-03 / R62 / REVERB_POT"},
+    {"id": 9, "name": "Gain", "role": "primary"},
+    {"id": 10, "name": "Quality", "role": "primary"},
+    {"id": 11, "name": "Freeze", "role": "primary"},
+    {"id": 12, "name": "Mode", "role": "primary"},
+    {"id": 13, "name": "Time CV Amount", "role": "aux-04 / R63 / POSITION_AMT_POT"},
+    {"id": 14, "name": "Size CV Amount", "role": "aux-05 / R64 / SIZE_AMT_POT"},
+    {"id": 15, "name": "Shape CV Amount", "role": "aux-06 / R65 / SHAPE_AMT_POT"},
+    {"id": 16, "name": "Pitch CV Amount", "role": "aux-07 / R66 / PITCH_AMT_POT"}
+  ],
+  "dsp_mapping": {
+    "time": {"base_id": 1, "amount_id": 13, "field": "beads::RandomizedParameter.attenuverter"},
+    "size": {"base_id": 2, "amount_id": 14, "field": "beads::RandomizedParameter.attenuverter"},
+    "shape": {"base_id": 3, "amount_id": 15, "field": "beads::RandomizedParameter.attenuverter"},
+    "pitch": {"base_id": 4, "amount_id": 16, "field": "beads::RandomizedParameter.attenuverter"}
+  },
+  "ports": [
+    {"jack": "J1", "label": "TIME CV", "automatable": false},
+    {"jack": "J2", "label": "SIZE CV", "automatable": false},
+    {"jack": "J3", "label": "SHAPE CV", "automatable": false},
+    {"jack": "J4", "label": "PITCH CV", "automatable": false},
+    {"jack": "J5", "label": "ASSIGN CV", "automatable": false},
+    {"jack": "J6", "label": "DENSITY CV", "automatable": false},
+    {"jack": "J7", "label": "AUDIO IN L", "automatable": false},
+    {"jack": "J8", "label": "AUDIO IN R", "automatable": false},
+    {"jack": "J9", "label": "FREEZE GATE", "automatable": false},
+    {"jack": "J10", "label": "SEED GATE", "automatable": false},
+    {"jack": "J11", "label": "AUDIO OUT L", "automatable": false},
+    {"jack": "J12", "label": "AUDIO OUT R", "automatable": false}
+  ],
+  "implementation": {
+    "source_files": ["grainfield.hpp", "grainfield_editor.hpp", "test_grainfield.cpp", "test_grainfield_editor.cpp"],
+    "auxiliary_knobs": 7,
+    "non_automatable_jack_regions": 12,
+    "parameter_ids_preserved": true,
+    "legacy_modulation_state_supported": true
+  },
+  "validation": {
+    "configure": "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DPulp_DIR=/Users/danielraffel/Code/agent-worktrees/pulp-standalone-sdk-export-prefix-20261018/lib/cmake/Pulp -DCMAKE_PREFIX_PATH=/Users/danielraffel/Code/agent-worktrees/pulp-standalone-sdk-export-prefix-20261018",
+    "governed_build": "tools/ci/governed-build.sh cmake --build build --target Grainfield-editor-test Grainfield-test Grainfield-headless-harness --parallel 4",
+    "governed_build_note": "The initial build invocation retained an explicit --parallel 4; subsequent rebuild used the governor without a parallel flag.",
+    "focused_core": {"command": "build/Grainfield-test --reporter console", "result": "pass", "assertions": 1964, "test_cases": 18},
+    "focused_editor": {"command": "build/Grainfield-editor-test --reporter console", "result": "pass", "assertions": 123, "test_cases": 9},
+    "diff_check": {"command": "git diff --check", "result": "pass"},
+    "ctest_discovery": {"result": "incomplete", "reason": "SDK prefix did not provide Grainfield-standalone-state-test; direct focused binaries passed"}
+  },
+  "artifacts": {
+    "grainfield_test_sha256": "8865532f8a8a66d623813b78eec6ad0f2a3af0fe4217e45c3d7064b0238c3fd8",
+    "grainfield_editor_test_sha256": "80c84fb99d443aff5b759b7f333e0016f07beaa4b7d707b65e66b1cc59a117c0",
+    "grainfield_headless_harness_sha256": "3a4fe27d560852afcebae1934308f9475ca9cd5cce058ecef484c4fec54740ab"
+  }
+}
