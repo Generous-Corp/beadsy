@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "grainfield.exact-head-packaging-reconciliation.v2",
+  "generated_at": "2026-10-18T06:38:08Z",
+  "status": "partial_with_explicit_blockers",
+  "product": "Grainfield",
+  "source": {
+    "worktree": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018",
+    "source_head": "bb3d8529363b2dd38d071d9822c982201744556d",
+    "receipt_head": "ae525d4ddac270ec30475e1ef3cb01a6664f4b96",
+    "dirty_before_receipt": false,
+    "integrated_changes": [
+      "4807c36 source-backed auxiliary controls and jack regions",
+      "c79f526 auxiliary control and port tests",
+      "bb3d852 LV2 atom minimum-size metadata",
+      "149191d standalone state validation",
+      "3086950 integrated LV2 audio render",
+      "afaf1e6/4134184 current UX captures",
+      "ae525d4 validation receipt source binding"
+    ]
+  },
+  "artifacts": {
+    "VST3": {
+      "path": "build/VST3/Grainfield.vst3/Contents/MacOS/Grainfield",
+      "exists": true,
+      "bytes": 44721272,
+      "sha256": "b6e1b587d908201ce13ee6a7b58a20f1ffe22822d92f3c61885e9bc7bf922034"
+    },
+    "CLAP": {
+      "path": "build/CLAP/Grainfield.clap/Contents/MacOS/Grainfield",
+      "exists": true,
+      "bytes": 44503288,
+      "sha256": "65256dbe2e1fd3f5873b65ed2895ffd3881dca81e923ecddcb94ecee024d2627"
+    },
+    "AUv2": {
+      "path": "build/AU/Grainfield.component/Contents/MacOS/Grainfield",
+      "exists": true,
+      "bytes": 44562760,
+      "sha256": "441d4420101e0a4f5aac310a215d46fa9912c41e8b74910948c48d6cd623e79b"
+    },
+    "LV2": {
+      "path": "build/LV2/Grainfield.lv2/Grainfield.so",
+      "exists": true,
+      "bytes": 35046912,
+      "sha256": "39104d737f01a211a7094771002f8703cc19d141ce63e5693c8cb29d5597f003",
+      "manifest_sha256": "7e5adeca8e4b8c7c8cfb73d994404c7ef3784b8f367a11d59250a21e60624180",
+      "ttl_sha256": "8fe7304354a6c33788f450ae9ac54e1d991c80033d9cf83bc54d6b6077f4e3b5"
+    },
+    "Standalone": {
+      "path": "build-standalone-current/Grainfield.app/Contents/MacOS/Grainfield",
+      "exists": true,
+      "bytes": 46397288,
+      "sha256": "62a8221e691be7894fe6a9f85af21fd8c292a2ecf20a088d87c932cd1851290d"
+    },
+    "AAX": {
+      "path": "build/AAX/Grainfield.aaxplugin/Contents/MacOS/Grainfield",
+      "exists": false
+    }
+  },
+  "validation": {
+    "core_and_editor": {
+      "status": "pass",
+      "receipt": "provenance/current-integration-validation-20261018.json",
+      "receipt_sha256": "42e8918f15d9e0bd1a411a412470004081468bbb53ce3ed7b425b0325c0ab3bf",
+      "result": "1964 core assertions/18 cases; 132 editor assertions/9 cases; 27 CTest entries"
+    },
+    "source_control_binding": {
+      "status": "pass_with_rights_gate",
+      "receipt": "provenance/source-control-binding-validation-20261018.json",
+      "receipt_sha256": "9cd7214abe20afedef2da1be6fc0657ddb296148d8e7084917a959cf7bbb37a1",
+      "mapping_audit_sha256": "7dcd3610f6d1089127fb9c79c8836e22b893a7fdc54d4f5942b00cb3b9635f7b",
+      "result": "seven auxiliary pots and twelve J1-J12 non-automatable regions source-mapped"
+    },
+    "VST3": {
+      "status": "pass_pluginval",
+      "pluginval_receipt": "build/grainfield-pluginval-integrated.txt",
+      "pluginval_receipt_sha256": "0ae34575491e7f278f340b96fc5e27f1a7a886fd77fbd87df88f92fae3e3b00f",
+      "pluginval_result": "exit 0; SUCCESS",
+      "steinberg_vst3validator": "not-available"
+    },
+    "CLAP": {
+      "status": "pass_with_validator_warning",
+      "validator_receipt": "build/grainfield-clap-validator-integrated.json",
+      "validator_receipt_sha256": "1fd3c629b0ab82f531b439f6a0d75d48fa8ab760e63266cefec48335a9c127f7",
+      "validator_result": "20 tests: 17 passed, 3 skipped, 0 failed, 1 scan-time warning",
+      "host_receipt": "build/grainfield-clap-host-integrated.txt",
+      "host_receipt_sha256": "1fb8ff8ef79318dec68065d40d16398853ac36fd77f3724e7d124c69fb0d7366",
+      "host_result": "loaded Grainfield; 17 parameters; peak 0.190",
+      "audio_receipt": "build/grainfield-current-integrated-clap.json",
+      "audio_wav": "build/grainfield-current-integrated-clap.wav",
+      "audio_wav_sha256": "8c3bb46904bf4e0ad0a53ff7d2cfcd60c687b005d89e97d0df1e4ee5aad8fc69",
+      "audio_result": "250 ms at 48 kHz; 0 NaN, 0 Inf, 0 clipped samples"
+    },
+    "LV2": {
+      "status": "pass_host_audio_state_not_run",
+      "host_audio_receipt": "provenance/current-integration-validation-20261018.json",
+      "result": "host and exact integrated 7200-frame render pass; no NaN, Inf, or clipped samples",
+      "state": "not-run; no LV2 state extension declared and host has no state round-trip command"
+    },
+    "Standalone": {
+      "status": "pass_state",
+      "state_receipt": "build/grainfield-standalone-state-integrated.txt",
+      "state_receipt_sha256": "82d0339172d7fecafb306391c8b3e726821ba1d201bff18b4717616fb2d38ff3",
+      "state_result": "5 assertions in 1 test case passed"
+    },
+    "AUv2": {
+      "status": "blocked_registration",
+      "reason": "current auval/AudioComponentFindNext registration gate remains unresolved"
+    },
+    "AAX": {
+      "status": "blocked",
+      "reason": "AAX SDK, entry point, validator, and host evidence unavailable"
+    }
+  },
+  "provenance": {
+    "rights": "panel artwork, AI/PDF/CAD, logos, and reference photos remain external and rights-gated",
+    "source_control": "MIT DSP attribution is present; hardware/artwork rights are separate"
+  },
+  "open_gates": [
+    "AU registration and auval",
+    "AAX SDK and validator",
+    "rights-cleared straight-on reference and exact pixel/geometry fidelity comparison",
+    "release signing, notarization, and DAW distribution acceptance"
+  ]
+}
