@@ -1,0 +1,45 @@
+{
+  "schema": "grainfield.headless-audio-state-harness.v1",
+  "generated_at": "2026-10-18",
+  "source_head": "42d9c7707b6fbfb29a4cfe7902b2e4fe705640f9",
+  "scope": "authorized Pulp HeadlessHost audio output and plugin-state persistence measurement",
+  "harness": {
+    "target": "Grainfield-headless-harness",
+    "source": "grainfield_headless_harness.cpp",
+    "build_command": "PULP_SOURCE_DIR=/Users/danielraffel/Code/pulp pulp build --target Grainfield-headless-harness",
+    "binary_sha256": "899a3126bca4b32b94c10174e4f076e7492b36b316cd0ec265f16dc276c1cf3f",
+    "run_command": "./build/Grainfield-headless-harness",
+    "result": {
+      "sample_rate": 48000,
+      "frames": 512,
+      "channels": 2,
+      "finite": true,
+      "audible": true,
+      "peak": 0.0904571,
+      "rms": 0.0351001,
+      "state_bytes": 294,
+      "state_restored": true
+    }
+  },
+  "focused_tests": {
+    "audio_test": "Grainfield produces audio from one global MIDI trigger",
+    "audio_result": "1 assertion passed",
+    "state_test": "Grainfield state round trips",
+    "state_result": "3 assertions passed",
+    "build_command": "PULP_SOURCE_DIR=/Users/danielraffel/Code/pulp pulp build --target Grainfield-test"
+  },
+  "evidence_boundary": {
+    "proven": [
+      "HeadlessHost prepared 48 kHz / 512 frames / 0 input / 2 output",
+      "real MIDI note-on produced finite audible stereo output with measured peak and RMS",
+      "HeadlessHost save_state/load_state restored Gain and Freeze"
+    ],
+    "not_proven": [
+      "standalone GUI app audio-device routing",
+      "standalone GUI state save/restore",
+      "external DAW host evidence"
+    ]
+  },
+  "status": "headless_audio_and_state_pass_standalone_bridge_open",
+  "release_claim": "none"
+}

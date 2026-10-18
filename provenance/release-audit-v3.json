@@ -353,6 +353,12 @@
       "sha256": "3551087f1745b0ca0dd5d77d942c93ccb0699d1a44e563b82d6375275efc4c48",
       "source_head": "476b04ecb2239a6228b1471a9f9ac86dfaab36e1",
       "evidence_freshness": "current_exact_head"
+    },
+    {
+      "path": "provenance/headless-audio-state-harness-20261018.json",
+      "sha256": "a15ad3280ce27d07c4cf321c54b93f2f2e3bc5f048069a83016754d474c97e09",
+      "source_head": "42d9c7707b6fbfb29a4cfe7902b2e4fe705640f9",
+      "evidence_freshness": "current_exact_head"
     }
   ],
   "non_claims": [
