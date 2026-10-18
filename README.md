@@ -18,3 +18,13 @@ pulp test
 ```
 
 The first product milestone targets CLAP, VST3, AU, and standalone. AAX remains opt-in and blocked until the Avid SDK, entry point, validator, and Pro Tools evidence are available.
+
+To inspect the formats declared by `pulp_add_plugin` against a particular build
+tree, generate the machine-readable receipt with:
+
+```sh
+python3 scripts/validate_formats.py --output provenance/format-status.json
+```
+
+The receipt records artifact hashes and Pulp target presence only. It leaves
+host validation as `not_run`; a missing artifact is reported as `blocked`.
