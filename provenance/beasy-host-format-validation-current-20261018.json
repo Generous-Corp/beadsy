@@ -1,6 +1,6 @@
 {
   "schema": "beasy.host-format-validation.v1",
-  "source_head": "c181bcc51b8d733a4653f920203b829087f31a57",
+  "source_head": "e5c5140bb5ec86a8e52ab4101e45758e5d6b0ebf",
   "clap": {
     "status": "pass",
     "command": "clap-validator validate build-beasy-renamed/CLAP/Beasy.clap",
@@ -66,5 +66,11 @@
     "shutdown": "partial; no documented clean-shutdown/state command exposed; SIGTERM used for cleanup",
     "state": "not_run at app-host level"
   },
-  "release_boundary": "No format is release-complete from this receipt alone."
+  "release_boundary": "No format is release-complete from this receipt alone.",
+  "lv2_external_probe": {
+    "status": "partial_custom_abi_state_probe",
+    "receipt": "provenance/beasy-lv2-host-state-validation-current-20261018.json",
+    "third_party_host": "blocked_unavailable",
+    "audible_midi": "unproven_silent_probe"
+  }
 }

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "8b1a4d9fe53a19a21f0d1667b28f9d6c7eace787",
+  "source_head": "e5c5140bb5ec86a8e52ab4101e45758e5d6b0ebf",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -86,7 +86,7 @@
       "clap": "pass (21 run, 18 pass, 3 skip)",
       "au": "pass (governed GUI-bootstrap auval; instrument, UI, parameters, render, MIDI)",
       "vst3": "pass (pluginval strictness 5)",
-      "lv2": "partial (binary descriptor and TTL probe; no external host)",
+      "lv2": "partial (custom ABI/state probe pass; no third-party host; audible MIDI remains unproven)",
       "standalone": "partial (real CoreAudio/MIDI/editor launch observed; app state and clean shutdown unproven)",
       "au_control": "Pulp Hot-Reload Synth passes auval; Beasy remains undiscoverable"
     },
@@ -102,6 +102,12 @@
       "status": "pass",
       "capture": "build-beasy-renamed/beasy-editor-seed-current.png",
       "focused_test": "Beasy-editor-test; full suite includes Seed Mode button test (36/36)"
+    },
+    "importer_hardening": {
+      "path": "provenance/importer-validation.json",
+      "status": "validated_separate_worktree",
+      "candidate": "beasy-importer-focused-20261018 @ dc1ddb2b40",
+      "integration_status": "not_integrated_into_pulp_main_or_beasy"
     }
   },
   "open_gates": [
@@ -123,7 +129,7 @@
     {
       "id": "host_formats",
       "status": "partial",
-      "next": "run external LV2 host/state probe; refresh exact-head format receipt; retain AU discovery limitation if reproducible"
+      "next": "resolve LV2 audible MIDI path and third-party host availability; refresh exact-head format receipt"
     },
     {
       "id": "release",
