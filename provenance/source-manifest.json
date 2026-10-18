@@ -54,7 +54,7 @@
     "hardware_artwork_cc_by_sa_attribution_and_share_alike_decision",
     "mutable_instruments_trademark_non_affiliation_review",
     "converter_version_and_output_hash",
-    "source_to_port_notice_map"
+    "complete_source_to_port_notice_and_upstream_verification"
   ],
   "conversion_probe": {
     "tool": "/opt/homebrew/bin/pdftocairo",
@@ -113,5 +113,6 @@
       "notice_sha256": "82b77b6b9f069981fbff13d01f9e8a6e3a0d5dc510e1638dbb73d228a72e225b",
       "status": "lineage_recorded_notice_review_open"
     }
-  ]
+  ],
+  "source_to_port_map": "provenance/source-to-port.json"
 }
