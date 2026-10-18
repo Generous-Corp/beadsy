@@ -1,0 +1,34 @@
+{
+  "schema": "grainfield.product-name-collision-audit.v1",
+  "audited_at": "2026-10-18",
+  "status": "provisional_name_required",
+  "checks": [
+    {
+      "name": "Grainfield",
+      "status": "collision_risk",
+      "evidence": "GitHub repository search returned 12 results, including granular/audio-related projects such as monome_grainfields and GrainField-5000. No exact audio-plugin collision was found, but the term is not distinctive."
+    },
+    {
+      "name": "Pellets",
+      "status": "too_generic",
+      "evidence": "GitHub repository search returned 1203 results; no exact audio-plugin result was found, but the term is heavily used across software and hardware."
+    },
+    {
+      "name": "Pelletfield",
+      "status": "preliminary_clear",
+      "evidence": "No exact GitHub repository result in the checked search; trademark, domain, app-store, plugin-directory, and company-name checks remain outstanding."
+    },
+    {
+      "name": "Textureloom",
+      "status": "preliminary_clear",
+      "evidence": "No exact GitHub repository result in the checked search; trademark, domain, app-store, plugin-directory, and company-name checks remain outstanding."
+    }
+  ],
+  "queries": [
+    "https://api.github.com/search/repositories?q=Grainfield",
+    "https://api.github.com/search/repositories?q=Pellets",
+    "https://api.github.com/search/repositories?q=Pelletfield",
+    "https://api.github.com/search/repositories?q=Textureloom"
+  ],
+  "decision": "Do not treat Grainfield or Pellets as final branding until a broader name/trademark/domain review is complete. Continue implementation under the provisional Grainfield code name."
+}
