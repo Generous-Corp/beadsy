@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "ced81b323a0fd1ddc11a2c1c56bf5b947c915ba",
+  "source_head": "b9e446a945e57e6635539dc8d8f37ee1484e52cc",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -47,8 +47,8 @@
       "id": "source-provenance",
       "status": "partial",
       "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, and provenance/converter-report.json",
-      "result": "Source-to-port inventory is complete for recorded files; byte verification found 29 Beads equal and 7 mismatches, plus 14 stmlib equal and 1 mismatch; notices and upstream license metadata are recorded",
-      "reason": "Beads mismatches are granular_processor.h, processor.cc, processor.h, synth.cc, synth.h, trigger_generator.cc, and trigger_generator.h; stmlib mismatch is dsp.h; copied-byte redistribution and internal license audit remain blocked, and converter diagnostics are inconclusive"
+      "result": "Source-to-port inventory is complete for recorded files; all 8 hash mismatches are classified as intentional portability adaptations with deterministic unified-diff metadata (29 Beads equal/7 mismatches; 14 stmlib equal/1 mismatch); notices and upstream license metadata are recorded",
+      "reason": "Intentional adaptations have deterministic diff evidence, but source/legal redistribution remains blocked pending internal license review, copied-byte provenance closure, and converter diagnostics"
     },
     {
       "id": "aax",
@@ -60,8 +60,8 @@
       "id": "rights-and-release",
       "status": "blocked",
       "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, ATTRIBUTION.md, LICENSES.md, and provenance/converter-report.json",
-      "reason": "Panel artwork/reference permission and trademark clearance are pending; hash gaps (7 Beads, 1 stmlib) and copied-byte/internal GPL redistribution review remain open; converter diagnostics are inconclusive",
-      "result": "Hash verification is explicit, with 29 Beads and 14 stmlib matches; unresolved byte mismatches and legal/artwork gates keep redistribution blocked"
+      "reason": "Panel artwork/reference permission and trademark clearance are pending; legal/source redistribution and internal GPL review remain open despite classified portability adaptations; converter diagnostics are inconclusive",
+      "result": "All eight hash mismatches have deterministic intentional-portability classifications; legal, source redistribution, and artwork/trademark gates keep release blocked"
     }
   ],
   "historical_receipts": [
@@ -92,8 +92,8 @@
     },
     {
       "path": "provenance/source-to-port.json",
-      "source_head": "ced81b323a0fd1ddc11a2c1c56bf5b947c915ba",
-      "note": "current hash verification: 29 Beads equal/7 mismatches and 14 stmlib equal/1 mismatch; mismatch paths are recorded in hash_verification.gaps"
+      "source_head": "b9e446a945e57e6635539dc8d8f37ee1484e52cc",
+      "note": "current diff classification: all 8 hash mismatches are intentional portability adaptations with deterministic unified-diff metadata; legal/source redistribution remains blocked"
     }
   ],
   "release_decision": "blocked"
