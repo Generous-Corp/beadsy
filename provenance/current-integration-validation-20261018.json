@@ -17,9 +17,27 @@
   },
   "tests": {
     "core": "1964 assertions in 18 cases passed",
-    "editor": "123 assertions in 9 cases passed",
+    "editor": "132 assertions in 9 cases passed",
     "ctest": "27 Grainfield tests passed",
     "standalone_state": "5 assertions in 1 test case passed"
+  },
+  "ux": {
+    "editor": "native Skia/Dawn editor; source-backed primary and auxiliary controls; automation gesture and contextual LFO paths covered by editor tests",
+    "knob_captures": {
+      "min": {
+        "path": "build/knob-captures-current/grainfield-knob-min.png",
+        "sha256": "64fdc305089697be69a0cb561ee43879f6c78bf843bdb4a61c6fcc77dd5bc9bb"
+      },
+      "mid": {
+        "path": "build/knob-captures-current/grainfield-knob-mid.png",
+        "sha256": "af4485651264ca50d6cf7eaac0c8b30d91f7060f211ec164d3917dc6e685217"
+      },
+      "max": {
+        "path": "build/knob-captures-current/grainfield-knob-max.png",
+        "sha256": "ead877f9d0db5e6513bc168cf6baa6ddae197925e26787ccfc6f6ecd1aead8f3"
+      }
+    },
+    "fidelity": "rights-cleared straight-on reference and exact pixel/geometry residual comparison remain open"
   },
   "lv2": {
     "host": "pass; Loaded Grainfield, 12 params, peak 0.190",
