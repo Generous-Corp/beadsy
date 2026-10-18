@@ -2,7 +2,7 @@
   "schema": "grainfield.realtime-allocation-probe.v1",
   "status": "inconclusive",
   "verified_at": "2026-10-18T01:45:00Z",
-  "grainfield_head": "a3d6cc15cce4d6446070d053170c164d1a5e8781",
+  "grainfield_head": "04ebb47828927b146ceffead2cc748edff95c91f",
   "claim": "A prior 192-byte allocation observation remains unresolved; ten sequential runs of the rebuilt committed baseline passed, so the failure is not currently reproducible.",
   "available_pulp_surface": {
     "pulp_head": "86c10d19989810394b56d6e592ad00acd557b307",
