@@ -211,6 +211,7 @@ public:
                  pulp::midi::MidiBuffer&,
                  const pulp::format::ProcessContext&) override {
         output.clear();
+        last_gate_size_ = 0;
         if (!supported_rate_ || !resources_ok_ || output.num_channels() < 2 ||
             output.num_samples() > frames_.size()) return;
 
@@ -218,7 +219,8 @@ public:
 
         std::fill(seed_gate_flags_.begin(), seed_gate_flags_.begin() + output.num_samples(),
                   stmlib::GATE_FLAG_LOW);
-        bool trigger = false;
+        const bool gate_at_block_start = gate_;
+        bool gate = gate_at_block_start;
         for (const auto& event : midi_in) {
             const auto offset = std::clamp<std::size_t>(
                 event.sample_offset < 0 ? 0 : static_cast<std::size_t>(event.sample_offset),
@@ -229,10 +231,9 @@ public:
                 note_velocity_gain_[event.note()] = static_cast<float>(event.velocity()) / 127.0f;
                 current_note_ = event.note();
                 velocity_gain_ = note_velocity_gain_[event.note()];
-                trigger = true;
+                gate = true;
                 seed_gate_flags_[offset] = static_cast<stmlib::GateFlags>(
-                    seed_gate_flags_[offset] | stmlib::GATE_FLAG_HIGH |
-                    stmlib::GATE_FLAG_RISING);
+                    seed_gate_flags_[offset] | stmlib::GATE_FLAG_RISING);
             } else if (event.is_note_off()) {
                 active_notes_[event.note()] = false;
                 if (sustain_down_) {
@@ -248,7 +249,7 @@ public:
                         }
                     }
                     if (!replacement) {
-                        gate_ = false;
+                        gate = false;
                         seed_gate_flags_[offset] = static_cast<stmlib::GateFlags>(
                             seed_gate_flags_[offset] | stmlib::GATE_FLAG_FALLING);
                     }
@@ -268,7 +269,7 @@ public:
                             }
                         }
                         if (!replacement) {
-                            gate_ = false;
+                            gate = false;
                             seed_gate_flags_[offset] = static_cast<stmlib::GateFlags>(
                                 seed_gate_flags_[offset] | stmlib::GATE_FLAG_FALLING);
                         }
@@ -280,19 +281,20 @@ public:
                 pitch_bend_semitones_ = std::clamp(2.0f * normalized, -2.0f, 2.0f);
             }
         }
-        if (trigger) gate_ = true;
+        gate_ = gate;
 
         // Expand the global MIDI gate into a sample-accurate external gate
         // stream. The original Beads trigger generator consumes rising/falling
         // gate flags, so this preserves event offsets without allocating in
         // the audio callback.
-        bool gate = gate_;
+        gate = gate_at_block_start;
         for (std::size_t i = 0; i < output.num_samples(); ++i) {
             auto& flags = seed_gate_flags_[i];
             if (flags & stmlib::GATE_FLAG_FALLING) gate = false;
-            if (gate) flags = static_cast<stmlib::GateFlags>(flags | stmlib::GATE_FLAG_HIGH);
             if (flags & stmlib::GATE_FLAG_RISING) gate = true;
+            if (gate) flags = static_cast<stmlib::GateFlags>(flags | stmlib::GATE_FLAG_HIGH);
         }
+        last_gate_size_ = output.num_samples();
 
         beads::Parameters parameters{};
         parameters.time = randomized(kTime);
@@ -397,6 +399,15 @@ private:
     bool sustain_down_ = false;
     float velocity_gain_ = 1.0f;
     float pitch_bend_semitones_ = 0.0f;
+    std::size_t last_gate_size_ = 0;
+#if defined(GRAINFIELD_TESTING)
+public:
+    std::span<const stmlib::GateFlags> debug_seed_gate_flags() const {
+        return {seed_gate_flags_.data(), last_gate_size_};
+    }
+
+private:
+#endif
     static constexpr bool is_modulatable(pulp::state::ParamID id) {
         return id >= kFirstModulatableParam && id <= kLastModulatableParam;
     }

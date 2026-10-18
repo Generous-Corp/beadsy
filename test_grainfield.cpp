@@ -201,6 +201,47 @@ TEST_CASE("Grainfield sustain and overlap handling is deterministic") {
     }));
 }
 
+TEST_CASE("Grainfield MIDI gate transitions occur at event sample offsets") {
+    grainfield::Grainfield processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+
+    pulp::format::PrepareContext prep{.sample_rate = 48000.0,
+                                      .max_buffer_size = 8,
+                                      .input_channels = 0,
+                                      .output_channels = 2};
+    processor.prepare(prep);
+
+    pulp::midi::MidiBuffer midi_in;
+    pulp::midi::MidiBuffer midi_out;
+    auto note_on = pulp::midi::MidiEvent::note_on(0, 60, 100);
+    note_on.sample_offset = 3;
+    auto note_off = pulp::midi::MidiEvent::note_off(0, 60);
+    note_off.sample_offset = 6;
+    REQUIRE(midi_in.add(note_on));
+    REQUIRE(midi_in.add(note_off));
+
+    pulp::audio::Buffer<float> output(2, 8);
+    auto output_view = output.view();
+    pulp::audio::BufferView<const float> empty_input(nullptr, 0, 0);
+    pulp::format::ProcessContext context{.sample_rate = 48000.0,
+                                         .num_samples = 8};
+    processor.process(output_view, empty_input, midi_in, midi_out, context);
+
+    const auto flags = processor.debug_seed_gate_flags();
+    REQUIRE(flags.size() == 8);
+    for (std::size_t i = 0; i < 3; ++i)
+        REQUIRE((flags[i] & stmlib::GATE_FLAG_HIGH) == 0);
+    REQUIRE((flags[3] & stmlib::GATE_FLAG_HIGH) != 0);
+    REQUIRE((flags[3] & stmlib::GATE_FLAG_RISING) != 0);
+    REQUIRE((flags[4] & stmlib::GATE_FLAG_HIGH) != 0);
+    REQUIRE((flags[5] & stmlib::GATE_FLAG_HIGH) != 0);
+    REQUIRE((flags[6] & stmlib::GATE_FLAG_HIGH) == 0);
+    REQUIRE((flags[6] & stmlib::GATE_FLAG_FALLING) != 0);
+    REQUIRE((flags[7] & stmlib::GATE_FLAG_HIGH) == 0);
+}
+
 TEST_CASE("Grainfield produces audio from one global MIDI trigger") {
     auto proc = grainfield::create_grainfield();
     pulp::state::StateStore store;

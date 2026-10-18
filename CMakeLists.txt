@@ -54,6 +54,7 @@ include(Catch)
 add_executable(Grainfield-test test_grainfield.cpp)
 target_link_libraries(Grainfield-test PRIVATE Pulp::format Catch2::Catch2WithMain grainfield_beads_dsp)
 target_include_directories(Grainfield-test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_definitions(Grainfield-test PRIVATE GRAINFIELD_TESTING=1)
 
 # Pulp keeps the allocation probe in its test harness (it is not part of the
 # installed SDK).  Point this test-only target at a matching Pulp checkout
