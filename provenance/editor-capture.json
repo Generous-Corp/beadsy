@@ -2,7 +2,7 @@
   "schema": "grainfield.editor-capture.v1",
   "status": "prototype_pass",
   "project": "Grainfield",
-  "source_head": "bad8a43",
+  "source_head": "bad8a43450b276804ccdff38c39f9c467c17900a",
   "renderer": "pulp::view::capture_view",
   "backend": "auto_select",
   "logical_size": [201, 364],
