@@ -12,6 +12,7 @@
 #include <span>
 #include <vector>
 
+
 // Grainfield — an independent Pulp instrument inspired by the published Beads
 // architecture. Upstream notices for the adapted DSP live under third_party/.
 namespace grainfield {
@@ -44,6 +45,11 @@ inline pulp::format::PluginDescriptor make_descriptor() {
 class Grainfield : public pulp::format::Processor {
 public:
     pulp::format::PluginDescriptor descriptor() const override { return make_descriptor(); }
+
+#if defined(GRAINFIELD_NATIVE_EDITOR) && !defined(PULP_HEADLESS)
+    pulp::format::ViewSize view_size() const override { return {201, 364, 201, 364, 401, 729}; }
+    std::unique_ptr<pulp::view::View> create_view() override;
+#endif
 
     void define_parameters(pulp::state::StateStore& store) override {
         store.add_parameter({.id = kTime, .name = "Time", .unit = "%", .range = {0.0f, 1.0f, 0.5f}});
@@ -141,3 +147,10 @@ inline std::unique_ptr<pulp::format::Processor> create_grainfield() {
 }
 
 } // namespace grainfield
+
+#if defined(GRAINFIELD_NATIVE_EDITOR) && !defined(PULP_HEADLESS)
+#include "grainfield_editor.hpp"
+inline std::unique_ptr<pulp::view::View> grainfield::Grainfield::create_view() {
+    return std::make_unique<grainfield::GrainfieldEditor>(state());
+}
+#endif

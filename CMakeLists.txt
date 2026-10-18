@@ -6,6 +6,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Pulp CONFIG REQUIRED)
 
+# The converted panel is an authoring-time, rights-gated vector asset. Embed it
+# into the editor so installed plugins never read a developer checkout.
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel.svg" GRAINFIELD_PANEL_SVG)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/grainfield_panel_svg.hpp.in
+               ${CMAKE_CURRENT_BINARY_DIR}/grainfield_panel_svg.hpp @ONLY)
+
 add_library(grainfield_beads_dsp STATIC
     third_party/beads_dsp/beads/dsp/synth.cc
     third_party/beads_dsp/beads/dsp/trigger_generator.cc
@@ -50,5 +56,10 @@ pulp_add_plugin(Grainfield
 foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AAX Standalone)
     if(TARGET Grainfield_${_fmt})
         target_link_libraries(Grainfield_${_fmt} PRIVATE grainfield_beads_dsp)
+        if(TARGET Pulp::view)
+            target_link_libraries(Grainfield_${_fmt} PRIVATE Pulp::view)
+            target_include_directories(Grainfield_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+            target_compile_definitions(Grainfield_${_fmt} PRIVATE GRAINFIELD_NATIVE_EDITOR=1)
+        endif()
     endif()
 endforeach()

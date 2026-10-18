@@ -1,0 +1,4 @@
+#pragma once
+inline constexpr const char kGrainfieldPanelSvg[] = R"GRAINFIELD_SVG(
+@GRAINFIELD_PANEL_SVG@
+)GRAINFIELD_SVG";
