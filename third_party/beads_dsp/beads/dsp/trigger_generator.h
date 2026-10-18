@@ -33,6 +33,7 @@
 #include "stmlib/utils/gate_flags.h"
 
 #include <algorithm>
+#include <span>
 
 namespace beads {
 
@@ -64,6 +65,7 @@ class TriggerGenerator {
       float linear_fm,
       float exponential_fm,
       Output* out,
+      std::span<stmlib::GateFlags> merged_gate_flags,
       size_t size);
   
  private:

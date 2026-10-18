@@ -9,6 +9,7 @@
 #include <cmath>
 #include <cstdint>
 #include <memory>
+#include <span>
 #include <vector>
 
 // Grainfield — an independent Pulp instrument inspired by the published Beads
@@ -63,6 +64,8 @@ public:
         if (!supported_rate_) return;
         synth_.Init(reverb_buffer_.data());
         frames_.resize(max_block_size_);
+        triggers_.resize(max_block_size_);
+        merged_gate_flags_.resize(max_block_size_);
         freeze_.reset(new bool[max_block_size_]);
         std::fill_n(freeze_.get(), max_block_size_, false);
     }
@@ -105,7 +108,8 @@ public:
         for (std::size_t i = 0; i < n; ++i) frames_[i] = 0.0f;
         const auto seed = trigger ? beads::SEED_BUTTON_STATE_ON : beads::SEED_BUTTON_STATE_OFF;
         synth_.Render(seed, nullptr, freeze_.get(), beads::Synth::RESOLUTION_16_BIT,
-                      density, parameters, mix, frames_.data(), n);
+                      density, parameters, mix, triggers_, merged_gate_flags_,
+                      frames_.data(), n);
 
         const float gain = std::pow(10.0f, state().get_value(kGain) / 20.0f);
         for (std::size_t i = 0; i < n; ++i) {
@@ -122,6 +126,8 @@ private:
     beads::Synth synth_;
     std::array<std::uint16_t, 32768> reverb_buffer_{};
     std::vector<beads::FloatFrame> frames_;
+    std::vector<beads::TriggerGenerator::Output> triggers_;
+    std::vector<stmlib::GateFlags> merged_gate_flags_;
     std::unique_ptr<bool[]> freeze_;
     double sample_rate_ = 48000.0;
     std::size_t max_block_size_ = 0;

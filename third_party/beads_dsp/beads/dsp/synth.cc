@@ -59,8 +59,14 @@ void Synth::Render(
     const ModulatedParameter& density,
     const Parameters& parameters,
     const Processor::MixParameters& mix_parameters,
+    std::span<TriggerGenerator::Output> triggers,
+    std::span<stmlib::GateFlags> merged_gate_flags,
     FloatFrame* out,
     size_t size) {
+
+  if (triggers.size() < size || merged_gate_flags.size() < size) {
+    return;
+  }
   
   Parameters p = parameters;
   p.pitch.base = p.pitch.base + (p.pitch.has_cv ? p.pitch.cv : 0.0f);
@@ -69,14 +75,14 @@ void Synth::Render(
   float expo_fm_amount = 20.0f * (fabsf(density.base - 0.5f) - 0.225f);
   CONSTRAIN(expo_fm_amount, 0.0f, 1.0f);
 
-  TriggerGenerator::Output triggers[size];
   trigger_generator_.Render(
       seed_button_state,
       seed_input,
       density.base,
       (1.0f - expo_fm_amount) * density.cv,
       expo_fm_amount * density.cv,
-      triggers,
+      triggers.data(),
+      merged_gate_flags,
       size);
   
   int bank = bank_quantizer_.Process(mix_parameters.feedback);

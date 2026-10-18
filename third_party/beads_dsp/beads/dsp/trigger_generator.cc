@@ -236,6 +236,7 @@ void TriggerGenerator::Render(
     float linear_fm,
     float exponential_fm,
     TriggerGenerator::Output* out,
+    std::span<GateFlags> merged_gate_flags,
     size_t size) {
   if (external_input && seed_button_state == SEED_BUTTON_STATE_LOCKED) {
     // We don't make any difference between linear and expo FM when the CV
@@ -250,8 +251,10 @@ void TriggerGenerator::Render(
     CONSTRAIN(density, 0.0f, 1.0f);
 
     const float fm = SemitonesToRatio(exponential_fm * 60.0f);
-    stmlib::GateFlags merged_gate_flags[size];
-    
+    if (merged_gate_flags.size() < size) {
+      return;
+    }
+
     // Merge seed button and external gate input to get a single gate stream.
     for (size_t i = 0; i < size; ++i) {
       bool gate = seed_button_state != SEED_BUTTON_STATE_OFF;
@@ -264,14 +267,14 @@ void TriggerGenerator::Render(
     
     if (density < 0.48f) {
       RenderPulseTrain(
-          merged_gate_flags,
+          merged_gate_flags.data(),
           max_pulse_frequency_ * SemitonesToRatio(-density * 192.0f) * fm,
           false,
           out,
           size);
     } else if (density > 0.52f) {
       RenderPulseTrain(
-          merged_gate_flags,
+          merged_gate_flags.data(),
           0.5f * max_pulse_frequency_ * \
               SemitonesToRatio(-(1.0f - density) * 192.0f) * fm,
           true,

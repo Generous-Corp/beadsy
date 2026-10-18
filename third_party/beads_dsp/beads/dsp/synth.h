@@ -38,6 +38,8 @@
 #include "beads/dsp/wavetable_voice.h"
 #include "beads/dsp/fx/reverb.h"
 
+#include <span>
+
 namespace beads {
 
 const size_t kNumBanks = 12;
@@ -65,6 +67,8 @@ class Synth {
       const ModulatedParameter& density,
       const Parameters& parameters,
       const Processor::MixParameters& mix_parameters,
+      std::span<TriggerGenerator::Output> triggers,
+      std::span<stmlib::GateFlags> merged_gate_flags,
       FloatFrame* out,
       size_t size);
   
