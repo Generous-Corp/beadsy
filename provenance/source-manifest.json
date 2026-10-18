@@ -3,9 +3,10 @@
   "status": "incomplete",
   "captured_at": "2026-10-17",
   "product": {
-    "name": "Grainfield",
+    "name": "Beasy",
     "affiliation": "independent",
-    "project_license": "MIT"
+    "project_license": "MIT",
+    "historical_code_name": "Grainfield"
   },
   "heads": {
     "pulp_origin_main": "0eadeac05ed8176abcce566edadbcd7cc2fafd29",
