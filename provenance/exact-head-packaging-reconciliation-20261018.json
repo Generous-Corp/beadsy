@@ -61,8 +61,8 @@
     "core_and_editor": {
       "status": "pass",
       "receipt": "provenance/current-integration-validation-20261018.json",
-      "receipt_sha256": "42e8918f15d9e0bd1a411a412470004081468bbb53ce3ed7b425b0325c0ab3bf",
-      "result": "1964 core assertions/18 cases; 132 editor assertions/9 cases; 27 CTest entries"
+      "receipt_sha256": "b29355e9116b597a8a54ca9e2dece04be42deab9bd0d5b8f334fa2168bf015b9",
+      "result": "1964 core assertions/18 cases; 132 editor assertions/9 cases; 27 CTest entries; current harness-enabled allocation suite is separately recorded"
     },
     "source_control_binding": {
       "status": "pass_with_rights_gate",
@@ -102,6 +102,12 @@
       "state_receipt": "build/grainfield-standalone-state-integrated.txt",
       "state_receipt_sha256": "82d0339172d7fecafb306391c8b3e726821ba1d201bff18b4717616fb2d38ff3",
       "state_result": "5 assertions in 1 test case passed"
+    },
+    "realtime_allocation": {
+      "status": "inconclusive",
+      "receipt": "provenance/realtime-allocation-current-20261018.json",
+      "receipt_sha256": "005f50842a8c1afd0765003868e1669c623aee36ee10e1f7677a247188716e77",
+      "result": "10 current-head Release AppleClang matrix runs passed with zero allocations at 64/256/1024; historical intermittent 192-byte observation remains unexplained"
     },
     "AUv2": {
       "status": "blocked_registration",
