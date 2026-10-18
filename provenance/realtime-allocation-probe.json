@@ -314,14 +314,16 @@
     "restoration": "Temporary matrix source was restored to the committed test contract; build-debug was removed with trash after capture."
   },
   "current_checkout_probe": {
-    "command": "ctest --test-dir build-harness -R '^Grainfield prepared processing allocates no realtime memory$' --output-on-failure",
+    "command": "for i in $(seq 1 10); do ./build/Grainfield-test 'Grainfield prepared processing allocates no realtime memory' --reporter compact; done",
     "status": "pass",
-    "result": "1/1 passed in a fresh harness-enabled Release build",
+    "result": "10/10 sequential focused runs passed in the harness-enabled cached Release build",
     "build_dir": "build-harness",
     "harness": "/Users/danielraffel/Code/pulp/test/harness",
     "allocation_count": 0,
     "allocated_bytes": 0,
-    "reason": "The current focused probe passed; the historical 192-byte observation remains unresolved, so the overall gate stays inconclusive."
+    "reason": "The current focused probe passed; the historical 192-byte observation remains unresolved, so the overall gate stays inconclusive.",
+    "runs": 10,
+    "passes": 10
   },
   "next_action": "Repeat the harness-enabled probe across 64/256/1024 max block sizes and capture a backtrace if the historical allocation recurs."
 }
