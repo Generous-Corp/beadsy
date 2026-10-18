@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "06a26857f3176ba9191a94eac3aa8d8249585599",
+  "source_head": "7602281d76350a9f7db489cd7379a02b8616ff7a",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
