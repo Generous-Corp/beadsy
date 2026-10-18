@@ -1,0 +1,395 @@
+{
+  "schema": "grainfield.source-port-comparison.v2",
+  "status": "pass_internal_reference_only",
+  "verified_at": "2026-10-18T04:20:00Z",
+  "project_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
+  "source": {
+    "repository": "/Users/danielraffel/Code/eurorack/beads",
+    "commit": "f4cfa7697095a28d292bff758beb51deb49b5a86",
+    "stmlib_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec",
+    "fixture_root": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct"
+  },
+  "port": {
+    "project": "Grainfield",
+    "fixture_root": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build",
+    "pulp_head": "86c10d19989810394b56d6e592ad00acd557b307",
+    "direct_dsp_scope": "third_party/beads_dsp source subset; adapter MIDI timing is outside this direct render comparison"
+  },
+  "contract": {
+    "sample_rate_hz": 48000,
+    "frames_per_case": 4096,
+    "channels": 2,
+    "quality_modes": 4,
+    "parameter_states": 4,
+    "block_sizes": [
+      32,
+      64,
+      128
+    ],
+    "seed_event": "SEED_BUTTON_STATE_ON at frame 0; OFF thereafter"
+  },
+  "comparison": {
+    "fixtures_checked": 49,
+    "byte_identical": 49,
+    "max_abs_error": 0.0,
+    "rmse": 0.0,
+    "pairs": [
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/beads-source-synth-f32le.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-synth-f32le.bin",
+        "source_sha256": "ec0e74e749650bf578afab1ca0d1d2c8b45434327ae8ce547d7eef7b2c870cfe",
+        "port_sha256": "ec0e74e749650bf578afab1ca0d1d2c8b45434327ae8ce547d7eef7b2c870cfe",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q0-c0.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q0-c0.bin",
+        "source_sha256": "8bed01c87b02733fab5a0736e0ca491437f34a3c4adb0f14164322a561b564f1",
+        "port_sha256": "8bed01c87b02733fab5a0736e0ca491437f34a3c4adb0f14164322a561b564f1",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q0-c1.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q0-c1.bin",
+        "source_sha256": "518b94395899cefb300e6a01eeb5b966cfa539f88d64ed8ba785e4151627d169",
+        "port_sha256": "518b94395899cefb300e6a01eeb5b966cfa539f88d64ed8ba785e4151627d169",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q0-c2.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q0-c2.bin",
+        "source_sha256": "f4bd2b92708101b9eafd8ca0812e706041f1862bc5536aa332d96fa8a9caab09",
+        "port_sha256": "f4bd2b92708101b9eafd8ca0812e706041f1862bc5536aa332d96fa8a9caab09",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q0-c3.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q0-c3.bin",
+        "source_sha256": "67d8ee1d60575c4eee2bf1d4642323cae08da113fd3988627f2f25633ef8f3f2",
+        "port_sha256": "67d8ee1d60575c4eee2bf1d4642323cae08da113fd3988627f2f25633ef8f3f2",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q1-c0.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q1-c0.bin",
+        "source_sha256": "087e24ea1b39667e3303b56d08ca4344c4919e1d366c6ad31059bfaaf45dfef4",
+        "port_sha256": "087e24ea1b39667e3303b56d08ca4344c4919e1d366c6ad31059bfaaf45dfef4",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q1-c1.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q1-c1.bin",
+        "source_sha256": "f2fc24aaa103c03b9358699599c60d6a26b976c8e2028a289d293ef25989ea57",
+        "port_sha256": "f2fc24aaa103c03b9358699599c60d6a26b976c8e2028a289d293ef25989ea57",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q1-c2.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q1-c2.bin",
+        "source_sha256": "88a188486b81b1b0403cc9f947b024da8f66bdda8e4a751ff3534d5781064257",
+        "port_sha256": "88a188486b81b1b0403cc9f947b024da8f66bdda8e4a751ff3534d5781064257",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q1-c3.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q1-c3.bin",
+        "source_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
+        "port_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q2-c0.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q2-c0.bin",
+        "source_sha256": "c7d0ac2f2771c21062dff5de0ce622581aff3fcd1288a9f79a5bf4edd9c32266",
+        "port_sha256": "c7d0ac2f2771c21062dff5de0ce622581aff3fcd1288a9f79a5bf4edd9c32266",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q2-c1.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q2-c1.bin",
+        "source_sha256": "ce09e8784811eaf0e9d20486561c593c91d74caed14cb544313a9e6ed26cdd48",
+        "port_sha256": "ce09e8784811eaf0e9d20486561c593c91d74caed14cb544313a9e6ed26cdd48",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q2-c2.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q2-c2.bin",
+        "source_sha256": "708b0e8302689da19dd825395a2f0e0b2bf64052c5f7707bde8cd19ef9f8bdfa",
+        "port_sha256": "708b0e8302689da19dd825395a2f0e0b2bf64052c5f7707bde8cd19ef9f8bdfa",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q2-c3.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q2-c3.bin",
+        "source_sha256": "7843aa00d405b8f98624705c201c2f92f4ded3f873b2ae497f91525fefbe7a0e",
+        "port_sha256": "7843aa00d405b8f98624705c201c2f92f4ded3f873b2ae497f91525fefbe7a0e",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q3-c0.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q3-c0.bin",
+        "source_sha256": "253157cd66c23b4f7af83cc145260766a1e776bc5efebcd3ba80c8bdc0f48e70",
+        "port_sha256": "253157cd66c23b4f7af83cc145260766a1e776bc5efebcd3ba80c8bdc0f48e70",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q3-c1.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q3-c1.bin",
+        "source_sha256": "0c5bde9e328980d8757d463d06669324d92a73eba57f9e1198d932d80cc6b966",
+        "port_sha256": "0c5bde9e328980d8757d463d06669324d92a73eba57f9e1198d932d80cc6b966",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q3-c2.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q3-c2.bin",
+        "source_sha256": "ccaf039cc54f1597b3d822c8b34eb603610c91b8f449630af37103277f46e16f",
+        "port_sha256": "ccaf039cc54f1597b3d822c8b34eb603610c91b8f449630af37103277f46e16f",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-128-q3-c3.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-128-q3-c3.bin",
+        "source_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
+        "port_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q0-c0.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q0-c0.bin",
+        "source_sha256": "7d1763be3046b9f2b4dbca84850b563285c2218082428d833f077459ba0d1460",
+        "port_sha256": "7d1763be3046b9f2b4dbca84850b563285c2218082428d833f077459ba0d1460",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q0-c1.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q0-c1.bin",
+        "source_sha256": "7ada0c2f185d5ddf60eb27e756d511000ce597cc7c90f82ec1296fb25f8cbc48",
+        "port_sha256": "7ada0c2f185d5ddf60eb27e756d511000ce597cc7c90f82ec1296fb25f8cbc48",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q0-c2.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q0-c2.bin",
+        "source_sha256": "ea0fa49e79dcba94dfb782d39ce1164b76c6640a11a277e9423ade90333dd8b0",
+        "port_sha256": "ea0fa49e79dcba94dfb782d39ce1164b76c6640a11a277e9423ade90333dd8b0",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q0-c3.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q0-c3.bin",
+        "source_sha256": "e66f9272c628341d6b8e4157843997d208c58f6e5e45aa99336352c2505840ba",
+        "port_sha256": "e66f9272c628341d6b8e4157843997d208c58f6e5e45aa99336352c2505840ba",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q1-c0.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q1-c0.bin",
+        "source_sha256": "6179c16034f3afaa1d96901ecb973815492184389892bdd71b9b516e6cfa7045",
+        "port_sha256": "6179c16034f3afaa1d96901ecb973815492184389892bdd71b9b516e6cfa7045",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q1-c1.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q1-c1.bin",
+        "source_sha256": "1b0c4c03fdb8ee57094f69606880d7ace9caac17c9cea80509d52544e29b4134",
+        "port_sha256": "1b0c4c03fdb8ee57094f69606880d7ace9caac17c9cea80509d52544e29b4134",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q1-c2.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q1-c2.bin",
+        "source_sha256": "c2366ad5c689d6c4130b175c12c39f92d0f1a65acfacc50dec4956ef17c4a621",
+        "port_sha256": "c2366ad5c689d6c4130b175c12c39f92d0f1a65acfacc50dec4956ef17c4a621",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q1-c3.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q1-c3.bin",
+        "source_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
+        "port_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q2-c0.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q2-c0.bin",
+        "source_sha256": "28cfcfc4d5239a601acabd60732515c3fdd845c04976754c2faf5ebd78d6c5e8",
+        "port_sha256": "28cfcfc4d5239a601acabd60732515c3fdd845c04976754c2faf5ebd78d6c5e8",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q2-c1.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q2-c1.bin",
+        "source_sha256": "195247635bf9ba8f711d7c461c60fb23d774e5267fb9c59454a52fb137cb8091",
+        "port_sha256": "195247635bf9ba8f711d7c461c60fb23d774e5267fb9c59454a52fb137cb8091",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q2-c2.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q2-c2.bin",
+        "source_sha256": "1b7cfffc5fa36ce59d71aa7d0e789e59ed3b784cb39fdcd5c929be9a8f11e4ca",
+        "port_sha256": "1b7cfffc5fa36ce59d71aa7d0e789e59ed3b784cb39fdcd5c929be9a8f11e4ca",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q2-c3.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q2-c3.bin",
+        "source_sha256": "d04cf9c539d8bd1783bd5bde40f05bf52dd17fab8003e60b821f1ca3276976b5",
+        "port_sha256": "d04cf9c539d8bd1783bd5bde40f05bf52dd17fab8003e60b821f1ca3276976b5",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q3-c0.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q3-c0.bin",
+        "source_sha256": "2c62bfc09dae703238521e4366454abeaa03a3a5e4637393293f76ca8212df87",
+        "port_sha256": "2c62bfc09dae703238521e4366454abeaa03a3a5e4637393293f76ca8212df87",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q3-c1.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q3-c1.bin",
+        "source_sha256": "274e2918eba02b291e6d8d5e1f4973eb8d83f6b9af0514b9afd612753b532230",
+        "port_sha256": "274e2918eba02b291e6d8d5e1f4973eb8d83f6b9af0514b9afd612753b532230",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q3-c2.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q3-c2.bin",
+        "source_sha256": "55ed54ee107184a36cdc3e8f6056ba17fec3298ff925118f0597934e4367004d",
+        "port_sha256": "55ed54ee107184a36cdc3e8f6056ba17fec3298ff925118f0597934e4367004d",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-32-q3-c3.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-32-q3-c3.bin",
+        "source_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
+        "port_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q0-c0.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q0-c0.bin",
+        "source_sha256": "645baffea837160e5fa7d5152f4a7e34be9292d260e3c3a4d1490ce08b94649a",
+        "port_sha256": "645baffea837160e5fa7d5152f4a7e34be9292d260e3c3a4d1490ce08b94649a",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q0-c1.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q0-c1.bin",
+        "source_sha256": "1f68bb09c5375a09914795563aea5c00c02fb9486bc22d11ed40232585a1111a",
+        "port_sha256": "1f68bb09c5375a09914795563aea5c00c02fb9486bc22d11ed40232585a1111a",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q0-c2.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q0-c2.bin",
+        "source_sha256": "4eff8b32d7ed43678d33178c8060392026a5450727881043661b0d8d69d00a46",
+        "port_sha256": "4eff8b32d7ed43678d33178c8060392026a5450727881043661b0d8d69d00a46",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q0-c3.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q0-c3.bin",
+        "source_sha256": "d29a09e989888428f14d21ed4db0e98ea97d6b2a5cbcd4a7fd9c52ea2e2e062e",
+        "port_sha256": "d29a09e989888428f14d21ed4db0e98ea97d6b2a5cbcd4a7fd9c52ea2e2e062e",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q1-c0.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q1-c0.bin",
+        "source_sha256": "68d53a80a7fc897ac642189bdccdda18998ae935c6d626506ced8d8b29d20982",
+        "port_sha256": "68d53a80a7fc897ac642189bdccdda18998ae935c6d626506ced8d8b29d20982",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q1-c1.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q1-c1.bin",
+        "source_sha256": "140c5c3d498b7dc2bdf59c6f7da2aeefc947a3282b66e4434d40469186e9da8f",
+        "port_sha256": "140c5c3d498b7dc2bdf59c6f7da2aeefc947a3282b66e4434d40469186e9da8f",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q1-c2.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q1-c2.bin",
+        "source_sha256": "8621c32d1032b243d241cf45b27cf4f684fb8393f28db9405ed66ed3dc8cdf65",
+        "port_sha256": "8621c32d1032b243d241cf45b27cf4f684fb8393f28db9405ed66ed3dc8cdf65",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q1-c3.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q1-c3.bin",
+        "source_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
+        "port_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q2-c0.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q2-c0.bin",
+        "source_sha256": "8102a65a966b8dc720fdfc921dd2e8503955cc4181f957698d58d66b5ced2ed9",
+        "port_sha256": "8102a65a966b8dc720fdfc921dd2e8503955cc4181f957698d58d66b5ced2ed9",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q2-c1.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q2-c1.bin",
+        "source_sha256": "112d5ede79770fb4281eee47e8ae35806438a0d16eddaf843884e0a47775c5d4",
+        "port_sha256": "112d5ede79770fb4281eee47e8ae35806438a0d16eddaf843884e0a47775c5d4",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q2-c2.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q2-c2.bin",
+        "source_sha256": "4f4f0b6a2acec58a60767a95c4d8e132ad56c512bfb80744185c783bbe325c0a",
+        "port_sha256": "4f4f0b6a2acec58a60767a95c4d8e132ad56c512bfb80744185c783bbe325c0a",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q2-c3.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q2-c3.bin",
+        "source_sha256": "13e7a452d78a802aebe80dc94d8b207999257a67e1362ca0c9b47e871aeec3c4",
+        "port_sha256": "13e7a452d78a802aebe80dc94d8b207999257a67e1362ca0c9b47e871aeec3c4",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q3-c0.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q3-c0.bin",
+        "source_sha256": "d71222ddd1f308686b402bd0cdf7c8db0f7ec653ff92307d1700591b6c5d58a8",
+        "port_sha256": "d71222ddd1f308686b402bd0cdf7c8db0f7ec653ff92307d1700591b6c5d58a8",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q3-c1.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q3-c1.bin",
+        "source_sha256": "75de8c791d95922b2eb0a1b8e5014096ab845918c835a5dd8d1ebe0411b60aa9",
+        "port_sha256": "75de8c791d95922b2eb0a1b8e5014096ab845918c835a5dd8d1ebe0411b60aa9",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q3-c2.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q3-c2.bin",
+        "source_sha256": "90118b319a9cf3a5968c5fee2b207ec96366438d6dcc554252813bcefb85cc7a",
+        "port_sha256": "90118b319a9cf3a5968c5fee2b207ec96366438d6dcc554252813bcefb85cc7a",
+        "byte_identical": true
+      },
+      {
+        "source": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/source-matrix-q3-c3.bin",
+        "port": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-matrix-q3-c3.bin",
+        "source_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
+        "port_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
+        "byte_identical": true
+      }
+    ]
+  },
+  "source_port_inventory": {
+    "exact_hash_matches": 29,
+    "intentional_adaptations": 7,
+    "stmlib_metadata_only": 15,
+    "source_to_port_manifest": "provenance/source-to-port.json",
+    "license_status": "blocked_pending_complete_notice_and_rights_audit"
+  },
+  "limitations": [
+    "Fixtures are generated outside this repository and are not redistributed.",
+    "The upstream beads_test executable exits 0 but its render calls are disabled; this receipt relies on the dedicated deterministic source/port probes.",
+    "This proves the four-mode synth subset only. It does not establish live-input/effect parity, freeze-buffer restore, full attenurandomizer/delay semantics, MIDI adapter parity, host behavior, or rights closure."
+  ],
+  "next_action": "Regenerate both sides from the recorded source and project heads in a clean harness checkout, then add authorized overlap/event fixtures before any full-parity claim."
+}
