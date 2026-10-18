@@ -56,6 +56,55 @@ TEST_CASE("Grainfield prepared processing allocates no realtime memory",
 
     REQUIRE_FALSE(probe.saw_allocation());
 }
+
+TEST_CASE("Grainfield prepared processing stays allocation-free across block sizes",
+          "[realtime][allocation][matrix]") {
+    for (const std::size_t block_size : {std::size_t{64}, std::size_t{256},
+                                         std::size_t{1024}}) {
+        auto proc = grainfield::create_grainfield();
+        pulp::state::StateStore store;
+        proc->set_state_store(&store);
+        proc->define_parameters(store);
+        pulp::format::PrepareContext prep{.sample_rate = 48000.0,
+                                          .max_buffer_size = static_cast<int>(block_size),
+                                          .input_channels = 0,
+                                          .output_channels = 2};
+        proc->prepare(prep);
+
+        pulp::midi::MidiBuffer input;
+        pulp::midi::MidiBuffer output_midi;
+        input.add(pulp::midi::MidiEvent::note_on(0, 60, 100));
+        pulp::audio::Buffer<float> output(2, block_size);
+        auto view = output.view();
+        pulp::audio::BufferView<const float> empty(nullptr, 0, 0);
+        pulp::format::ProcessContext context{.sample_rate = 48000.0,
+                                             .num_samples = static_cast<int>(block_size)};
+
+        // Prime event and output-buffer state before arming the probe. The
+        // actual steady-state callback is then exercised with an empty MIDI
+        // buffer, so this assertion measures only realtime processing.
+        proc->process(view, empty, input, output_midi, context);
+        input.clear();
+        output_midi.clear();
+
+        std::size_t allocation_count = 0;
+        std::size_t allocated_bytes = 0;
+        {
+            pulp::test::RtAllocationProbe probe;
+            for (int block = 0; block < 32; ++block)
+                proc->process(view, empty, input, output_midi, context);
+            // Snapshot before the probe is destroyed; diagnostics below must
+            // run outside its scope because Catch2 allocates while formatting.
+            allocation_count = probe.allocation_count();
+            allocated_bytes = probe.allocated_bytes();
+        }
+        INFO("block_size=" << block_size
+             << " allocation_count=" << allocation_count
+             << " allocated_bytes=" << allocated_bytes);
+        REQUIRE(allocation_count == 0);
+        REQUIRE(allocated_bytes == 0);
+    }
+}
 #endif
 
 TEST_CASE("Grainfield exposes Beads semitone pitch range and maps MIDI note offsets") {
