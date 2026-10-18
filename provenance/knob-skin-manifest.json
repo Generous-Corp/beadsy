@@ -33,7 +33,7 @@
     "annulus": {
       "state": "procedural-calibration-v2",
       "segment_count": 28,
-      "groove_inner_radius_fraction": 0.70,
+      "groove_inner_radius_fraction": 0.7,
       "groove_outer_radius_fraction": 0.99
     },
     "cap": {
