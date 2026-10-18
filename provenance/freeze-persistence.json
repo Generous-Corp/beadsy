@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.freeze-persistence.v1",
   "status": "toggle_only",
-  "source_head": "d49716abafe7b6f56fbaf70624e46e252eefc098",
+  "source_head": "c54be0df570431ddbea3fc41948dfd2686da868b",
   "finding": "The Freeze parameter is persisted by StateStore, but the frozen Beads runtime buffers are not part of the processor-owned payload.",
   "evidence": {
     "diagnostic_test": "Grainfield freeze persistence is parameter-only",

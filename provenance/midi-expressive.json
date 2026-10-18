@@ -1,6 +1,6 @@
 {
   "schema": "grainfield.expressive-midi.v1",
-  "source_head": "d49716abafe7b6f56fbaf70624e46e252eefc098",
+  "source_head": "c54be0df570431ddbea3fc41948dfd2686da868b",
   "status": "partial",
   "supported": {
     "note_velocity": "mapped to deterministic output gain",
