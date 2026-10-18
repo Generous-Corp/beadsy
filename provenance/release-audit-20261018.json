@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "74f50bdd36d6487da3ec25008e4333cd93b7980a",
+  "source_head": "a3d6cc15cce4d6446070d053170c164d1a5e8781",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -18,10 +18,10 @@
     },
     {
       "id": "realtime-allocation",
-      "status": "pass",
+      "status": "blocked",
       "evidence": "provenance/realtime-allocation-probe.json",
-      "result": "Focused Grainfield prepared-processing allocation probe passed 1/1; ordinary Grainfield tests passed 19/19",
-      "reason": "Repeat focused probe across supported host/toolchain combinations remains follow-up evidence, not a current failure"
+      "result": "Focused Grainfield prepared-processing probe reproducibly fails: one 192-byte allocation after warmup at 256 and 1024 block sizes; prior 64 attempt also failed",
+      "reason": "Do not weaken or skip the probe; allocation backtrace/fix and a passing 64/256/1024 matrix are required"
     },
     {
       "id": "panel-asset",
@@ -116,6 +116,11 @@
       "path": "provenance/realtime-allocation-probe.json",
       "source_head": "74f50bdd36d6487da3ec25008e4333cd93b7980a",
       "note": "focused prepared-processing no-realtime-allocation probe passed 1/1; ordinary Grainfield tests passed 19/19"
+    },
+    {
+      "path": "provenance/realtime-allocation-probe.json",
+      "source_head": "a3d6cc15cce4d6446070d053170c164d1a5e8781",
+      "note": "current focused probe blocker: one 192-byte allocation at 256/1024 after warmup; 64 also failed"
     }
   ],
   "release_decision": "blocked"

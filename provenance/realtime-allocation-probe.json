@@ -2,7 +2,7 @@
   "schema": "grainfield.realtime-allocation-probe.v1",
   "status": "blocked",
   "verified_at": "2026-10-18T01:45:00Z",
-  "grainfield_head": "e34969ed21d28b15ca5e1f44ca6b60ee9e48269a",
+  "grainfield_head": "a3d6cc15cce4d6446070d053170c164d1a5e8781",
   "claim": "The existing focused probe is not reproducibly allocation-free in the current build; matrix extension is blocked by a 192-byte realtime allocation.",
   "available_pulp_surface": {
     "pulp_head": "86c10d19989810394b56d6e592ad00acd557b307",
