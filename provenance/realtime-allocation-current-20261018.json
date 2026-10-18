@@ -1,0 +1,35 @@
+{
+  "schema": "grainfield.realtime-allocation-current.v1",
+  "status": "inconclusive",
+  "verified_at": "2026-10-18",
+  "grainfield_source_head": "bb3d8529363b2dd38d071d9822c982201744556d",
+  "build": {
+    "directory": "build-allocation-current",
+    "configuration": "Release AppleClang arm64",
+    "Pulp_DIR": "/Users/danielraffel/pulp-sdk/lib/cmake/Pulp",
+    "harness": "/Users/danielraffel/Code/pulp/test/harness",
+    "target": "Grainfield-test",
+    "artifact_sha256": "37c90f3f6b098581607c98b007e5e729bab776e59a37117c1a18daa64d497e2b"
+  },
+  "test": {
+    "name": "Grainfield prepared processing stays allocation-free across block sizes",
+    "tag": "[realtime][allocation][matrix]",
+    "sample_rate_hz": 48000,
+    "block_sizes": [
+      64,
+      256,
+      1024
+    ],
+    "steady_state_process_calls_per_size": 32,
+    "repetitions": 10,
+    "assertions_per_run": 6,
+    "result": "all 10 runs passed; allocation_count and allocated_bytes were zero at every block size"
+  },
+  "historical_observation": {
+    "allocation_count": 1,
+    "allocated_bytes": 192,
+    "reproduced": false,
+    "owner_backtrace": "unavailable"
+  },
+  "conclusion": "Current-head harness-enabled evidence is clean, but the historical intermittent allocation remains unexplained; the release realtime gate stays inconclusive."
+}
