@@ -1,18 +1,18 @@
 {
   "schema": "grainfield.modulation-status.v1",
   "status": "product_local_partial",
-  "source_head": "2d0d058601010c38173072ff1482868befac7df1",
+  "source_head": "42e5f6571bb55cf6a58287629aaf692c1f497247",
   "base_parameter_contract": "StateStore base values remain host-automatable; LFO offsets are applied through get_modulated",
   "state": "GFMD v1 plugin-state payload persists enabled, rate, depth, and phase",
   "native_editor": {
     "right_click_callback": "implemented",
     "target_seam": "GrainfieldEditor::modulation_context_target",
-    "menu_surface": "host menu integration pending"
+    "menu_surface": "pulp ContextMenu implemented and lifecycle-tested",
+    "indicator": "amber outer arc implemented and paint-tested by capture path"
   },
   "shared_core_decision": "deferred until a second consumer and extraction tests prove a stable API",
   "open_gates": [
-    "visible contextual menu with enable/rate/depth/target controls",
-    "modulation indicator rendered on each knob",
-    "host automation plus modulation interaction receipt"
+    "host automation plus modulation interaction receipt",
+    "rate/depth controls in contextual menu"
   ]
 }
