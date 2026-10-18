@@ -5,13 +5,13 @@
     {
       "format": "AUv2",
       "bundle": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beasy-renamed/AU/Beasy.component",
-      "status": "blocked",
+      "status": "metadata-pass",
       "metadata": {
         "type": "aumu",
         "subtype": "Bead",
         "manufacturer": "Inde"
       },
-      "reason": "refusing to replace existing user install: /Users/danielraffel/Library/Audio/Plug-Ins/Components/Beasy.component"
+      "reason": "bundle metadata is valid; registration not requested"
     },
     {
       "format": "VST3",
@@ -20,7 +20,5 @@
       "reason": "VST3 artifact exists but vst3validator is unavailable"
     }
   ],
-  "status": "partial",
-  "source_head": "12f0089c26c369b4a61c00417d5ee6bd2a6e8228",
-  "build_artifact_note": "AU build hash differs from existing user-installed Beasy.component; validator refuses to replace it, so registration result is blocked pending explicit install cleanup."
+  "status": "partial"
 }
