@@ -1,7 +1,7 @@
 # Grainfield implementation status
 
-Updated 2026-10-18 against Grainfield source head
-`ce3e9c113ee7cf4cb084ffcc67f9501ccc9fa75b`.
+Updated 2026-10-18 against the integrated checkout head
+`3aac5d0ec42942f4c2ce8b178093f32585458212`.
 
 ## Current executable slice
 
@@ -43,7 +43,7 @@ Updated 2026-10-18 against Grainfield source head
   visual fidelity evidence.
 - Formats declared by the scaffold: VST3, CLAP, LV2, AU, standalone. VST3
   builds against the installed development SDK and passes pluginval 1.0.4; the
-  CLAP and VST3 host load/audio probes pass. AU metadata and packaging pass, but reversible registration/auval and host load are blocked by host discovery (see `provenance/au-registration-diagnostic.json`); LV2 host instantiation is blocked by missing
+  CLAP and VST3 host load/audio probes pass. AU metadata, temporary registration, and auval pass, but the current Pulp host load remains blocked by host discovery (see `provenance/au-registration-diagnostic.json`); LV2 host instantiation is blocked by missing
   usable audio ports/URID mapping; the Standalone launch/editor probe is partial
   HeadlessHost state roundtrip passes 10/10, but the Standalone app exposes no documented state save/load bridge; standalone audio/state/clean-shutdown evidence remains incomplete. VST3 remains partial: pluginval and host load/audio pass, but the development SDK exposes headers only, with no moduleinfo creator implementation/CMake target or Steinberg validator implementation/executable (see `provenance/vst3-toolchain-diagnostic.json`). AAX is declared only as a future validation
   lane; it is not a release claim.

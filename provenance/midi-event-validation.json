@@ -5,12 +5,46 @@
   "test": "Grainfield sustain and overlap handling is deterministic",
   "command": "pulp test -- -R '^Grainfield sustain and overlap handling is deterministic$' --output-on-failure",
   "events": [
-    {"type":"note_on","channel":0,"note":60,"velocity":100,"sample_offset":0},
-    {"type":"note_on","channel":0,"note":64,"velocity":80,"sample_offset":48},
-    {"type":"cc","channel":0,"controller":64,"value":127,"sample_offset":96},
-    {"type":"note_off","channel":0,"note":60,"sample_offset":128},
-    {"type":"note_off","channel":0,"note":64,"sample_offset":160},
-    {"type":"cc","channel":0,"controller":64,"value":0,"sample_offset":192}
+    {
+      "type": "note_on",
+      "channel": 0,
+      "note": 60,
+      "velocity": 100,
+      "sample_offset": 0
+    },
+    {
+      "type": "note_on",
+      "channel": 0,
+      "note": 64,
+      "velocity": 80,
+      "sample_offset": 48
+    },
+    {
+      "type": "cc",
+      "channel": 0,
+      "controller": 64,
+      "value": 127,
+      "sample_offset": 96
+    },
+    {
+      "type": "note_off",
+      "channel": 0,
+      "note": 60,
+      "sample_offset": 128
+    },
+    {
+      "type": "note_off",
+      "channel": 0,
+      "note": 64,
+      "sample_offset": 160
+    },
+    {
+      "type": "cc",
+      "channel": 0,
+      "controller": 64,
+      "value": 0,
+      "sample_offset": 192
+    }
   ],
   "result": "deterministic finite output; event offsets are consumed within one 256-frame process call",
   "scope_note": "This validates Grainfield's declared mono/global MIDI policy. The upstream Beads Synth has no MIDI API, so this is adapter-contract evidence rather than source-vs-port MIDI parity."

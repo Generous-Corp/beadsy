@@ -232,7 +232,17 @@
     {
       "path": "provenance/au-host.txt",
       "role": "current AU Pulp host discovery blocked receipt"
+    },
+    {
+      "path": "provenance/asset-validation.json",
+      "role": "current rights-gated asset validation; absent SVG is explicit blocked evidence"
     }
   ],
-  "audit_receipt_head": "c071afa84f41632577a53a8c2ac94662eea287d9"
+  "audit_receipt_head": "c071afa84f41632577a53a8c2ac94662eea287d9",
+  "audited_base_head": "cd5b96c3e64d3725c1039f5ffbaa540766dbe1c3",
+  "current_checkout": {
+    "head": "3aac5d0ec42942f4c2ce8b178093f32585458212",
+    "audit_commit": "pending-this-commit",
+    "note": "Receipts describe the audited base plus this checkout; source_head remains the non-circular audited base head."
+  }
 }

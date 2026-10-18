@@ -22,7 +22,7 @@
       "command": "pulp-cpp host build/CLAP/Grainfield.clap --format clap",
       "result": "loaded Grainfield; 13 params; finite peak 0.190; required stereo input and stereo output",
       "receipt": "provenance/clap-host.txt",
-      "receipt_sha256": "59bce003a896bb80b8323a65c32bd70504c2058caa82d2e0b7ce4c0da9aa3063",
+      "receipt_sha256": "233e25773894a3dadbdd38d8c5bce48d41fe57096c3e534a5f22d77374fe91c8",
       "source_head": "6c1deb5c288f02347b088d0af930e40824d2974c",
       "evidence_scope": "historical_external_or_prior_checkout"
     },
@@ -46,7 +46,7 @@
       "command": "auval -v aumu Grai Inde",
       "result": "component not registered; auval could not find the component",
       "receipt": "provenance/auval.txt",
-      "receipt_sha256": "892ea3f8a0bb0fb38116e7a63b04d8e35a42ae1b9de69eddd1b90dca72b6d3fb",
+      "receipt_sha256": "1b6fc1203479bcdeceb65b978862b918e2dfa16ed4149a64a10cf4cb9378ebd0",
       "source_head": "7b04c4fcd1592d1cb621fc235e94e68b6a458f93",
       "evidence_scope": "historical_external_or_prior_checkout"
     },
@@ -136,7 +136,7 @@
       "command": "pulp host probes plus bounded standalone launch (see receipt)",
       "result": "CLAP and external VST3 host load/audio probes pass; AUv2 registration/host probes are blocked; LV2 host instantiation is blocked; Standalone launch/editor is partial and controlled SIGTERM showed no clean-shutdown/state receipt",
       "receipt": "provenance/host-validation-matrix.txt",
-      "receipt_sha256": "f61ad8fe04e0de3f039d52d15017d2d26ecc4824b124827c9992dedb57bca68b",
+      "receipt_sha256": "c18336709f65867230465a1a4cb251b2b7154e40580564343c89c638d85be8ef",
       "source_head": "ced81b323a0fd1ddc11a2c1c56bf5b947c915ba",
       "evidence_scope": "historical_external_or_prior_checkout"
     }
@@ -197,7 +197,7 @@
         "status": "pass",
         "command": "python3 scripts/validate_packaging.py --build-dir build --register-au --output /tmp/grainfield-packaging-registration.json",
         "receipt": "provenance/au-registration-diagnostic.json",
-        "receipt_sha256": "93813a27ad141228f80603bdd07c48a705c43d62b28c8a6007c1684c99e96df3"
+        "receipt_sha256": "35fc8c73f605366d276560a5823e48aed864a52998c19065f90952097e95b3eb"
       },
       {
         "format": "AUv2",
