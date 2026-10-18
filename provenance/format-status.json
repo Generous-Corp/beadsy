@@ -4,7 +4,7 @@
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield-v1-scope-integrated",
-    "git_head": "6c842824d29dd4c2a54fd689f7cc1faa8fec6dd5"
+    "git_head": "cd5b96c3e64d3725c1039f5ffbaa540766dbe1c3"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build",
@@ -12,12 +12,12 @@
     "build_ninja_present": true,
     "pulp_dir": "/Users/danielraffel/pulp-sdk/lib/cmake/Pulp"
   },
-  "host_validation": "not_run",
+  "host_validation": "partial",
   "formats": [
     {
       "format": "VST3",
       "status": "blocked",
-      "reason": "declared VST3 target produced no artifact in the inspected build tree",
+      "reason": "no VST3 artifact in current checkout build; external development-SDK evidence is retained as historical partial evidence",
       "evidence": {
         "artifact": {
           "path": "VST3/Grainfield.vst3/Contents/MacOS/Grainfield",
@@ -31,7 +31,7 @@
     {
       "format": "CLAP",
       "status": "supported",
-      "reason": "declared target produced an artifact in the inspected build tree",
+      "reason": "artifact present; current CLAP validator and Pulp host load passed",
       "evidence": {
         "artifact": {
           "path": "CLAP/Grainfield.clap/Contents/MacOS/Grainfield",
@@ -41,13 +41,17 @@
           "sha256": "345b97fbad36484a0188568511b1c93bcb4ac94b347d7f3ba93d2ec324de4147"
         },
         "pulp_target_present": true,
-        "host_validation": "not_run"
+        "host_validation": "pass",
+        "host_receipts": [
+          "provenance/clap-validator.txt",
+          "provenance/clap-host.txt"
+        ]
       }
     },
     {
       "format": "LV2",
-      "status": "supported",
-      "reason": "declared target produced an artifact in the inspected build tree",
+      "status": "partial",
+      "reason": "artifact present, but current Pulp LV2 host probe is blocked by missing audio ports and LV2_URID__map",
       "evidence": {
         "artifact": {
           "path": "LV2/Grainfield.lv2/Grainfield.so",
@@ -57,13 +61,16 @@
           "sha256": "80186bf033c18f4e611c8a3d2eabaef1c1a32e6e02b3171722f55f91eefe905e"
         },
         "pulp_target_present": true,
-        "host_validation": "not_run"
+        "host_validation": "blocked",
+        "host_receipts": [
+          "provenance/lv2-host.txt"
+        ]
       }
     },
     {
       "format": "AU",
-      "status": "supported",
-      "reason": "declared target produced an artifact in the inspected build tree",
+      "status": "partial",
+      "reason": "artifact and metadata present; temporary registration/auval passed, but current Pulp AU host probe cannot discover the component",
       "evidence": {
         "artifact": {
           "path": "AU/Grainfield.component/Contents/MacOS/Grainfield",
@@ -73,7 +80,11 @@
           "sha256": "e76041d10a1352b1617bda7c4138ad7de9ae33d8143c7b686715ae17f2fdbc55"
         },
         "pulp_target_present": true,
-        "host_validation": "not_run"
+        "host_validation": "blocked",
+        "host_receipts": [
+          "provenance/au-registration-diagnostic.json",
+          "provenance/au-host.txt"
+        ]
       }
     },
     {
@@ -92,8 +103,8 @@
     },
     {
       "format": "Standalone",
-      "status": "supported",
-      "reason": "declared target produced an artifact in the inspected build tree",
+      "status": "partial",
+      "reason": "artifact present; structured editor/audio/state host evidence is unavailable",
       "evidence": {
         "artifact": {
           "path": "Grainfield.app/Contents/MacOS/Grainfield",
@@ -103,8 +114,11 @@
           "sha256": "669d61cacab636175a733262d81f059accff61bb0c1fed02f1a37af4f88b16c4"
         },
         "pulp_target_present": true,
-        "host_validation": "not_run"
+        "host_validation": "partial",
+        "app_validation_receipt": "provenance/standalone-app-validation.json"
       }
     }
-  ]
+  ],
+  "host_validation_receipt": "provenance/host-validation.json",
+  "host_validation_receipt_sha256": "72cf381c7fa19268bcd5d8ae77c6ce5075d1a7ea74d05fbd0bb36af10cb8a8fa"
 }

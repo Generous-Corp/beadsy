@@ -67,5 +67,13 @@
     "AAX SDK and validator unavailable"
   ],
   "sdk": "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0",
-  "toolchain_diagnostic": "provenance/vst3-toolchain-diagnostic.json"
+  "toolchain_diagnostic": "provenance/vst3-toolchain-diagnostic.json",
+  "evidence_scope": "historical_external_development_sdk",
+  "current_checkout": {
+    "source_head": "cd5b96c3e64d3725c1039f5ffbaa540766dbe1c3",
+    "build": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build",
+    "artifact_exists": false,
+    "status": "blocked",
+    "reason": "current checkout has no VST3 artifact; external development-SDK receipt below is not current-release evidence"
+  }
 }

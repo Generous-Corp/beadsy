@@ -1,6 +1,6 @@
 {
   "schema": "grainfield.au-registration-diagnostic.v1",
-  "source_head": "6c842824d29dd4c2a54fd689f7cc1faa8fec6dd5",
+  "source_head": "cd5b96c3e64d3725c1039f5ffbaa540766dbe1c3",
   "bundle": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/AU/Grainfield.component",
   "metadata": {
     "status": "pass",

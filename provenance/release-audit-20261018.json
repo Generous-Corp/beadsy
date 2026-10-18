@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "417294acc27da003004aa6825fed6d51139dcdaf",
+  "source_head": "cd5b96c3e64d3725c1039f5ffbaa540766dbe1c3",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -87,12 +87,12 @@
     {
       "path": "provenance/host-validation.json",
       "source_head": "e8f054ce6f6957e546c5f810727be1c7412a62d0",
-      "note": "prior current-head host matrix; provenance commit 126f420 supersedes source head while host outcomes remain applicable"
+      "note": "historical host matrix retained; current exact-head diagnostics are in provenance/host-validation.json current_checkout"
     },
     {
       "path": "provenance/vst3-validation.json",
       "source_head": "6080f7d0b6ec8fa9d5024fbc3590f95eae577c89",
-      "note": "current-head VST3 receipt: pluginval passes; moduleinfo/Steinberg validator and release-SDK gates remain open"
+      "note": "external development-SDK evidence retained; current checkout has no VST3 artifact and remains blocked"
     },
     {
       "path": "provenance/source-to-port.json",
@@ -220,6 +220,18 @@
     {
       "path": "provenance/audio-contract.json",
       "role": "current sample-rate and audio contract"
+    },
+    {
+      "path": "provenance/host-validation.json",
+      "role": "current checkout host diagnostics and explicit blocked/partial format outcomes"
+    },
+    {
+      "path": "provenance/lv2-host.txt",
+      "role": "current LV2 host probe blocked receipt"
+    },
+    {
+      "path": "provenance/au-host.txt",
+      "role": "current AU Pulp host discovery blocked receipt"
     }
   ],
   "audit_receipt_head": "c071afa84f41632577a53a8c2ac94662eea287d9"

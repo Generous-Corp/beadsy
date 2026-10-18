@@ -1,0 +1,11 @@
+objc[69911]: Class PulpView is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x105c94130) and /Users/danielraffel/Code/grainfield-v1-scope-integrated/build/LV2/Grainfield.lv2/Grainfield.so (0x1062f57d0). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+objc[69911]: Class PulpWindowDelegate is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x105c941a8) and /Users/danielraffel/Code/grainfield-v1-scope-integrated/build/LV2/Grainfield.lv2/Grainfield.so (0x1062f5848). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+objc[69911]: Class PulpFileDragSource is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x105c94298) and /Users/danielraffel/Code/grainfield-v1-scope-integrated/build/LV2/Grainfield.lv2/Grainfield.so (0x1062f5898). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+[pulp:warn]  LV2 load: no audio ports found in bundle TTLs for 'build/LV2/Grainfield.lv2'; plugin will load but process() will be a pass-through
+[pulp:warn]  lv2: host did not provide LV2_URID__map; refusing to instantiate
+[pulp:error] LV2Slot: instantiate failed for 'Grainfield'
+pulp host: prepare() failed
+Loaded: Grainfield
+  id:      http://pulp.audio/plugins/grainfield
+  format:  LV2
+  params:  0
