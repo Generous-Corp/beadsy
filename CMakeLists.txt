@@ -10,6 +10,8 @@ add_library(grainfield_beads_dsp STATIC
     third_party/beads_dsp/beads/dsp/synth.cc
     third_party/beads_dsp/beads/dsp/trigger_generator.cc
     third_party/beads_dsp/beads/resources.cc
+    third_party/beads_dsp/stmlib/dsp/units.cc
+    third_party/beads_dsp/stmlib/utils/random.cc
 )
 target_include_directories(grainfield_beads_dsp PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/beads_dsp
