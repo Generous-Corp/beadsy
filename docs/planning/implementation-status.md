@@ -39,8 +39,7 @@ Updated 2026-10-18 against Grainfield source head
   visual fidelity evidence.
 - Formats declared by the scaffold: VST3, CLAP, LV2, AU, standalone. VST3
   builds against the installed development SDK and passes pluginval 1.0.4; the
-  CLAP and VST3 host load/audio probes pass. AU packaging passes but AU
-  registration/host load is blocked; LV2 host instantiation is blocked by missing
+  CLAP and VST3 host load/audio probes pass. AU metadata and packaging pass, but reversible registration/auval and host load are blocked by host discovery (see `provenance/au-registration-diagnostic.json`); LV2 host instantiation is blocked by missing
   usable audio ports/URID mapping; the Standalone launch/editor probe is partial
   pending state/audio/clean-shutdown evidence. VST3 moduleinfo and Steinberg
   validator evidence remain open. AAX is declared only as a future validation

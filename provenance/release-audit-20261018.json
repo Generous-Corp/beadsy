@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "29fce5ec270c6ff3b93bbb301c414d7e1bbf3152",
+  "source_head": "93b1590118bb7245eac1ca33aa649a3e3a1ce487",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -26,8 +26,8 @@
     {
       "id": "format-artifacts",
       "status": "partial",
-      "evidence": "provenance/format-status.json plus provenance/host-validation.json and provenance/host-validation-matrix.txt",
-      "result": "CLAP artifact and host load/audio pass; VST3 artifact, pluginval, and host load/audio pass with partial release evidence; AU packaging passes but registration/host load is blocked; LV2 host instantiation is blocked; Standalone launch/editor is partial; AAX remains blocked"
+      "evidence": "provenance/format-status.json, provenance/host-validation.json, provenance/host-validation-matrix.txt, and provenance/au-registration-diagnostic.json",
+      "result": "CLAP artifact and host load/audio pass; VST3 artifact, pluginval, and host load/audio pass with partial release evidence; AU metadata passes but reversible registration/auval and host load are blocked by host discovery; LV2 host instantiation is blocked; Standalone launch/editor is partial; AAX remains blocked"
     },
     {
       "id": "vst3",
@@ -39,9 +39,9 @@
     {
       "id": "host-matrix",
       "status": "partial",
-      "evidence": "provenance/host-validation.json and provenance/host-validation-matrix.txt",
+      "evidence": "provenance/host-validation.json, provenance/host-validation-matrix.txt, and provenance/au-registration-diagnostic.json",
       "result": "CLAP and external VST3 host load/audio probes pass; AUv2 and LV2 host probes are blocked; Standalone launch/editor probe is partial",
-      "reason": "AU registration remains unavailable; LV2 bundle lacks usable audio ports/URID mapping; Standalone state/audio/clean-shutdown evidence remains incomplete"
+      "reason": "AU metadata validates, but temporary user registration and auval cannot discover the component; LV2 bundle lacks usable audio ports/URID mapping; Standalone state/audio/clean-shutdown evidence remains incomplete"
     },
     {
       "id": "source-provenance",
@@ -59,7 +59,7 @@
     {
       "id": "rights-and-release",
       "status": "blocked",
-      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, provenance/converter-report.json, ATTRIBUTION.md, and LICENSES.md",
+      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, provenance/converter-report.json, provenance/au-registration-diagnostic.json, ATTRIBUTION.md, and LICENSES.md",
       "reason": "Panel artwork/reference permission and trademark clearance are pending; legal/source redistribution and internal GPL review remain open; external pdftocairo feature diagnostics are inconclusive, and importer validation-only behavior does not provide Illustrator conversion support",
       "result": "Pulp commit f9752e4 proves fail-closed aliases and preconverted-SVG validation-only behavior; artwork, legal/source redistribution, and external conversion gates keep release blocked"
     }
@@ -94,6 +94,11 @@
       "path": "provenance/source-to-port.json",
       "source_head": "b9e446a945e57e6635539dc8d8f37ee1484e52cc",
       "note": "current diff classification: all 8 hash mismatches are intentional portability adaptations with deterministic unified-diff metadata; legal/source redistribution remains blocked"
+    },
+    {
+      "path": "provenance/au-registration-diagnostic.json",
+      "source_head": "93b1590118bb7245eac1ca33aa649a3e3a1ce487",
+      "note": "current AU metadata pass with reversible registration/auval host-discovery blocker"
     }
   ],
   "release_decision": "blocked"
