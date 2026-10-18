@@ -30,7 +30,7 @@
       },
       "mid": {
         "path": "build/knob-captures-current/grainfield-knob-mid.png",
-        "sha256": "af4485651264ca50d6cf7eaac0c8b30d91f7060f211ec164d3917dc6e685217"
+        "sha256": "af4485651264ca50d6cf7eaac0c8b30d91f7060f211ec164d3917dc6e685217d"
       },
       "max": {
         "path": "build/knob-captures-current/grainfield-knob-max.png",
