@@ -323,7 +323,31 @@
     "allocated_bytes": 0,
     "reason": "The current focused probe passed; the historical 192-byte observation remains unresolved, so the overall gate stays inconclusive.",
     "runs": 10,
-    "passes": 10
+    "passes": 10,
+    "matrix": {
+      "block_sizes": [
+        64,
+        256,
+        1024
+      ],
+      "runs_per_size": 1,
+      "passes_per_size": {
+        "64": 1,
+        "256": 1,
+        "1024": 1
+      },
+      "allocation_count_per_size": {
+        "64": 0,
+        "256": 0,
+        "1024": 0
+      },
+      "allocated_bytes_per_size": {
+        "64": 0,
+        "256": 0,
+        "1024": 0
+      },
+      "result": "All three temporary fixture variants passed; test source was restored after each build."
+    }
   },
-  "next_action": "Repeat the harness-enabled probe across 64/256/1024 max block sizes and capture a backtrace if the historical allocation recurs."
+  "next_action": "Repeat the harness-enabled 64/256/1024 matrix across multiple runs or capture a backtrace if the historical allocation recurs."
 }
