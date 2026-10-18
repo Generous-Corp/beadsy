@@ -366,12 +366,13 @@ TEST_CASE("Grainfield freeze toggle reaches the internal Beads synth path") {
     REQUIRE(frozen.left != live.left);
 }
 
-TEST_CASE("Grainfield 48 kHz contract is finite and rejects other rates") {
-    auto render_at = [](double sample_rate) {
+TEST_CASE("Grainfield sample-rate and mode matrix is finite and fail-closed") {
+    auto render_at = [](double sample_rate, bool live_input) {
         auto proc = grainfield::create_grainfield();
         pulp::state::StateStore store;
         proc->set_state_store(&store);
         proc->define_parameters(store);
+        store.set_value(grainfield::kMode, live_input ? 1.0f : 0.0f);
 
         pulp::format::PrepareContext prep;
         prep.sample_rate = sample_rate;
@@ -384,20 +385,41 @@ TEST_CASE("Grainfield 48 kHz contract is finite and rejects other rates") {
         pulp::midi::MidiBuffer midi_out;
         midi_in.add(pulp::midi::MidiEvent::note_on(0, 60, 100));
         pulp::audio::Buffer<float> output(2, 128);
+        pulp::audio::Buffer<float> input(2, 128);
+        for (std::size_t i = 0; i < 128; ++i) {
+            input.channel(0)[i] = input.channel(1)[i] = std::sin(
+                6.28318530718f * 440.0f * static_cast<float>(i) /
+                static_cast<float>(sample_rate));
+        }
+        auto input_view = input.view();
         pulp::audio::BufferView<const float> empty_input(nullptr, 0, 0);
+        const float* input_ptrs[] = {input_view.channel_ptr(0), input_view.channel_ptr(1)};
         auto out_view = output.view();
         pulp::format::ProcessContext context;
         context.sample_rate = sample_rate;
         context.num_samples = 128;
-        proc->process(out_view, empty_input, midi_in, midi_out, context);
+        pulp::audio::BufferView<const float> process_input = live_input
+            ? pulp::audio::BufferView<const float>(input_ptrs, 2, 128)
+            : empty_input;
+        proc->process(out_view, process_input, midi_in, midi_out, context);
         return output;
     };
 
-    const auto supported = render_at(48000.0);
-    for (std::size_t channel = 0; channel < supported.num_channels(); ++channel)
-        for (float sample : supported.channel(channel)) REQUIRE(std::isfinite(sample));
+    for (double sample_rate : {24000.0, 32000.0, 48000.0}) {
+        for (bool live_input : {false, true}) {
+            const auto rendered = render_at(sample_rate, live_input);
+            bool has_signal = false;
+            for (std::size_t channel = 0; channel < rendered.num_channels(); ++channel) {
+                for (float sample : rendered.channel(channel)) {
+                    REQUIRE(std::isfinite(sample));
+                    has_signal = has_signal || std::abs(sample) > 1.0e-7f;
+                }
+            }
+            REQUIRE(has_signal);
+        }
+    }
 
-    const auto unsupported = render_at(44100.0);
+    const auto unsupported = render_at(44100.0, false);
     for (std::size_t channel = 0; channel < unsupported.num_channels(); ++channel)
         for (float sample : unsupported.channel(channel)) REQUIRE(sample == 0.0f);
 }

@@ -182,14 +182,14 @@ void Processor::Process(
     case MEDIA_CLEAN_TAPE:
       processor_clean_tape_.Process(
           triggers, taps, freeze, parameters, feedback, mono_, in, out,
-          size);
+          size, &scratch.clean_tape);
       copy(&in[0], &in[size], dry_signal);
       break;
     
     case MEDIA_DIRTY_TAPE:
       processor_dirty_tape_.Process(
           triggers, taps, freeze, parameters, feedback, mono_, in, out,
-          size);
+          size, &scratch.dirty_tape);
       for (size_t i = 0; i < size; ++i) {
         dry_signal[i].l = MuLaw2Lin(
             Lin2MuLaw(

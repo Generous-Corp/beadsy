@@ -39,11 +39,37 @@
 #include "beads/dsp/multitap_delay.h"
 #include "beads/dsp/sample_rate_conversion_filters.h"
 
+#include <vector>
+#include <memory>
+
 namespace beads {
 
 template<Resolution resolution, int max_delay, int ratio>
 class GranularProcessor {
  public:
+  struct Scratch {
+    void Prepare(size_t size) {
+      const size_t downsampled_size = size / size_t(ratio);
+      freeze.reset(new bool[downsampled_size]);
+      triggers.resize(downsampled_size);
+      taps.resize(downsampled_size);
+      in.resize(downsampled_size);
+      out.resize(downsampled_size);
+      downsampled.resize(downsampled_size);
+      upsampled.resize(size);
+      capacity = size;
+    }
+
+    std::unique_ptr<bool[]> freeze;
+    std::vector<TriggerGenerator::Output> triggers;
+    std::vector<DelayController::Output> taps;
+    std::vector<FloatFrame> in;
+    std::vector<FloatFrame> out;
+    std::vector<float> downsampled;
+    std::vector<float> upsampled;
+    size_t capacity = 0;
+  };
+
   GranularProcessor() { }
   ~GranularProcessor() { }
   
@@ -156,20 +182,24 @@ class GranularProcessor {
       const bool mono,
       const FloatFrame* in,
       FloatFrame* out,
-      size_t size) {
+      size_t size,
+      Scratch* scratch = nullptr) {
     if (ratio == 1) {
       ProcessInternal(
           triggers, taps, freeze, parameters, feedback, mono, in, out, size);
     } else {
+      if (!scratch || size % size_t(ratio) != 0 || size > scratch->capacity) {
+        return;
+      }
       size_t d_size = size / size_t(ratio);
 
-      bool d_freeze[d_size];
-      TriggerGenerator::Output d_triggers[d_size];
-      DelayController::Output d_taps[d_size];
-      FloatFrame d_in[d_size];
-      FloatFrame d_out[d_size];
-      float downsampled[d_size];
-      float upsampled[size];
+      bool* d_freeze = scratch->freeze.get();
+      TriggerGenerator::Output* d_triggers = scratch->triggers.data();
+      DelayController::Output* d_taps = scratch->taps.data();
+      FloatFrame* d_in = scratch->in.data();
+      FloatFrame* d_out = scratch->out.data();
+      float* downsampled = scratch->downsampled.data();
+      float* upsampled = scratch->upsampled.data();
 
       DownsampleGate(freeze, d_freeze, size);
       

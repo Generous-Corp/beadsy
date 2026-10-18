@@ -157,7 +157,7 @@ public:
     void prepare(const pulp::format::PrepareContext& ctx) override {
         sample_rate_ = ctx.sample_rate;
         max_block_size_ = static_cast<std::size_t>(ctx.max_buffer_size);
-        supported_rate_ = std::abs(sample_rate_ - 48000.0) < 0.5;
+        supported_rate_ = select_effect_media(sample_rate_, effect_media_);
         active_notes_.fill(false);
         sustained_notes_.fill(false);
         note_velocity_gain_.fill(1.0f);
@@ -174,7 +174,7 @@ public:
         delay_buffers_[1] = delay_storage_.data() + kDelayBankBytes;
         delay_buffers_[2] = delay_storage_.data() + 2 * kDelayBankBytes;
         effect_.Init(delay_buffers_.data(), effect_reverb_buffer_.data());
-        effect_.Configure(beads::Processor::MEDIA_DIGITAL, false);
+        effect_.Configure(effect_media_, false);
         effect_scratch_.Prepare(max_block_size_);
         frames_.resize(max_block_size_);
         input_frames_.resize(max_block_size_);
@@ -366,6 +366,7 @@ private:
     double sample_rate_ = 48000.0;
     std::size_t max_block_size_ = 0;
     bool supported_rate_ = false;
+    beads::Processor::Media effect_media_ = beads::Processor::MEDIA_DIGITAL;
     bool resources_ok_ = false;
     bool gate_ = false;
     std::uint8_t current_note_ = 60;
@@ -376,6 +377,22 @@ private:
     float velocity_gain_ = 1.0f;
     float pitch_bend_semitones_ = 0.0f;
     std::array<LfoModulation, 10> lfo_{};
+
+    static bool select_effect_media(double sample_rate, beads::Processor::Media& media) {
+        if (std::abs(sample_rate - 24000.0) < 0.5) {
+            media = beads::Processor::MEDIA_DIRTY_TAPE;
+            return true;
+        }
+        if (std::abs(sample_rate - 32000.0) < 0.5) {
+            media = beads::Processor::MEDIA_VINTAGE_DIGITAL;
+            return true;
+        }
+        if (std::abs(sample_rate - 48000.0) < 0.5) {
+            media = beads::Processor::MEDIA_DIGITAL;
+            return true;
+        }
+        return false;
+    }
 };
 
 inline std::unique_ptr<pulp::format::Processor> create_grainfield() {

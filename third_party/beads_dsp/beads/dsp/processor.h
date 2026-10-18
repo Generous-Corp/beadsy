@@ -82,6 +82,8 @@ class Processor {
       dry_signal.resize(size);
       merged_gate_flags.resize(size);
       capacity = size;
+      clean_tape.Prepare(size);
+      dirty_tape.Prepare(size);
     }
 
     std::vector<TriggerGenerator::Output> triggers;
@@ -89,6 +91,12 @@ class Processor {
     std::vector<bool> gate_out;
     std::vector<FloatFrame> dry_signal;
     std::vector<stmlib::GateFlags> merged_gate_flags;
+    GranularProcessor<RESOLUTION_12_BIT, kDelayBufferSizeBits / (12 * 2), 2>::Scratch clean_tape;
+#ifdef ENABLE_HARDWARE_24K
+    GranularProcessor<RESOLUTION_8_BIT, kDelayBufferSizeBits / (8 * 2), 1>::Scratch dirty_tape;
+#else
+    GranularProcessor<RESOLUTION_8_BIT, kDelayBufferSizeBits / (8 * 2), 2>::Scratch dirty_tape;
+#endif
     size_t capacity = 0;
   };
   
