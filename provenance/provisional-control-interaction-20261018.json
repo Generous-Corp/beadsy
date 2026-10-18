@@ -20,6 +20,7 @@
     "result": "pass",
     "assertions": 93,
     "focused_ctest": "2/2 passed including right-click modulation seam",
+    "full_ctest": "26/26 passed (Grainfield DSP, state, editor, modulation, standalone)",
     "capture": {
       "path": "build/grainfield-provisional-controls-v2.png",
       "bytes": 83065,
