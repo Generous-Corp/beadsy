@@ -1,0 +1,543 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "grainfield.ai-control-geometry-evidence.v1",
+  "status": "provenance-only-no-artwork-redistribution",
+  "product": "Grainfield",
+  "source": {
+    "illustrator_pdf_compatible_ai": {
+      "path": "/Users/danielraffel/Code/eurorack/beads/hardware_design/panel/beads.ai",
+      "sha256": "bdc4e394703fa99e6e7997683e1b4dee2bada5cc6eff95af36d40086f6f86c5e",
+      "page_pt": [
+        200.693,
+        364.252
+      ],
+      "text_extraction": "empty; labels are flattened Illustrator outlines"
+    },
+    "dxf": {
+      "path": "/Users/danielraffel/Code/eurorack/beads/hardware_design/beads.dxf",
+      "sha256": "caa755bf680939221683d9b3113fa467a4f1cf382780e80b074c32e785639667"
+    }
+  },
+  "method": {
+    "render": "pdftocairo -png -r 600 beads.ai beads-ai",
+    "rendered_raster_px": [
+      1673,
+      3036
+    ],
+    "red_circle_detection": "connected components with RGB red threshold; component bounding-box centres; no artwork copied into repository",
+    "coordinate_conversion": "raster pixels to PDF points using 72/600; control-map viewBox points are compared directly"
+  },
+  "findings": {
+    "controls_compared": 24,
+    "max_center_residual_pt": 1.0765,
+    "mean_center_residual_pt": 1.0113,
+    "interpretation": "All 24 control-map candidates have a corresponding red geometric marker in the AI render. The approximately 1 pt systematic discrepancy is raster/source-layout calibration evidence; it is not a license to replace DXF coordinates or infer semantics.",
+    "rights_boundary": "The AI/PDF artwork remains outside Grainfield and is not embedded or redistributed. This file records hashes, coordinates, and extraction method only."
+  },
+  "controls": [
+    {
+      "id": "density",
+      "dxf_handle": "2472",
+      "dxf_center_mm": {
+        "x": 35.735,
+        "y": 104.4
+      },
+      "ai_detected_center_pt": [
+        100.32,
+        68.28
+      ],
+      "ai_detected_radius_pt": 10.68,
+      "control_map_center_pt": {
+        "x": 101.296107,
+        "y": 68.314967
+      },
+      "center_residual_pt": 0.9767,
+      "label": "DENSITY",
+      "label_evidence": "explicit-outline",
+      "note": "parameter label below center control"
+    },
+    {
+      "id": "time",
+      "dxf_handle": "2473",
+      "dxf_center_mm": {
+        "x": 11.915,
+        "y": 90.1
+      },
+      "ai_detected_center_pt": [
+        32.76,
+        108.83999999999999
+      ],
+      "ai_detected_radius_pt": 10.68,
+      "control_map_center_pt": {
+        "x": 33.774818,
+        "y": 108.850403
+      },
+      "center_residual_pt": 1.0149,
+      "label": "TIME",
+      "label_evidence": "explicit-outline",
+      "note": "parameter label below left major control"
+    },
+    {
+      "id": "pitch",
+      "dxf_handle": "2474",
+      "dxf_center_mm": {
+        "x": 59.515,
+        "y": 90.1
+      },
+      "ai_detected_center_pt": [
+        167.88,
+        108.83999999999999
+      ],
+      "ai_detected_radius_pt": 10.68,
+      "control_map_center_pt": {
+        "x": 168.70401,
+        "y": 108.850403
+      },
+      "center_residual_pt": 0.8241,
+      "label": "PITCH",
+      "label_evidence": "explicit-outline",
+      "note": "parameter label below right major control"
+    },
+    {
+      "id": "aux-01",
+      "dxf_handle": "2477",
+      "dxf_center_mm": {
+        "x": 7.115,
+        "y": 67.9
+      },
+      "ai_detected_center_pt": [
+        19.14,
+        171.66
+      ],
+      "ai_detected_radius_pt": 9.66,
+      "control_map_center_pt": {
+        "x": 20.168513,
+        "y": 171.779542
+      },
+      "center_residual_pt": 1.0354,
+      "label": "FREEZE",
+      "label_evidence": "visual-label",
+      "note": "large cyan button; no machine-readable text object"
+    },
+    {
+      "id": "size",
+      "dxf_handle": "2470",
+      "dxf_center_mm": {
+        "x": 24.615,
+        "y": 67.9
+      },
+      "ai_detected_center_pt": [
+        68.75999999999999,
+        171.72
+      ],
+      "ai_detected_radius_pt": 10.68,
+      "control_map_center_pt": {
+        "x": 69.774833,
+        "y": 171.779542
+      },
+      "center_residual_pt": 1.0166,
+      "label": "SIZE",
+      "label_evidence": "explicit-outline",
+      "note": "parameter label below left lower major control"
+    },
+    {
+      "id": "shape",
+      "dxf_handle": "2471",
+      "dxf_center_mm": {
+        "x": 46.865,
+        "y": 67.9
+      },
+      "ai_detected_center_pt": [
+        131.88,
+        171.72
+      ],
+      "ai_detected_radius_pt": 10.68,
+      "control_map_center_pt": {
+        "x": 132.845727,
+        "y": 171.779542
+      },
+      "center_residual_pt": 0.9676,
+      "label": "SHAPE",
+      "label_evidence": "explicit-outline",
+      "note": "parameter label below right lower major control"
+    },
+    {
+      "id": "aux-02",
+      "dxf_handle": "247A",
+      "dxf_center_mm": {
+        "x": 64.365,
+        "y": 67.9
+      },
+      "ai_detected_center_pt": [
+        181.44,
+        171.72
+      ],
+      "ai_detected_radius_pt": 9.719999999999999,
+      "control_map_center_pt": {
+        "x": 182.452047,
+        "y": 171.779542
+      },
+      "center_residual_pt": 1.0138,
+      "label": "SEED",
+      "label_evidence": "visual-label",
+      "note": "large amber button; no machine-readable text object"
+    },
+    {
+      "id": "aux-03",
+      "dxf_handle": "247B",
+      "dxf_center_mm": {
+        "x": 64.365,
+        "y": 51.7
+      },
+      "ai_detected_center_pt": [
+        181.44,
+        217.67999999999998
+      ],
+      "ai_detected_radius_pt": 9.719999999999999,
+      "control_map_center_pt": {
+        "x": 182.452047,
+        "y": 217.700806
+      },
+      "center_residual_pt": 1.0123,
+      "label": "DENSITY",
+      "label_evidence": "visual-label",
+      "note": "magenta button; duplicate label requires semantic review"
+    },
+    {
+      "id": "aux-04",
+      "dxf_handle": "2475",
+      "dxf_center_mm": {
+        "x": 18.565,
+        "y": 47.9
+      },
+      "ai_detected_center_pt": [
+        51.6,
+        228.42
+      ],
+      "ai_detected_radius_pt": 9.719999999999999,
+      "control_map_center_pt": {
+        "x": 52.62522,
+        "y": 228.472461
+      },
+      "center_residual_pt": 1.0266,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "aux-05",
+      "dxf_handle": "2476",
+      "dxf_center_mm": {
+        "x": 30.015,
+        "y": 47.9
+      },
+      "ai_detected_center_pt": [
+        84.06,
+        228.42
+      ],
+      "ai_detected_radius_pt": 9.66,
+      "control_map_center_pt": {
+        "x": 85.081926,
+        "y": 228.472461
+      },
+      "center_residual_pt": 1.0233,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "aux-06",
+      "dxf_handle": "2478",
+      "dxf_center_mm": {
+        "x": 41.465,
+        "y": 47.9
+      },
+      "ai_detected_center_pt": [
+        116.52,
+        228.42
+      ],
+      "ai_detected_radius_pt": 9.719999999999999,
+      "control_map_center_pt": {
+        "x": 117.538633,
+        "y": 228.472461
+      },
+      "center_residual_pt": 1.02,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "aux-07",
+      "dxf_handle": "2479",
+      "dxf_center_mm": {
+        "x": 52.915,
+        "y": 47.9
+      },
+      "ai_detected_center_pt": [
+        148.98,
+        228.42
+      ],
+      "ai_detected_radius_pt": 9.66,
+      "control_map_center_pt": {
+        "x": 149.99534,
+        "y": 228.472461
+      },
+      "center_residual_pt": 1.0167,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "small-01",
+      "dxf_handle": "1ADA",
+      "dxf_center_mm": {
+        "x": 7.115,
+        "y": 32.0
+      },
+      "ai_detected_center_pt": [
+        19.14,
+        273.48
+      ],
+      "ai_detected_radius_pt": 9.299999999999999,
+      "control_map_center_pt": {
+        "x": 20.168513,
+        "y": 273.543331
+      },
+      "center_residual_pt": 1.0305,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "small-02",
+      "dxf_handle": "1ADB",
+      "dxf_center_mm": {
+        "x": 18.565,
+        "y": 32.0
+      },
+      "ai_detected_center_pt": [
+        51.6,
+        273.48
+      ],
+      "ai_detected_radius_pt": 9.24,
+      "control_map_center_pt": {
+        "x": 52.62522,
+        "y": 273.543331
+      },
+      "center_residual_pt": 1.0272,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "small-03",
+      "dxf_handle": "1ADC",
+      "dxf_center_mm": {
+        "x": 30.015,
+        "y": 32.0
+      },
+      "ai_detected_center_pt": [
+        84.06,
+        273.48
+      ],
+      "ai_detected_radius_pt": 9.299999999999999,
+      "control_map_center_pt": {
+        "x": 85.081926,
+        "y": 273.543331
+      },
+      "center_residual_pt": 1.0239,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "small-04",
+      "dxf_handle": "1ADD",
+      "dxf_center_mm": {
+        "x": 41.465,
+        "y": 32.0
+      },
+      "ai_detected_center_pt": [
+        116.52,
+        273.48
+      ],
+      "ai_detected_radius_pt": 9.24,
+      "control_map_center_pt": {
+        "x": 117.538633,
+        "y": 273.543331
+      },
+      "center_residual_pt": 1.0206,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "small-05",
+      "dxf_handle": "1ADE",
+      "dxf_center_mm": {
+        "x": 52.915,
+        "y": 32.0
+      },
+      "ai_detected_center_pt": [
+        148.98,
+        273.48
+      ],
+      "ai_detected_radius_pt": 9.299999999999999,
+      "control_map_center_pt": {
+        "x": 149.99534,
+        "y": 273.543331
+      },
+      "center_residual_pt": 1.0173,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "small-06",
+      "dxf_handle": "1ADF",
+      "dxf_center_mm": {
+        "x": 64.365,
+        "y": 32.0
+      },
+      "ai_detected_center_pt": [
+        181.44,
+        273.48
+      ],
+      "ai_detected_radius_pt": 9.24,
+      "control_map_center_pt": {
+        "x": 182.452047,
+        "y": 273.543331
+      },
+      "center_residual_pt": 1.014,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "small-07",
+      "dxf_handle": "1AE0",
+      "dxf_center_mm": {
+        "x": 7.115,
+        "y": 17.4
+      },
+      "ai_detected_center_pt": [
+        19.14,
+        314.88
+      ],
+      "ai_detected_radius_pt": 9.299999999999999,
+      "control_map_center_pt": {
+        "x": 20.168513,
+        "y": 314.929161
+      },
+      "center_residual_pt": 1.0297,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "small-08",
+      "dxf_handle": "1AE1",
+      "dxf_center_mm": {
+        "x": 18.565,
+        "y": 17.4
+      },
+      "ai_detected_center_pt": [
+        51.6,
+        314.88
+      ],
+      "ai_detected_radius_pt": 9.24,
+      "control_map_center_pt": {
+        "x": 52.62522,
+        "y": 314.929161
+      },
+      "center_residual_pt": 1.0264,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "small-09",
+      "dxf_handle": "1AE2",
+      "dxf_center_mm": {
+        "x": 30.015,
+        "y": 17.4
+      },
+      "ai_detected_center_pt": [
+        84.06,
+        314.88
+      ],
+      "ai_detected_radius_pt": 9.299999999999999,
+      "control_map_center_pt": {
+        "x": 85.081926,
+        "y": 314.929161
+      },
+      "center_residual_pt": 1.0231,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "small-10",
+      "dxf_handle": "1AE3",
+      "dxf_center_mm": {
+        "x": 41.465,
+        "y": 17.4
+      },
+      "ai_detected_center_pt": [
+        116.52,
+        314.88
+      ],
+      "ai_detected_radius_pt": 9.24,
+      "control_map_center_pt": {
+        "x": 117.538633,
+        "y": 314.929161
+      },
+      "center_residual_pt": 1.0198,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "small-11",
+      "dxf_handle": "1AE4",
+      "dxf_center_mm": {
+        "x": 52.915,
+        "y": 17.4
+      },
+      "ai_detected_center_pt": [
+        148.92,
+        314.88
+      ],
+      "ai_detected_radius_pt": 9.24,
+      "control_map_center_pt": {
+        "x": 149.99534,
+        "y": 314.929161
+      },
+      "center_residual_pt": 1.0765,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    },
+    {
+      "id": "small-12",
+      "dxf_handle": "1AE5",
+      "dxf_center_mm": {
+        "x": 64.365,
+        "y": 17.4
+      },
+      "ai_detected_center_pt": [
+        181.44,
+        314.88
+      ],
+      "ai_detected_radius_pt": 9.24,
+      "control_map_center_pt": {
+        "x": 182.452047,
+        "y": 314.929161
+      },
+      "center_residual_pt": 1.0132,
+      "label": null,
+      "label_evidence": "unlabelled",
+      "note": "No unambiguous text-to-control association from this flattened PDF render"
+    }
+  ]
+}
