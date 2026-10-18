@@ -128,7 +128,7 @@
   },
   "gate_matrix": {
     "path": "provenance/current-gate-matrix-20261018.json",
-    "sha256": "13232463cf2bd37a119861c99be638818928570027f95496025949e0a4ee7619"
+    "sha256": "727eaca9f71ed0f01b82d0c31db325d19b917ed881ad89687874781eb2fb9957"
   },
   "open_gates": [
     "AU registration and auval",
