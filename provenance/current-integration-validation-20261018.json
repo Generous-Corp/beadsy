@@ -28,7 +28,10 @@
     "panel_capture": {
       "path": "build-full-current/grainfield-editor-full-current-20261018.png",
       "sha256": "e5e71a9e08be0c96019084b091f63949c0d9becdaa39168a99fbd836c846f64a",
-      "logical_size": [201, 364],
+      "logical_size": [
+        201,
+        364
+      ],
       "backend": "native editor capture"
     },
     "knob_captures": {
@@ -45,7 +48,12 @@
         "sha256": "a7d29c0a1220454c803301abd1e633986ba54834f485e2972d10e86c0c6f0040"
       }
     },
-    "fidelity": "rights-cleared straight-on reference and exact pixel/geometry residual comparison remain open"
+    "fidelity": "rights-cleared straight-on reference and exact pixel/geometry residual comparison remain open",
+    "combined_sdk_bridge": {
+      "status": "pass",
+      "receipt": "provenance/combined-sdk-bridge-validation-20261018.json",
+      "evidence": "single Release SDK prefix exposes Pulp::view and standalone state API; editor/core/state targets pass"
+    }
   },
   "realtime_allocation": {
     "status": "inconclusive",
@@ -72,7 +80,7 @@
         "sha256": "29f4695dda7c95fac6a3a85528195f59567450babfa76b6eee188d83599108cc"
       },
       "peak": 0.3690662384033203,
-      "rms": 0.18232463462381455,
+      "rms": 0.18232463462381454,
       "longest_silence_run": 2
     },
     "state": "not-run; no LV2 state extension declared and host has no state round-trip command",
@@ -97,5 +105,6 @@
     "AU registration/auval",
     "AAX SDK/validator",
     "rights-cleared pixel fidelity comparison"
-  ]
+  ],
+  "standalone_state": "pass_combined_sdk_bridge: 5 assertions in 1 test case passed from build-bridge-current"
 }

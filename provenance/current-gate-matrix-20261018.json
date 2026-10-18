@@ -29,7 +29,11 @@
     },
     "standalone_probe": {
       "path": "provenance/standalone-current-build-probe-20261018.json",
-      "sha256": "9c90a313c51d21991047257df56e5c972931437ebd7fbdc2e0cda68e3bb97106"
+      "sha256": "c841fee37f7a3fd189af29f5c5206b07401487be615ef59c6cdc8a289af19746"
+    },
+    "combined_sdk_bridge": {
+      "path": "provenance/combined-sdk-bridge-validation-20261018.json",
+      "sha256": "5f99096257e8b71ff646ab39bee95b5f9e7a97deaa50380f96bc529cd9510db5"
     }
   },
   "gates": [
@@ -66,8 +70,8 @@
     {
       "id": "formats",
       "status": "partial_with_explicit_blockers",
-      "evidence": "VST3/CLAP/LV2 evidence current; standalone state passes in the standalone SDK export but the combined GPU/view prefix lacks the state-file API; AU registration and AAX unavailable; LV2 state not-run",
-      "next": "GUI AU validation, LV2 state strategy, or explicit release-scope decision"
+      "evidence": "VST3/CLAP/LV2 evidence current; a single combined SDK prefix now passes Grainfield standalone state (5 assertions) and native editor/core builds; AU registration and AAX unavailable; LV2 state not-run",
+      "next": "GUI AU validation, LV2 state strategy, and explicit release-scope decision"
     },
     {
       "id": "provenance-rights",
