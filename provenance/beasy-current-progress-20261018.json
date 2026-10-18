@@ -2,12 +2,12 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "23b3686529d7b991a4bce24c214154cc108710ce",
+  "source_head": "2e8a1b3",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
       "command": "ctest --test-dir build-beasy-renamed --output-on-failure",
-      "passed": 30,
+      "passed": 32,
       "failed": 0
     },
     "control_map": {
@@ -30,6 +30,14 @@
       "status": "implemented",
       "law": "centered -1..1 host amount parameters",
       "test": "Beasy preserves centered Beads attenuverter law"
+    },
+    "midi_velocity_timing": {
+      "status": "implemented",
+      "tests": [
+        "Beasy MIDI velocity gain changes at a mid-block note-on",
+        "Beasy MIDI note replacement restores the active note velocity"
+      ],
+      "allocation": "prepared event/stream buffers; no callback allocation"
     }
   },
   "open_gates": [
