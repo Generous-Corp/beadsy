@@ -1,0 +1,30 @@
+{
+  "schema": "grainfield.host-validation.v1",
+  "project": "Grainfield",
+  "source_head": "6e132c2f883f5687fe11b86fa4c8b0983cd71f7b",
+  "status": "partial",
+  "checks": [
+    {
+      "format": "CLAP",
+      "status": "pass",
+      "command": "clap-validator validate build/CLAP/Grainfield.clap",
+      "result": "20 tests run, 17 passed, 0 failed, 3 skipped, 1 warning",
+      "receipt": "provenance/clap-validator.txt",
+      "receipt_sha256": "168b4057aa106fca4dc136b48b6a3afca28bc7cc2569240ed44104735fc79187"
+    },
+    {
+      "format": "AUv2",
+      "status": "blocked",
+      "command": "auval -v aumu Grai Inde",
+      "result": "component not registered; auval could not find the component",
+      "receipt": "provenance/auval.txt",
+      "receipt_sha256": "892ea3f8a0bb0fb38116e7a63b04d8e35a42ae1b9de69eddd1b90dca72b6d3fb"
+    }
+  ],
+  "open_gates": [
+    "registered AUv2 component validation",
+    "VST3 validator/artifact",
+    "AAX SDK and validator",
+    "DAW editor/audio/state smoke"
+  ]
+}
