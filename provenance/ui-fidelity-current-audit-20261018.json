@@ -5,7 +5,7 @@
   "supersedes": "provenance/ui-fidelity-gate-audit-20261018.json",
   "evidence": {
     "provenance/control-map-source-audit-20261018.json": "7dcd3610f6d1089127fb9c79c8836e22b893a7fdc54d4f5942b00cb3b9635f7b",
-    "provenance/current-integration-validation-20261018.json": "54c577967cf0586558c450c2b0623c223152a3f2b124e6bdc6cba51e262eecb1",
+    "provenance/current-integration-validation-20261018.json": "70d6fb708de0aea5b3c0c984c3b9995ed5485f02b0fbc2de473d0355bdee7546",
     "provenance/knob-render-audit-20261018.json": "c2e6dfc7c8d22d1c2929c74b0ab9475654ae87dda90c8f5653fc9acf7345326b",
     "provenance/knob-calibration-v2.json": "dd6756e015a4852eee96654326fbb5a18323bdc61758f4eb765f22903a8ae2d8",
     "provenance/current-provenance-reconciliation-20261018.json": "c0b76e6c12b69991ecf0b7b0fe36a972aa8f9f990f0906bd65a0572421d82ffc"
