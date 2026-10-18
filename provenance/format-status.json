@@ -4,7 +4,7 @@
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
-    "git_head": "0e0471c835ce2476f026bbe29d53764e0d65c039"
+    "git_head": "ce3e9c113ee7cf4cb084ffcc67f9501ccc9fa75b"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build",
@@ -27,7 +27,8 @@
           "sha256": "84d1afee197ba073c1d2dbc56e011b1664008432d3f521f9a3178463b2344a3a"
         },
         "pulp_target_present": true,
-        "host_validation": "partial"
+        "host_validation": "partial",
+        "artifact_status": "present"
       }
     },
     {
@@ -43,13 +44,14 @@
           "sha256": "23709cebe0044ed46bbdbffb1455bb9d941f22d425451be310d09c371a25c359"
         },
         "pulp_target_present": true,
-        "host_validation": "pass"
+        "host_validation": "pass",
+        "artifact_status": "present"
       }
     },
     {
       "format": "LV2",
-      "status": "supported",
-      "reason": "declared target produced an artifact, but pulp host cannot instantiate it: TTLs expose no audio ports and URID mapping is unavailable",
+      "status": "partial",
+      "reason": "LV2 artifact is present, but host validation is blocked: TTLs expose no usable audio ports and URID mapping is unavailable.",
       "evidence": {
         "artifact": {
           "path": "LV2/Grainfield.lv2/Grainfield.so",
@@ -59,13 +61,14 @@
           "sha256": "4752741abdf6739a4bd2f5b78efc3e3a7c747f75bc4337d9f482be940feb2e6b"
         },
         "pulp_target_present": true,
-        "host_validation": "blocked"
+        "host_validation": "blocked",
+        "artifact_status": "present"
       }
     },
     {
       "format": "AU",
-      "status": "supported",
-      "reason": "declared target produced an artifact and metadata passes; reversible user registration/auval and pulp host load remain blocked by host discovery",
+      "status": "partial",
+      "reason": "AU artifact and metadata are present, but host validation is blocked: reversible registration/auval and Pulp host load cannot discover the component.",
       "evidence": {
         "artifact": {
           "path": "AU/Grainfield.component/Contents/MacOS/Grainfield",
@@ -76,7 +79,8 @@
         },
         "pulp_target_present": true,
         "host_validation": "blocked",
-        "registration_receipt": "provenance/au-registration-diagnostic.json"
+        "registration_receipt": "provenance/au-registration-diagnostic.json",
+        "artifact_status": "present"
       }
     },
     {
@@ -90,13 +94,14 @@
           "is_file": false
         },
         "pulp_target_present": false,
-        "host_validation": "not_run"
+        "host_validation": "not_run",
+        "artifact_status": "absent"
       }
     },
     {
       "format": "Standalone",
-      "status": "supported",
-      "reason": "normal application-path launch and AppleScript graceful quit pass; standalone state save/restore and independent audio evidence remain unavailable",
+      "status": "partial",
+      "reason": "Standalone artifact is present and launch/quit evidence exists, but host validation is partial; structured editor/audio/state evidence remains unavailable.",
       "evidence": {
         "artifact": {
           "path": "Grainfield.app/Contents/MacOS/Grainfield",
@@ -107,10 +112,16 @@
         },
         "pulp_target_present": true,
         "host_validation": "partial",
-        "app_validation_receipt": "provenance/standalone-app-validation.json"
+        "app_validation_receipt": "provenance/standalone-app-validation.json",
+        "artifact_status": "present"
       }
     }
   ],
   "host_validation_receipt": "provenance/host-validation-matrix.txt",
-  "host_validation_receipt_sha256": "c18336709f65867230465a1a4cb251b2b7154e40580564343c89c638d85be8ef"
+  "host_validation_receipt_sha256": "c18336709f65867230465a1a4cb251b2b7154e40580564343c89c638d85be8ef",
+  "status_semantics": {
+    "artifact_status": "Reports whether the declared format artifact exists and is measurable.",
+    "status": "Reports release readiness after host validation; artifact presence alone does not imply supported.",
+    "host_validation": "Retained per-format under evidence.host_validation and is authoritative for host claims."
+  }
 }
