@@ -1,0 +1,95 @@
+{
+  "schema": "grainfield.ui-fidelity-gate-audit.v1",
+  "status": "blocked",
+  "project": "Grainfield",
+  "audited_at": "2026-10-18",
+  "source_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
+  "scope": "Read-only audit of Beads documentation/assets and Grainfield control, rights, geometry, and procedural-knob acceptance gates.",
+  "documentation_review": {
+    "documentation_root": "/Users/danielraffel/Code/mutable-instruments-documentation/docs/modules/beads",
+    "files_reviewed": [
+      {
+        "path": "index.md",
+        "sha256": "4334a6636e2b0ba042f61806ff28bf57153df417e5ea6324181e91b424a7c25a",
+        "relevance": "front-panel feature and control-family descriptions"
+      },
+      {
+        "path": "manual.md",
+        "sha256": "67f311be1c926491e173f16b81b5f3a9ac00ef0a8cd33ce11a730b310372b0fb",
+        "relevance": "TIME/PITCH/SIZE/SHAPE, attenurandomizers, feedback/dry-wet/reverb semantics"
+      },
+      {
+        "path": "images/front.jpg",
+        "sha256": "4346619e9d47cb8d8ac9604d3661776b7ce5dcc37cfe74f36d3d7f3d62b031bf",
+        "relevance": "straight-on physical knob and pointer reference; reference-only"
+      },
+      {
+        "path": "images/manual.png",
+        "sha256": "cac1417d67262373a3ca3f4813ff0943cbb5ffa7fbc0f9f6de643155b37f8bcf",
+        "relevance": "front-panel control legend; reference-only"
+      }
+    ],
+    "finding": "Documentation establishes control-family behavior and labels but supplies no machine-readable correspondence from DXF handles to physical controls."
+  },
+  "gates": {
+    "geometry_placement": {
+      "status": "pass-as-placement-evidence",
+      "evidence": "provenance/ai-control-geometry-evidence.json",
+      "mean_center_residual_pt": 1.0113,
+      "max_center_residual_pt": 1.0765,
+      "rights_boundary": "AI/PDF artwork remains external and is not redistributed"
+    },
+    "authoritative_control_mapping": {
+      "status": "blocked",
+      "evidence": [
+        "provenance/control-map.json",
+        "provenance/control-semantics-audit.md",
+        "provenance/control-binding-gap.json"
+      ],
+      "dxf_controls": 24,
+      "bound_controls": 5,
+      "provisional_controls": 19,
+      "source_semantics_known_but_coordinate_unresolved": [
+        "TIME_AMOUNT",
+        "SIZE_AMOUNT",
+        "SHAPE_AMOUNT",
+        "PITCH_AMOUNT",
+        "FEEDBACK",
+        "DRY_WET",
+        "REVERB"
+      ],
+      "reason": "DXF contains geometry and handles but no labels, net IDs, component references, or export manifest tying the 19 auxiliary/small entities to source semantics. Source processing order and visual proximity are insufficient evidence."
+    },
+    "rights_cleared_reference": {
+      "status": "blocked",
+      "evidence": [
+        "provenance/asset-validation.json",
+        "provenance/legal-attribution-audit.json",
+        "provenance/control-map.json"
+      ],
+      "finding": "Panel artwork, AI/DXF-derived artwork, and physical reference images remain outside the repository and pending rights/share-alike/trademark review. No redistribution or release fidelity claim is authorized."
+    },
+    "procedural_knob_visual_acceptance": {
+      "status": "partial; exact-head acceptance blocked",
+      "evidence": [
+        "provenance/knob-render-audit-20261018.json",
+        "provenance/knob-calibration-v2.json",
+        "provenance/knob-skin-manifest.json",
+        "provenance/editor-capture-v2.json"
+      ],
+      "finding": "The v2 procedural target models a black segmented annulus, off-white cap, and broad pointer, but existing knob audit/capture receipts are bound to earlier heads and full-panel pixel comparison is explicitly not run."
+    }
+  },
+  "decision": "No control binding or visual-release claim is made. Existing geometry evidence is retained as placement-only; all ambiguous controls remain provisional.",
+  "required_next_evidence": [
+    "Rights-cleared straight-on panel/reference or an explicit permission and share-alike decision.",
+    "Design-tool export manifest or PCB/panel component map with control labels/source IDs and DXF coordinates.",
+    "Fresh exact-head full-panel render and normalized pixel/geometry comparison after rights clearance.",
+    "Fresh exact-head deterministic min/mid/max knob renders and acceptance receipt."
+  ],
+  "negative_controls": [
+    "Do not assign aux-* or small-* entities by DXF order, source enum order, visual proximity, or screenshot guess.",
+    "Do not embed or redistribute Beads panel artwork, AI/PDF, CAD, or reference photos before rights review.",
+    "Do not call procedural knob calibration release-faithful while exact-head full-panel comparison is absent."
+  ]
+}
