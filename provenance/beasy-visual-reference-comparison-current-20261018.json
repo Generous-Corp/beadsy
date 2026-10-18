@@ -1,6 +1,6 @@
 {
   "schema": "beasy.visual-reference-comparison.v1",
-  "source_head": "b1135421d28b89c768013738f30e3a1bf5c4cc8d",
+  "source_head": "c57f4883d3bf8393d0bb2382dc4e87d9d8c78648",
   "reference": {
     "path": "/Users/danielraffel/Documents/beads-panel.png",
     "bytes": 265909,
@@ -8,9 +8,9 @@
     "redistribution": "not included"
   },
   "capture": {
-    "path": "build-beasy-renamed/beasy-editor-seed-current.png",
-    "bytes": 88969,
-    "sha256": "e90f2b677174bfa541e2f290b0bc7465af10bfa8cedce9f20286238467aa9769",
+    "path": "build-beasy-renamed/beasy-editor-ui-fidelity-pass.png",
+    "bytes": 95197,
+    "sha256": "04dc4f8591a663f6d6b7ff96c5ef12495e5a6b1dce24dd46d8a46c8c7d56366e",
     "size": [
       402,
       728
@@ -18,10 +18,10 @@
   },
   "method": "reference resized to capture dimensions; RGB mean absolute error and luminance edge correlation",
   "metrics": {
-    "mean_absolute_rgb_error": 53.93568558307364,
-    "normalized_mean_absolute_rgb_error": 0.21151249248264173,
-    "edge_correlation": 0.09041091869803422
+    "mean_absolute_rgb_error": 54.643772893907894,
+    "normalized_mean_absolute_rgb_error": 0.21428930546630548,
+    "edge_correlation": 0.02879476810275088
   },
   "status": "partial_geometry_signal_only",
-  "remaining": "photo/material/color differences and control alignment require rights-cleared annotated reference comparison"
+  "remaining": "Photo/material/color differences and control alignment require rights-cleared annotated reference comparison; this local authoring reference is not redistributed."
 }
