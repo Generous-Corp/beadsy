@@ -174,8 +174,14 @@ def main() -> int:
     if args.source_stmlib_root:
         source_build_include = out / "source-include"
         (source_build_include / "beads").parent.mkdir(parents=True, exist_ok=True)
-        os.symlink(source_include / "beads", source_build_include / "beads")
-        os.symlink(source_stmlib, source_build_include / "stmlib")
+        for name, target in (("beads", source_include / "beads"),
+                             ("stmlib", source_stmlib)):
+            link = source_build_include / name
+            if link.is_symlink() and link.resolve() == target.resolve():
+                continue
+            if link.exists() or link.is_symlink():
+                raise SystemExit(f"refusing to replace private include path: {link}")
+            os.symlink(target, link)
 
     probe = repo / "scripts" / "beasy_dsp_matrix_probe.cpp"
     source_files = [source_build_include / relative for relative in SOURCE_FILES]
