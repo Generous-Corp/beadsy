@@ -34,14 +34,14 @@
     "vst3validator": {
       "path": null,
       "status": "unavailable",
-      "reason": "Steinberg vst3validator executable was not found"
+      "reason": "No vst3validator executable or configured SDK validator build target was found; SDK contains validator sample headers only"
     }
   },
   "bundle_inspection": {
     "moduleinfo": {
       "path": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3/Contents/Resources/moduleinfo.json",
       "exists": false,
-      "reason": "SDK build emitted no moduleinfo.json"
+      "reason": "External evidence bundle has no moduleinfo.json; installed SDK exposes parser/creator headers but no generation executable/target"
     },
     "info_plist": {
       "path": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3/Contents/Info.plist",
@@ -66,5 +66,6 @@
     "VST3 host/editor/audio/state evidence beyond pluginval is not included",
     "AAX SDK and validator unavailable"
   ],
-  "sdk": "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0"
+  "sdk": "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0",
+  "toolchain_diagnostic": "provenance/vst3-toolchain-diagnostic.json"
 }

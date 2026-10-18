@@ -1,0 +1,24 @@
+{
+  "schema": "grainfield.vst3-toolchain-diagnostic.v1",
+  "sdk_prefix": "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0",
+  "sdk_version": "0.990.1",
+  "sdk_provenance": "development",
+  "moduleinfo": {
+    "bundle_path": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3/Contents/Resources/moduleinfo.json",
+    "exists": false,
+    "sdk_headers_present": [
+      "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0/external/vst3sdk/public.sdk/source/vst/moduleinfo/moduleinfo.h",
+      "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0/external/vst3sdk/public.sdk/source/vst/moduleinfo/moduleinfocreator.h",
+      "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0/external/vst3sdk/public.sdk/source/vst/moduleinfo/moduleinfoparser.h"
+    ],
+    "generator_executable_found": false,
+    "configured_generation_target_found": false
+  },
+  "validator": {
+    "command": "vst3validator",
+    "executable_found": false,
+    "sdk_validator_source_present": "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0/external/vst3sdk/public.sdk/samples/vst-hosting/validator/source/validator.h",
+    "sdk_validator_build_target_found": false
+  },
+  "conclusion": "Installed development SDK exposes moduleinfo parser/creator headers and validator sample sources only; no generator/validator executable or configured build target was found. VST3 remains partial."
+}
