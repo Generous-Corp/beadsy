@@ -1,14 +1,14 @@
 {
   "schema": "beasy.ui-fidelity.v2",
-  "source_head": "c68624ea0ca767a2c248839a07fefbbd758fc6ef",
+  "source_head": "287820f52407914ca455ee8339d94d655b5ce711",
   "capture": {
-    "path": "build-beasy-renamed/beasy-editor-light-current.png",
-    "sha256": "3047c40bddb851661e88359898f66dade44ee12298225ec3edf9339e60eddd2f",
+    "path": "build-beasy-renamed/beasy-editor-ui-fidelity-final.png",
+    "sha256": "c6774866b426d74aa68a2026a6467cbdf121fcf0f3cd1f9f8bfa19414e299d52",
     "status": "pass_native_capture"
   },
   "focused_tests": {
     "command": "ctest --test-dir build-beasy-renamed --output-on-failure",
-    "passed": 35,
+    "passed": 37,
     "failed": 0
   },
   "visual_scope": {
@@ -17,7 +17,8 @@
     "jacks": "procedural straight-on metal jack treatment",
     "panel": "independent light-panel scaffold aligned to the straight-on reference structure",
     "branding": "Beasy only; no upstream logo or artwork embedded",
-    "seed_control": "native source-backed OFF/ON/LOCKED button with state LED and automation listener"
+    "seed_control": "native source-backed OFF/ON/LOCKED button with state LED and automation listener",
+    "top_controls": "procedural Freeze and source-backed Seed controls aligned to reference hierarchy"
   },
   "remaining": [
     "pixel comparison against a rights-cleared reference",
