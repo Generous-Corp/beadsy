@@ -1,0 +1,42 @@
+{
+  "schema": "grainfield.upstream-rights-source-audit.v1",
+  "verified_at": "2026-10-18",
+  "grainfield_head": "4117f8a128b61776eff3c98e6c8d40d91da154ce",
+  "sources": [
+    {
+      "kind": "Beads source README",
+      "url": "https://github.com/pichenettes/eurorack/blob/f4cfa7697095a28d292bff758beb51deb49b5a86/README.md",
+      "local_repo": "/Users/danielraffel/Code/eurorack/beads",
+      "commit": "f4cfa7697095a28d292bff758beb51deb49b5a86",
+      "facts": [
+        "STM32F code: MIT",
+        "AVR code: GPL-3.0",
+        "hardware: CC BY-SA 3.0",
+        "derivative works should avoid Mutable Instruments and original module names"
+      ]
+    },
+    {
+      "kind": "Beads documentation",
+      "url": "https://github.com/pichenettes/mutable-instruments-documentation/tree/14d04a75ad54cd97e5e5f7b8f5a2ec7bb23046d5/docs/modules/beads",
+      "local_repo": "/Users/danielraffel/Code/mutable-instruments-documentation",
+      "commit": "14d04a75ad54cd97e5e5f7b8f5a2ec7bb23046d5",
+      "facts": [
+        "documents controls and behavior",
+        "contains photographs, manuals, and logos",
+        "no file-level redistribution permission found in audited tree"
+      ]
+    }
+  ],
+  "decisions": {
+    "Grainfield": "MIT with explicit independent branding",
+    "selected_dsp": "retain upstream MIT notices and source manifest",
+    "artwork_cad_photos_logos_manuals": "not bundled; rights/share-alike decision remains open",
+    "AVR_or_GPL_material": "excluded",
+    "trademark": "no clearance claimed; use Grainfield name"
+  },
+  "artifacts": {
+    "ATTRIBUTION.md": "c7a1a82ac9d8440d1495705e9d5e834cc9e0d0f4b465bdc7da425fcec03ae6e4",
+    "LICENSES.md": "cb43a765b76e6f193e8bbb8a6a21f77a0c9c603a805a1e47463ce999bbac766f"
+  },
+  "release_gate": "Do not distribute upstream artwork or documentation material until file-level attribution and share-alike/permission evidence is recorded."
+}

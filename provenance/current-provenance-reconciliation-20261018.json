@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.current-provenance-reconciliation.v1",
   "verified_at": "2026-10-18",
-  "grainfield_source_head": "bb3d8529363b2dd38d071d9822c982201744556d",
+  "grainfield_source_head": "4117f8a128b61776eff3c98e6c8d40d91da154ce",
   "product": {
     "name": "Grainfield",
     "license": "MIT",
@@ -18,7 +18,8 @@
     "panel_artwork_cad_reference": "blocked_pending_permission_and_share_alike_decision",
     "waves_bin": "blocked_pending_notice_and_redistribution_review",
     "trademarks": "non_affiliation_language_present; clearance not claimed",
-    "bundle_check": "no upstream artwork, CAD, logos, or reference photos included"
+    "bundle_check": "no upstream artwork, CAD, logos, or reference photos included",
+    "source_audit": "provenance/upstream-rights-source-audit-20261018.json"
   },
   "importer_boundary": {
     "status": "fail_closed",
@@ -27,12 +28,13 @@
     "evidence": "pulp-pr10533-refresh-20261018 local commits 33c66f9be80ab3bf7031c8f54af31946aea8d838 and 9e1f520aa0369f16766e29f951699b1f4b250f43"
   },
   "hashed_inputs": {
-    "ATTRIBUTION.md": "adecf63614ae111b4281ad185f832461e0293a7f28f775c036d50eaa43fc0121",
+    "ATTRIBUTION.md": "c7a1a82ac9d8440d1495705e9d5e834cc9e0d0f4b465bdc7da425fcec03ae6e4",
     "LICENSES.md": "cb43a765b76e6f193e8bbb8a6a21f77a0c9c603a805a1e47463ce999bbac766f",
     "provenance/source-manifest.json": "9ccf05171ba9d867b618239a2a2c847c82184e2c0655bc11ee0931a2a45ebac2",
     "provenance/source-to-port.json": "9601b8178e3b74a3161986693dcbf7a9026938e32cd684f3e929d3da51147b1e",
     "provenance/rights-attribution-audit-v2.json": "dcf6142ee0b1589f954ab474adb8338b888505a0cb3b3adc59d4f80230a04491",
-    "provenance/control-map.json": "6e99b2a0324a3211fa318d5bf6a7dcb743804afa10585c5c22c2f6f9d508bee5"
+    "provenance/control-map.json": "6e99b2a0324a3211fa318d5bf6a7dcb743804afa10585c5c22c2f6f9d508bee5",
+    "provenance/upstream-rights-source-audit-20261018.json": "c1d494ee6681a70c55e34fccbf4134591fb070cc5b193367c0e190c73e56bfc0"
   },
   "release_decision": "not_release_ready; rights and legal review remain open"
 }
