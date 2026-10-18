@@ -5,8 +5,10 @@
 #include "grainfield_editor.hpp"
 
 #include <cstdlib>
+#include <array>
 #include <cmath>
 #include <fstream>
+#include <filesystem>
 
 TEST_CASE("Grainfield knob skin preserves mapped DXF diameter") {
     constexpr float mapped_diameter = 9.25f * 2.0f * (201.0f / 70.8f);
@@ -34,6 +36,40 @@ TEST_CASE("Grainfield native editor captures a non-empty faithful panel frame") 
     REQUIRE(has_frame);
     REQUIRE(capture.png.size() > 1000);
     if (const char* path = std::getenv("GRAINFIELD_EDITOR_CAPTURE")) {
+        std::ofstream out(path, std::ios::binary);
+        out.write(reinterpret_cast<const char*>(capture.png.data()),
+                  static_cast<std::streamsize>(capture.png.size()));
+        REQUIRE(static_cast<bool>(out));
+    }
+}
+
+TEST_CASE("Grainfield procedural knob skin renders deterministic min mid max references") {
+    const char* capture_dir = std::getenv("GRAINFIELD_KNOB_SKIN_CAPTURE_DIR");
+    if (!capture_dir) return;
+    std::filesystem::create_directories(capture_dir);
+
+    constexpr float diameter = 96.0f;
+    constexpr float height = diameter * 1.25f;
+    for (const auto& sample : std::array{std::pair{"min", 0.0f},
+                                         std::pair{"mid", 0.5f},
+                                         std::pair{"max", 1.0f}}) {
+        pulp::view::View root;
+        root.set_bounds({0.0f, 0.0f, diameter, height});
+        auto knob = std::make_unique<grainfield::detail::PanelKnob>(
+            "reference-" + std::string(sample.first), diameter);
+        knob->set_bounds({0.0f, 0.0f, diameter, height});
+        knob->flex().preferred_width = diameter;
+        knob->flex().preferred_height = height;
+        knob->set_value(sample.second);
+        root.add_child(std::move(knob));
+
+        const auto capture = pulp::view::capture_view(
+            root, static_cast<int>(diameter), static_cast<int>(height), 2.0f,
+            pulp::view::ScreenshotBackend::auto_select);
+        REQUIRE(capture.ok);
+        REQUIRE(capture.png.size() > 1000);
+        const auto path = std::filesystem::path(capture_dir) /
+                          ("grainfield-knob-" + std::string(sample.first) + ".png");
         std::ofstream out(path, std::ios::binary);
         out.write(reinterpret_cast<const char*>(capture.png.data()),
                   static_cast<std::streamsize>(capture.png.size()));

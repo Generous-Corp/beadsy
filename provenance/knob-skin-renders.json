@@ -1,0 +1,65 @@
+{
+  "schema": "grainfield.knob-skin-renders.v1",
+  "status": "provisional_calibration_only",
+  "project": "Grainfield",
+  "source_head": "6aa08a590b925dca58eac982a925ecd1ed53ae3d",
+  "generated_at": "2026-10-17",
+  "renderer": {
+    "surface": "native grainfield::detail::PanelKnob",
+    "capture": "pulp::view::capture_view",
+    "backend": "auto_select (runtime-selected)",
+    "requested_logical_size": "96x120",
+    "scale": 2.0,
+    "rights_gated_panel_artwork_used": false
+  },
+  "values": {
+    "min": 0.0,
+    "mid": 0.5,
+    "max": 1.0
+  },
+  "captures": [
+    {
+      "name": "max",
+      "path": "provenance/knob-skins/grainfield-knob-max.png",
+      "sha256": "ed6c2210c1eb888daf65bf2d044bf3e6b1aa5c57c8d142ec9e8b9cc8ed787e83",
+      "bytes": 12717,
+      "width": 192,
+      "height": 240,
+      "logical_width": 96,
+      "logical_height": 120,
+      "scale": 2.0
+    },
+    {
+      "name": "mid",
+      "path": "provenance/knob-skins/grainfield-knob-mid.png",
+      "sha256": "90c86f8138fd224f91ed2eafabf8d5575c29cdc95a658a01e0f0cd8090cc7165",
+      "bytes": 12301,
+      "width": 192,
+      "height": 240,
+      "logical_width": 96,
+      "logical_height": 120,
+      "scale": 2.0
+    },
+    {
+      "name": "min",
+      "path": "provenance/knob-skins/grainfield-knob-min.png",
+      "sha256": "04d5531c28aab982488791923bba49555440b129f22686337dc6534c1f6f6f74",
+      "bytes": 12665,
+      "width": 192,
+      "height": 240,
+      "logical_width": 96,
+      "logical_height": 120,
+      "scale": 2.0
+    }
+  ],
+  "determinism": {
+    "rerun": "second independent test invocation",
+    "sha256_match": true
+  },
+  "acceptance": {
+    "content_check": "PNG signature, dimensions, and >1000-byte capture assertions passed",
+    "material_fidelity": "not established; procedural provisional skin only",
+    "panel_alignment": "not established; no rights-gated panel artwork included",
+    "release_gate": "blocked_until_rights_and_calibration"
+  }
+}
