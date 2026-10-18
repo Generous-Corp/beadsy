@@ -22,6 +22,10 @@
     "au": {
       "path": "provenance/au-current-head-probe-20261018.json",
       "sha256": "9676d04e4ff8b9775ca9b6746e19828faf5fabd27b7732516e8ed4e6c3b1b1b0"
+    },
+    "ui_fidelity": {
+      "path": "provenance/ui-fidelity-current-audit-20261018.json",
+      "sha256": "a6adde1f3e27514ac5663ae53f9007cc1f6043c33080818311f119fe74b3c504"
     }
   },
   "gates": [
