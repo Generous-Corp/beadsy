@@ -1,13 +1,13 @@
 # Grainfield implementation status
 
 Updated 2026-10-18 against Grainfield source head
-`194e9705d9745e7a9c87c1ae4a2709d4642e3522`.
+`2c1f09549dec3bd3bc9d232f479004de6ea3aed9`.
 
 ## Current executable slice
 
 - Independent product name: Grainfield.
 - Project license: MIT for original project code.
-- Provenance: the source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings and `waves.bin` generator lineage are recorded. stmlib origins are unavailable locally, and internal GPL/third-party audit and redistribution remain blocked.
+- Provenance: the source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings, `waves.bin` lineage, and stmlib upstream license metadata are recorded. The stmlib audit is metadata-only: copied bytes and per-file notices remain unverified, with legal redistribution blocked.
 - DSP boundary: the Beads synth path only, with the reachable MIT-noticed
   source subset recorded under `third_party/beads_dsp`; the live-input effect
   path is now wired through the same noticed processor subset.
@@ -56,7 +56,7 @@ Updated 2026-10-18 against Grainfield source head
 3. Complete host editor/audio/state receipts where the current matrix is partial
    or blocked, retaining explicit negative evidence for AU/LV2/Standalone gaps,
    VST3 moduleinfo/Steinberg validator, and AAX.
-4. Resolve panel artwork permission and trademark clearance before redistribution; obtain unavailable stmlib origins, complete the internal GPL/third-party audit, and resolve converter feature diagnostics (currently inconclusive).
+4. Resolve panel artwork permission and trademark clearance; verify copied stmlib bytes and per-file notices, complete legal redistribution review, and resolve converter feature diagnostics (currently inconclusive).
 
 ## Release gates
 

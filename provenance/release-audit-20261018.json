@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "194e9705d9745e7a9c87c1ae4a2709d4642e3522",
+  "source_head": "2c1f09549dec3bd3bc9d232f479004de6ea3aed9",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -46,9 +46,9 @@
     {
       "id": "source-provenance",
       "status": "partial",
-      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, and provenance/converter-report.json",
-      "result": "Source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings and waves.bin lineage are recorded",
-      "reason": "stmlib origins are unavailable locally; internal GPL/third-party audit and redistribution clearance remain blocked; converter feature diagnostics are inconclusive"
+      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, and provenance/converter-report.json",
+      "result": "Source-to-port inventory is complete for recorded port files; Beads notices, waves lineage, and stmlib upstream license metadata are recorded",
+      "reason": "stmlib license audit verifies upstream metadata only; copied stmlib bytes and per-file notices are not verified, and converter diagnostics remain inconclusive"
     },
     {
       "id": "aax",
@@ -59,9 +59,9 @@
     {
       "id": "rights-and-release",
       "status": "blocked",
-      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, ATTRIBUTION.md, LICENSES.md, and provenance/converter-report.json",
-      "reason": "Panel artwork/reference permission and trademark clearance are pending; unavailable stmlib origins and internal GPL/third-party audit block redistribution; converter feature diagnostics are inconclusive",
-      "result": "Source-to-port inventory and local notice mappings are recorded, but redistribution remains blocked pending source-origin, internal-license, and artwork/trademark clearance"
+      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, ATTRIBUTION.md, LICENSES.md, and provenance/converter-report.json",
+      "reason": "Panel artwork/reference permission and trademark clearance are pending; copied stmlib byte verification, per-file notice mapping, and legal redistribution review remain open; converter diagnostics are inconclusive",
+      "result": "Local source-to-port and upstream license metadata are recorded, while copied-byte and legal redistribution gates remain unresolved"
     }
   ],
   "historical_receipts": [
@@ -84,6 +84,11 @@
       "path": "provenance/source-to-port.json",
       "source_head": "194e9705d9745e7a9c87c1ae4a2709d4642e3522",
       "note": "current source-to-port inventory; local Beads origins are verified, stmlib origins are unavailable, and redistribution remains blocked"
+    },
+    {
+      "path": "provenance/stmlib-license-audit.json",
+      "source_head": "2c1f09549dec3bd3bc9d232f479004de6ea3aed9",
+      "note": "metadata-only stmlib license audit; upstream classifications recorded but copied bytes and redistribution remain unverified"
     }
   ],
   "release_decision": "blocked"
