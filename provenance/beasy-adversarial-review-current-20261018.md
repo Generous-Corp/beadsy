@@ -1,10 +1,10 @@
 # Beasy adversarial review — current integration head
 
-Reviewed at source head `c7a27ce` on 2026-10-18. This review remains conservative: focused tests and artifact receipts do not close broader host, rights, UI, or release gates.
+Reviewed at source head `908b887` on 2026-10-18. This review remains conservative: focused tests and artifact receipts do not close broader host, rights, UI, or release gates.
 
 ## Evidence that holds
 
-- `ctest --test-dir build-beasy-renamed --output-on-failure`: 36/36 tests passed.
+- `ctest --test-dir build-beasy-renamed --output-on-failure`: 37/37 tests passed.
 - Direct DSP fixtures remain byte-identical: 48 baseline fixtures and 144 seed/gate fixtures, max absolute error 0 and RMSE 0.
 - Native editor capture and the source-backed Seed Mode button are proven. The Seed control cycles OFF → ON → LOCKED, updates its LED and accessibility label, and follows host state restoration.
 - The standalone state CLI saves a 386-byte state file and loads it successfully in a fresh process.
