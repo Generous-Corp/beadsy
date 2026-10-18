@@ -9,6 +9,7 @@
 #include <cmath>
 #include <fstream>
 #include <filesystem>
+#include <vector>
 
 TEST_CASE("Grainfield knob skin preserves mapped DXF diameter") {
     constexpr float mapped_diameter = 9.25f * 2.0f * (201.0f / 70.8f);
@@ -135,4 +136,43 @@ TEST_CASE("Grainfield modulation context menu updates and resets the selected LF
     REQUIRE_FALSE(processor.lfo(grainfield::kDensity).enabled);
     REQUIRE(processor.lfo(grainfield::kDensity).depth == 0.0f);
     REQUIRE_FALSE(native->modulation_context_target().has_value());
+}
+
+TEST_CASE("Grainfield bound editor knob emits a host automation gesture") {
+    grainfield::Grainfield processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+
+    std::vector<pulp::state::ParamID> begins;
+    std::vector<pulp::state::ParamID> ends;
+    store.set_gesture_callbacks(
+        [&begins](pulp::state::ParamID id) { begins.push_back(id); },
+        [&ends](pulp::state::ParamID id) { ends.push_back(id); });
+
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<grainfield::GrainfieldEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+    REQUIRE(native->child_count() >= 1);
+
+    // Controls are added in the same order as the panel map. The first child
+    // is the bound Density knob, so this exercises Grainfield's actual editor
+    // binding rather than a standalone generic Knob fixture.
+    auto* density = dynamic_cast<grainfield::detail::PanelKnob*>(
+        native->child_at(0));
+    REQUIRE(density != nullptr);
+    REQUIRE(density->id() == "grainfield-Density");
+    const float before = store.get_value(grainfield::kDensity);
+
+    const auto b = density->local_bounds();
+    const pulp::view::Point center{b.width * 0.5f, b.height * 0.5f};
+    density->on_mouse_down(center);
+    density->on_mouse_drag({center.x, center.y - 40.0f});
+    density->on_mouse_up({center.x, center.y - 40.0f});
+
+    REQUIRE(begins == std::vector<pulp::state::ParamID>{grainfield::kDensity});
+    REQUIRE(ends == std::vector<pulp::state::ParamID>{grainfield::kDensity});
+    REQUIRE(store.get_value(grainfield::kDensity) > before);
 }
