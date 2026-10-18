@@ -24,7 +24,8 @@
       "path": "build/grainfield-provisional-controls-v2.png",
       "bytes": 83065,
       "sha256": "e35dbb3dd406dee0ea102bbd8fb222e1dd758d5754184f5827b5fef36430f95b",
-      "binary_sha256": "3a72eb1ba4200c7ed288d25aa467e04be89682fd7618636f968dc4a41d19a1ec"
+      "binary_sha256": "3a72eb1ba4200c7ed288d25aa467e04be89682fd7618636f968dc4a41d19a1ec",
+      "visual_delta_from_scaffold": "none observed; disabled-state acceptance is hit-test/accessibility based"
     }
   },
   "release_gate": "provisional until source-backed labels and parameter semantics are established"
