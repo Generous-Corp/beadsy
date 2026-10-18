@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.host-validation.v1",
   "project": "Grainfield",
-  "source_head": "fba256a587640653feeed175d9daea024b68fb49",
+  "source_head": "d5cc980a15345b2d5c41686bc74b478084d6f739",
   "status": "partial",
   "checks": [
     {
@@ -20,7 +20,7 @@
       "command": "pulp-cpp host build/CLAP/Grainfield.clap --format clap",
       "result": "loaded Grainfield; 12 params; finite peak 0.190",
       "receipt": "provenance/clap-host.txt",
-      "receipt_sha256": "b5e4c037fc94f6f50b5728ab7d9baefa587f3c778abe7a428b182a24c72bfc39"
+      "receipt_sha256": "6b4cacf6e20bddfe9cebab650d208ae17bfa9b0e86bee8f59f8ad1b52abce02d"
     },
     {
       "format": "CLAP",
@@ -36,11 +36,11 @@
     {
       "format": "AUv2",
       "check": "auval registration",
-      "status": "pass",
+      "status": "blocked",
       "command": "auval -v aumu Grai Inde",
-      "result": "registered user AUv2 component; auval validation succeeded",
+      "result": "component not registered; auval could not find the component",
       "receipt": "provenance/auval.txt",
-      "receipt_sha256": "c21a5165dfeee5fd97d98534502c3a14f392f5e6ff57ddf3cbf40a887e3322ac"
+      "receipt_sha256": "892ea3f8a0bb0fb38116e7a63b04d8e35a42ae1b9de69eddd1b90dca72b6d3fb"
     }
   ],
   "open_gates": [
@@ -55,7 +55,7 @@
     "host_inspect": "pulp-cpp plugin-inspect currently reports effect=true and inputs=2 while host load logs zero-input operation",
     "action": "investigate SDK host-inspect metadata path before release",
     "receipt": "provenance/clap-inspect.json",
-    "receipt_sha256": "3885d797014bd257f3b2d8e84b161952d497d2d1e42184501beee0ceba6360b5",
+    "receipt_sha256": "44019cf452c706f890f22816ac7083a2f261ee7983d1d122e925a0cedac8f5bf",
     "direct_clap_entry_receipt": "provenance/clap-entry-features.txt",
     "direct_clap_entry_receipt_sha256": "09ad87426b28b25ef34ebead5434a310e572b89d3ac21409a1677bc76583f526"
   }

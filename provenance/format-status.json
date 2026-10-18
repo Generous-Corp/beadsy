@@ -1,10 +1,10 @@
 {
   "schema": "grainfield.format-status.v1",
-  "generated_at": "2026-10-18T00:37:21.637503Z",
+  "generated_at": "2026-10-18T00:43:04.082656Z",
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
-    "git_head": "3d2860483d6fa0446ae3e1919a09c366a87a9515"
+    "git_head": "d5cc980a15345b2d5c41686bc74b478084d6f739"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build",
@@ -38,7 +38,7 @@
           "exists": true,
           "is_file": true,
           "bytes": 6676984,
-          "sha256": "7a8e63da0703b6843dcb56093d31d5d4e81ebe1fef6b19ddffe1a68a210467ab"
+          "sha256": "66195c648d91ed7126fd137a7b5eca6a7c69fad79b4165154adb900015c2595e"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -54,7 +54,7 @@
           "exists": true,
           "is_file": true,
           "bytes": 1469488,
-          "sha256": "8b7cfd865ceade01eaf2918e468b5313c91b08f482037a53b4ac192b9e815614"
+          "sha256": "5f8574717d4baeb46fdcf8d7eeb373e0d9dec946b4c425ce9bd5ead033b351fc"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -70,7 +70,7 @@
           "exists": true,
           "is_file": true,
           "bytes": 6029800,
-          "sha256": "3912146c2b03893b4fe29514bb6ca84d496480ef04c37daef280ad89c6de1eef"
+          "sha256": "bdca49e54f831779d69a6e42f7df175f3783e0f9c8bbed8b531bc38acf9ebf8d"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -100,7 +100,7 @@
           "exists": true,
           "is_file": true,
           "bytes": 6181272,
-          "sha256": "964a3fc80316d9eee87a08773e7ba7aa57382e551d8d15706b52f48df5944691"
+          "sha256": "aa26f9994057ff561ea152172f779026db36dc40816348286a538be1fe7ff8d1"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
