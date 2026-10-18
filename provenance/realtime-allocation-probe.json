@@ -2,8 +2,8 @@
   "schema": "grainfield.realtime-allocation-probe.v1",
   "status": "passed",
   "verified_at": "2026-10-18T01:36:17Z",
-  "grainfield_head": "e6357bf5da6cfca51e5da95f1f98b97e4cd43ab2",
-  "claim": "No Grainfield Processor allocation or realtime probe was run.",
+  "grainfield_head": "74f50bdd36d6487da3ec25008e4333cd93b7980a",
+  "claim": "Grainfield prepared processing performed one focused no-realtime-allocation probe; the probe passed.",
   "available_pulp_surface": {
     "pulp_head": "86c10d19989810394b56d6e592ad00acd557b307",
     "probe_type": "pulp::test::RtAllocationProbe",

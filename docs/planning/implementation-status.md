@@ -7,7 +7,7 @@ Updated 2026-10-18 against Grainfield source head
 
 - Independent product name: Grainfield.
 - Project license: MIT for original project code.
-- Provenance: the source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings, `waves.bin` lineage, and stmlib upstream license metadata are recorded. Hash verification records 29 Beads matches and 7 mismatches, plus 14 stmlib matches and 1 mismatch; all eight mismatches are classified as intentional portability adaptations with deterministic unified-diff metadata in `provenance/source-to-port.json`. The stmlib audit is metadata-only, and legal/source redistribution remains blocked. The existing Pulp `RtAllocationProbe` is available, but Grainfield-test does not link it; the allocation/realtime gate remains open. Pulp commit `f9752e4` proves fail-closed `illustrator`/`ai`/`pdf` aliases with preconverted-SVG validation-only behavior; this does not claim Illustrator conversion support. External `pdftocairo` feature diagnostics remain inconclusive.
+- Provenance: the source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings, `waves.bin` lineage, and stmlib upstream license metadata are recorded. Hash verification records 29 Beads matches and 7 mismatches, plus 14 stmlib matches and 1 mismatch; all eight mismatches are classified as intentional portability adaptations with deterministic unified-diff metadata in `provenance/source-to-port.json`. The stmlib audit is metadata-only, and legal/source redistribution remains blocked. The existing Pulp `RtAllocationProbe` is linked into Grainfield-test; the focused prepared-processing no-realtime-allocation probe passes 1/1 and ordinary Grainfield tests pass 19/19. Repeat coverage across host/toolchain combinations remains follow-up evidence. Pulp commit `f9752e4` proves fail-closed `illustrator`/`ai`/`pdf` aliases with preconverted-SVG validation-only behavior; this does not claim Illustrator conversion support. External `pdftocairo` feature diagnostics remain inconclusive.
 - DSP boundary: the Beads synth path only, with the reachable MIT-noticed
   source subset recorded under `third_party/beads_dsp`; the live-input effect
   path is now wired through the same noticed processor subset.
@@ -47,7 +47,7 @@ Updated 2026-10-18 against Grainfield source head
 
 ## Work in flight
 
-1. Add the remaining source-vs-port audio comparison and MIDI overlap receipts; link the existing Pulp `RtAllocationProbe` into Grainfield-test and run the allocation/realtime probe.
+1. Add the remaining source-vs-port audio comparison and MIDI overlap receipts; repeat the allocation probe across supported host/toolchain combinations.
 2. Calibrate the native panel capture against a rights-cleared straight-on
    reference, including ornate knob faces, pointer angles, labels, and pixel
    residuals.
