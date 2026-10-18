@@ -11,6 +11,12 @@ Updated 2026-10-17 against the current Grainfield `main` checkout.
 - Host contract: stereo MIDI instrument, global/mono voice semantics, and an
   explicit 48 kHz support gate. Unsupported host rates must remain silent until
   a tested resampling layer exists.
+- Documentation alignment: the local Beads manual and image set are recorded
+  in `docs/planning/beads-documentation-review.md`; this release slice is
+  explicitly the internal wavetable branch and does not claim the documented
+  live-input, freeze, quality-mode, attenurandomizer, or delay behavior.
+- MIDI pitch: the bound PITCH parameter is now -24 to +24 semitones, with MIDI
+  note 60 as the neutral reference and note offsets applied to the synth path.
 - Native editor prototype: the converted panel SVG is embedded at build time,
   all 24 DXF-derived knob placements are rendered at the calibrated centres
   and diameters, and five controls are parameter-bound. The bound knobs have
