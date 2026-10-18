@@ -1,0 +1,45 @@
+{
+  "schema": "grainfield.source-port-comparison.v1",
+  "status": "pass",
+  "scope": "internal_reference_only",
+  "source": {
+    "repository": "https://github.com/pichenettes/eurorack.git",
+    "commit": "f4cfa7697095a28d292bff758beb51deb49b5a86",
+    "stmlib_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec",
+    "fixture": "/Users/danielraffel/Code/beads-source-harness-20261018/beads/build/direct/beads-source-synth-f32le.bin",
+    "fixture_sha256": "ec0e74e749650bf578afab1ca0d1d2c8b45434327ae8ce547d7eef7b2c870cfe"
+  },
+  "port": {
+    "project": "Grainfield",
+    "source_head": "03b46cd3c99fe4ebe92f88616b3c7bf4b20d79bd",
+    "fixture": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/port-synth-f32le.bin",
+    "fixture_sha256": "ec0e74e749650bf578afab1ca0d1d2c8b45434327ae8ce547d7eef7b2c870cfe"
+  },
+  "contract": {
+    "sample_rate_hz": 48000,
+    "frames": 48000,
+    "channels": 2,
+    "block_size": 64,
+    "quality": "RESOLUTION_16_BIT",
+    "seed_event": "SEED_BUTTON_STATE_ON at frame 0; OFF thereafter",
+    "freeze": false,
+    "time": 0.5,
+    "size": 0.5,
+    "shape": 0.5,
+    "pitch": 0.0,
+    "density": 0.5,
+    "dry_wet": 1.0,
+    "reverb": 0.0,
+    "feedback": 0.0
+  },
+  "metrics": {
+    "byte_identical": true,
+    "max_abs_error": 0.0,
+    "rmse": 0.0
+  },
+  "rights": {
+    "fixture_distribution": "not included in Grainfield repository",
+    "source_notice": "MIT notices remain with the source checkout",
+    "release_claim": "This proves one internal synth contract only; it does not prove full Beads parity, artwork rights, or host-format completion."
+  }
+}
