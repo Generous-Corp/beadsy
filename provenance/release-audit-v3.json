@@ -356,8 +356,8 @@
     },
     {
       "path": "provenance/headless-audio-state-harness-20261018.json",
-      "sha256": "a15ad3280ce27d07c4cf321c54b93f2f2e3bc5f048069a83016754d474c97e09",
-      "source_head": "42d9c7707b6fbfb29a4cfe7902b2e4fe705640f9",
+      "sha256": "5f33a29fbdb399a9563fc5beab25e19dc3284977e385426be31bb5c50044f1ea",
+      "source_head": "f6618f0",
       "evidence_freshness": "current_exact_head"
     }
   ],

@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.headless-audio-state-harness.v1",
   "generated_at": "2026-10-18",
-  "source_head": "42d9c7707b6fbfb29a4cfe7902b2e4fe705640f9",
+  "source_head": "f6618f0",
   "scope": "authorized Pulp HeadlessHost audio output and plugin-state persistence measurement",
   "harness": {
     "target": "Grainfield-headless-harness",
