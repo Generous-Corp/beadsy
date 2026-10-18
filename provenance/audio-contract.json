@@ -32,8 +32,8 @@
     "finite_output_required": true,
     "seed_trigger": "global MIDI note-on maps to SEED_BUTTON_STATE_ON",
     "determinism": "fresh instances with identical parameters and MIDI input produce identical samples",
-    "input_descriptor": "required stereo Main In",
-    "live_input_processing": "stereo input routed through Beads Processor in live-input mode"
+    "input_descriptor": "No external audio input is required by the v1 synth release; stereo Main In is exercised only by the deferred live-input validation path.",
+    "live_input_processing": "Experimental/deferred: stereo input routed through Beads Processor in live-input mode; not a v1 release claim."
   },
   "validation": {
     "test_target": "Grainfield-test + Grainfield-editor-test",
@@ -64,5 +64,12 @@
     "validated_at": "2026-10-18",
     "command": "pulp test",
     "result": "18/18 CTest tests passed"
+  },
+  "release_scope": {
+    "version": "v1-synth-only-20261018",
+    "v1_mode": "synth",
+    "external_audio_input": "deferred",
+    "live_input_status": "experimental_deferred",
+    "live_input_release_claim": false
   }
 }

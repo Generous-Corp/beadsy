@@ -150,12 +150,18 @@
   ],
   "metadata_note": {
     "status": "descriptor-updated",
-    "direct_processor_test": "Grainfield descriptor now requires stereo Main In and stereo Main Out; Mode parameter selects synth or live-input effect mode",
+    "direct_processor_test": "The descriptor and live-input effect mode are retained for experimental/deferred validation; v1 release scope is the synth instrument path without external audio input.",
     "host_inspect": "pulp audio plugin-inspect reports effect=true, inputs=2, outputs=2, and 13 parameters including Mode (id 12)",
     "action": "retain exact descriptor and host receipts; investigate any host classification discrepancy before release",
     "receipt": "provenance/clap-inspect.json",
     "receipt_sha256": "38e2426f629f29a69239450d6d0d0590bcccd78f3b58281f143a39aa9835ff19",
     "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f",
-    "sample_rate_matrix": "24 kHz DIRTY_TAPE, 32 kHz VINTAGE_DIGITAL, and 48 kHz MEDIA_DIGITAL; live-input mode uses required stereo Main In"
+    "sample_rate_matrix": "24 kHz DIRTY_TAPE, 32 kHz VINTAGE_DIGITAL, and 48 kHz MEDIA_DIGITAL; live-input mode uses stereo Main In only in the experimental/deferred path."
+  },
+  "release_scope": {
+    "version": "v1-synth-only-20261018",
+    "v1_mode": "synth",
+    "live_input_status": "experimental_deferred",
+    "live_input_release_claim": false
   }
 }

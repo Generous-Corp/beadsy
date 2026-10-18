@@ -41,7 +41,7 @@
       "id": "format-artifacts",
       "status": "partial",
       "evidence": "provenance/format-status.json, provenance/host-validation.json, provenance/host-validation-matrix.txt, and provenance/au-registration-diagnostic.json",
-      "result": "CLAP artifact and host load/audio pass; VST3 artifact, pluginval, and host load/audio pass with partial release evidence; AU metadata passes but reversible registration/auval and host load are blocked by host discovery; LV2 host instantiation is blocked; Standalone launch/editor is partial; AAX remains blocked"
+      "result": "CLAP artifact and host load/audio pass; VST3 artifact, pluginval, and host load/audio pass with partial release evidence; AU metadata passes but reversible registration/auval and host load are blocked by host discovery; LV2 host instantiation is blocked; Standalone launch/editor is partial; AAX remains blocked; live-input validation artifacts are experimental/deferred and are not a v1 release claim"
     },
     {
       "id": "vst3",
@@ -54,7 +54,7 @@
       "id": "host-matrix",
       "status": "partial",
       "evidence": "provenance/host-validation.json, provenance/host-validation-matrix.txt, and provenance/au-registration-diagnostic.json",
-      "result": "CLAP and external VST3 host load/audio probes pass; HeadlessHost state roundtrip passes 10/10; AUv2 and LV2 host probes are blocked; Standalone launch/editor is partial with no app state bridge",
+      "result": "CLAP and external VST3 host load/audio probes pass; HeadlessHost state roundtrip passes 10/10; AUv2 and LV2 host probes are blocked; Standalone launch/editor is partial with no app state bridge; live-input host evidence remains experimental/deferred",
       "reason": "AU metadata validates, but temporary user registration and auval cannot discover the component; LV2 bundle lacks usable audio ports/URID mapping; Standalone state/audio/clean-shutdown evidence remains incomplete"
     },
     {
@@ -160,5 +160,12 @@
       "note": "release and Debug AppleClang focused/matrix probes pass; prior 192-byte observation remains unresolved"
     }
   ],
-  "release_decision": "blocked"
+  "release_decision": "blocked",
+  "release_scope": {
+    "version": "v1-synth-only-20261018",
+    "v1_mode": "synth",
+    "live_input_status": "experimental_deferred",
+    "live_input_release_claim": false,
+    "note": "Live-input receipts remain historical validation evidence and do not widen the first-release claim."
+  }
 }

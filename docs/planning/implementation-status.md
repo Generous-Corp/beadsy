@@ -1,22 +1,26 @@
 # Grainfield implementation status
 
 Updated 2026-10-18 against Grainfield source head
-`0e0471c835ce2476f026bbe29d53764e0d65c039`.
+`ce3e9c113ee7cf4cb084ffcc67f9501ccc9fa75b`.
 
 ## Current executable slice
 
 - Independent product name: Grainfield.
 - Project license: MIT for original project code.
 - Provenance: the source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings, `waves.bin` lineage, and stmlib upstream license metadata are recorded. Hash verification records 29 Beads matches and 7 mismatches, plus 14 stmlib matches and 1 mismatch; all eight mismatches are classified as intentional portability adaptations with deterministic unified-diff metadata in `provenance/source-to-port.json`. The stmlib audit is metadata-only, and legal/source redistribution remains blocked. The existing Pulp `RtAllocationProbe` is linked into Grainfield-test. Release and alternate Debug arm64 AppleClang configurations pass focused 1/1 and ten-run 64/256/1024 matrices with zero allocations/bytes, but the prior one-allocation/192-byte observation remains unresolved; the allocation/realtime gate is inconclusive pending recurrence backtrace and broader cross-toolchain evidence. Pulp commit `f9752e4` proves fail-closed `illustrator`/`ai`/`pdf` aliases with preconverted-SVG validation-only behavior; this does not claim Illustrator conversion support. External `pdftocairo` feature diagnostics remain inconclusive.
-- DSP boundary: the Beads synth path only, with the reachable MIT-noticed
-  source subset recorded under `third_party/beads_dsp`; the live-input effect
-  path is now wired through the same noticed processor subset.
-- Host contract: required stereo Main In/Main Out, global/mono MIDI voice
-  semantics, live-input effect mode, and tested 24/32/48 kHz media selection.
-  Other host rates remain fail-closed.
+- Release scope (`v1-synth-only-20261018`): the shipped first release is the
+  global MIDI synth voice with no external audio-input requirement.
+- DSP boundary: the Beads synth path is the v1 release path, with the reachable
+  MIT-noticed source subset recorded under `third_party/beads_dsp`. The
+  live-input effect path remains experimental/deferred validation code; its
+  receipts are retained for future parity work and do not expand the v1 claim.
+- Host contract: v1 uses global/mono MIDI voice semantics and tested 24/32/48
+  kHz synth media selection. Other host rates remain fail-closed. Stereo
+  Main In/live-input behavior is exercised only by the deferred experimental
+  path.
 - Documentation alignment: the local Beads manual and image set are recorded
-  in `docs/planning/beads-documentation-review.md`; this release slice is
-  includes a tested live-input path; freeze-buffer restore, attenurandomizer,
+  in `docs/planning/beads-documentation-review.md`; the historical validation set includes a tested live-input path, but that path
+  is experimental/deferred and is not part of the v1 release claim; freeze-buffer restore, attenurandomizer,
   and full delay parity remain unclaimed.
 - MIDI pitch: the bound PITCH parameter is now -24 to +24 semitones, with MIDI
   note 60 as the neutral reference and note offsets applied to the synth path.
@@ -57,7 +61,7 @@ Updated 2026-10-18 against Grainfield source head
 
 ## Release gates
 
-The project cannot claim source-faithful completion until the DSP audio
+The project cannot claim source-faithful completion until the v1 synth DSP
 contract, visual geometry/knob comparison, state and modulation persistence,
 host automation, format load/editor/audio/state receipts, and rights review
 all have explicit `pass` or `blocked` evidence. Artwork remains rights-gated;
