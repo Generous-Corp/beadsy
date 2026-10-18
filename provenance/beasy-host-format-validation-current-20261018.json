@@ -1,6 +1,6 @@
 {
   "schema": "beasy.host-format-validation.v1",
-  "source_head": "e5c5140bb5ec86a8e52ab4101e45758e5d6b0ebf",
+  "source_head": "4324c2fb2e818a2e2a4eff0e57a52559188503ef",
   "clap": {
     "status": "pass",
     "command": "clap-validator validate build-beasy-renamed/CLAP/Beasy.clap",
@@ -68,9 +68,10 @@
   },
   "release_boundary": "No format is release-complete from this receipt alone.",
   "lv2_external_probe": {
-    "status": "partial_custom_abi_state_probe",
+    "status": "partial_third_party_host_blocked",
     "receipt": "provenance/beasy-lv2-host-state-validation-current-20261018.json",
-    "third_party_host": "blocked_unavailable",
-    "audible_midi": "unproven_silent_probe"
+    "custom_abi_audio_state": "pass",
+    "audible_peak": 0.664628983,
+    "third_party_host": "blocked_unavailable"
   }
 }
