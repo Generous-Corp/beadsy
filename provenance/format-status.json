@@ -65,7 +65,7 @@
     {
       "format": "AU",
       "status": "supported",
-      "reason": "declared target produced an artifact and metadata passes; reversible user registration/auval and pulp host load remain blocked",
+      "reason": "declared target produced an artifact and metadata passes; reversible user registration/auval and pulp host load remain blocked by host discovery",
       "evidence": {
         "artifact": {
           "path": "AU/Grainfield.component/Contents/MacOS/Grainfield",
@@ -75,7 +75,8 @@
           "sha256": "1fe9bf43634ae1241cea49ec350f04d5782a658efe83fc052b276a39bd9ae8e1"
         },
         "pulp_target_present": true,
-        "host_validation": "blocked"
+        "host_validation": "blocked",
+        "registration_receipt": "provenance/au-registration-diagnostic.json"
       }
     },
     {

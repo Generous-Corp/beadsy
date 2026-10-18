@@ -1,0 +1,29 @@
+{
+  "schema": "grainfield.au-registration-diagnostic.v1",
+  "source_head": "2ed498a5715980f57b980d00e41983bb28a40a02",
+  "bundle": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build/AU/Grainfield.component",
+  "metadata": {
+    "status": "pass",
+    "type": "aumu",
+    "subtype": "Grai",
+    "manufacturer": "Inde",
+    "factoryFunction": "GrainfieldAUFactory",
+    "bundle_identifier": "com.independent_audio.grainfield.au",
+    "version": 65536
+  },
+  "binary": {
+    "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build/AU/Grainfield.component/Contents/MacOS/Grainfield",
+    "architecture": "arm64",
+    "code_signature": "adhoc",
+    "team_identifier": null
+  },
+  "registration": {
+    "status": "blocked",
+    "method": "scripts/validate_packaging.py --register-au",
+    "install_location": "~/Library/Audio/Plug-Ins/Components/Grainfield.component",
+    "temporary_copy_removed": true,
+    "auval_exit_code": 2,
+    "auval_output": "\n    AU Validation Tool\n    Version: 1.10.0 \n    Copyright 2003-2019, Apple Inc. All Rights Reserved.\n    Specify -h (-help) for command options\n\n--------------------------------------------------\nVALIDATING AUDIO UNIT: 'aumu' - 'Grai' - 'Inde'\n--------------------------------------------------\nERROR: Cannot get Component's Name strings\nERROR: Error from retrieving Component Version: -50\n\n* * FAIL\n--------------------------------------------------\nTESTING OPEN TIMES:\nFATAL ERROR: didn't find the component\n\n--- retry ---\n\n    AU Validation Tool\n    Version: 1.10.0 \n    Copyright 2003-2019, Apple Inc. All Rights Reserved.\n    Specify -h (-help) for command options\n\n--------------------------------------------------\nVALIDATING AUDIO UNIT: 'aumu' - 'Grai' - 'Inde'\n--------------------------------------------------\nERROR: Cannot get Component's Name strings\nERROR: Error from retrieving Component Version: -50\n\n* * FAIL\n--------------------------------------------------\nTESTING OPEN TIMES:\nFATAL ERROR: didn't find the component\n",
+    "reason": "Metadata validates, but AudioComponentRegistrar/auval cannot discover the temporarily registered component; no product-side metadata defect is evidenced."
+  }
+}
