@@ -1,6 +1,6 @@
 # Beasy adversarial review — current integration head
 
-Reviewed at source head `ba54c7a` on 2026-10-18. This review remains conservative: focused tests and artifact receipts do not close broader host, rights, UI, or release gates.
+Reviewed at source head `58b7610` on 2026-10-18. This review remains conservative: focused tests and artifact receipts do not close broader host, rights, UI, or release gates.
 
 ## Evidence that holds
 
@@ -8,7 +8,7 @@ Reviewed at source head `ba54c7a` on 2026-10-18. This review remains conservativ
 - Direct DSP fixtures remain byte-identical: 48 baseline fixtures and 144 seed/gate fixtures, max absolute error 0 and RMSE 0.
 - Native editor capture and the source-backed Seed Mode button are proven. The Seed control cycles OFF → ON → LOCKED, updates its LED and accessibility label, and follows host state restoration.
 - The standalone state CLI saves a 386-byte state file and loads it successfully in a fresh process.
-- CLAP and VST3 host validation pass; current-head governed GUI-bootstrap AU validation passes; installed-component registration remains separate. The LV2 custom ABI probe now proves URID negotiation, 19 connected ports, finite audible MIDI output, and state save/restore.
+- CLAP and VST3 host validation pass; current-head governed GUI-bootstrap AU validation passes; installed-component registration remains separate. CLAP reports one scan-time warning (283 ms) with 0 failures. The LV2 custom ABI probe now proves URID negotiation, 19 connected ports, finite audible MIDI output, and state save/restore.
 - The importer hardening candidate is separately validated from current Pulp `origin/main`: six clean commits add validation-only preconverted SVG/control-map handling and explicit fail-closed Illustrator/AI/PDF refusal. It is not yet integrated into Pulp main or Beasy.
 - Beasy is independently branded and MIT licensed, with explicit non-affiliation and attribution to Emilie Gillet and Mutable Instruments.
 
