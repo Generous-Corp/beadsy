@@ -129,6 +129,7 @@ public:
         synth_.Init(reverb_buffer_.data());
         frames_.resize(max_block_size_);
         triggers_.resize(max_block_size_);
+        seed_gate_flags_.resize(max_block_size_);
         merged_gate_flags_.resize(max_block_size_);
         freeze_.reset(new bool[max_block_size_]);
         std::fill_n(freeze_.get(), max_block_size_, false);
@@ -144,16 +145,38 @@ public:
 
         update_modulation(output.num_samples());
 
+        std::fill(seed_gate_flags_.begin(), seed_gate_flags_.begin() + output.num_samples(),
+                  stmlib::GATE_FLAG_LOW);
         bool trigger = false;
         for (const auto& event : midi_in) {
+            const auto offset = std::clamp<std::size_t>(
+                event.sample_offset < 0 ? 0 : static_cast<std::size_t>(event.sample_offset),
+                0, output.num_samples() == 0 ? 0 : output.num_samples() - 1);
             if (event.is_note_on() && event.velocity() > 0) {
                 current_note_ = event.note();
                 trigger = true;
+                seed_gate_flags_[offset] = static_cast<stmlib::GateFlags>(
+                    seed_gate_flags_[offset] | stmlib::GATE_FLAG_HIGH |
+                    stmlib::GATE_FLAG_RISING);
             } else if (event.is_note_off() && event.note() == current_note_) {
                 gate_ = false;
+                seed_gate_flags_[offset] = static_cast<stmlib::GateFlags>(
+                    seed_gate_flags_[offset] | stmlib::GATE_FLAG_FALLING);
             }
         }
         if (trigger) gate_ = true;
+
+        // Expand the global MIDI gate into a sample-accurate external gate
+        // stream. The original Beads trigger generator consumes rising/falling
+        // gate flags, so this preserves event offsets without allocating in
+        // the audio callback.
+        bool gate = gate_;
+        for (std::size_t i = 0; i < output.num_samples(); ++i) {
+            auto& flags = seed_gate_flags_[i];
+            if (flags & stmlib::GATE_FLAG_FALLING) gate = false;
+            if (gate) flags = static_cast<stmlib::GateFlags>(flags | stmlib::GATE_FLAG_HIGH);
+            if (flags & stmlib::GATE_FLAG_RISING) gate = true;
+        }
 
         beads::Parameters parameters{};
         parameters.time = randomized(kTime);
@@ -176,8 +199,8 @@ public:
 
         const std::size_t n = output.num_samples();
         for (std::size_t i = 0; i < n; ++i) frames_[i] = 0.0f;
-        const auto seed = trigger ? beads::SEED_BUTTON_STATE_ON : beads::SEED_BUTTON_STATE_OFF;
-        synth_.Render(seed, nullptr, freeze_.get(), beads::Synth::RESOLUTION_16_BIT,
+        const auto seed = beads::SEED_BUTTON_STATE_OFF;
+        synth_.Render(seed, seed_gate_flags_.data(), freeze_.get(), beads::Synth::RESOLUTION_16_BIT,
                       density, parameters, mix, triggers_, merged_gate_flags_,
                       frames_.data(), n);
 
@@ -214,6 +237,7 @@ private:
     std::array<std::uint16_t, 32768> reverb_buffer_{};
     std::vector<beads::FloatFrame> frames_;
     std::vector<beads::TriggerGenerator::Output> triggers_;
+    std::vector<stmlib::GateFlags> seed_gate_flags_;
     std::vector<stmlib::GateFlags> merged_gate_flags_;
     std::unique_ptr<bool[]> freeze_;
     double sample_rate_ = 48000.0;
