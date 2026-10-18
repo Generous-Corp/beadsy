@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.host-validation.v1",
   "project": "Grainfield",
-  "source_head": "fa376386162a7447e406d6f3bb84c1bed326a3ba",
+  "source_head": "44ed72cb3359941a797ea8de91f74b4045a6cfcb",
   "status": "partial",
   "checks": [
     {
@@ -11,7 +11,7 @@
       "command": "clap-validator validate build/CLAP/Grainfield.clap",
       "result": "20 tests run, 17 passed, 0 failed, 3 skipped, 1 warning",
       "receipt": "provenance/clap-validator.txt",
-      "receipt_sha256": "168b4057aa106fca4dc136b48b6a3afca28bc7cc2569240ed44104735fc79187"
+      "receipt_sha256": "fd7ad5278d7e51d9bcbac8e620259a347a347a66ed191501b8163e4c6880f90b"
     },
     {
       "format": "CLAP",
@@ -20,7 +20,7 @@
       "command": "pulp-cpp host build/CLAP/Grainfield.clap --format clap",
       "result": "loaded Grainfield; 10 params; finite peak 0.185",
       "receipt": "provenance/clap-host.txt",
-      "receipt_sha256": "0083f5906d5ef6797e4bf7eafd07931288fc52a6e022dc65b0fc0d4f1a53e47f"
+      "receipt_sha256": "6ffd05de278ca246522cd01150f5b43d1dfd7ca25a3b4c3d7e8a9fa23c22903b"
     },
     {
       "format": "CLAP",
@@ -30,8 +30,8 @@
       "result": "12,000 stereo frames; peak 0.4277/0.4247; RMS 0.1840/0.1838; no NaN, Inf, or clipped samples",
       "receipt": "provenance/clap-render.json",
       "wav": "provenance/clap-render.wav",
-      "receipt_sha256": "a0645c062016f14162f80c4e606c22cd5360e36fec0050a6f3bf8fbb20f089a3",
-      "wav_sha256": "c08318c9af37be75a626f0d9a89e02b6ac7d033a26659403d5fda4a167a9c7b9"
+      "receipt_sha256": "91cbbc21680d6cbca003e3f386f74c47143f75b0fac6e5e9c4de3aba09bfc94a",
+      "wav_sha256": "c94f0945611a6b98dc1d9b9b0dd9c53d9a1eb52e5f864d7c37bf6b071ab9874c"
     },
     {
       "format": "AUv2",
@@ -56,8 +56,8 @@
     "host_inspect": "pulp-cpp plugin-inspect currently reports effect=true and inputs=2 while host load logs zero-input operation",
     "action": "investigate SDK host-inspect metadata path before release",
     "receipt": "provenance/clap-inspect.json",
-    "receipt_sha256": "cdeca4d04d1128d14325938c8f26cf7c37625759614d55b98c19c3ea2efb67f8",
+    "receipt_sha256": "09203b1586ac5a953ba9c43ddd3bed7cb0e88b2d9998b69ac22a0a8baaa94866",
     "direct_clap_entry_receipt": "provenance/clap-entry-features.txt",
-    "direct_clap_entry_receipt_sha256": "3bfc4ef748eca6de3a6abb5149b27674856c4951f449cf6cdf57c52f4454c5d8"
+    "direct_clap_entry_receipt_sha256": "09ad87426b28b25ef34ebead5434a310e572b89d3ac21409a1677bc76583f526"
   }
 }

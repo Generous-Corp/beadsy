@@ -1,7 +1,7 @@
-objc[48626]: Class PulpTextAccessibilityElement is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x105da8090) and /Users/danielraffel/Code/grainfield/build/CLAP/Grainfield.clap/Contents/MacOS/Grainfield (0x10b931ec8). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
-objc[48626]: Class PulpView is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x105da8130) and /Users/danielraffel/Code/grainfield/build/CLAP/Grainfield.clap/Contents/MacOS/Grainfield (0x10b931f68). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
-objc[48626]: Class PulpWindowDelegate is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x105da81a8) and /Users/danielraffel/Code/grainfield/build/CLAP/Grainfield.clap/Contents/MacOS/Grainfield (0x10b931fe0). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
-objc[48626]: Class PulpFileDragSource is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x105da8298) and /Users/danielraffel/Code/grainfield/build/CLAP/Grainfield.clap/Contents/MacOS/Grainfield (0x10b9320d0). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+objc[71093]: Class PulpTextAccessibilityElement is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x103664090) and /Users/danielraffel/Code/grainfield/build/CLAP/Grainfield.clap/Contents/MacOS/Grainfield (0x1092fdec8). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+objc[71093]: Class PulpView is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x103664130) and /Users/danielraffel/Code/grainfield/build/CLAP/Grainfield.clap/Contents/MacOS/Grainfield (0x1092fdf68). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+objc[71093]: Class PulpWindowDelegate is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x1036641a8) and /Users/danielraffel/Code/grainfield/build/CLAP/Grainfield.clap/Contents/MacOS/Grainfield (0x1092fdfe0). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+objc[71093]: Class PulpFileDragSource is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x103664298) and /Users/danielraffel/Code/grainfield/build/CLAP/Grainfield.clap/Contents/MacOS/Grainfield (0x1092fe0d0). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
 [pulp:info]  CLAP: initialized 'Grainfield'
 Loaded: Grainfield
   vendor:  Independent Audio
@@ -9,4 +9,4 @@ Loaded: Grainfield
   id:      com.independent_audio.grainfield
   format:  CLAP
   params:  10
-  peak:    0.185 (256-sample block, 0.25 DC input)
+  peak:    0.190 (256-sample block, 0.25 DC input)
