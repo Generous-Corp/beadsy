@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "7f047b093701ae1794d7b7e33329ce5422c89655",
+  "source_head": "aada0fef56840acbf0596eb8c413be7ba81823d4",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -129,6 +129,13 @@
       "status": "procedural_calibration_pass_visual_release_gate_open",
       "focused_tests": 4,
       "capture_sha256": "f0b911c38c6434fe93f1b2547cbbe1278f240ed86e98cdfa1134b5e9622f57dc"
+    },
+    "source_notice_integrity": {
+      "path": "provenance/source-to-port.json",
+      "entries": 51,
+      "missing_port_files": 0,
+      "hash_mismatches": 0,
+      "status": "pass_exact_port_hashes"
     }
   },
   "open_gates": [
