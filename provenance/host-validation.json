@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.host-validation.v1",
   "project": "Grainfield",
-  "source_head": "44ed72cb3359941a797ea8de91f74b4045a6cfcb",
+  "source_head": "ef324a7a62b1fbb12dda750c1985cbe2af5b1a53",
   "status": "partial",
   "checks": [
     {

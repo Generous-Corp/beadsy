@@ -1,10 +1,10 @@
 {
   "schema": "grainfield.format-status.v1",
-  "generated_at": "2026-10-18T00:20:07.781801Z",
+  "generated_at": "2026-10-18T00:21:09.273187Z",
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield",
-    "git_head": "24b4f85f044af8873a7a5461de3f93334f040375"
+    "git_head": "ef324a7a62b1fbb12dda750c1985cbe2af5b1a53"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield/build",
@@ -38,7 +38,7 @@
           "exists": true,
           "is_file": true,
           "bytes": 7172344,
-          "sha256": "d7be0cb720403ace7b80fd069a33e8454030f2f1cba95833959de904e4eb2c51"
+          "sha256": "874f1bacc7afcc5de0ddcb038a1e4f325faca83a8739460305459a080708d235"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -53,8 +53,8 @@
           "path": "LV2/Grainfield.lv2/Grainfield.so",
           "exists": true,
           "is_file": true,
-          "bytes": 1948320,
-          "sha256": "bb14e32d40553daee63360fe994c7e868873a96b0eb30a2c353a7ebb92800a05"
+          "bytes": 1948336,
+          "sha256": "d3658b8e4372375d420319c10f095e639bc72e97c2e4f4078870df2d7a7e1c12"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -70,7 +70,7 @@
           "exists": true,
           "is_file": true,
           "bytes": 6508648,
-          "sha256": "23fe76c40f230a24c3f4105688c445df0ff3cb63053fb15973a3d46979395e00"
+          "sha256": "b2aa3780ca0535f3c0b2e73f3dc9f299194dca2cbcf9bde185294ca1d90377e1"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -100,7 +100,7 @@
           "exists": true,
           "is_file": true,
           "bytes": 6676632,
-          "sha256": "949907df1838121d2e07f1964917262e0fbae91fb57685e97f3c7315803d31fb"
+          "sha256": "380708d1c918ff5fa754397f5a219f713c4947211aed7916139e19e5e86f2e03"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
