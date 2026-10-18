@@ -94,5 +94,17 @@
     "pulp-import-design": "4597b38ae10ba6ec92af0ecec8903879377c243bf5ea77c234241873fdd9b5a3",
     "pulp-test-import-design-tool": "e646d6095f8204d189da9425856bf47d3dd44af3693e4180ea14447e39225299",
     "pulp-test-design-import": "0a54b07ec17bcbe0f73ac710f206c8592185e1770e4b12174f5764903fd96c71"
+  },
+  "integration_gates": {
+    "command": "tools/scripts/gates.sh origin/main",
+    "status": "inconclusive_environmental",
+    "exit_code": 1,
+    "static_checks": "passed (including source-selftests 164)",
+    "failures": [
+      "changed-surface script families check 77: build-importer lacks CMake file-API codemodel reply",
+      "gate profile omissions: VST3/AU SDK and JSX npm dependencies unavailable",
+      "TARTCI_ROLE=dev-overflow refused gate-host source-selftests"
+    ],
+    "interpretation": "Importer-focused builds/tests pass; full gates did not provide a clean acceptance result because this isolated worktree lacks required optional SDK/dependency and host configuration."
   }
 }
