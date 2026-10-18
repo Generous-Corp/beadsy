@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "ac588c16659c81bd9cc1900eab23d398d48d1764",
+  "source_head": "06a26857f3176ba9191a94eac3aa8d8249585599",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -22,6 +22,13 @@
       "evidence": "provenance/realtime-allocation-probe.json",
       "result": "Ten runs at each 64/256/1024 block size passed with zero allocations and zero bytes; prior 1 allocation/192-byte observation remains unresolved",
       "reason": "Committed assertion does not expose the prior failure backtrace; retain inconclusive status and repeat across supported toolchains"
+    },
+    {
+      "id": "state-roundtrip",
+      "status": "pass",
+      "evidence": "provenance/state-roundtrip.json",
+      "result": "HeadlessHost Grainfield state roundtrip passed 10/10 runs with Gain and Freeze restored (3 assertions per run)",
+      "reason": "This proves only the in-process HeadlessHost path; Standalone Grainfield.app exposes no documented state save/load bridge, so app-host state recall remains unproven"
     },
     {
       "id": "panel-asset",
@@ -47,7 +54,7 @@
       "id": "host-matrix",
       "status": "partial",
       "evidence": "provenance/host-validation.json, provenance/host-validation-matrix.txt, and provenance/au-registration-diagnostic.json",
-      "result": "CLAP and external VST3 host load/audio probes pass; AUv2 and LV2 host probes are blocked; Standalone launch/editor probe is partial",
+      "result": "CLAP and external VST3 host load/audio probes pass; HeadlessHost state roundtrip passes 10/10; AUv2 and LV2 host probes are blocked; Standalone launch/editor is partial with no app state bridge",
       "reason": "AU metadata validates, but temporary user registration and auval cannot discover the component; LV2 bundle lacks usable audio ports/URID mapping; Standalone state/audio/clean-shutdown evidence remains incomplete"
     },
     {
@@ -141,6 +148,11 @@
       "path": "provenance/vst3-toolchain-diagnostic.json",
       "source_head": "ac588c16659c81bd9cc1900eab23d398d48d1764",
       "note": "moduleinfo creator/validator implementation sources and configured targets absent; VST3 remains partial"
+    },
+    {
+      "path": "provenance/state-roundtrip.json",
+      "source_head": "06a26857f3176ba9191a94eac3aa8d8249585599",
+      "note": "HeadlessHost state roundtrip passed 10/10; Standalone app state bridge is unexposed"
     }
   ],
   "release_decision": "blocked"

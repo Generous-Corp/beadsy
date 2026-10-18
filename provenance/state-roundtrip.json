@@ -2,7 +2,7 @@
   "schema": "grainfield.state-roundtrip.v1",
   "status": "headless_supported_standalone_unexposed",
   "verified_at": "2026-10-18T02:15:00Z",
-  "source_head": "ac588c16659c81bd9cc1900eab23d398d48d1764",
+  "source_head": "06a26857f3176ba9191a94eac3aa8d8249585599",
   "supported_path": {
     "api": "pulp::format::HeadlessHost::save_state/load_state",
     "header": "/Users/danielraffel/pulp-sdk/include/pulp/format/headless.hpp",
