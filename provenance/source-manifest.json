@@ -78,5 +78,40 @@
     "utils/random.h",
     "utils/dsp.h",
     "utils/gate_flags.h"
+  ],
+  "notice_mappings": [
+    {
+      "scope": "adapted Beads DSP",
+      "origin": "/Users/danielraffel/Code/eurorack/beads/dsp/synth.cc",
+      "origin_sha256": "2244105032dcb2b3592a94348f50b96bfcfb64548db6e75ec88f8e413cd9b6cb",
+      "notice": "Copyright Emilie Gillet MIT notice in source; copied notice family represented by third_party/beads_dsp/NOTICE.md",
+      "notice_path": "third_party/beads_dsp/NOTICE.md",
+      "notice_sha256": "59c593dcdcf95a05305f74a408bf3eb978871d8a5251908e5138a5578ebe9d75"
+    },
+    {
+      "scope": "stmlib reachable subset",
+      "origin_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec",
+      "notice_path": "third_party/beads_dsp/NOTICE.md",
+      "notice_sha256": "59c593dcdcf95a05305f74a408bf3eb978871d8a5251908e5138a5578ebe9d75",
+      "exclusion": "STM/GPL serial material excluded; internal third-party audit remains open"
+    },
+    {
+      "scope": "waves.bin lineage",
+      "origin": "/Users/danielraffel/Code/eurorack/beads/resources/waves.bin",
+      "origin_sha256": "c672fccb061496d0229bfc5c2d55ec61f367e1539dda5870fd667a059c90f634",
+      "generator_inputs": [
+        {
+          "path": "/Users/danielraffel/Code/eurorack/beads/resources/resources.py",
+          "sha256": "c4e4765421c90a41ca36dd4be671ccee7ac2849584f46503b54202a395697d61"
+        },
+        {
+          "path": "/Users/danielraffel/Code/eurorack/beads/resources/wavetables.py",
+          "sha256": "6fe4b3b943af1913435582dcd5ae7615b44b301a26ed00670283c945010b9181"
+        }
+      ],
+      "notice_path": "/Users/danielraffel/Code/eurorack/beads/resources.h",
+      "notice_sha256": "82b77b6b9f069981fbff13d01f9e8a6e3a0d5dc510e1638dbb73d228a72e225b",
+      "status": "lineage_recorded_notice_review_open"
+    }
   ]
 }

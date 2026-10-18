@@ -14,6 +14,12 @@
     "png_sha256": "d84f66bbe5c6cc09e853a8e001703ba28dd72421bb629c8304eec25029150070",
     "png_dimensions": "402x729"
   },
-  "unsupported_feature_diagnostics": "pending vector-art adapter",
+  "unsupported_feature_diagnostics": {
+    "status": "inconclusive",
+    "tool_observed": "pdftocairo emitted no stderr diagnostics for SVG or PNG conversion",
+    "svg_probe": "completed_exit_0",
+    "png_probe": "completed_exit_0",
+    "feature_coverage": "pdftocairo does not provide a complete Illustrator feature compatibility report; vector-art adapter diagnostics remain required"
+  },
   "release_decision": "do not package until artwork rights are resolved"
 }
