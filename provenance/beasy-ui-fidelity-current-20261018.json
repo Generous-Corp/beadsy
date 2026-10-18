@@ -1,0 +1,27 @@
+{
+  "schema": "beasy.ui-fidelity.v2",
+  "source_head": "2aebb89",
+  "capture": {
+    "path": "build-beasy-renamed/beasy-editor-light-current.png",
+    "sha256": "3047c40bddb851661e88359898f66dade44ee12298225ec3edf9339e60eddd2f",
+    "status": "pass_native_capture"
+  },
+  "focused_tests": {
+    "command": "ctest --test-dir build-beasy-renamed --output-on-failure",
+    "passed": 35,
+    "failed": 0
+  },
+  "visual_scope": {
+    "geometry": "mapped control positions and DXF-derived knob diameter retained",
+    "knobs": "procedural segmented black annulus, pale cap, broad pointer",
+    "jacks": "procedural straight-on metal jack treatment",
+    "panel": "independent light-panel scaffold aligned to the straight-on reference structure",
+    "branding": "Beasy only; no upstream logo or artwork embedded"
+  },
+  "remaining": [
+    "pixel comparison against a rights-cleared reference",
+    "provenance decision for any distributable panel artwork",
+    "source-backed Seed button/LED UI binding"
+  ],
+  "status": "partial_visual_fidelity_pass"
+}

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "c43022882d784d77c4fd56a7f1f9a7dfebfb4141",
+  "source_head": "2aebb8964c75bc2ac56c6711ee890f9e3b90671d",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -22,9 +22,9 @@
       "status": "pass"
     },
     "editor_capture": {
-      "path": "build-beasy-renamed/beasy-editor-current.png",
-      "sha256": "6d1e0f4c56b0f2c04e3d7439acfa58f75a243475957b94de081d39749895d273",
-      "status": "procedural independent scaffold; pixel fidelity open"
+      "path": "build-beasy-renamed/beasy-editor-light-current.png",
+      "sha256": "3047c40bddb851661e88359898f66dade44ee12298225ec3edf9339e60eddd2f",
+      "status": "partial_visual_fidelity_pass; light-panel scaffold and procedural controls"
     },
     "attenuverter": {
       "status": "implemented",
@@ -89,8 +89,8 @@
     },
     {
       "id": "ui_fidelity",
-      "status": "open",
-      "next": "rights-cleared straight-on reference and pixel/geometry comparison"
+      "status": "partial_visual_fidelity_pass",
+      "next": "rights-cleared reference comparison and Seed button/LED mapping"
     },
     {
       "id": "rights",
