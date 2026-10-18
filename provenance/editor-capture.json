@@ -1,0 +1,24 @@
+{
+  "schema": "grainfield.editor-capture.v1",
+  "status": "prototype_pass",
+  "project": "Grainfield",
+  "source_head": "bad8a43",
+  "renderer": "pulp::view::capture_view",
+  "backend": "auto_select",
+  "logical_size": [201, 364],
+  "scale": 2,
+  "png_size": [402, 728],
+  "panel_svg_sha256": "24f895b0cb3744ea41d45b1e34494513d493090680a793104b8b7400836fb05d",
+  "capture_sha256": "eb131c7cc0f16f0fd5296958cbb12af795e5c8259b3ce76ca81d6c4f223b9f67",
+  "controls": {
+    "bound": ["density", "time", "pitch", "size", "shape"],
+    "geometry_source": "provenance/control-map.json",
+    "knob_skin": "provisional-calibration-only"
+  },
+  "open_gates": [
+    "pixel diff against rights-cleared straight-on reference",
+    "material and pointer calibration",
+    "right-click modulation interaction",
+    "host automation gesture receipt"
+  ]
+}
