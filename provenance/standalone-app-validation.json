@@ -1,38 +1,40 @@
 {
   "schema": "grainfield.standalone-app-validation.v1",
-  "source_head": "5774e078f83a0ad1e67e3d03ec6a3600ca7e3a93",
-  "bundle": "/Users/danielraffel/Code/grainfield-standalone-evidence/build/Grainfield.app",
+  "source_head": "028cf1772c347fec6127d56e582a7250c8dd82f2",
+  "bundle": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/Grainfield.app",
   "launch": {
     "status": "pass",
-    "command": "open -n /Users/danielraffel/Code/grainfield-standalone-evidence/build/Grainfield.app",
+    "command": "open -n /Users/danielraffel/Code/grainfield-v1-scope-integrated/build/Grainfield.app",
     "exit_code": 0,
     "process_observed": true
   },
   "editor": {
     "status": "not_observed",
-    "reason": "normal application-path probe did not expose a structured editor receipt"
+    "reason": "process launched, but System Events reported zero windows and screencapture could not create a window image; no structured editor receipt is exposed"
   },
   "audio": {
     "status": "not_observed",
-    "reason": "normal application-path probe did not expose an independent audio measurement"
+    "reason": "standalone main.cpp runs StandaloneApp::run_with_editor(false) without an independent audio measurement harness"
   },
   "state": {
     "status": "not_run",
-    "reason": "no standalone state save/restore probe is available"
+    "reason": "standalone main.cpp exposes no state save/restore command or bridge"
   },
   "shutdown": {
     "status": "pass",
-    "command": "osascript -e 'tell application \\\"Grainfield\\\" to quit'",
+    "command": "osascript -e 'tell application \"Grainfield\" to quit'",
     "exit_code": 0,
-    "process_exited_within_seconds": 5,
+    "process_exited_within_seconds": 1,
     "mechanism": "AppleScript graceful application quit"
   },
   "current_probe": {
     "verified_at": "2026-10-17",
-    "worktree_head": "5774e078f83a0ad1e67e3d03ec6a3600ca7e3a93",
-    "command": "open -n build/Grainfield.app; sleep 3; pgrep -x Grainfield; osascript -e 'tell application \"Grainfield\" to quit'; wait for process exit",
+    "worktree_head": "028cf1772c347fec6127d56e582a7250c8dd82f2",
+    "command": "open -n build/Grainfield.app; sleep 3; pgrep -x Grainfield; System Events window query; screencapture -l <pid>; osascript -e 'tell application \"Grainfield\" to quit'; wait for process exit",
     "launch_exit_code": 0,
     "process_observed": true,
+    "window_query": "System Events reported zero windows",
+    "screencapture": "could not create image from window",
     "quit_exit_code": 0,
     "process_exit_seconds": 1,
     "structured_editor_audio_state_evidence": "unavailable: standalone main.cpp calls StandaloneApp::run_with_editor(false) without a state command, audio probe, or structured editor receipt"
