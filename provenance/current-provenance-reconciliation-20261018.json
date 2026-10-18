@@ -1,0 +1,38 @@
+{
+  "schema": "grainfield.current-provenance-reconciliation.v1",
+  "verified_at": "2026-10-18",
+  "grainfield_source_head": "bb3d8529363b2dd38d071d9822c982201744556d",
+  "product": {
+    "name": "Grainfield",
+    "license": "MIT",
+    "affiliation": "independent; no Mutable Instruments endorsement or affiliation"
+  },
+  "source_notice": {
+    "status": "recorded",
+    "beads_dsp_notice": "third_party/beads_dsp/NOTICE.md",
+    "source_manifest": "provenance/source-manifest.json",
+    "source_to_port": "provenance/source-to-port.json"
+  },
+  "rights": {
+    "status": "incomplete",
+    "panel_artwork_cad_reference": "blocked_pending_permission_and_share_alike_decision",
+    "waves_bin": "blocked_pending_notice_and_redistribution_review",
+    "trademarks": "non_affiliation_language_present; clearance not claimed",
+    "bundle_check": "no upstream artwork, CAD, logos, or reference photos included"
+  },
+  "importer_boundary": {
+    "status": "fail_closed",
+    "annotated_svg": "requires explicit rights_status and nonblank attribution before native generation",
+    "illustrator_pdf_ai": "validation-only/preconverted SVG boundary; no converter or redistribution claim",
+    "evidence": "pulp-pr10533-refresh-20261018 local commits 33c66f9be80ab3bf7031c8f54af31946aea8d838 and 9e1f520aa0369f16766e29f951699b1f4b250f43"
+  },
+  "hashed_inputs": {
+    "ATTRIBUTION.md": "adecf63614ae111b4281ad185f832461e0293a7f28f775c036d50eaa43fc0121",
+    "LICENSES.md": "cb43a765b76e6f193e8bbb8a6a21f77a0c9c603a805a1e47463ce999bbac766f",
+    "provenance/source-manifest.json": "9ccf05171ba9d867b618239a2a2c847c82184e2c0655bc11ee0931a2a45ebac2",
+    "provenance/source-to-port.json": "9601b8178e3b74a3161986693dcbf7a9026938e32cd684f3e929d3da51147b1e",
+    "provenance/rights-attribution-audit-v2.json": "dcf6142ee0b1589f954ab474adb8338b888505a0cb3b3adc59d4f80230a04491",
+    "provenance/control-map.json": "6e99b2a0324a3211fa318d5bf6a7dcb743804afa10585c5c22c2f6f9d508bee5"
+  },
+  "release_decision": "not_release_ready; rights and legal review remain open"
+}
