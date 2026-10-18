@@ -1,6 +1,6 @@
 # Beasy adversarial review — current integration head
 
-Reviewed at source head `e98e81c` on 2026-10-18. This review remains conservative: focused tests and artifact receipts do not close broader host, rights, UI, or release gates.
+Reviewed at source head `de90939` on 2026-10-18. This review remains conservative: focused tests and artifact receipts do not close broader host, rights, UI, or release gates.
 
 ## Evidence that holds
 
@@ -17,13 +17,13 @@ Reviewed at source head `e98e81c` on 2026-10-18. This review remains conservativ
 - No installed third-party LV2 host or validator is available; DAW-level LV2 integration remains unproven.
 - AU installed-component discovery remains open even though the isolated governed `auval` path passes.
 - AAX remains blocked by the unavailable proprietary SDK and host evidence.
-- The editor is a clean-room procedural panel. Straight-on geometry, knobs, jacks, automation, LFO context menus, and Seed control are implemented, but pixel comparison against a rights-cleared reference is open.
+- The editor is a clean-room procedural panel. Straight-on geometry, knobs, jacks, automation, LFO context menus, Freeze/Seed controls, compact I/O labels, and colored auxiliary controls are implemented. The current private comparison reports mean RGB error 54.58 and edge correlation 0.096; this is geometry-only evidence, not pixel-fidelity closure.
 - Upstream panel artwork, CAD, photos, manuals, trademarks, and unresolved resource lineage remain rights gates. They are not redistributed.
-- The importer candidate refuses unconverted AI/PDF rather than parsing them. Integration requires landing the current-main Pulp commit range and then validating a rights-bearing converted SVG/control-map sidecar.
+- The importer candidate refuses unconverted AI/PDF rather than parsing them. A fresh Pulp integration worktree is validating the six-commit range; Beasy still requires a rights-bearing converted SVG/control-map sidecar.
 
 ## Required next review actions
 
 1. Land or formally accept the current-main importer hardening range through Pulp's normal review process, then validate Beasy's converted SVG/control-map sidecar without bundling rights-sensitive source artwork.
 2. Obtain a third-party LV2 host or a working REAPER project and capture audible MIDI plus state evidence.
 3. Produce a rights-cleared straight-on visual comparison and resolve any remaining geometry deltas.
-4. Re-audit notices, attribution, package contents, signing, notarization, installation, and all format receipts before any release-complete claim.
+4. Complete the importer integration validation, then re-audit notices, attribution, package contents, signing, notarization, installation, and all format receipts before any release-complete claim.
