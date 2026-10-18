@@ -212,6 +212,10 @@
     {
       "path": "provenance/source-port-comparison-matrix.json",
       "role": "16-case internal synth source-vs-port matrix"
+    },
+    {
+      "path": "provenance/midi-event-validation.json",
+      "role": "sample-offset MIDI overlap and sustain contract"
     }
   ],
   "audit_receipt_head": "c071afa84f41632577a53a8c2ac94662eea287d9"
