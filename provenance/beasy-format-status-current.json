@@ -1,10 +1,10 @@
 {
   "schema": "beasy.format-status.v1",
-  "generated_at": "2026-10-18T17:12:19.598951Z",
+  "generated_at": "2026-10-18T17:13:14.615396Z",
   "project": "Beasy",
   "source": {
     "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018",
-    "git_head": "180bc9ddf0e92be67a463d1d5d49e1abad6d4797"
+    "git_head": "7f638c213ebd9bc05b62891a9c9f499be900a4d2"
   },
   "build": {
     "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beasy-renamed",
@@ -24,7 +24,7 @@
           "exists": true,
           "is_file": true,
           "bytes": 44717544,
-          "sha256": "eaf405a2b851d7b177e7d4d03add98563b9f773ad1a3cd7059839d13fcc4de87"
+          "sha256": "bf956e4cf22dc787edc430b2753753ea8e14fd9655899a5df49ffe9f7ea2f654"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -40,7 +40,7 @@
           "exists": true,
           "is_file": true,
           "bytes": 44499576,
-          "sha256": "e6f7f501dc11cc444cc5b638bf598b83cf5c7688b3d211a52550d2be02dae762"
+          "sha256": "e7f2ba71e007301348f1f9f0d1d9279e18000e29cbd0c9930f8229e848fc4cbf"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -56,7 +56,7 @@
           "exists": true,
           "is_file": true,
           "bytes": 35045784,
-          "sha256": "e73b1905d3973dfdb8befe27970bff9a4e760d4431e5298f81219582be132c8d"
+          "sha256": "503f928adf53b03dd9d4a549ec8e77078d2de024221fa33418f69b4b480bc80f"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -72,7 +72,7 @@
           "exists": true,
           "is_file": true,
           "bytes": 44558968,
-          "sha256": "de299f5954adab475f2fe25d052a179f5efcbaf95b947014afd49c782704a973"
+          "sha256": "aa840436778292c6f712abaf537fdba816c0e472667d8349cdf69d736cd35ef9"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -102,7 +102,7 @@
           "exists": true,
           "is_file": true,
           "bytes": 46393400,
-          "sha256": "b499325095aedb7338794da3204c3c9735b13ea30b128726dca84b4078bf57f9"
+          "sha256": "fe9547d19912360c737d6b10e7d651f5ce7e0870e054c49808948c852ed69fd2"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
