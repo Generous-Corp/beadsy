@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "schema": "grainfield.control-map.v1",
+  "schema": "beasy.control-map.v1",
   "status": "geometry-validated-parameter-bindings-partial",
   "product": {
-    "name": "Grainfield",
+    "name": "Beasy",
     "affiliation": "independent",
     "artwork_use": "provisional-calibration-only"
   },
@@ -24,11 +24,6 @@
       "state": "pending_rights_review",
       "redistribution": "blocked_until_cleared",
       "basis": "provenance/source-manifest.json"
-    },
-    "dxf_semantics": {
-      "geometry": "knob centres, radii, handles, and layers are available",
-      "control_label_text": "not present in supplied DXF",
-      "mapping_authority": "DXF geometry alone is insufficient to assign labels or parameter semantics"
     }
   },
   "normalization": {
@@ -55,7 +50,7 @@
       "role": "primary_parameter",
       "binding_status": "bound",
       "parameter_id": "density",
-      "automation_id": "grainfield.density",
+      "automation_id": "beasy.density",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2472",
@@ -95,7 +90,7 @@
       "role": "primary_parameter",
       "binding_status": "bound",
       "parameter_id": "time",
-      "automation_id": "grainfield.time",
+      "automation_id": "beasy.time",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2473",
@@ -135,7 +130,7 @@
       "role": "primary_parameter",
       "binding_status": "bound",
       "parameter_id": "pitch",
-      "automation_id": "grainfield.pitch",
+      "automation_id": "beasy.pitch",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2474",
@@ -171,11 +166,11 @@
       "evidence": "dxf-placement-plus-parameter-contract"
     },
     {
-      "id": "aux-01",
-      "role": "auxiliary_control_candidate",
-      "binding_status": "provisional",
-      "parameter_id": null,
-      "automation_id": null,
+      "id": "feedback",
+      "role": "auxiliary_parameter",
+      "binding_status": "bound",
+      "parameter_id": "feedback",
+      "automation_id": "beasy.feedback",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2477",
@@ -203,19 +198,19 @@
       },
       "hit_target": {
         "shape": "circle",
-        "radius_mm": 4.5,
+        "radius_mm": 3.9,
         "interaction": "drag_vertical_or_horizontal",
-        "minimum_touch_mm": 8.0
+        "minimum_touch_mm": 12.0
       },
       "skin_ref": "auxiliary",
-      "evidence": "dxf-placement-only"
+      "evidence": "dxf-placement-plus-parameter-contract-and-source-audit"
     },
     {
       "id": "size",
       "role": "primary_parameter",
       "binding_status": "bound",
       "parameter_id": "size",
-      "automation_id": "grainfield.size",
+      "automation_id": "beasy.size",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2470",
@@ -255,7 +250,7 @@
       "role": "primary_parameter",
       "binding_status": "bound",
       "parameter_id": "shape",
-      "automation_id": "grainfield.shape",
+      "automation_id": "beasy.shape",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2471",
@@ -291,11 +286,11 @@
       "evidence": "dxf-placement-plus-parameter-contract"
     },
     {
-      "id": "aux-02",
-      "role": "auxiliary_control_candidate",
-      "binding_status": "provisional",
-      "parameter_id": null,
-      "automation_id": null,
+      "id": "dry_wet",
+      "role": "auxiliary_parameter",
+      "binding_status": "bound",
+      "parameter_id": "dry_wet",
+      "automation_id": "beasy.dry_wet",
       "geometry_ref": {
         "source": "dxf",
         "handle": "247A",
@@ -323,19 +318,19 @@
       },
       "hit_target": {
         "shape": "circle",
-        "radius_mm": 4.5,
+        "radius_mm": 3.9,
         "interaction": "drag_vertical_or_horizontal",
-        "minimum_touch_mm": 8.0
+        "minimum_touch_mm": 12.0
       },
       "skin_ref": "auxiliary",
-      "evidence": "dxf-placement-only"
+      "evidence": "dxf-placement-plus-parameter-contract-and-source-audit"
     },
     {
-      "id": "aux-03",
-      "role": "auxiliary_control_candidate",
-      "binding_status": "provisional",
-      "parameter_id": null,
-      "automation_id": null,
+      "id": "reverb",
+      "role": "auxiliary_parameter",
+      "binding_status": "bound",
+      "parameter_id": "reverb",
+      "automation_id": "beasy.reverb",
       "geometry_ref": {
         "source": "dxf",
         "handle": "247B",
@@ -363,19 +358,19 @@
       },
       "hit_target": {
         "shape": "circle",
-        "radius_mm": 4.5,
+        "radius_mm": 3.9,
         "interaction": "drag_vertical_or_horizontal",
-        "minimum_touch_mm": 8.0
+        "minimum_touch_mm": 12.0
       },
       "skin_ref": "auxiliary",
-      "evidence": "dxf-placement-only"
+      "evidence": "dxf-placement-plus-parameter-contract-and-source-audit"
     },
     {
-      "id": "aux-04",
-      "role": "auxiliary_control_candidate",
-      "binding_status": "provisional",
-      "parameter_id": null,
-      "automation_id": null,
+      "id": "time_cv_amount",
+      "role": "auxiliary_parameter",
+      "binding_status": "bound",
+      "parameter_id": "time_cv_amount",
+      "automation_id": "beasy.time_cv_amount",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2475",
@@ -403,19 +398,19 @@
       },
       "hit_target": {
         "shape": "circle",
-        "radius_mm": 4.5,
+        "radius_mm": 3.9,
         "interaction": "drag_vertical_or_horizontal",
-        "minimum_touch_mm": 8.0
+        "minimum_touch_mm": 12.0
       },
       "skin_ref": "auxiliary",
-      "evidence": "dxf-placement-only"
+      "evidence": "dxf-placement-plus-parameter-contract-and-source-audit"
     },
     {
-      "id": "aux-05",
-      "role": "auxiliary_control_candidate",
-      "binding_status": "provisional",
-      "parameter_id": null,
-      "automation_id": null,
+      "id": "size_cv_amount",
+      "role": "auxiliary_parameter",
+      "binding_status": "bound",
+      "parameter_id": "size_cv_amount",
+      "automation_id": "beasy.size_cv_amount",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2476",
@@ -443,19 +438,19 @@
       },
       "hit_target": {
         "shape": "circle",
-        "radius_mm": 4.5,
+        "radius_mm": 3.9,
         "interaction": "drag_vertical_or_horizontal",
-        "minimum_touch_mm": 8.0
+        "minimum_touch_mm": 12.0
       },
       "skin_ref": "auxiliary",
-      "evidence": "dxf-placement-only"
+      "evidence": "dxf-placement-plus-parameter-contract-and-source-audit"
     },
     {
-      "id": "aux-06",
-      "role": "auxiliary_control_candidate",
-      "binding_status": "provisional",
-      "parameter_id": null,
-      "automation_id": null,
+      "id": "shape_cv_amount",
+      "role": "auxiliary_parameter",
+      "binding_status": "bound",
+      "parameter_id": "shape_cv_amount",
+      "automation_id": "beasy.shape_cv_amount",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2478",
@@ -483,19 +478,19 @@
       },
       "hit_target": {
         "shape": "circle",
-        "radius_mm": 4.5,
+        "radius_mm": 3.9,
         "interaction": "drag_vertical_or_horizontal",
-        "minimum_touch_mm": 8.0
+        "minimum_touch_mm": 12.0
       },
       "skin_ref": "auxiliary",
-      "evidence": "dxf-placement-only"
+      "evidence": "dxf-placement-plus-parameter-contract-and-source-audit"
     },
     {
-      "id": "aux-07",
-      "role": "auxiliary_control_candidate",
-      "binding_status": "provisional",
-      "parameter_id": null,
-      "automation_id": null,
+      "id": "pitch_cv_amount",
+      "role": "auxiliary_parameter",
+      "binding_status": "bound",
+      "parameter_id": "pitch_cv_amount",
+      "automation_id": "beasy.pitch_cv_amount",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2479",
@@ -523,12 +518,12 @@
       },
       "hit_target": {
         "shape": "circle",
-        "radius_mm": 4.5,
+        "radius_mm": 3.9,
         "interaction": "drag_vertical_or_horizontal",
-        "minimum_touch_mm": 8.0
+        "minimum_touch_mm": 12.0
       },
       "skin_ref": "auxiliary",
-      "evidence": "dxf-placement-only"
+      "evidence": "dxf-placement-plus-parameter-contract-and-source-audit"
     },
     {
       "id": "small-01",
@@ -1016,8 +1011,8 @@
     "geometry_tolerance_mm": 0.01,
     "expected_dxf_knob_count": 24,
     "screenshot_overlay": {
-      "status": "provisional-rendered",
-      "reason": "all 24 DXF placements rendered; pixel acceptance remains rights/calibration gated"
+      "status": "not-run",
+      "reason": "requires resolved artwork rights and straight-on calibration"
     },
     "parameter_binding_review": {
       "status": "partial",
@@ -1026,9 +1021,17 @@
         "time",
         "pitch",
         "size",
-        "shape"
+        "shape",
+        "feedback",
+        "dry_wet",
+        "reverb",
+        "time_cv_amount",
+        "size_cv_amount",
+        "shape_cv_amount",
+        "pitch_cv_amount"
       ],
-      "provisional_count": 19
+      "provisional_count": 12,
+      "source_audit": "provenance/control-map-source-audit-20261018.json"
     }
   },
   "rights": {

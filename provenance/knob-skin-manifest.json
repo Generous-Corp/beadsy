@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "schema": "grainfield.knob-skin-manifest.v1",
+  "schema": "beasy.knob-skin-manifest.v1",
   "status": "provisional-calibration-only",
-  "product": "Grainfield",
+  "product": "Beasy",
   "source_boundary": {
     "geometry": "provenance/control-map.json",
     "material_reference": "/Users/danielraffel/Documents/beads-panel.png",
