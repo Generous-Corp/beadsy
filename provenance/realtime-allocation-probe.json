@@ -1,9 +1,9 @@
 {
   "schema": "grainfield.realtime-allocation-probe.v1",
-  "status": "blocked",
+  "status": "inconclusive",
   "verified_at": "2026-10-18T01:45:00Z",
   "grainfield_head": "a3d6cc15cce4d6446070d053170c164d1a5e8781",
-  "claim": "The existing focused probe is not reproducibly allocation-free in the current build; matrix extension is blocked by a 192-byte realtime allocation.",
+  "claim": "A prior 192-byte allocation observation remains unresolved; ten sequential runs of the rebuilt committed baseline passed, so the failure is not currently reproducible.",
   "available_pulp_surface": {
     "pulp_head": "86c10d19989810394b56d6e592ad00acd557b307",
     "probe_type": "pulp::test::RtAllocationProbe",
@@ -41,7 +41,7 @@
   },
   "missing_probe_command": {
     "exact_command": "pulp test -- -R 'prepared processing allocates no realtime memory' --output-on-failure",
-    "blocked_by": "Current baseline probe reports one 192-byte allocation in steady-state processing; do not weaken or skip the probe.",
+    "blocked_by": "Prior failure is not reproducible in the bounded ten-run audit; retain the gate and require a captured stack on recurrence.",
     "next_evidence": "Capture an allocation backtrace or fix the owning runtime allocation, then rerun 64/256/1024."
   },
   "build_configuration": {
@@ -78,5 +78,25 @@
     "result": "no allocation occurred during the diagnostic run, so no call stack was captured",
     "fixed_seed_runs": "1 through 8 all passed in the diagnostic build",
     "conclusion": "The 192-byte allocation is intermittent or run-state dependent; no stable owner was identified and no fix was attempted."
+  },
+  "reproducibility_audit": {
+    "command": "./build/Grainfield-test 'Grainfield prepared processing allocates no realtime memory' --reporter console",
+    "runs": 10,
+    "passes": 10,
+    "failures": 0,
+    "exit_codes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "allocation_counts": "not exposed by the committed assertion; prior failing observations reported one allocation / 192 bytes",
+    "result": "The prior allocation failure was not reproduced in ten sequential runs of the rebuilt committed baseline."
   }
 }
