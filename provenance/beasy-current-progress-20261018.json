@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "ea4f86be9efd5d5defc3029ff006065ad17f983a",
+  "source_head": "c7a27ce77f0d750b789758272036dc9e9ef46d0a",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -107,7 +107,8 @@
       "path": "provenance/importer-validation.json",
       "status": "validated_integration_worktree_not_landed",
       "integration_head": "c25b8cc865fb15942d07ea0e5a3b23c4fc7f020e",
-      "tests": "focused and broad importer suites pass"
+      "tests": "focused and broad importer suites pass",
+      "integration_gates": "inconclusive_environmental; focused importer tests pass, full gates unavailable due missing codemodel/optional SDK/host configuration"
     },
     "lv2_custom_host": {
       "path": "provenance/beasy-lv2-host-state-validation-current-20261018.json",

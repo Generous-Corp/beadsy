@@ -1,6 +1,6 @@
 # Beasy adversarial review — current integration head
 
-Reviewed at source head `ea4f86b` on 2026-10-18. This review remains conservative: focused tests and artifact receipts do not close broader host, rights, UI, or release gates.
+Reviewed at source head `c7a27ce` on 2026-10-18. This review remains conservative: focused tests and artifact receipts do not close broader host, rights, UI, or release gates.
 
 ## Evidence that holds
 
@@ -19,7 +19,7 @@ Reviewed at source head `ea4f86b` on 2026-10-18. This review remains conservativ
 - AAX remains blocked by the unavailable proprietary SDK and host evidence.
 - The editor is a clean-room procedural panel. Straight-on geometry, knobs, jacks, automation, LFO context menus, Freeze/Seed controls, compact I/O labels, and colored auxiliary controls are implemented. The current private comparison reports mean RGB error 54.58 and edge correlation 0.096; this is geometry-only evidence, not pixel-fidelity closure.
 - Upstream panel artwork, CAD, photos, manuals, trademarks, and unresolved resource lineage remain rights gates. They are not redistributed.
-- The importer candidate refuses unconverted AI/PDF rather than parsing them. A fresh Pulp integration worktree has validated the six-commit range with the focused and broad importer suites; the commits are not yet landed in Pulp main, and Beasy still requires a rights-bearing converted SVG/control-map sidecar.
+- The importer candidate refuses unconverted AI/PDF rather than parsing them. A fresh Pulp integration worktree has validated the six-commit range with the focused and broad importer suites; the full gates script was inconclusive because the isolated worktree lacked codemodel/optional SDK/host configuration. The commits are not yet landed in Pulp main, and Beasy still requires a rights-bearing converted SVG/control-map sidecar.
 
 ## Required next review actions
 
