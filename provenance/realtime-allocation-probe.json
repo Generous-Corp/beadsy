@@ -314,10 +314,14 @@
     "restoration": "Temporary matrix source was restored to the committed test contract; build-debug was removed with trash after capture."
   },
   "current_checkout_probe": {
-    "command": "pulp test -- -R '^Grainfield prepared processing allocates no realtime memory$' --output-on-failure",
-    "status": "not_run",
-    "result": "No tests were found in the existing build tree",
-    "reason": "The current build was configured without GRAINFIELD_PULP_TEST_HARNESS_DIR; historical bounded probe receipts remain separate evidence and the allocation gate stays inconclusive."
+    "command": "ctest --test-dir build-harness -R '^Grainfield prepared processing allocates no realtime memory$' --output-on-failure",
+    "status": "pass",
+    "result": "1/1 passed in a fresh harness-enabled Release build",
+    "build_dir": "build-harness",
+    "harness": "/Users/danielraffel/Code/pulp/test/harness",
+    "allocation_count": 0,
+    "allocated_bytes": 0,
+    "reason": "The current focused probe passed; the historical 192-byte observation remains unresolved, so the overall gate stays inconclusive."
   },
-  "next_action": "Reconfigure a fresh build with GRAINFIELD_PULP_TEST_HARNESS_DIR, build Grainfield-test through pulp, then rerun the focused probe and bounded matrix."
+  "next_action": "Repeat the harness-enabled probe across 64/256/1024 max block sizes and capture a backtrace if the historical allocation recurs."
 }
