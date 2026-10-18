@@ -4,7 +4,7 @@
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
-    "git_head": "ced81b323a0fd1ddc11a2c1c56bf5b947c915ba"
+    "git_head": "0e0471c835ce2476f026bbe29d53764e0d65c039"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build",
