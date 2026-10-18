@@ -1,6 +1,6 @@
 {
   "schema": "beasy.host-format-validation.v1",
-  "source_head": "431416454305126749cf2df406e821157158ec7c",
+  "source_head": "acfd8d8605fc98934c91e126f6d160821a91156d",
   "clap": {
     "status": "pass",
     "command": "clap-validator validate build-beasy-renamed/CLAP/Beasy.clap",
@@ -11,9 +11,9 @@
     "warnings": 0
   },
   "au": {
-    "status": "blocked_not_installed",
-    "command": "auval -v aumu Bead Inde",
-    "result": "component not registered; auval could not find the component",
+    "status": "pass",
+    "command": "bash /Users/danielraffel/Code/pulp/tools/ci/run-auval-component.sh build-beasy-renamed/AU/Beasy.component aumu Bead Inde",
+    "result": "AU VALIDATION SUCCEEDED; instrument, custom UI, 17 parameters, formats, render, parameter setting, and MIDI checks passed",
     "metadata": {
       "type": "aumu",
       "subtype": "Bead",
@@ -23,7 +23,7 @@
       "path": "/Users/danielraffel/Library/Audio/Plug-Ins/Components/Beasy.component",
       "command": "pluginkit -a <component>; auval -v aumu Bead Inde",
       "result": "still not discoverable; auval reports component not found",
-      "status": "blocked"
+      "status": "pass_with_isolated_gui_bootstrap"
     },
     "build_metadata_status": "present",
     "comparison_control": {
@@ -32,7 +32,8 @@
       "command": "auval -v aumu PHrs Pulp",
       "result": "PASS; AU validation succeeded",
       "implication": "auval and the local AudioUnit host are functional; Beasy-specific discovery/registration remains the blocker"
-    }
+    },
+    "bundle_id": "com.independent-audio.beasy"
   },
   "vst3": {
     "status": "not_run",
