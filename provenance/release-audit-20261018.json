@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "42369e90606f7451565ba6336da468804dcea6aa",
+  "source_head": "5013ff6284bc30c28441b0789fc8cf3e8b784ce0",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -239,10 +239,10 @@
     }
   ],
   "audit_receipt_head": "c071afa84f41632577a53a8c2ac94662eea287d9",
-  "audited_base_head": "42369e90606f7451565ba6336da468804dcea6aa",
+  "audited_base_head": "5013ff6284bc30c28441b0789fc8cf3e8b784ce0",
   "current_checkout": {
-    "head": "42369e90606f7451565ba6336da468804dcea6aa",
-    "role": "current rebuilt checkout before this envelope refresh",
-    "note": "Artifact receipts were regenerated from this exact checkout; envelope commit is intentionally non-circular."
+    "head": "5013ff6284bc30c28441b0789fc8cf3e8b784ce0",
+    "role": "current LV2 MIDI namespace checkout before envelope refresh",
+    "note": "LV2 audio ports are present; URID mapping remains blocked. Envelope commit is non-circular."
   }
 }

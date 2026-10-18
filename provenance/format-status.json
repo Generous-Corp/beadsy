@@ -1,10 +1,10 @@
 {
   "schema": "grainfield.format-status.v1",
-  "generated_at": "2026-10-18T02:56:55.410892Z",
+  "generated_at": "2026-10-18T03:00:30.321811Z",
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield-v1-scope-integrated",
-    "git_head": "42369e90606f7451565ba6336da468804dcea6aa"
+    "git_head": "5013ff6284bc30c28441b0789fc8cf3e8b784ce0"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build",
@@ -17,7 +17,7 @@
     {
       "format": "VST3",
       "status": "blocked",
-      "reason": "no VST3 artifact in current checkout; external development-SDK evidence remains historical partial",
+      "reason": "declared VST3 target produced no artifact in the inspected build tree",
       "evidence": {
         "artifact": {
           "path": "VST3/Grainfield.vst3/Contents/MacOS/Grainfield",
@@ -31,7 +31,7 @@
     {
       "format": "CLAP",
       "status": "supported",
-      "reason": "current artifact, CLAP validator, and Pulp host load pass",
+      "reason": "declared target produced an artifact in the inspected build tree",
       "evidence": {
         "artifact": {
           "path": "CLAP/Grainfield.clap/Contents/MacOS/Grainfield",
@@ -41,17 +41,13 @@
           "sha256": "486ea29c26242aa49ba9acc0f247923344bcf887cafba82df4bb0eef4ba22094"
         },
         "pulp_target_present": true,
-        "host_validation": "pass",
-        "host_receipts": [
-          "provenance/clap-validator.txt",
-          "provenance/clap-host.txt"
-        ]
+        "host_validation": "not_run"
       }
     },
     {
       "format": "LV2",
       "status": "partial",
-      "reason": "current artifact present, but Pulp LV2 host probe is blocked by missing audio ports and LV2_URID__map",
+      "reason": "current artifact present and LV2 audio-port warning is resolved; host instantiation remains blocked because Pulp host does not provide LV2_URID__map",
       "evidence": {
         "artifact": {
           "path": "LV2/Grainfield.lv2/Grainfield.so",
@@ -69,8 +65,8 @@
     },
     {
       "format": "AU",
-      "status": "partial",
-      "reason": "current artifact and metadata present; Pulp AU host probe cannot discover the component",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
       "evidence": {
         "artifact": {
           "path": "AU/Grainfield.component/Contents/MacOS/Grainfield",
@@ -80,11 +76,7 @@
           "sha256": "3c314f672e2d60595838b3ac5a9420583da7eafa6b6ceba029ecca4dc637e8cb"
         },
         "pulp_target_present": true,
-        "host_validation": "blocked",
-        "host_receipts": [
-          "provenance/au-host.txt",
-          "provenance/au-registration-diagnostic.json"
-        ]
+        "host_validation": "not_run"
       }
     },
     {
@@ -103,8 +95,8 @@
     },
     {
       "format": "Standalone",
-      "status": "partial",
-      "reason": "current artifact present; structured editor/audio/state host evidence is unavailable",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
       "evidence": {
         "artifact": {
           "path": "Grainfield.app/Contents/MacOS/Grainfield",
@@ -114,10 +106,10 @@
           "sha256": "32e08916d7d899c7140413c3dd4424cad097647ab7452f6ed78e861d2283499c"
         },
         "pulp_target_present": true,
-        "host_validation": "partial"
+        "host_validation": "not_run"
       }
     }
   ],
   "host_validation_receipt": "provenance/host-validation.json",
-  "host_validation_receipt_sha256": "74fb639833ada99888743b64c5dc14876f49334dc785861c52a89367f89dc3cf"
+  "host_validation_receipt_sha256": "dff73a1d653776ba619876efef28b69f304bf4a21679772de5756db734266d85"
 }

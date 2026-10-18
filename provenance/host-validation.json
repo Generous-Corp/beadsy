@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.host-validation.v1",
   "project": "Grainfield",
-  "source_head": "42369e90606f7451565ba6336da468804dcea6aa",
+  "source_head": "5013ff6284bc30c28441b0789fc8cf3e8b784ce0",
   "status": "partial",
   "checks": [
     {
@@ -172,7 +172,7 @@
     "live_input_release_claim": false
   },
   "current_checkout": {
-    "source_head": "42369e90606f7451565ba6336da468804dcea6aa",
+    "source_head": "5013ff6284bc30c28441b0789fc8cf3e8b784ce0",
     "build": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build",
     "checks": [
       {
@@ -217,8 +217,9 @@
         "status": "blocked",
         "command": "pulp host build/LV2/Grainfield.lv2 --format lv2",
         "receipt": "provenance/lv2-host.txt",
-        "receipt_sha256": "85cc634b72d7b56d7bb754b8af64a1cf4a10f16df2f63be8227430ea07bcb205",
-        "source_head": "42369e90606f7451565ba6336da468804dcea6aa"
+        "receipt_sha256": "1da496986ae49210ee362fe4a03b3df842ed76aac9ad809c6764649dd5410ddd",
+        "source_head": "5013ff6284bc30c28441b0789fc8cf3e8b784ce0",
+        "result": "LV2 bundle exposes audio ports; instantiation remains blocked because host did not provide LV2_URID__map"
       }
     ]
   }
