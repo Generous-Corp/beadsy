@@ -34,7 +34,7 @@
       "result": "12,000 stereo frames at 48 kHz; peak 0.14129/0.14129; RMS 0.09820/0.09820; no NaN, Inf, or clipped samples",
       "receipt": "provenance/clap-render.json",
       "wav": "provenance/clap-render.wav",
-      "receipt_sha256": "e068bc4288d60e2b6b8babca35236145528f1024a3ea84ec51c66d11296bd537",
+      "receipt_sha256": "233168a49d2ee4871878276e4a73feb7196bb5baf677865d1e9072321064a079",
       "wav_sha256": "ff6382b426037d0a1c2a2e66737d0544e458670ae29d885bd55545652e9204f2",
       "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f",
       "evidence_scope": "historical_external_or_prior_checkout"
