@@ -1,10 +1,10 @@
 {
   "schema": "beasy.format-status.v1",
-  "generated_at": "2026-10-18T17:48:26.400608Z",
+  "generated_at": "2026-10-18T17:49:04.595381Z",
   "project": "Beasy",
   "source": {
     "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018",
-    "git_head": "5326e96647ea1001aed3444093178a82ff9e538a"
+    "git_head": "87d8a43d62ec25ad9afaa8563218a70e229f5586"
   },
   "build": {
     "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beasy-renamed",
