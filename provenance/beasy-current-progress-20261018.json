@@ -2,12 +2,12 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "476184990a7676e35f77100b8ee0a7f2a40f0b38",
+  "source_head": "8b1a4d9fe53a19a21f0d1667b28f9d6c7eace787",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
       "command": "ctest --test-dir build-beasy-renamed --output-on-failure",
-      "passed": 35,
+      "passed": 36,
       "failed": 0
     },
     "control_map": {
@@ -101,7 +101,7 @@
     "editor_seed_control": {
       "status": "pass",
       "capture": "build-beasy-renamed/beasy-editor-seed-current.png",
-      "focused_test": "Beasy-editor-test 10 cases / 135 assertions"
+      "focused_test": "Beasy-editor-test; full suite includes Seed Mode button test (36/36)"
     }
   },
   "open_gates": [
