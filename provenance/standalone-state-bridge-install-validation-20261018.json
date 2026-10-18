@@ -1,0 +1,56 @@
+{
+  "schema": "grainfield.standalone-state-bridge-install-validation.v2",
+  "verified_at": "2026-10-18T06:00:00Z",
+  "source_head": "6f8adfdf0ee6c9649143dd6e61259c0afb5957d8",
+  "pulp_source_head": "cc6152a6ec5ee6cfd80791de92e5d7053fdaf3c3",
+  "worktree": "/Users/danielraffel/Code/agent-worktrees/grainfield-standalone-state-canonical-20261018",
+  "pulp_prefix": "/Users/danielraffel/Code/agent-worktrees/pulp-standalone-sdk-export-prefix-20261018",
+  "scope": "Grainfield standalone state-file bridge configured and linked against a locally installed Pulp SDK prefix",
+  "status": "pass",
+  "configure": {
+    "status": "pass",
+    "command": "cmake -S . -B build-sdk-20261018 -G Ninja -DCMAKE_BUILD_TYPE=Release -DPulp_DIR=/Users/danielraffel/Code/agent-worktrees/pulp-standalone-sdk-export-prefix-20261018/lib/cmake/Pulp",
+    "result": "PulpConfig.cmake found; Pulp::standalone resolved; PULP_SDK_PROVENANCE_KIND=source-install; PULP_SDK_SOURCE_GIT_SHA=cc6152a6ec5ee6cfd80791de92e5d7053fdaf3c3"
+  },
+  "build": {
+    "status": "pass",
+    "command": "cmake --build build-sdk-20261018 --target Grainfield-standalone-state-test Grainfield_Standalone Grainfield-test --parallel 4",
+    "targets": [
+      "Grainfield-standalone-state-test",
+      "Grainfield_Standalone",
+      "Grainfield-test"
+    ],
+    "configuration": "Release (-O3 -DNDEBUG)",
+    "artifacts": {
+      "state_test_sha256": "c8b02c9ef47a4311ec8bf48c0ba23dccedee9bef77ded245042b3ae1b48cab4f",
+      "standalone_app_sha256": "48cf90c1c580c82ec975ece018eb76460bdbb6988ad0c1db753893a8239493f5"
+    }
+  },
+  "tests": {
+    "standalone_bridge": {
+      "command": "ctest --test-dir build-sdk-20261018 -R 'Grainfield standalone command bridge' --output-on-failure",
+      "passed": 1,
+      "failed": 0
+    },
+    "grainfield_suite": {
+      "command": "./build-sdk-20261018/Grainfield-test --reporter compact",
+      "test_cases": 17,
+      "assertions": 1936,
+      "result": "passed"
+    },
+    "command_smoke": {
+      "save_command": "./build-sdk-20261018/Grainfield.app/Contents/MacOS/Grainfield --save-state /tmp/grainfield-state-command-20261018.pulpstate",
+      "load_command": "./build-sdk-20261018/Grainfield.app/Contents/MacOS/Grainfield --load-state /tmp/grainfield-state-command-20261018.pulpstate",
+      "result": "both exited 0; screenshot-only startup reported no audio device",
+      "state_sha256": "202e2b6142506e4b37631cf29b74e0574cf7b88c777ed9164751842644ed49f7"
+    }
+  },
+  "linkage": {
+    "target": "Grainfield-standalone-state-test",
+    "archive": "/Users/danielraffel/Code/agent-worktrees/pulp-standalone-sdk-export-prefix-20261018/lib/libpulp-standalone.a",
+    "archive_sha256": "034df8483f80a341677ef0ddff29f3f2c8b64368a8e35d7ee832438a948bb5fa",
+    "bridge_symbols_present": true,
+    "link_command_uses_installed_prefix": true
+  },
+  "scope_boundary": "This receipt proves installed-prefix configure, link, standalone command integration, and Grainfield suite evidence. It does not claim release signing, host validation, or full standalone UI/editor acceptance."
+}
