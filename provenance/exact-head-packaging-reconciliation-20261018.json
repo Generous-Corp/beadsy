@@ -126,6 +126,10 @@
     "current_reconciliation": "provenance/current-provenance-reconciliation-20261018.json",
     "current_reconciliation_sha256": "c0b76e6c12b69991ecf0b7b0fe36a972aa8f9f990f0906bd65a0572421d82ffc"
   },
+  "gate_matrix": {
+    "path": "provenance/current-gate-matrix-20261018.json",
+    "sha256": "7c0253b2766fa0a810a80c8bfad09427dc85c355bb4d4f857864e6d9dd7ad0f9"
+  },
   "open_gates": [
     "AU registration and auval",
     "AAX SDK and validator",
