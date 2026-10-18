@@ -1,0 +1,39 @@
+{
+  "schema": "grainfield.realtime-allocation-probe.v1",
+  "status": "unavailable",
+  "verified_at": "2026-10-18T01:36:17Z",
+  "grainfield_head": "e6357bf5da6cfca51e5da95f1f98b97e4cd43ab2",
+  "claim": "No Grainfield Processor allocation or realtime probe was run.",
+  "available_pulp_surface": {
+    "pulp_head": "86c10d19989810394b56d6e592ad00acd557b307",
+    "probe_type": "pulp::test::RtAllocationProbe",
+    "header": "/Users/danielraffel/Code/pulp/test/harness/rt_allocation_probe.hpp",
+    "source": "/Users/danielraffel/Code/pulp/test/harness/rt_allocation_probe.cpp",
+    "header_sha256": "7d68cf38b7d6578641f00f0f5fba490981b9e9a2ba86e71f7ae050a92f536dc1",
+    "source_sha256": "112034d91dfaa2ab84681c173b373e4543e7f4e690809802ce1e213542f6e17f",
+    "behavior": "thread-local scoped probe counts global new/new[] allocations while active"
+  },
+  "grainfield_integration_surface": {
+    "test_target": "Grainfield-test",
+    "test_sources": ["test_grainfield.cpp"],
+    "target_link_libraries": ["Pulp::format", "Catch2::Catch2WithMain", "grainfield_beads_dsp"],
+    "probe_source_registered": false,
+    "reason": "The Grainfield test target does not compile or link rt_allocation_probe.cpp, and no Grainfield allocation/realtime test is registered."
+  },
+  "probe_attempt": {
+    "command": "pulp test -- -R 'Grainfield.*(allocation|realtime)' --output-on-failure",
+    "exit_code": 0,
+    "result": "No tests were found!!!",
+    "registered_test_count": 0
+  },
+  "ordinary_grainfield_validation": {
+    "command": "pulp test -- -R 'Grainfield' --output-on-failure",
+    "result": "18/18 tests passed",
+    "allocation_claim": "not measured"
+  },
+  "missing_probe_command": {
+    "exact_command": "pulp test -- -R 'Grainfield.*(allocation|realtime)' --output-on-failure",
+    "blocked_by": "No registered Grainfield probe target; adding a new target would be implementation work outside this evidence-only audit.",
+    "next_evidence": "Register a Grainfield test target that links the existing Pulp rt_allocation_probe.cpp, prepare Grainfield once, then scope RtAllocationProbe around repeated Processor::process calls."
+  }
+}
