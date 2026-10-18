@@ -1,0 +1,31 @@
+{
+  "schema": "grainfield.state-roundtrip.v1",
+  "status": "headless_supported_standalone_unexposed",
+  "verified_at": "2026-10-18T02:15:00Z",
+  "source_head": "ac588c16659c81bd9cc1900eab23d398d48d1764",
+  "supported_path": {
+    "api": "pulp::format::HeadlessHost::save_state/load_state",
+    "header": "/Users/danielraffel/pulp-sdk/include/pulp/format/headless.hpp",
+    "documented_contract": "HeadlessHost serializes StateStore plus Processor::serialize_plugin_state() and restores with load_state().",
+    "test": "Grainfield state round trips",
+    "test_source": "test_grainfield.cpp",
+    "scenario": "Prepare 48 kHz / 512 frames / 0 input / 2 output; set Gain=-12 dB and Freeze=1; save; set both values to defaults; load; verify both values are restored."
+  },
+  "bounded_run": {
+    "command": "./build/Grainfield-test 'Grainfield state round trips' --reporter console",
+    "runs": 10,
+    "passes": 10,
+    "failures": 0,
+    "assertions_per_run": 3,
+    "exit_codes": "all_zero",
+    "result": "All ten runs passed; HeadlessHost save/load restored Gain and Freeze on every run."
+  },
+  "standalone_path": {
+    "entry_source": "main.cpp",
+    "entry": "pulp::format::StandaloneApp::run_with_editor(false)",
+    "state_save_restore_api": "unexposed",
+    "cli_state_command": "unavailable",
+    "result": "The standalone entry configures channels and runs the app but exposes no documented save/load state command or bridge in this checkout; no standalone roundtrip was invented or claimed."
+  },
+  "scope": "This receipt proves the supported in-process HeadlessHost state path only. It does not prove state recall through a DAW, installed Grainfield.app UI, or any plugin format host."
+}
