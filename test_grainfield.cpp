@@ -159,7 +159,7 @@ TEST_CASE("Grainfield maps pitch bend to the Beads pitch offset") {
 }
 
 TEST_CASE("Grainfield sustain and overlap handling is deterministic") {
-    auto render_sequence = [] {
+    auto render_sequence = [](uint8_t midi_channel) {
         stmlib::Random::Seed(0x1020304u);
         auto proc = grainfield::create_grainfield();
         pulp::state::StateStore store;
@@ -176,12 +176,12 @@ TEST_CASE("Grainfield sustain and overlap handling is deterministic") {
             event.sample_offset = offset;
             REQUIRE(input.add(event));
         };
-        add(pulp::midi::MidiEvent::note_on(0, 60, 100), 0);
-        add(pulp::midi::MidiEvent::note_on(0, 64, 80), 48);
-        add(pulp::midi::MidiEvent::cc(0, 64, 127), 96);
-        add(pulp::midi::MidiEvent::note_off(0, 60), 128);
-        add(pulp::midi::MidiEvent::note_off(0, 64), 160);
-        add(pulp::midi::MidiEvent::cc(0, 64, 0), 192);
+        add(pulp::midi::MidiEvent::note_on(midi_channel, 60, 100), 0);
+        add(pulp::midi::MidiEvent::note_on(midi_channel, 64, 80), 48);
+        add(pulp::midi::MidiEvent::cc(midi_channel, 64, 127), 96);
+        add(pulp::midi::MidiEvent::note_off(midi_channel, 60), 128);
+        add(pulp::midi::MidiEvent::note_off(midi_channel, 64), 160);
+        add(pulp::midi::MidiEvent::cc(midi_channel, 64, 0), 192);
         pulp::audio::Buffer<float> output(2, 256);
         auto view = output.view();
         pulp::audio::BufferView<const float> empty(nullptr, 0, 0);
@@ -190,9 +190,11 @@ TEST_CASE("Grainfield sustain and overlap handling is deterministic") {
         proc->process(view, empty, input, output_midi, context);
         return std::vector<float>(output.channel(0).begin(), output.channel(0).end());
     };
-    const auto first = render_sequence();
-    const auto second = render_sequence();
+    const auto first = render_sequence(0);
+    const auto second = render_sequence(0);
+    const auto channel_fifteen = render_sequence(15);
     REQUIRE(first == second);
+    REQUIRE(channel_fifteen == first);
     REQUIRE(std::all_of(first.begin(), first.end(), [](float sample) {
         return std::isfinite(sample);
     }));
