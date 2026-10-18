@@ -1,0 +1,39 @@
+{
+  "schema": "grainfield.audio-contract.v1",
+  "status": "partial",
+  "project": "Grainfield",
+  "source_head": "cbe44cd",
+  "engine": {
+    "implementation": "beads::Synth",
+    "internal_sample_rate_hz": 48000,
+    "supported_host_sample_rates_hz": [
+      48000
+    ],
+    "unsupported_host_sample_rates_behavior": "clear_output_and_return",
+    "resampling": false
+  },
+  "render_contract": {
+    "output_channels": 2,
+    "input_channels": 0,
+    "max_block_size": "prepare_context.max_buffer_size",
+    "finite_output_required": true,
+    "seed_trigger": "global MIDI note-on maps to SEED_BUTTON_STATE_ON",
+    "determinism": "fresh instances with identical parameters and MIDI input produce identical samples"
+  },
+  "validation": {
+    "test_target": "Grainfield-test",
+    "tests": [
+      "Grainfield seeded renders are deterministic",
+      "Grainfield 48 kHz contract is finite and rejects other rates"
+    ],
+    "command": "pulp test -- --output-on-failure",
+    "execution": "passed locally",
+    "result": "5/5 tests passed",
+    "seed": "stmlib::Random::Seed(0x12345678) before each seeded render"
+  },
+  "open_gates": [
+    "sample-rate conversion is not implemented",
+    "allocation/real-time probe is not included",
+    "source-vs-port reference render is not included"
+  ]
+}
