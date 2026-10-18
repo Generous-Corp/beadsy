@@ -347,6 +347,12 @@
       "sha256": "03ee7e8186ac12b5f3d237e138c4756b249558f0d12969dee0c0c62451ffe4f6",
       "source_head": "f6d278f10d388044f6f437ac0744c81ebae15ce2",
       "evidence_freshness": "current_exact_head"
+    },
+    {
+      "path": "provenance/standalone-smoke-20261018.json",
+      "sha256": "3551087f1745b0ca0dd5d77d942c93ccb0699d1a44e563b82d6375275efc4c48",
+      "source_head": "476b04ecb2239a6228b1471a9f9ac86dfaab36e1",
+      "evidence_freshness": "current_exact_head"
     }
   ],
   "non_claims": [
