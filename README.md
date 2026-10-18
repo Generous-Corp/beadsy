@@ -24,13 +24,15 @@ pulp test
 ```
 
 The first product milestone declares CLAP, VST3, AU, LV2, and standalone.
-Current validation is intentionally scoped: CLAP, VST3, LV2 host/audio, and
-standalone state evidence are present; AU registration remains blocked in the
-GUI `AudioComponentRegistrar` path; LV2 state round-trip is not implemented;
-and AAX remains blocked until the Avid SDK, entry point, validator, and Pro
-Tools evidence are available. See the current [gate matrix](provenance/current-gate-matrix-20261018.json)
-and [packaging reconciliation](provenance/exact-head-packaging-reconciliation-20261018.json)
-before treating any format as release-ready.
+Current validation is intentionally scoped: CLAP and VST3 host validation pass;
+AU passes the governed GUI-bootstrap `auval` path while installed-component
+discovery remains open; LV2 has a passing binary/TTL probe but no external host
+or state round-trip proof; and standalone state save/load passes through the
+bounded CLI bridge. AAX remains blocked until the Avid SDK, entry point,
+validator, and Pro Tools evidence are available. See the current [format
+receipt](provenance/beasy-format-status-current.json) and [progress
+ledger](provenance/beasy-current-progress-20261018.json) before treating any
+format as release-ready.
 
 To inspect the formats declared by `pulp_add_plugin` against a particular build
 tree, generate the machine-readable receipt with:
