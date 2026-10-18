@@ -759,56 +759,176 @@
         "kind": "beads",
         "reason": "hash_mismatch",
         "port_sha256": "dacc069b7d3d83ad005db1d855962149174f5034f287ba4d40dd59499174afae",
-        "source_sha256": "0e99de3c67597ec08aaab6ddf49a0e5948df28fca21bb4f1a36c319939269e4e"
+        "source_sha256": "0e99de3c67597ec08aaab6ddf49a0e5948df28fca21bb4f1a36c319939269e4e",
+        "classification": "intentional_portability_adaptation",
+        "reason_detail": "Scratch storage and caller-owned buffers replace firmware stack VLAs for host real-time portability.",
+        "diff_evidence": {
+          "format": "unified_diff",
+          "context_lines": 3,
+          "source_label": "source/dsp/granular_processor.h",
+          "port_label": "port/third_party/beads_dsp/beads/dsp/granular_processor.h",
+          "diff_sha256": "f307090eac045f2a255b6f8944805d30f38259bbc9ec13623515826e56b098c9",
+          "diff_bytes": 2338,
+          "hunks": 2,
+          "added_lines": 38,
+          "removed_lines": 8,
+          "source_bytes": 11577,
+          "port_bytes": 12592
+        }
       },
       {
         "port_path": "third_party/beads_dsp/beads/dsp/processor.cc",
         "kind": "beads",
         "reason": "hash_mismatch",
         "port_sha256": "8be85705c7ca35c80d4f0d248d0ec177fd5aac7de1b8bb1e9bb3e4df2587faec",
-        "source_sha256": "9d3acbbc9828240def58a9866429cb12ba4deaf9537fce4ba15ef1dbe9380ec1"
+        "source_sha256": "9d3acbbc9828240def58a9866429cb12ba4deaf9537fce4ba15ef1dbe9380ec1",
+        "classification": "intentional_portability_adaptation",
+        "reason_detail": "Caller-owned scratch buffers and merged gate storage replace firmware stack VLAs for host real-time portability.",
+        "diff_evidence": {
+          "format": "unified_diff",
+          "context_lines": 3,
+          "source_label": "source/dsp/processor.cc",
+          "port_label": "port/third_party/beads_dsp/beads/dsp/processor.cc",
+          "diff_sha256": "4535d17afa8ca94c88d2b002d60a95700b7d292a813634dcb5daf342c8643de7",
+          "diff_bytes": 2992,
+          "hunks": 7,
+          "added_lines": 15,
+          "removed_lines": 16,
+          "source_bytes": 8180,
+          "port_bytes": 8262
+        }
       },
       {
         "port_path": "third_party/beads_dsp/beads/dsp/processor.h",
         "kind": "beads",
         "reason": "hash_mismatch",
         "port_sha256": "2940ae49fbf54bdd1ee283ae5dd9de959947ec03d2d6996626d6209958245e26",
-        "source_sha256": "aaf1efb34883c926dd2fb9698d2e72323dc54605f817b7894ab25047bc2508e5"
+        "source_sha256": "aaf1efb34883c926dd2fb9698d2e72323dc54605f817b7894ab25047bc2508e5",
+        "classification": "intentional_portability_adaptation",
+        "reason_detail": "A prepared Scratch aggregate replaces firmware stack scratch arrays for the Pulp host callback.",
+        "diff_evidence": {
+          "format": "unified_diff",
+          "context_lines": 3,
+          "source_label": "source/dsp/processor.h",
+          "port_label": "port/third_party/beads_dsp/beads/dsp/processor.h",
+          "diff_sha256": "e9dd2ff7b3d044664f281cecff4949cdb7f15d3a077212b7096f9f5c4cd2836d",
+          "diff_bytes": 1881,
+          "hunks": 3,
+          "added_lines": 33,
+          "removed_lines": 1,
+          "source_bytes": 6386,
+          "port_bytes": 7531
+        }
       },
       {
         "port_path": "third_party/beads_dsp/beads/dsp/synth.cc",
         "kind": "beads",
         "reason": "hash_mismatch",
         "port_sha256": "e1e2647b310df42b84f8909fadea9893c9cdbb72218712f446c8a03b78afc9d9",
-        "source_sha256": "2244105032dcb2b3592a94348f50b96bfcfb64548db6e75ec88f8e413cd9b6cb"
+        "source_sha256": "2244105032dcb2b3592a94348f50b96bfcfb64548db6e75ec88f8e413cd9b6cb",
+        "classification": "intentional_portability_adaptation",
+        "reason_detail": "Caller-owned trigger and gate spans replace the firmware trigger VLA and add host buffer guards.",
+        "diff_evidence": {
+          "format": "unified_diff",
+          "context_lines": 3,
+          "source_label": "source/dsp/synth.cc",
+          "port_label": "port/third_party/beads_dsp/beads/dsp/synth.cc",
+          "diff_sha256": "bc9d12e7205e46ccdffb5f128ebf563249a95f19bece69c59d89ad302d554fe7",
+          "diff_bytes": 1142,
+          "hunks": 3,
+          "added_lines": 9,
+          "removed_lines": 3,
+          "source_bytes": 4514,
+          "port_bytes": 4690
+        }
       },
       {
         "port_path": "third_party/beads_dsp/beads/dsp/synth.h",
         "kind": "beads",
         "reason": "hash_mismatch",
         "port_sha256": "a7cfd53fe333978b68a36e9b686660a3e91d25b35f103399c72c05207e1a766a",
-        "source_sha256": "e7e354eb1b8982194b529b7dbc11df760e09ca2f17acf249b18ce3dfd9cf9808"
+        "source_sha256": "e7e354eb1b8982194b529b7dbc11df760e09ca2f17acf249b18ce3dfd9cf9808",
+        "classification": "intentional_portability_adaptation",
+        "reason_detail": "The synth API accepts caller-owned trigger and gate spans instead of allocating a callback VLA.",
+        "diff_evidence": {
+          "format": "unified_diff",
+          "context_lines": 3,
+          "source_label": "source/dsp/synth.h",
+          "port_label": "port/third_party/beads_dsp/beads/dsp/synth.h",
+          "diff_sha256": "c58f0d3962bb66960629a98fc9c90ad33342ca72cf0c1978682023f36ff8a376",
+          "diff_bytes": 545,
+          "hunks": 2,
+          "added_lines": 4,
+          "removed_lines": 0,
+          "source_bytes": 2685,
+          "port_bytes": 2808
+        }
       },
       {
         "port_path": "third_party/beads_dsp/beads/dsp/trigger_generator.cc",
         "kind": "beads",
         "reason": "hash_mismatch",
         "port_sha256": "e17a0fe0950391f0458b17e5b3189f9defffcbd967ab546d84718ce97240d865",
-        "source_sha256": "c2435554fd3b49f1e64bb344bc4847c569d4e6e50f3fffb8de68334bc0393964"
+        "source_sha256": "c2435554fd3b49f1e64bb344bc4847c569d4e6e50f3fffb8de68334bc0393964",
+        "classification": "intentional_portability_adaptation",
+        "reason_detail": "The merged gate buffer is supplied by the caller instead of allocated as a callback VLA.",
+        "diff_evidence": {
+          "format": "unified_diff",
+          "context_lines": 3,
+          "source_label": "source/dsp/trigger_generator.cc",
+          "port_label": "port/third_party/beads_dsp/beads/dsp/trigger_generator.cc",
+          "diff_sha256": "5f232db01ab1c1ec55225040d4f9ca03b21d2bcef09015099376e2e72168a199",
+          "diff_bytes": 1451,
+          "hunks": 4,
+          "added_lines": 8,
+          "removed_lines": 5,
+          "source_bytes": 9830,
+          "port_bytes": 9901
+        }
       },
       {
         "port_path": "third_party/beads_dsp/beads/dsp/trigger_generator.h",
         "kind": "beads",
         "reason": "hash_mismatch",
         "port_sha256": "a163a725a46f9251fec913daa2fdc6b33f1ed66c19bea52d3bef3df009b54913",
-        "source_sha256": "6742a15825fc41986af7b13d8924baa069489274793bf516b41701b91df6fc2c"
+        "source_sha256": "6742a15825fc41986af7b13d8924baa069489274793bf516b41701b91df6fc2c",
+        "classification": "intentional_portability_adaptation",
+        "reason_detail": "The trigger API accepts caller-owned merged gate storage for host callback portability.",
+        "diff_evidence": {
+          "format": "unified_diff",
+          "context_lines": 3,
+          "source_label": "source/dsp/trigger_generator.h",
+          "port_label": "port/third_party/beads_dsp/beads/dsp/trigger_generator.h",
+          "diff_sha256": "95bbf9afed88cf05c381d803ce125ae50869f225785672345b66afc936aacbdc",
+          "diff_bytes": 398,
+          "hunks": 2,
+          "added_lines": 2,
+          "removed_lines": 0,
+          "source_bytes": 3043,
+          "port_bytes": 3113
+        }
       },
       {
         "port_path": "third_party/beads_dsp/stmlib/dsp/dsp.h",
         "kind": "stmlib",
         "reason": "hash_mismatch",
         "port_sha256": "7ff2ffc81ddcadaf0cc6a6ce17b8bb69701426b3baafe01bfb42fafcfe05e500",
-        "audit_sha256": "98b42900c4accbe9fbb2cfe2ec6fada024b57ec9a1becff008b0f35bd4fd8ddb"
+        "audit_sha256": "98b42900c4accbe9fbb2cfe2ec6fada024b57ec9a1becff008b0f35bd4fd8ddb",
+        "classification": "intentional_portability_adaptation",
+        "reason_detail": "Host builds run Clip16 and Sqrt under the non-ARM guard; this preserves firmware ARM behavior while enabling host tests.",
+        "diff_evidence": {
+          "format": "unified_diff",
+          "context_lines": 3,
+          "source_label": "source/dsp/dsp.h",
+          "port_label": "port/third_party/beads_dsp/stmlib/dsp/dsp.h",
+          "diff_sha256": "6bd32677570395f8cb803e79be00abc29ea9eec147691459f653fc7161c4047f",
+          "diff_bytes": 384,
+          "hunks": 2,
+          "added_lines": 2,
+          "removed_lines": 2,
+          "source_bytes": 4641,
+          "port_bytes": 4695
+        }
       }
     ],
     "conclusion": "Beads local origins and stmlib audit paths compared byte-for-byte; remaining stmlib gaps are explicit."
