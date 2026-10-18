@@ -61,7 +61,7 @@
       "id": "source-provenance",
       "status": "partial",
       "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, provenance/converter-report.json, and Pulp commit f9752e4 importer diagnostics, provenance/realtime-allocation-probe.json, provenance/source-port-reference-gap.json",
-      "result": "Source-to-port inventory is complete for recorded files; an internal 48 kHz synth fixture is now byte-identical between the exact Beads source build and Grainfield port; notices and upstream license metadata are recorded",
+      "result": "Source-to-port inventory is complete for recorded files; internal 48 kHz synth fixtures are byte-identical across 16 quality/parameter cases between the exact Beads source build and Grainfield port; notices and upstream license metadata are recorded",
       "reason": "The comparison covers one deterministic synth contract only. Broader parity cases, source redistribution review, and full stmlib legal closure remain open."
     },
     {
@@ -208,6 +208,10 @@
     {
       "path": "provenance/source-port-comparison.json",
       "role": "internal byte-identical 48 kHz synth source-vs-port comparison"
+    },
+    {
+      "path": "provenance/source-port-comparison-matrix.json",
+      "role": "16-case internal synth source-vs-port matrix"
     }
   ],
   "audit_receipt_head": "c071afa84f41632577a53a8c2ac94662eea287d9"

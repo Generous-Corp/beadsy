@@ -8,11 +8,12 @@
     "provenance/matrix-24000-synth.wav",
     "provenance/matrix-32000-synth.wav",
     "provenance/matrix-48000-synth.wav",
-    "provenance/source-port-comparison.json"
+    "provenance/source-port-comparison.json",
+    "provenance/source-port-comparison-matrix.json"
   ],
   "missing": "A broader authorized parity matrix and distribution/legal review remain open; the deterministic 48 kHz synth fixture now has a byte-identical source-vs-port comparison.",
-  "decision": "One internal source-vs-port synth comparison passes byte-identically. It is not a full parity or release claim.",
-  "next_evidence": "Extend comparison across declared parameter/event/rate cases and complete source redistribution review.",
+  "decision": "Internal source-vs-port synth comparisons pass byte-identically for one 48 kHz baseline and a 16-case matrix covering all four quality modes and four parameter states. This is not a full parity or release claim.",
+  "next_evidence": "Extend comparison across sample-rate adaptation and MIDI event partitions, then complete source redistribution review.",
   "source_path": "/Users/danielraffel/Code/eurorack/beads",
   "source_worktree_note": "Source checkout is at the recorded commit; untracked hardware_design DWG/DXF files are excluded from DSP comparison and redistribution.",
   "source_harness": {
