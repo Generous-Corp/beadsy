@@ -312,5 +312,12 @@
       "result": "All ten temporary Debug matrix runs passed with zero allocations and zero bytes at every tested block size."
     },
     "restoration": "Temporary matrix source was restored to the committed test contract; build-debug was removed with trash after capture."
-  }
+  },
+  "current_checkout_probe": {
+    "command": "pulp test -- -R '^Grainfield prepared processing allocates no realtime memory$' --output-on-failure",
+    "status": "not_run",
+    "result": "No tests were found in the existing build tree",
+    "reason": "The current build was configured without GRAINFIELD_PULP_TEST_HARNESS_DIR; historical bounded probe receipts remain separate evidence and the allocation gate stays inconclusive."
+  },
+  "next_action": "Reconfigure a fresh build with GRAINFIELD_PULP_TEST_HARNESS_DIR, build Grainfield-test through pulp, then rerun the focused probe and bounded matrix."
 }
