@@ -1,11 +1,11 @@
 {
   "schema": "grainfield.current-gate-matrix.v1",
   "verified_at": "2026-10-18",
-  "source_head": "dbc0841d55ac1e150dde03eddd5e65d66aa33cfb",
+  "source_head": "80015bea33a68137874831a0000bf23ffc3e46e2",
   "receipts": {
     "integration": {
       "path": "provenance/current-integration-validation-20261018.json",
-      "sha256": "de22bea115cfcb7d3007f4a074d4708be15a3e0ccd775c18feeadb7cebdd5863"
+      "sha256": "f78ad19bbfaeeb1bb9ee3174b0789cd209a923a0cd9fde3cb0147bd9a6f9d9dd"
     },
     "packaging": {
       "path": "provenance/exact-head-packaging-reconciliation-20261018.json",
@@ -25,7 +25,7 @@
     },
     "ui_fidelity": {
       "path": "provenance/ui-fidelity-current-audit-20261018.json",
-      "sha256": "6e3f82bb4d733489bcef246cf9babba5da6934cca540b3aca479e7b1c7d4dcf6"
+      "sha256": "84181cce0b9e3def777a09c16dad1bbf895d6ba119b53f77d644e561034b0f88"
     },
     "standalone_probe": {
       "path": "provenance/standalone-current-build-probe-20261018.json",
@@ -38,6 +38,10 @@
     "procedural_jacks": {
       "path": "provenance/procedural-jack-render-audit-20261018.json",
       "sha256": "5a2320b2600c7ab92519e7cc74123b3394678b59e7ce587efe5d6ea081faf26f"
+    },
+    "gpu_editor_capture": {
+      "path": "provenance/gpu-editor-capture-audit-20261018.json",
+      "sha256": "b5bb0e84c6adf4bec2ab16e58002f048bf9a3aca1472cd45f8aee678bc4a57d9"
     }
   },
   "gates": [

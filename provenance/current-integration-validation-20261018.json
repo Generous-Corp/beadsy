@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.current-integration-validation.v1",
   "status": "pass_with_open_format_gates",
-  "grainfield_head": "dbc0841d55ac1e150dde03eddd5e65d66aa33cfb",
+  "grainfield_head": "80015bea33a68137874831a0000bf23ffc3e46e2",
   "receipt_head": "3086950",
   "product_base_head": "6235f0c8f955f0f78691662a0d09e130d1710b7e",
   "integrated_commits": [
@@ -58,6 +58,11 @@
       "status": "pass",
       "receipt": "provenance/procedural-jack-render-audit-20261018.json",
       "evidence": "capture and editor test run show twelve asset-free metal socket regions"
+    },
+    "gpu_capture": {
+      "status": "pass",
+      "receipt": "provenance/gpu-editor-capture-audit-20261018.json",
+      "evidence": "Dawn Metal plus Skia Graphite explicit capture passed with procedural jacks"
     }
   },
   "realtime_allocation": {
