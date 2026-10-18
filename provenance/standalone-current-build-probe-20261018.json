@@ -1,0 +1,21 @@
+{
+  "schema": "grainfield.standalone-current-build-probe.v1",
+  "verified_at": "2026-10-18",
+  "source_head": "bb3d8529363b2dd38d071d9822c982201744556d",
+  "build_directory": "build-full-current",
+  "configuration": {
+    "Pulp_DIR": "/Users/danielraffel/Code/agent-worktrees/pulp-sdk-gpu-capture-20261018/lib/cmake/Pulp",
+    "build_type": "Release AppleClang arm64"
+  },
+  "target": "Grainfield-standalone-state-test",
+  "status": "inconclusive_sdk_capability_gap",
+  "result": "compile failed before test execution because this GPU-capture Pulp prefix does not expose the standalone state file API",
+  "missing_symbols": [
+    "pulp::format::StandaloneStateFileResult",
+    "pulp::format::StandaloneStateFilePolicy",
+    "pulp::format::save_standalone_state_file",
+    "pulp::format::load_standalone_state_file"
+  ],
+  "separate_evidence": "The standalone SDK export prefix has an independent 5-assertion state-test pass; it is not substituted for this combined-prefix result.",
+  "next_evidence": "Use a single Pulp SDK export that contains both Pulp::view and the standalone state file API, then rerun the target."
+}
