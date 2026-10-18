@@ -31,6 +31,16 @@ def current_head(source: Path) -> str:
     ).strip()
 
 
+def has_tracked_changes(source: Path) -> bool:
+    result = subprocess.run(
+        ["git", "-C", str(source), "diff", "--quiet", "HEAD", "--"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return result.returncode != 0
+
+
 def receipt_tip_is_metadata_only(source: Path, receipt_path: Path,
                                  expected_head: str, actual_head: str) -> bool:
     """Allow a receipt-only commit to publish evidence for its source parent.
