@@ -6,6 +6,7 @@
 #include "grainfield.hpp"
 
 #include <pulp/canvas/canvas.hpp>
+#include <pulp/canvas/svg.hpp>
 #include <pulp/view/parameter_binding.hpp>
 #include <pulp/view/view.hpp>
 #include <pulp/view/widgets.hpp>
@@ -53,10 +54,6 @@ public:
                            cx + radius * 0.76f * std::cos(angle),
                            cy + radius * 0.76f * std::sin(angle));
 
-        canvas.set_fill_color(pulp::canvas::Color::rgba8(228, 220, 192));
-        canvas.set_font("Inter", std::max(7.0f, diameter_ * 0.16f));
-        canvas.fill_text_anchored(caption_, cx, b.height * 0.92f,
-                                 pulp::canvas::Canvas::TextAnchor::GlyphCenter);
     }
 
 private:
@@ -68,18 +65,26 @@ private:
 
 class GrainfieldEditor final : public pulp::view::View {
 public:
-    explicit GrainfieldEditor(pulp::state::StateStore& store) : store_(store) {
+    explicit GrainfieldEditor(pulp::state::StateStore& store)
+        : store_(store), panel_(pulp::canvas::SvgImage::from_string(kGrainfieldPanelSvg)) {
         set_id("grainfield-editor");
         set_background_color(pulp::canvas::Color::rgba8(22, 21, 19));
         build_controls();
+        layout_controls();
         set_continuous_repaint(false);
     }
 
     void on_resized() override { layout_controls(); }
+    void layout_children() override {
+        pulp::view::View::layout_children();
+        layout_controls();
+    }
 
     void paint(pulp::canvas::Canvas& canvas) override {
         const auto b = local_bounds();
-        if (!canvas.draw_svg(kGrainfieldPanelSvg, 0.0f, 0.0f, b.width, b.height)) {
+        if (panel_.is_valid()) {
+            panel_.render(canvas, 0.0f, 0.0f, b.width, b.height);
+        } else {
             canvas.set_fill_color(pulp::canvas::Color::rgba8(22, 21, 19));
             canvas.fill_rect(0, 0, b.width, b.height);
         }
@@ -107,8 +112,10 @@ private:
     }
 
     void layout_controls() {
-        const float sx = local_bounds().width / 70.8f;
-        const float sy = local_bounds().height / 128.5f;
+        const float width = local_bounds().width > 1.0f ? local_bounds().width : 201.0f;
+        const float height = local_bounds().height > 1.0f ? local_bounds().height : 364.0f;
+        const float sx = width / 70.8f;
+        const float sy = height / 128.5f;
         for (const auto& c : controls_) {
             const float diameter = c.radius * 2.0f * std::min(sx, sy);
             const float x = c.x * sx - diameter * 0.5f;
@@ -122,6 +129,7 @@ private:
 
     struct Control { detail::PanelKnob* knob; float x; float y; float radius; };
     pulp::state::StateStore& store_;
+    pulp::canvas::SvgImage panel_;
     std::vector<Control> controls_;
     std::vector<pulp::view::ParameterBinding> bindings_;
 };

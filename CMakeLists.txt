@@ -40,6 +40,16 @@ target_link_libraries(Grainfield-test PRIVATE Pulp::format Catch2::Catch2WithMai
 target_include_directories(Grainfield-test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 catch_discover_tests(Grainfield-test)
 
+if(TARGET Pulp::view)
+    add_executable(Grainfield-editor-test test_grainfield_editor.cpp)
+    target_link_libraries(Grainfield-editor-test PRIVATE
+        Pulp::format Pulp::view Catch2::Catch2WithMain grainfield_beads_dsp)
+    target_include_directories(Grainfield-editor-test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+    target_compile_definitions(Grainfield-editor-test PRIVATE GRAINFIELD_NATIVE_EDITOR=1)
+    catch_discover_tests(Grainfield-editor-test)
+endif()
+
 pulp_add_plugin(Grainfield
     FORMATS         VST3 CLAP LV2 AU AAX Standalone
     PLUGIN_NAME     "Grainfield"
