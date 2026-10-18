@@ -148,7 +148,7 @@ TEST_CASE("Beasy binds source-backed auxiliary controls and labels ports") {
     auto editor = processor.create_view();
     auto* native = dynamic_cast<beasy::BeasyEditor*>(editor.get());
     REQUIRE(native != nullptr);
-    REQUIRE(native->child_count() == 25);
+    REQUIRE(native->child_count() == 26);
 
     // Five primary controls plus seven PCB-net-backed auxiliary pots are
     // automatable. The twelve remaining regions are physical I/O ports.
@@ -198,6 +198,40 @@ TEST_CASE("Beasy Seed Mode button cycles the source-backed LED states") {
     seed->on_mouse_down({});
     REQUIRE(store.get_value(beasy::kSeedMode) == 0.0f);
     REQUIRE(seed->mode() == 0);
+}
+
+TEST_CASE("Beasy top Freeze control is source-backed and laid out beside Seed") {
+    beasy::Beasy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beasy::BeasyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+
+    beasy::FreezeControl* freeze = nullptr;
+    beasy::SeedModeControl* seed = nullptr;
+    for (std::size_t i = 0; i < native->child_count(); ++i) {
+        if (!freeze) freeze = dynamic_cast<beasy::FreezeControl*>(native->child_at(i));
+        if (!seed) seed = dynamic_cast<beasy::SeedModeControl*>(native->child_at(i));
+    }
+    REQUIRE(freeze != nullptr);
+    REQUIRE(seed != nullptr);
+    REQUIRE_FALSE(freeze->pressed());
+    REQUIRE(freeze->access_label().find("off") != std::string::npos);
+    REQUIRE(seed->bounds().y < 80.0f);
+    REQUIRE(freeze->bounds().y < 80.0f);
+    REQUIRE(freeze->bounds().x < seed->bounds().x);
+
+    freeze->on_mouse_down({});
+    REQUIRE(store.get_value(beasy::kFreeze) == 1.0f);
+    REQUIRE(freeze->pressed());
+    REQUIRE(freeze->access_label().find("on") != std::string::npos);
+    freeze->on_mouse_down({});
+    REQUIRE(store.get_value(beasy::kFreeze) == 0.0f);
+    REQUIRE_FALSE(freeze->pressed());
 }
 
 TEST_CASE("Beasy modulation context menu updates and resets the selected LFO") {

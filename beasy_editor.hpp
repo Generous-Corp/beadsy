@@ -61,6 +61,9 @@ public:
     void set_modulation_indicator(std::function<bool()> active) {
         modulation_active_ = std::move(active);
     }
+    void set_accent(std::optional<pulp::canvas::Color> accent) {
+        accent_ = accent;
+    }
 
     void paint(pulp::canvas::Canvas& canvas) override {
         const auto b = local_bounds();
@@ -69,6 +72,15 @@ public:
         const float radius = paint_radius_for_bounds(b.width, b.height);
         const float angle = pulp::view::Knob::start_angle +
                             (pulp::view::Knob::end_angle - pulp::view::Knob::start_angle) * value();
+
+        // A few auxiliary controls use a colored side strip in the reference
+        // panel.  Paint that accent behind the procedural ring so the native
+        // knob still owns hit testing and automation.
+        if (accent_) {
+            canvas.set_fill_color(*accent_);
+            canvas.fill_rounded_rect(cx - radius * 0.66f, cy - radius * 2.40f,
+                                     radius * 1.32f, radius * 4.80f, radius * 0.58f);
+        }
 
         // The straight-on reference shows a black, physically segmented
         // annulus around a pale inset cap.  Keep this entirely procedural:
@@ -142,6 +154,7 @@ public:
 private:
     std::string caption_;
     float diameter_ = 0.0f;
+    std::optional<pulp::canvas::Color> accent_;
     std::function<bool()> modulation_active_;
 };
 
@@ -236,7 +249,7 @@ public:
         canvas.set_fill_color(led);
         canvas.fill_circle(cx, std::max(2.0f, button_y * 0.48f),
                            std::max(1.2f, std::min(b.width, b.height) * 0.10f));
-        canvas.set_font_full("Roboto Mono", std::max(3.0f, b.width * 0.17f),
+        canvas.set_font_full("Roboto Mono", std::max(3.0f, b.width * 0.13f),
                             700, 0, 0.45f);
         canvas.set_text_align(pulp::canvas::TextAlign::center);
         canvas.set_fill_color(pulp::canvas::Color::rgba8(236, 234, 224));
@@ -251,6 +264,62 @@ public:
 
 private:
     int mode_ = 0;
+    std::function<void()> on_press_;
+};
+
+/// A native, source-backed FREEZE button.  The physical panel uses a large
+/// top button; keeping this control procedural preserves the same silhouette
+/// at every editor scale while the StateStore remains the automation
+/// authority.
+class FreezeControl final : public pulp::view::View {
+public:
+    FreezeControl() {
+        set_id("beasy-freeze");
+        set_access_role(pulp::view::View::AccessRole::button);
+        set_access_label("Freeze (off); click to toggle");
+        set_focusable(true);
+    }
+
+    void set_pressed(bool pressed) {
+        pressed_ = pressed;
+        set_access_label(std::string("Freeze (") + (pressed ? "on" : "off") +
+                         "); click to toggle");
+        request_repaint();
+    }
+    bool pressed() const { return pressed_; }
+
+    void set_on_press(std::function<void()> callback) {
+        on_press_ = std::move(callback);
+    }
+
+    void paint(pulp::canvas::Canvas& canvas) override {
+        const auto b = local_bounds();
+        const float cx = b.width * 0.5f;
+        const float button_h = std::max(8.0f, b.height * 0.67f);
+        const float y = b.height - button_h;
+        const auto body = pressed_ ? pulp::canvas::Color::rgba8(20, 150, 161)
+                                   : pulp::canvas::Color::rgba8(28, 166, 177);
+        canvas.set_fill_color(body);
+        canvas.fill_rounded_rect(0.5f, y, std::max(1.0f, b.width - 1.0f),
+                                 button_h, button_h * 0.38f);
+        canvas.set_stroke_color(pulp::canvas::Color::rgba8(7, 104, 112));
+        canvas.set_line_width(0.8f);
+        canvas.stroke_rounded_rect(0.5f, y, std::max(1.0f, b.width - 1.0f),
+                                   button_h, button_h * 0.38f);
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(238, 250, 244));
+        canvas.set_font_full("Roboto Mono", std::max(3.0f, b.width * 0.13f),
+                            700, 0, 0.45f);
+        canvas.set_text_align(pulp::canvas::TextAlign::center);
+        canvas.fill_text("FREEZE", cx, y + button_h * 0.62f);
+    }
+
+    void on_mouse_down(pulp::view::Point) override {
+        if (on_press_) on_press_();
+    }
+    bool wants_mouse_input() const override { return true; }
+
+private:
+    bool pressed_ = false;
     std::function<void()> on_press_;
 };
 
@@ -376,14 +445,25 @@ private:
         label("BEASY", 100.3465f, 17.0f, 8.0f, ink, pulp::canvas::TextAlign::center, 700);
         label("MIDI GRAIN SYNTH", 100.3465f, 25.0f, 3.1f, accent);
         label("GRAIN", 100.3465f, 46.0f, 3.2f, accent, pulp::canvas::TextAlign::center, 700);
-        label("DENSITY", 101.4f, 97.0f, 3.8f, ink, pulp::canvas::TextAlign::center, 700);
-        label("TIME", 33.8f, 139.0f, 3.8f, ink, pulp::canvas::TextAlign::center, 700);
-        label("PITCH", 168.9f, 139.0f, 3.8f, ink, pulp::canvas::TextAlign::center, 700);
-        label("SIZE", 69.8f, 198.0f, 3.8f, ink, pulp::canvas::TextAlign::center, 700);
-        label("SHAPE", 133.0f, 198.0f, 3.8f, ink, pulp::canvas::TextAlign::center, 700);
+        // Top controls retain the original panel's visual hierarchy while
+        // remaining Beasy's independently authored labels and typography.
+        label("FREEZE", 24.5f, 63.0f, 5.0f, ink, pulp::canvas::TextAlign::center, 700);
+        label("SEED", 176.2f, 63.0f, 5.0f, ink, pulp::canvas::TextAlign::center, 700);
+        label("DENSITY", 101.4f, 100.0f, 6.0f, ink, pulp::canvas::TextAlign::center, 700);
+        label("TIME", 33.8f, 142.0f, 6.0f, ink, pulp::canvas::TextAlign::center, 700);
+        label("PITCH", 168.9f, 142.0f, 6.0f, ink, pulp::canvas::TextAlign::center, 700);
+        label("SIZE", 69.8f, 201.0f, 6.0f, ink, pulp::canvas::TextAlign::center, 700);
+        label("SHAPE", 133.0f, 201.0f, 6.0f, ink, pulp::canvas::TextAlign::center, 700);
         label("MIX / MOTION", 100.3465f, 217.0f, 3.2f, accent,
               pulp::canvas::TextAlign::center, 700);
         label("PARAMETER CONTROLS", 100.3465f, 245.0f, 3.0f, muted);
+        label("CV / GATE", 100.3465f, 264.0f, 2.8f, muted, pulp::canvas::TextAlign::center, 700);
+        label("IN L", 11.9f, 294.0f, 4.0f, ink, pulp::canvas::TextAlign::center, 700);
+        label("IN R", 23.4f, 294.0f, 4.0f, ink, pulp::canvas::TextAlign::center, 700);
+        label("FREEZE", 34.9f, 294.0f, 3.7f, ink, pulp::canvas::TextAlign::center, 700);
+        label("SEED", 46.3f, 294.0f, 3.7f, ink, pulp::canvas::TextAlign::center, 700);
+        label("OUT L", 57.8f, 294.0f, 4.0f, ink, pulp::canvas::TextAlign::center, 700);
+        label("OUT R", 69.3f, 294.0f, 4.0f, ink, pulp::canvas::TextAlign::center, 700);
         label("48 KHZ  •  MONO VOICE  •  MIDI", 100.3465f, 344.0f, 3.0f, accent);
         label("INDEPENDENT PRODUCT SCAFFOLD", 100.3465f, 353.0f, 2.5f, muted);
     }
@@ -427,6 +507,12 @@ private:
             }
             auto knob = std::make_unique<detail::PanelKnob>(p.name, diameter);
             auto* raw = knob.get();
+            if (std::string_view(p.name) == "Feedback")
+                raw->set_accent(pulp::canvas::Color::rgba8(24, 165, 175));
+            else if (std::string_view(p.name) == "Dry Wet")
+                raw->set_accent(pulp::canvas::Color::rgba8(234, 166, 27));
+            else if (std::string_view(p.name) == "Reverb")
+                raw->set_accent(pulp::canvas::Color::rgba8(211, 59, 97));
             if (p.id != 0) {
                 raw->set_modulation_indicator([this, id = p.id] {
                     return processor_.lfo(id).enabled;
@@ -470,6 +556,22 @@ private:
             }, pulp::state::ListenerThread::Main,
             pulp::state::ListenerRestoreBehavior::Reconcile);
         add_child(std::move(seed));
+
+        auto freeze = std::make_unique<FreezeControl>();
+        freeze_mode_ = freeze.get();
+        freeze_mode_->set_pressed(store_.get_value(kFreeze) >= 0.5f);
+        freeze_mode_->set_on_press([this] {
+            store_.begin_gesture(kFreeze);
+            store_.set_value(kFreeze, freeze_mode_->pressed() ? 0.0f : 1.0f);
+            store_.end_gesture(kFreeze);
+        });
+        freeze_mode_binding_ = store_.add_listener(
+            [this](pulp::state::ParamID changed, float value) {
+                if (changed == kFreeze && freeze_mode_)
+                    freeze_mode_->set_pressed(value >= 0.5f);
+            }, pulp::state::ListenerThread::Main,
+            pulp::state::ListenerRestoreBehavior::Reconcile);
+        add_child(std::move(freeze));
     }
 
     void layout_controls() {
@@ -494,12 +596,20 @@ private:
             p.view->set_bounds({x, y, diameter, diameter});
         }
         if (seed_mode_) {
-            const float width = 13.0f * std::min(sx, sy);
-            const float height = 10.0f * std::min(sx, sy);
-            const float x = 35.4f * sx - width * 0.5f;
-            const float y = (128.5f - 40.5f) * sy - height * 0.5f;
+            const float width = 10.0f * std::min(sx, sy);
+            const float height = 8.5f * std::min(sx, sy);
+            const float x = 62.0f * sx - width * 0.5f;
+            const float y = (128.5f - 110.5f) * sy - height * 0.5f;
             seed_mode_->set_position(pulp::view::View::Position::absolute);
             seed_mode_->set_bounds({x, y, width, height});
+        }
+        if (freeze_mode_) {
+            const float width = 10.0f * std::min(sx, sy);
+            const float height = 8.5f * std::min(sx, sy);
+            const float x = 8.7f * sx - width * 0.5f;
+            const float y = (128.5f - 110.5f) * sy - height * 0.5f;
+            freeze_mode_->set_position(pulp::view::View::Position::absolute);
+            freeze_mode_->set_bounds({x, y, width, height});
         }
     }
 
@@ -513,6 +623,8 @@ private:
     std::vector<pulp::view::ParameterBinding> bindings_;
     SeedModeControl* seed_mode_ = nullptr;
     pulp::state::ListenerToken seed_mode_binding_;
+    FreezeControl* freeze_mode_ = nullptr;
+    pulp::state::ListenerToken freeze_mode_binding_;
     std::optional<pulp::state::ParamID> context_target_;
 };
 
