@@ -111,6 +111,8 @@
     },
     "AUv2": {
       "status": "blocked_registration",
+      "current_probe": "provenance/au-current-head-probe-20261018.json",
+      "current_probe_sha256": "9676d04e4ff8b9775ca9b6746e19828faf5fabd27b7732516e8ed4e6c3b1b1b0",
       "reason": "current auval/AudioComponentFindNext registration gate remains unresolved"
     },
     "AAX": {
