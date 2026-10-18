@@ -1,0 +1,15 @@
+{
+  "schema": "grainfield.source-port-reference-gap.v1",
+  "status": "not_run_missing_authorized_reference",
+  "project": "Grainfield",
+  "source_head": "ea810ce41f8a19486c5f0072e23ddd4e29fc8bf0",
+  "checked_at": "2026-10-17",
+  "available_renders": [
+    "provenance/matrix-24000-synth.wav",
+    "provenance/matrix-32000-synth.wav",
+    "provenance/matrix-48000-synth.wav"
+  ],
+  "missing": "An authorized, byte-identifiable Beads reference render with matching input, seed, sample rate, and block contract.",
+  "decision": "No source-vs-port comparison or parity claim is made. Existing deterministic render receipts remain product-only evidence.",
+  "next_evidence": "Obtain permission and a reference fixture, then record source hash, input events, seed, rate, block size, aligned render hashes, and numerical residual metrics."
+}
