@@ -27,7 +27,7 @@ The SVG has `viewBox="0 0 200.693 364.252"` and retains vector paths and red cut
 
 ## DXF geometry findings
 
-The DXF has 27 `CIRCLE` entities on layer `Knobs` with positive radius:
+The DXF inventory used by the checked-in map has 24 positive-radius `CIRCLE` entities on layer `Knobs` (the earlier reconnaissance count of 27 included construction/reference circles):
 
 - 3 major ornate positions, radius 9.25 mm (diameter 18.5 mm): density `(35.735,104.4)`, time `(11.915,90.1)`, pitch `(59.515,90.1)`.
 - 2 major positions, radius 7.2 mm (diameter 14.4 mm): size `(24.615,67.9)`, shape `(46.865,67.9)`.
@@ -36,7 +36,7 @@ The DXF has 27 `CIRCLE` entities on layer `Knobs` with positive radius:
 
 The zero-radius `Knobs` circles are construction/reference points and must not be rendered as controls. The DXF also contains panel, PCB, construction, dimension, scale-help, and proxy entities; it is a mechanical/placement source, not a knob material or shading source.
 
-The complete machine-readable inventory is in [`beads-control-map.draft.json`](beads-control-map.draft.json). The DXF panel dimensions and AI page dimensions establish the initial affine transform: x maps linearly by `200.693 / 70.8` pt/mm and y maps by `(128.5 - y_mm) * (364.252 / 128.5)` pt, so the UI uses a top-left origin after the explicit vertical flip. A screenshot overlay must still verify residuals before shipping; semantic IDs for small/auxiliary controls remain provisional.
+The complete machine-readable inventory is in [`provenance/control-map.json`](../../provenance/control-map.json), generated from the retained [`provenance/control-map.draft.json`](../../provenance/control-map.draft.json). The accompanying [`provenance/knob-skin-manifest.json`](../../provenance/knob-skin-manifest.json) keeps visual material calibration separate from placement geometry; both remain rights-gated. The DXF panel dimensions and AI page dimensions establish the initial affine transform: x maps linearly by `200.693 / 70.8` pt/mm and y maps by `(128.5 - y_mm) * (364.252 / 128.5)` pt, so the UI uses a top-left origin after the explicit vertical flip. A screenshot overlay must still verify residuals before shipping; semantic IDs for small/auxiliary controls remain provisional.
 
 ## Proposed reusable control-map contract
 

@@ -1,0 +1,1034 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "grainfield.control-map.v1",
+  "status": "geometry-validated-parameter-bindings-partial",
+  "product": {
+    "name": "Grainfield",
+    "affiliation": "independent",
+    "artwork_use": "provisional-calibration-only"
+  },
+  "source": {
+    "dxf": "/Users/danielraffel/Code/eurorack/beads/hardware_design/beads.dxf",
+    "dxf_sha256": "caa755bf680939221683d9b3113fa467a4f1cf382780e80b074c32e785639667",
+    "units": "millimetres",
+    "panel_mm": {
+      "width": 70.8,
+      "height": 128.5
+    },
+    "coordinate_system": "DXF WCS; panel physical origin is bottom-left. For UI top-left normalized coordinates use x_ui=x_mm/70.8 and y_ui=(128.5-y_mm)/128.5.",
+    "ai_page_pt": {
+      "width": 200.693,
+      "height": 364.252
+    },
+    "artwork_rights": {
+      "state": "pending_rights_review",
+      "redistribution": "blocked_until_cleared",
+      "basis": "provenance/source-manifest.json"
+    }
+  },
+  "normalization": {
+    "ui_origin": "top-left",
+    "source_origin": "bottom-left",
+    "y_axis": "flipped",
+    "formulas": {
+      "x": "x_mm / 70.8",
+      "y": "(128.5 - y_mm) / 128.5",
+      "ui_origin": "top-left after vertical flip from DXF bottom-left",
+      "viewbox_pt": {
+        "x": "x_mm * (200.693 / 70.8)",
+        "y": "(128.5 - y_mm) * (364.252 / 128.5)"
+      }
+    },
+    "viewbox_pt": {
+      "width": 200.693,
+      "height": 364.252
+    }
+  },
+  "controls": [
+    {
+      "id": "density",
+      "role": "primary_parameter",
+      "binding_status": "bound",
+      "parameter_id": "density",
+      "automation_id": "grainfield.density",
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "2472",
+        "layer": "Knobs",
+        "class": "major-ornate",
+        "center_mm": {
+          "x": 35.735,
+          "y": 104.4
+        },
+        "radius_mm": 9.25
+      },
+      "normalized": {
+        "center": {
+          "x": 0.504731638,
+          "y": 0.187548638
+        },
+        "radius": 0.130649718
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 101.296107,
+          "y": 68.314967
+        },
+        "radius": 26.220484
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 12.025,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 12.0
+      },
+      "skin_ref": "major-ornate",
+      "evidence": "dxf-placement-plus-parameter-contract"
+    },
+    {
+      "id": "time",
+      "role": "primary_parameter",
+      "binding_status": "bound",
+      "parameter_id": "time",
+      "automation_id": "grainfield.time",
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "2473",
+        "layer": "Knobs",
+        "class": "major-ornate",
+        "center_mm": {
+          "x": 11.915,
+          "y": 90.1
+        },
+        "radius_mm": 9.25
+      },
+      "normalized": {
+        "center": {
+          "x": 0.16829096,
+          "y": 0.298832685
+        },
+        "radius": 0.130649718
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 33.774818,
+          "y": 108.850403
+        },
+        "radius": 26.220484
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 12.025,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 12.0
+      },
+      "skin_ref": "major-ornate",
+      "evidence": "dxf-placement-plus-parameter-contract"
+    },
+    {
+      "id": "pitch",
+      "role": "primary_parameter",
+      "binding_status": "bound",
+      "parameter_id": "pitch",
+      "automation_id": "grainfield.pitch",
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "2474",
+        "layer": "Knobs",
+        "class": "major-ornate",
+        "center_mm": {
+          "x": 59.515,
+          "y": 90.1
+        },
+        "radius_mm": 9.25
+      },
+      "normalized": {
+        "center": {
+          "x": 0.840607345,
+          "y": 0.298832685
+        },
+        "radius": 0.130649718
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 168.70401,
+          "y": 108.850403
+        },
+        "radius": 26.220484
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 12.025,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 12.0
+      },
+      "skin_ref": "major-ornate",
+      "evidence": "dxf-placement-plus-parameter-contract"
+    },
+    {
+      "id": "aux-01",
+      "role": "auxiliary_control_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "2477",
+        "layer": "Knobs",
+        "class": "auxiliary",
+        "center_mm": {
+          "x": 7.115,
+          "y": 67.9
+        },
+        "radius_mm": 3.0
+      },
+      "normalized": {
+        "center": {
+          "x": 0.10049435,
+          "y": 0.471595331
+        },
+        "radius": 0.042372881
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 20.168513,
+          "y": 171.779542
+        },
+        "radius": 8.503941
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 4.5,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "auxiliary",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "size",
+      "role": "primary_parameter",
+      "binding_status": "bound",
+      "parameter_id": "size",
+      "automation_id": "grainfield.size",
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "2470",
+        "layer": "Knobs",
+        "class": "major-large",
+        "center_mm": {
+          "x": 24.615,
+          "y": 67.9
+        },
+        "radius_mm": 7.2
+      },
+      "normalized": {
+        "center": {
+          "x": 0.347669492,
+          "y": 0.471595331
+        },
+        "radius": 0.101694915
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 69.774833,
+          "y": 171.779542
+        },
+        "radius": 20.409458
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 9.36,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 12.0
+      },
+      "skin_ref": "major-large",
+      "evidence": "dxf-placement-plus-parameter-contract"
+    },
+    {
+      "id": "shape",
+      "role": "primary_parameter",
+      "binding_status": "bound",
+      "parameter_id": "shape",
+      "automation_id": "grainfield.shape",
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "2471",
+        "layer": "Knobs",
+        "class": "major-large",
+        "center_mm": {
+          "x": 46.865,
+          "y": 67.9
+        },
+        "radius_mm": 7.2
+      },
+      "normalized": {
+        "center": {
+          "x": 0.661935028,
+          "y": 0.471595331
+        },
+        "radius": 0.101694915
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 132.845727,
+          "y": 171.779542
+        },
+        "radius": 20.409458
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 9.36,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 12.0
+      },
+      "skin_ref": "major-large",
+      "evidence": "dxf-placement-plus-parameter-contract"
+    },
+    {
+      "id": "aux-02",
+      "role": "auxiliary_control_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "247A",
+        "layer": "Knobs",
+        "class": "auxiliary",
+        "center_mm": {
+          "x": 64.365,
+          "y": 67.9
+        },
+        "radius_mm": 3.0
+      },
+      "normalized": {
+        "center": {
+          "x": 0.909110169,
+          "y": 0.471595331
+        },
+        "radius": 0.042372881
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 182.452047,
+          "y": 171.779542
+        },
+        "radius": 8.503941
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 4.5,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "auxiliary",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "aux-03",
+      "role": "auxiliary_control_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "247B",
+        "layer": "Knobs",
+        "class": "auxiliary",
+        "center_mm": {
+          "x": 64.365,
+          "y": 51.7
+        },
+        "radius_mm": 3.0
+      },
+      "normalized": {
+        "center": {
+          "x": 0.909110169,
+          "y": 0.59766537
+        },
+        "radius": 0.042372881
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 182.452047,
+          "y": 217.700806
+        },
+        "radius": 8.503941
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 4.5,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "auxiliary",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "aux-04",
+      "role": "auxiliary_control_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "2475",
+        "layer": "Knobs",
+        "class": "auxiliary",
+        "center_mm": {
+          "x": 18.565,
+          "y": 47.9
+        },
+        "radius_mm": 3.0
+      },
+      "normalized": {
+        "center": {
+          "x": 0.262217514,
+          "y": 0.627237354
+        },
+        "radius": 0.042372881
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 52.62522,
+          "y": 228.472461
+        },
+        "radius": 8.503941
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 4.5,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "auxiliary",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "aux-05",
+      "role": "auxiliary_control_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "2476",
+        "layer": "Knobs",
+        "class": "auxiliary",
+        "center_mm": {
+          "x": 30.015,
+          "y": 47.9
+        },
+        "radius_mm": 3.0
+      },
+      "normalized": {
+        "center": {
+          "x": 0.423940678,
+          "y": 0.627237354
+        },
+        "radius": 0.042372881
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 85.081926,
+          "y": 228.472461
+        },
+        "radius": 8.503941
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 4.5,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "auxiliary",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "aux-06",
+      "role": "auxiliary_control_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "2478",
+        "layer": "Knobs",
+        "class": "auxiliary",
+        "center_mm": {
+          "x": 41.465,
+          "y": 47.9
+        },
+        "radius_mm": 3.0
+      },
+      "normalized": {
+        "center": {
+          "x": 0.585663842,
+          "y": 0.627237354
+        },
+        "radius": 0.042372881
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 117.538633,
+          "y": 228.472461
+        },
+        "radius": 8.503941
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 4.5,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "auxiliary",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "aux-07",
+      "role": "auxiliary_control_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "2479",
+        "layer": "Knobs",
+        "class": "auxiliary",
+        "center_mm": {
+          "x": 52.915,
+          "y": 47.9
+        },
+        "radius_mm": 3.0
+      },
+      "normalized": {
+        "center": {
+          "x": 0.747387006,
+          "y": 0.627237354
+        },
+        "radius": 0.042372881
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 149.99534,
+          "y": 228.472461
+        },
+        "radius": 8.503941
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 4.5,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "auxiliary",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "small-01",
+      "role": "auxiliary_parameter_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "1ADA",
+        "layer": "Knobs",
+        "class": "small",
+        "center_mm": {
+          "x": 7.115,
+          "y": 32.0
+        },
+        "radius_mm": 4.4
+      },
+      "normalized": {
+        "center": {
+          "x": 0.10049435,
+          "y": 0.750972763
+        },
+        "radius": 0.062146893
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 20.168513,
+          "y": 273.543331
+        },
+        "radius": 12.472446
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 6.6,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "small-black",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "small-02",
+      "role": "auxiliary_parameter_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "1ADB",
+        "layer": "Knobs",
+        "class": "small",
+        "center_mm": {
+          "x": 18.565,
+          "y": 32.0
+        },
+        "radius_mm": 4.4
+      },
+      "normalized": {
+        "center": {
+          "x": 0.262217514,
+          "y": 0.750972763
+        },
+        "radius": 0.062146893
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 52.62522,
+          "y": 273.543331
+        },
+        "radius": 12.472446
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 6.6,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "small-black",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "small-03",
+      "role": "auxiliary_parameter_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "1ADC",
+        "layer": "Knobs",
+        "class": "small",
+        "center_mm": {
+          "x": 30.015,
+          "y": 32.0
+        },
+        "radius_mm": 4.4
+      },
+      "normalized": {
+        "center": {
+          "x": 0.423940678,
+          "y": 0.750972763
+        },
+        "radius": 0.062146893
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 85.081926,
+          "y": 273.543331
+        },
+        "radius": 12.472446
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 6.6,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "small-black",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "small-04",
+      "role": "auxiliary_parameter_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "1ADD",
+        "layer": "Knobs",
+        "class": "small",
+        "center_mm": {
+          "x": 41.465,
+          "y": 32.0
+        },
+        "radius_mm": 4.4
+      },
+      "normalized": {
+        "center": {
+          "x": 0.585663842,
+          "y": 0.750972763
+        },
+        "radius": 0.062146893
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 117.538633,
+          "y": 273.543331
+        },
+        "radius": 12.472446
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 6.6,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "small-black",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "small-05",
+      "role": "auxiliary_parameter_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "1ADE",
+        "layer": "Knobs",
+        "class": "small",
+        "center_mm": {
+          "x": 52.915,
+          "y": 32.0
+        },
+        "radius_mm": 4.4
+      },
+      "normalized": {
+        "center": {
+          "x": 0.747387006,
+          "y": 0.750972763
+        },
+        "radius": 0.062146893
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 149.99534,
+          "y": 273.543331
+        },
+        "radius": 12.472446
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 6.6,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "small-black",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "small-06",
+      "role": "auxiliary_parameter_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "1ADF",
+        "layer": "Knobs",
+        "class": "small",
+        "center_mm": {
+          "x": 64.365,
+          "y": 32.0
+        },
+        "radius_mm": 4.4
+      },
+      "normalized": {
+        "center": {
+          "x": 0.909110169,
+          "y": 0.750972763
+        },
+        "radius": 0.062146893
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 182.452047,
+          "y": 273.543331
+        },
+        "radius": 12.472446
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 6.6,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "small-black",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "small-07",
+      "role": "auxiliary_parameter_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "1AE0",
+        "layer": "Knobs",
+        "class": "small",
+        "center_mm": {
+          "x": 7.115,
+          "y": 17.4
+        },
+        "radius_mm": 4.4
+      },
+      "normalized": {
+        "center": {
+          "x": 0.10049435,
+          "y": 0.86459144
+        },
+        "radius": 0.062146893
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 20.168513,
+          "y": 314.929161
+        },
+        "radius": 12.472446
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 6.6,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "small-black",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "small-08",
+      "role": "auxiliary_parameter_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "1AE1",
+        "layer": "Knobs",
+        "class": "small",
+        "center_mm": {
+          "x": 18.565,
+          "y": 17.4
+        },
+        "radius_mm": 4.4
+      },
+      "normalized": {
+        "center": {
+          "x": 0.262217514,
+          "y": 0.86459144
+        },
+        "radius": 0.062146893
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 52.62522,
+          "y": 314.929161
+        },
+        "radius": 12.472446
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 6.6,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "small-black",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "small-09",
+      "role": "auxiliary_parameter_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "1AE2",
+        "layer": "Knobs",
+        "class": "small",
+        "center_mm": {
+          "x": 30.015,
+          "y": 17.4
+        },
+        "radius_mm": 4.4
+      },
+      "normalized": {
+        "center": {
+          "x": 0.423940678,
+          "y": 0.86459144
+        },
+        "radius": 0.062146893
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 85.081926,
+          "y": 314.929161
+        },
+        "radius": 12.472446
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 6.6,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "small-black",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "small-10",
+      "role": "auxiliary_parameter_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "1AE3",
+        "layer": "Knobs",
+        "class": "small",
+        "center_mm": {
+          "x": 41.465,
+          "y": 17.4
+        },
+        "radius_mm": 4.4
+      },
+      "normalized": {
+        "center": {
+          "x": 0.585663842,
+          "y": 0.86459144
+        },
+        "radius": 0.062146893
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 117.538633,
+          "y": 314.929161
+        },
+        "radius": 12.472446
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 6.6,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "small-black",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "small-11",
+      "role": "auxiliary_parameter_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "1AE4",
+        "layer": "Knobs",
+        "class": "small",
+        "center_mm": {
+          "x": 52.915,
+          "y": 17.4
+        },
+        "radius_mm": 4.4
+      },
+      "normalized": {
+        "center": {
+          "x": 0.747387006,
+          "y": 0.86459144
+        },
+        "radius": 0.062146893
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 149.99534,
+          "y": 314.929161
+        },
+        "radius": 12.472446
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 6.6,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "small-black",
+      "evidence": "dxf-placement-only"
+    },
+    {
+      "id": "small-12",
+      "role": "auxiliary_parameter_candidate",
+      "binding_status": "provisional",
+      "parameter_id": null,
+      "automation_id": null,
+      "geometry_ref": {
+        "source": "dxf",
+        "handle": "1AE5",
+        "layer": "Knobs",
+        "class": "small",
+        "center_mm": {
+          "x": 64.365,
+          "y": 17.4
+        },
+        "radius_mm": 4.4
+      },
+      "normalized": {
+        "center": {
+          "x": 0.909110169,
+          "y": 0.86459144
+        },
+        "radius": 0.062146893
+      },
+      "viewbox_pt": {
+        "center": {
+          "x": 182.452047,
+          "y": 314.929161
+        },
+        "radius": 12.472446
+      },
+      "hit_target": {
+        "shape": "circle",
+        "radius_mm": 6.6,
+        "interaction": "drag_vertical_or_horizontal",
+        "minimum_touch_mm": 8.0
+      },
+      "skin_ref": "small-black",
+      "evidence": "dxf-placement-only"
+    }
+  ],
+  "validation": {
+    "validator": "tools/validate_control_map.py",
+    "geometry_tolerance_mm": 0.01,
+    "expected_dxf_knob_count": 24,
+    "screenshot_overlay": {
+      "status": "not-run",
+      "reason": "requires resolved artwork rights and straight-on calibration"
+    },
+    "parameter_binding_review": {
+      "status": "partial",
+      "bound_ids": [
+        "density",
+        "time",
+        "pitch",
+        "size",
+        "shape"
+      ],
+      "provisional_count": 19
+    }
+  },
+  "rights": {
+    "panel_artwork": "pending_rights_review",
+    "knob_material": "provisional-calibration-only",
+    "trademarks": "non_affiliation_review_required"
+  }
+}
