@@ -458,12 +458,15 @@ private:
               pulp::canvas::TextAlign::center, 700);
         label("PARAMETER CONTROLS", 100.3465f, 245.0f, 3.0f, muted);
         label("CV / GATE", 100.3465f, 264.0f, 2.8f, muted, pulp::canvas::TextAlign::center, 700);
-        label("IN L", 11.9f, 294.0f, 4.0f, ink, pulp::canvas::TextAlign::center, 700);
-        label("IN R", 23.4f, 294.0f, 4.0f, ink, pulp::canvas::TextAlign::center, 700);
-        label("FREEZE", 34.9f, 294.0f, 3.7f, ink, pulp::canvas::TextAlign::center, 700);
-        label("SEED", 46.3f, 294.0f, 3.7f, ink, pulp::canvas::TextAlign::center, 700);
-        label("OUT L", 57.8f, 294.0f, 4.0f, ink, pulp::canvas::TextAlign::center, 700);
-        label("OUT R", 69.3f, 294.0f, 4.0f, ink, pulp::canvas::TextAlign::center, 700);
+        // The native editor is intentionally narrow. Use the panel's compact
+        // abbreviations so every jack label remains legible and hit regions do
+        // not visually merge at the 201x364 reference size.
+        label("IN L", 11.9f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center, 700);
+        label("IN R", 23.4f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center, 700);
+        label("FRZ", 34.9f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center, 700);
+        label("SEED", 46.3f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center, 700);
+        label("OUT L", 57.8f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center, 700);
+        label("OUT R", 69.3f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center, 700);
         label("48 KHZ  •  MONO VOICE  •  MIDI", 100.3465f, 344.0f, 3.0f, accent);
         label("INDEPENDENT PRODUCT SCAFFOLD", 100.3465f, 353.0f, 2.5f, muted);
     }
