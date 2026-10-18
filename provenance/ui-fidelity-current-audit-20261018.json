@@ -1,0 +1,41 @@
+{
+  "schema": "grainfield.ui-fidelity-current-audit.v1",
+  "audited_at": "2026-10-18",
+  "source_head": "bb3d8529363b2dd38d071d9822c982201744556d",
+  "supersedes": "provenance/ui-fidelity-gate-audit-20261018.json",
+  "evidence": {
+    "provenance/control-map-source-audit-20261018.json": "7dcd3610f6d1089127fb9c79c8836e22b893a7fdc54d4f5942b00cb3b9635f7b",
+    "provenance/current-integration-validation-20261018.json": "b29355e9116b597a8a54ca9e2dece04be42deab9bd0d5b8f334fa2168bf015b9",
+    "provenance/knob-render-audit-20261018.json": "c2e6dfc7c8d22d1c2929c74b0ab9475654ae87dda90c8f5653fc9acf7345326b",
+    "provenance/knob-calibration-v2.json": "dd6756e015a4852eee96654326fbb5a18323bdc61758f4eb765f22903a8ae2d8",
+    "provenance/current-provenance-reconciliation-20261018.json": "c0b76e6c12b69991ecf0b7b0fe36a972aa8f9f990f0906bd65a0572421d82ffc"
+  },
+  "gates": {
+    "geometry_placement": {
+      "status": "pass_as_placement_evidence",
+      "evidence": "DXF/PCB affine fit and 24-control placement inventory; artwork remains external"
+    },
+    "authoritative_control_mapping": {
+      "status": "pass_with_rights_gate",
+      "evidence": "seven auxiliary pots source-mapped and twelve J1-J12 regions identified as non-automatable jacks; see provenance/control-map-source-audit-20261018.json"
+    },
+    "native_editor": {
+      "status": "pass_with_fidelity_gate",
+      "evidence": "current-head Skia/Dawn editor tests 132 assertions/9 cases; automation and contextual LFO paths covered"
+    },
+    "procedural_knobs": {
+      "status": "partial_exact_head_capture",
+      "evidence": "min/mid/max native knob captures hash-recorded; final material/pixel acceptance remains open"
+    },
+    "rights_reference": {
+      "status": "blocked_pending_external_decision",
+      "evidence": "straight-on reference and panel/CAD/AI/PDF inputs remain outside shipped bundle and rights-gated"
+    }
+  },
+  "decision": "Current native UX and source-backed mapping are implementation evidence; no full-panel visual-fidelity or rights clearance claim is made.",
+  "next_evidence": [
+    "rights-cleared straight-on reference or explicit permission/share-alike decision",
+    "fresh exact-head full-panel capture and geometry/pixel residual report",
+    "final procedural knob acceptance"
+  ]
+}
