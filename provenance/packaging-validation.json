@@ -1,10 +1,10 @@
 {
   "schema": "grainfield.packaging-validation.v1",
-  "build_dir": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build",
+  "build_dir": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build",
   "checks": [
     {
       "format": "AUv2",
-      "bundle": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build/AU/Grainfield.component",
+      "bundle": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/AU/Grainfield.component",
       "status": "metadata-pass",
       "metadata": {
         "type": "aumu",
@@ -15,7 +15,7 @@
     },
     {
       "format": "VST3",
-      "bundle": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build/VST3/Grainfield.vst3",
+      "bundle": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build/VST3/Grainfield.vst3",
       "status": "blocked",
       "reason": "VST3 artifact absent; the installed SDK did not provide a VST3 target"
     }

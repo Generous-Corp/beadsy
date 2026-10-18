@@ -1,86 +1,79 @@
 {
   "schema": "grainfield.format-status.v1",
-  "generated_at": "2026-10-18T01:20:00Z",
+  "generated_at": "2026-10-18T02:22:13.636234Z",
   "project": "Grainfield",
   "source": {
-    "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
-    "git_head": "ce3e9c113ee7cf4cb084ffcc67f9501ccc9fa75b"
+    "path": "/Users/danielraffel/Code/grainfield-v1-scope-integrated",
+    "git_head": "6c842824d29dd4c2a54fd689f7cc1faa8fec6dd5"
   },
   "build": {
-    "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build",
+    "path": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build",
     "cmake_cache_present": true,
     "build_ninja_present": true,
     "pulp_dir": "/Users/danielraffel/pulp-sdk/lib/cmake/Pulp"
   },
-  "host_validation": "partial",
+  "host_validation": "not_run",
   "formats": [
     {
       "format": "VST3",
-      "status": "partial",
-      "reason": "Validated external VST3 artifact built against installed development SDK; pluginval and pulp host load/audio probe pass; moduleinfo and Steinberg validator evidence remain open",
+      "status": "blocked",
+      "reason": "declared VST3 target produced no artifact in the inspected build tree",
       "evidence": {
         "artifact": {
-          "path": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3/Contents/MacOS/Grainfield",
-          "exists": true,
-          "is_file": true,
-          "bytes": 44788600,
-          "sha256": "84d1afee197ba073c1d2dbc56e011b1664008432d3f521f9a3178463b2344a3a"
+          "path": "VST3/Grainfield.vst3/Contents/MacOS/Grainfield",
+          "exists": false,
+          "is_file": false
         },
-        "pulp_target_present": true,
-        "host_validation": "partial",
-        "artifact_status": "present"
+        "pulp_target_present": false,
+        "host_validation": "not_run"
       }
     },
     {
       "format": "CLAP",
       "status": "supported",
-      "reason": "declared target produced an artifact; clap-validator, pulp host load/audio probe, stereo-input render, and 24/32/48 kHz matrix receipts are present",
+      "reason": "declared target produced an artifact in the inspected build tree",
       "evidence": {
         "artifact": {
           "path": "CLAP/Grainfield.clap/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
-          "bytes": 6753096,
-          "sha256": "23709cebe0044ed46bbdbffb1455bb9d941f22d425451be310d09c371a25c359"
+          "bytes": 6753144,
+          "sha256": "345b97fbad36484a0188568511b1c93bcb4ac94b347d7f3ba93d2ec324de4147"
         },
         "pulp_target_present": true,
-        "host_validation": "pass",
-        "artifact_status": "present"
+        "host_validation": "not_run"
       }
     },
     {
       "format": "LV2",
-      "status": "partial",
-      "reason": "LV2 artifact is present, but host validation is blocked: TTLs expose no usable audio ports and URID mapping is unavailable.",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
       "evidence": {
         "artifact": {
           "path": "LV2/Grainfield.lv2/Grainfield.so",
           "exists": true,
           "is_file": true,
-          "bytes": 1546048,
-          "sha256": "4752741abdf6739a4bd2f5b78efc3e3a7c747f75bc4337d9f482be940feb2e6b"
+          "bytes": 1546112,
+          "sha256": "80186bf033c18f4e611c8a3d2eabaef1c1a32e6e02b3171722f55f91eefe905e"
         },
         "pulp_target_present": true,
-        "host_validation": "blocked",
-        "artifact_status": "present"
+        "host_validation": "not_run"
       }
     },
     {
       "format": "AU",
-      "status": "partial",
-      "reason": "AU artifact and metadata are present, but host validation is blocked: reversible registration/auval and Pulp host load cannot discover the component.",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
       "evidence": {
         "artifact": {
           "path": "AU/Grainfield.component/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
-          "bytes": 6105944,
-          "sha256": "1fe9bf43634ae1241cea49ec350f04d5782a658efe83fc052b276a39bd9ae8e1"
+          "bytes": 6105992,
+          "sha256": "e76041d10a1352b1617bda7c4138ad7de9ae33d8143c7b686715ae17f2fdbc55"
         },
         "pulp_target_present": true,
-        "host_validation": "blocked",
-        "registration_receipt": "provenance/au-registration-diagnostic.json",
-        "artifact_status": "present"
+        "host_validation": "not_run"
       }
     },
     {
@@ -94,34 +87,24 @@
           "is_file": false
         },
         "pulp_target_present": false,
-        "host_validation": "not_run",
-        "artifact_status": "absent"
+        "host_validation": "not_run"
       }
     },
     {
       "format": "Standalone",
-      "status": "partial",
-      "reason": "Standalone artifact is present and launch/quit evidence exists, but host validation is partial; structured editor/audio/state evidence remains unavailable.",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
       "evidence": {
         "artifact": {
           "path": "Grainfield.app/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
-          "bytes": 6257832,
-          "sha256": "1b07b3fb52514dbf90a5f859ef9beaef86aad52b62e459bf1ed787bd7b883705"
+          "bytes": 6257896,
+          "sha256": "669d61cacab636175a733262d81f059accff61bb0c1fed02f1a37af4f88b16c4"
         },
         "pulp_target_present": true,
-        "host_validation": "partial",
-        "app_validation_receipt": "provenance/standalone-app-validation.json",
-        "artifact_status": "present"
+        "host_validation": "not_run"
       }
     }
-  ],
-  "host_validation_receipt": "provenance/host-validation-matrix.txt",
-  "host_validation_receipt_sha256": "c18336709f65867230465a1a4cb251b2b7154e40580564343c89c638d85be8ef",
-  "status_semantics": {
-    "artifact_status": "Reports whether the declared format artifact exists and is measurable.",
-    "status": "Reports release readiness after host validation; artifact presence alone does not imply supported.",
-    "host_validation": "Retained per-format under evidence.host_validation and is authoritative for host claims."
-  }
+  ]
 }
