@@ -85,9 +85,10 @@
       "evidence": [
         "provenance/packaging-validation.json",
         "provenance/au-registration-diagnostic.json",
+        "provenance/auval-exact-20261018.json",
         "provenance/au-host.txt"
       ],
-      "result": "Current integrated-head AU metadata is valid, but reversible registration/auval exits 2 and Pulp host discovery fails AudioComponentFindNext; AU remains blocked."
+      "result": "Current AU metadata and manual isolated-copy auval proof pass; the stock registration helper exits 2 because its identity validator rejects Grainfield's underscore bundle identifier, and Pulp host discovery fails AudioComponentFindNext, so AU remains partial."
     },
     {
       "id": "vst3",
@@ -304,6 +305,12 @@
       "sha256": "db19b082702b139193f34a225533e1ab60e51e7d6178c140c601db537eee6573",
       "source_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
       "evidence_freshness": "current_exact_head_with_historical_external_evidence"
+    },
+    {
+      "path": "provenance/auval-exact-20261018.json",
+      "sha256": "2e4f8f21f7a3c6e9f50914fc282b1a2cfc0c8788f380e13f7b046e79bf99af82",
+      "source_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
+      "evidence_freshness": "current_exact_head"
     }
   ],
   "non_claims": [
@@ -354,6 +361,15 @@
       "json_parse": "pass",
       "git_diff_check": "pass",
       "worktree": "clean"
+    },
+    "current_hostability": {
+      "source_head": "73163d15d43a42cf6b0b8059f38de3713f68132f",
+      "auval_exact": "provenance/auval-exact-20261018.json",
+      "auval_status": "pass",
+      "pulp_au_host_status": "blocked",
+      "lv2_build_status": "pass",
+      "pulp_lv2_host_status": "blocked",
+      "lv2_evidence": "provenance/lv2-host.txt"
     }
   }
 }
