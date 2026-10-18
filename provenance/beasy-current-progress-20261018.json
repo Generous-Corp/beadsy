@@ -86,7 +86,8 @@
       "au": "blocked_not_discoverable_after_user_registration_attempt",
       "vst3": "not_run",
       "lv2": "not_run",
-      "standalone": "partial"
+      "standalone": "partial",
+      "au_control": "Pulp Hot-Reload Synth passes auval; Beasy remains undiscoverable"
     }
   },
   "open_gates": [

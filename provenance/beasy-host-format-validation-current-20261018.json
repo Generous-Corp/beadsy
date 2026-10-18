@@ -25,7 +25,14 @@
       "result": "still not discoverable; auval reports component not found",
       "status": "blocked"
     },
-    "build_metadata_status": "present"
+    "build_metadata_status": "present",
+    "comparison_control": {
+      "component": "Pulp Hot-Reload Synth",
+      "metadata": "aumu / PHrs / Pulp",
+      "command": "auval -v aumu PHrs Pulp",
+      "result": "PASS; AU validation succeeded",
+      "implication": "auval and the local AudioUnit host are functional; Beasy-specific discovery/registration remains the blocker"
+    }
   },
   "vst3": {
     "status": "not_run",
