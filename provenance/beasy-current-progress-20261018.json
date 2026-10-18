@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "e14f77cf837d7ebdf4385bc3ff22d96a75c63ae0",
+  "source_head": "476184990a7676e35f77100b8ee0a7f2a40f0b38",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -69,7 +69,8 @@
         "ON",
         "LOCKED"
       ],
-      "panel_binding": "deferred; host-automation-only until a source-backed button/LED mapping is reviewed"
+      "panel_binding": "implemented; native button cycles OFF/ON/LOCKED and reflects host automation/state",
+      "receipt": "provenance/beasy-seed-control-current-20261018.json"
     },
     "headless_audio_state": {
       "path": "provenance/beasy-headless-audio-state-current-20261018.json",
@@ -96,6 +97,11 @@
       "load_exit_code": 0,
       "state_bytes": 386,
       "startup_mode": "screenshot-only bounded startup; no audio device opened"
+    },
+    "editor_seed_control": {
+      "status": "pass",
+      "capture": "build-beasy-renamed/beasy-editor-seed-current.png",
+      "focused_test": "Beasy-editor-test 10 cases / 135 assertions"
     }
   },
   "open_gates": [
@@ -107,7 +113,7 @@
     {
       "id": "ui_fidelity",
       "status": "partial_visual_fidelity_pass",
-      "next": "rights-cleared reference comparison and Seed button/LED mapping"
+      "next": "rights-cleared straight-on reference comparison and provenance decision for any distributable panel artwork"
     },
     {
       "id": "rights",
