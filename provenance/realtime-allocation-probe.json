@@ -3,7 +3,7 @@
   "status": "inconclusive",
   "verified_at": "2026-10-18T01:45:00Z",
   "grainfield_head": "04ebb47828927b146ceffead2cc748edff95c91f",
-  "claim": "A prior 192-byte allocation observation remains unresolved; ten sequential runs of the rebuilt committed baseline passed, so the failure is not currently reproducible.",
+  "claim": "A prior 192-byte allocation observation remains unresolved; ten- and fifty-run bounded audits of the rebuilt committed baseline passed, so the failure is not currently reproducible.",
   "available_pulp_surface": {
     "pulp_head": "86c10d19989810394b56d6e592ad00acd557b307",
     "probe_type": "pulp::test::RtAllocationProbe",
@@ -98,5 +98,16 @@
     ],
     "allocation_counts": "not exposed by the committed assertion; prior failing observations reported one allocation / 192 bytes",
     "result": "The prior allocation failure was not reproduced in ten sequential runs of the rebuilt committed baseline."
+  },
+  "reproducibility_audit_50": {
+    "temporary_test_only": true,
+    "reporting_method": "capture allocation_count and allocated_bytes after RtAllocationProbe scope ends, so diagnostics cannot allocate while the probe is active",
+    "command": "./build/Grainfield-test 'Grainfield prepared processing allocates no realtime memory' --reporter console",
+    "runs": 50,
+    "passes": 50,
+    "failures": 0,
+    "exit_codes": "all_zero",
+    "backtrace": "not triggered because no failure occurred",
+    "result": "No allocation failure recurred in the bounded fifty-run audit."
   }
 }
