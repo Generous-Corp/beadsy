@@ -1,0 +1,58 @@
+{
+  "schema": "grainfield.vst3-validation.v1",
+  "status": "blocked",
+  "source_head": "33417e125e26567a3af18aac8c5f2a9833ef4b2a",
+  "source": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
+  "build": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build",
+  "configure": {
+    "command": "pulp build --target Grainfield_VST3",
+    "status": "blocked",
+    "result": "Pulp configured formats as CLAP;AU;LV2;Standalone; Grainfield_VST3 was not generated",
+    "sdk_package": "/Users/danielraffel/pulp-sdk/lib/cmake/Pulp",
+    "sdk_vst3_include": "/Users/danielraffel/pulp-sdk/external/vst3sdk",
+    "sdk_vst3_include_exists": false,
+    "candidate_source_checkout": "/Users/danielraffel/Code/pulp/external/vst3sdk",
+    "candidate_source_checkout_resolves_to": "/Users/danielraffel/Library/Caches/Pulp/fetchcontent-src/vst3sdk-v3.8.0_build_66",
+    "candidate_source_checkout_git_head": "9fad9770f2ae8542ab1a548a68c1ad1ac690abe0",
+    "candidate_used": false,
+    "reason": "The available SDK package does not contain the VST3 SDK; the source checkout was not injected into the build because that would mix SDK provenance."
+  },
+  "artifact": {
+    "path": "VST3/Grainfield.vst3",
+    "exists": false,
+    "binary": "VST3/Grainfield.vst3/Contents/MacOS/Grainfield",
+    "binary_exists": false
+  },
+  "validators": {
+    "pluginval": {
+      "path": "/Applications/pluginval.app/Contents/MacOS/pluginval",
+      "version": "pluginval - 1.0.4",
+      "status": "not_run",
+      "reason": "No VST3 artifact was available. Running pluginval against the CLAP bundle is invalid and returned no types found."
+    },
+    "vst3validator": {
+      "path": null,
+      "status": "unavailable"
+    }
+  },
+  "bundle_inspection": {
+    "moduleinfo": {
+      "path": "VST3/Grainfield.vst3/Contents/Resources/moduleinfo.json",
+      "exists": false
+    },
+    "info_plist": {
+      "path": "VST3/Grainfield.vst3/Contents/Info.plist",
+      "exists": false
+    },
+    "control_shipping": {
+      "path": "VST3/Grainfield.vst3/Contents/MacOS/Grainfield.VST3.control-shipping.json",
+      "exists": false
+    }
+  },
+  "open_gates": [
+    "provide a Pulp SDK package with the exact intended VST3 SDK provenance",
+    "build the Grainfield VST3 target without mixing SDK checkouts",
+    "inspect moduleinfo.json, Info.plist, and control-shipping receipt",
+    "run pluginval and Steinberg validator against the VST3 artifact"
+  ]
+}

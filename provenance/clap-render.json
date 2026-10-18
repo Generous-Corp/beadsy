@@ -6,26 +6,26 @@
   "num_channels": 2,
   "channels": [
     {
-      "peak": 0.466570645570755,
-      "peak_dbfs": -6.621651768953719,
-      "rms": 0.18602319216511599,
-      "rms_dbfs": -14.608658147745217,
-      "dc_offset": 0.00010874163133132697,
+      "peak": 0.36737844347953796,
+      "peak_dbfs": -8.697726604182975,
+      "rms": 0.14647495115318784,
+      "rms_dbfs": -16.68473276299939,
+      "dc_offset": 8.562327149888916e-05,
       "nan_samples": 0,
       "inf_samples": 0,
       "clipped_samples": 0,
-      "longest_silence_run": 4
+      "longest_silence_run": 5
     },
     {
-      "peak": 0.4762221574783325,
-      "peak_dbfs": -6.443808035544045,
-      "rms": 0.18610775566152069,
-      "rms_dbfs": -14.604710563089263,
-      "dc_offset": 0.00011083555387756406,
+      "peak": 0.37497806549072266,
+      "peak_dbfs": -8.519882715576388,
+      "rms": 0.14654153660093092,
+      "rms_dbfs": -16.68078517721686,
+      "dc_offset": 8.727201264707673e-05,
       "nan_samples": 0,
       "inf_samples": 0,
       "clipped_samples": 0,
-      "longest_silence_run": 4
+      "longest_silence_run": 5
     }
   ]
 }

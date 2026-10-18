@@ -1,17 +1,17 @@
 {
   "schema": "grainfield.host-validation.v1",
   "project": "Grainfield",
-  "source_head": "d5cc980a15345b2d5c41686bc74b478084d6f739",
+  "source_head": "33417e125e26567a3af18aac8c5f2a9833ef4b2a",
   "status": "partial",
   "checks": [
     {
       "format": "CLAP",
       "check": "clap-validator",
-      "status": "not-run",
-      "command": "clap-validator validate build/CLAP/Grainfield.clap",
-      "result": "not run; clap-validator executable unavailable in this environment",
+      "status": "pass",
+      "command": "clap-validator validate /Users/danielraffel/Code/grainfield-quality-mode-integration/build/CLAP/Grainfield.clap",
+      "result": "21 tests run, 18 passed, 0 failed, 3 skipped, 0 warnings",
       "receipt": "provenance/clap-validator.txt",
-      "receipt_sha256": "fd7ad5278d7e51d9bcbac8e620259a347a347a66ed191501b8163e4c6880f90b"
+      "receipt_sha256": "51182392d569882c305a64fedb5648984129b27b0294ad0e192b765854025e38"
     },
     {
       "format": "CLAP",
@@ -20,18 +20,18 @@
       "command": "pulp-cpp host build/CLAP/Grainfield.clap --format clap",
       "result": "loaded Grainfield; 12 params; finite peak 0.190",
       "receipt": "provenance/clap-host.txt",
-      "receipt_sha256": "6b4cacf6e20bddfe9cebab650d208ae17bfa9b0e86bee8f59f8ad1b52abce02d"
+      "receipt_sha256": "be9efa009460c9c8094445b2a7e789150810602170e0a04a42cd4816f9dfb6a7"
     },
     {
       "format": "CLAP",
       "check": "offline MIDI render",
       "status": "pass",
-      "command": "pulp-cpp audio render --plugin build/CLAP/Grainfield.clap --in-channels 0 --out-channels 2 --duration-ms 250 --midi note:60,100,0,200",
-      "result": "12,000 stereo frames; peak 0.4666/0.4762; RMS 0.1860/0.1861; no NaN, Inf, or clipped samples",
+      "command": "pulp audio render --plugin build/CLAP/Grainfield.clap --in-channels 0 --out-channels 2 --duration-ms 250 --midi note:60,100,0,200",
+      "result": "12,000 stereo frames; peak 0.3674/0.3750; RMS 0.1465/0.1465; no NaN, Inf, or clipped samples",
       "receipt": "provenance/clap-render.json",
       "wav": "provenance/clap-render.wav",
-      "receipt_sha256": "92112aefc7e6c1860e0e5af298865c45d0a5747e6a0e7e9f1f179146ad9e1e71",
-      "wav_sha256": "b4d039ec7313190c4f58206a5f12f45c9a6cd16daca2e023f86746d38a2e1dbf"
+      "receipt_sha256": "b15d348f55231a460bfe9c1c82ac3033d874bbcf8f04a79ed0d2e6267252aeb6",
+      "wav_sha256": "6bb28ac6d091c56e351dbf71a09fbf6c76f39befdc73c855bcc9e3ffe7d73242"
     },
     {
       "format": "AUv2",
@@ -47,7 +47,8 @@
     "resolve host-inspect metadata discrepancy",
     "VST3 validator/artifact",
     "AAX SDK and validator",
-    "DAW editor/audio/state smoke"
+    "DAW editor/audio/state smoke",
+    "MPE/aftertouch support is not implemented"
   ],
   "metadata_note": {
     "status": "inconclusive-host-tool-discrepancy",
@@ -57,6 +58,7 @@
     "receipt": "provenance/clap-inspect.json",
     "receipt_sha256": "44019cf452c706f890f22816ac7083a2f261ee7983d1d122e925a0cedac8f5bf",
     "direct_clap_entry_receipt": "provenance/clap-entry-features.txt",
-    "direct_clap_entry_receipt_sha256": "09ad87426b28b25ef34ebead5434a310e572b89d3ac21409a1677bc76583f526"
+    "direct_clap_entry_receipt_sha256": "09ad87426b28b25ef34ebead5434a310e572b89d3ac21409a1677bc76583f526",
+    "source_head": "33417e125e26567a3af18aac8c5f2a9833ef4b2a"
   }
 }

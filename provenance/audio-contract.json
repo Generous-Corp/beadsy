@@ -2,7 +2,7 @@
   "schema": "grainfield.audio-contract.v1",
   "status": "partial",
   "project": "Grainfield",
-  "source_head": "ef324a7a62b1fbb12dda750c1985cbe2af5b1a53",
+  "source_head": "33417e125e26567a3af18aac8c5f2a9833ef4b2a",
   "engine": {
     "implementation": "beads::Synth",
     "internal_sample_rate_hz": 48000,
@@ -25,17 +25,23 @@
     "tests": [
       "Grainfield seeded renders are deterministic",
       "Grainfield 48 kHz contract is finite and rejects other rates",
-      "Grainfield modulation context menu updates and resets the selected LFO"
+      "Grainfield modulation context menu updates and resets the selected LFO",
+      "Grainfield maps MIDI velocity to deterministic output gain",
+      "Grainfield maps pitch bend to the Beads pitch offset",
+      "Grainfield sustain and overlap handling is deterministic",
+      "Grainfield quality selects the four Beads synth resolutions",
+      "Grainfield freeze toggle reaches the internal Beads synth path"
     ],
-    "command": "pulp test -- --output-on-failure",
+    "command": "pulp test",
     "execution": "passed locally",
-    "result": "9/9 CTest tests passed",
+    "result": "17/17 CTest tests passed",
     "seed": "stmlib::Random::Seed(0x12345678) before each seeded render"
   },
   "open_gates": [
     "sample-rate conversion is not implemented",
     "allocation/real-time probe is not included",
     "source-vs-port reference render is not included",
-    "MIDI note-to-pitch and sample-offset policy receipts are not included"
+    "MIDI note-to-pitch and sample-offset policy receipts are not included",
+    "MPE/aftertouch support is not implemented"
   ]
 }
