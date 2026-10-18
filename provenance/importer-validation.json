@@ -1,29 +1,49 @@
 {
-  "schema": "grainfield.importer-validation.v1",
+  "schema": "beasy.importer-validation.v2",
   "status": "validated_separate_worktree",
   "project": "Beasy",
-  "importer_worktree": "/Users/danielraffel/Code/agent-worktrees/pulp-importer-current-main-20261018",
-  "importer_branch": "chore/importer-sidecar-current-main-20261018",
-  "importer_head": "715def8a8f633300816b162fcab96b1197a9676b",
-  "integration_status": "not_integrated_into_grainfield_or_pulp_main",
+  "historical_code_name": "Grainfield",
+  "importer_worktree": "/Users/danielraffel/Code/agent-worktrees/beasy-importer-focused-20261018",
+  "importer_branch": "feat/beasy-importer-preconverted-svg-20261018",
+  "importer_base": "ed95575e65817b2388696c47c8a6861a0e64ae00",
+  "importer_head": "dc1ddb2b40",
+  "integration_status": "not_integrated_into_pulp_main_or_beasy",
+  "candidate_commits": [
+    "7e385d4a85",
+    "274d3fbdbc",
+    "436f2e66fa",
+    "a74f9a24d3",
+    "21d5a33b3b",
+    "dc1ddb2b40"
+  ],
   "tests": [
     {
-      "command": "pulp test -- -R '^pulp-import-design refuses unconverted Illustrator and PDF sources$' --output-on-failure",
+      "command": "./build/test/pulp-test-import-design-tool [preconverted-svg][fail-closed] --reporter compact",
       "status": "pass",
-      "result": "1/1"
+      "result": "1 case / 15 assertions"
     },
     {
-      "command": "pulp test -- -R 'import-design-ir-observe' --output-on-failure",
+      "command": "./build/test/pulp-test-design-import preconverted-svg source survives DesignIR JSON round-trip --reporter compact",
       "status": "pass",
-      "result": "4/4"
+      "result": "1 case / 2 assertions"
+    },
+    {
+      "command": "pulp-import-design --from illustrator",
+      "status": "pass",
+      "result": "exit 2 with explicit preconverted-svg refusal"
     }
   ],
   "capabilities_verified": [
-    "Illustrator and PDF aliases fail closed with an explicit preconverted-SVG diagnostic",
-    "preconverted SVG validation is validation-only",
-    "malformed DesignIR and unsafe asset paths are rejected",
-    "asset and interaction observation diagnostics pass"
+    "validation-only preconverted SVG and control-map sidecars",
+    "explicit fail-closed Illustrator, AI, and PDF refusal",
+    "SVG hash/root, unique selectors, positive canvas, and in-bounds geometry checks",
+    "rights provenance and attribution requirements",
+    "DesignIR serialization and anchor handling"
   ],
-  "scope_note": "This receipt proves the importer worktree behavior only; it does not claim that Grainfield or Pulp main currently contains these commits.",
-  "historical_code_name": "Grainfield"
+  "artifact_hashes": {
+    "pulp-import-design": "e05bccc71c6dbc80077660da0e105111d84f80607fb3aa87f633dbca015fc142",
+    "pulp-test-import-design-tool": "ee628b1b75f8dca219314e7d30347846f734bd78972c62f8208e6faa09be394c",
+    "pulp-test-design-import": "2e4e2baae24f5c92f2ed0e1a2bb5e07de31594a6f1891c929f30087a34e0aaa5"
+  },
+  "scope_note": "This is a clean current-main Pulp candidate, not yet integrated. It deliberately does not parse or convert AI/PDF and does not redistribute rights-sensitive artwork; Beasy can validate a rights-bearing converted SVG/control-map sidecar after the candidate lands."
 }
