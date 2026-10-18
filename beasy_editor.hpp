@@ -189,6 +189,71 @@ private:
     std::string label_;
 };
 
+/// The hardware SEED control is a button with a latched mode indication.  In
+/// Beasy the source-backed three-state Seed Mode parameter is the semantic
+/// authority, so the straight-on control cycles OFF → ON → LOCKED on click.
+/// Keeping this as a native view (rather than a guessed SVG hit region) makes
+/// automation/state changes repaint the LED as well as the button.
+class SeedModeControl final : public pulp::view::View {
+public:
+    SeedModeControl() {
+        set_id("beasy-seed-mode");
+        set_access_role(pulp::view::View::AccessRole::button);
+        set_access_label("Seed Mode");
+        set_focusable(true);
+    }
+
+    void set_mode(int mode) {
+        mode_ = std::clamp(mode, 0, 2);
+        const char* state = mode_ == 0 ? "off" : mode_ == 1 ? "on" : "locked";
+        set_access_label(std::string("Seed Mode (") + state + "); click to cycle");
+        request_repaint();
+    }
+    int mode() const { return mode_; }
+
+    void set_on_press(std::function<void()> callback) {
+        on_press_ = std::move(callback);
+    }
+
+    void paint(pulp::canvas::Canvas& canvas) override {
+        const auto b = local_bounds();
+        const float cx = b.width * 0.5f;
+        const float button_h = std::max(8.0f, b.height * 0.58f);
+        const float button_y = b.height - button_h;
+        const auto off = pulp::canvas::Color::rgba8(30, 32, 34);
+        const auto on = pulp::canvas::Color::rgba8(66, 72, 73);
+        canvas.set_fill_color(mode_ == 0 ? off : on);
+        canvas.fill_rounded_rect(0.5f, button_y, std::max(1.0f, b.width - 1.0f),
+                                 button_h, button_h * 0.25f);
+        canvas.set_stroke_color(pulp::canvas::Color::rgba8(72, 77, 79));
+        canvas.set_line_width(0.8f);
+        canvas.stroke_rounded_rect(0.5f, button_y, std::max(1.0f, b.width - 1.0f),
+                                   button_h, button_h * 0.25f);
+
+        const auto led = mode_ == 0 ? pulp::canvas::Color::rgba8(44, 43, 38) :
+            mode_ == 1 ? pulp::canvas::Color::rgba8(211, 164, 74) :
+                         pulp::canvas::Color::rgba8(103, 151, 168);
+        canvas.set_fill_color(led);
+        canvas.fill_circle(cx, std::max(2.0f, button_y * 0.48f),
+                           std::max(1.2f, std::min(b.width, b.height) * 0.10f));
+        canvas.set_font_full("Roboto Mono", std::max(3.0f, b.width * 0.17f),
+                            700, 0, 0.45f);
+        canvas.set_text_align(pulp::canvas::TextAlign::center);
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(236, 234, 224));
+        canvas.fill_text(mode_ == 2 ? "LOCK" : "SEED", cx,
+                         button_y + button_h * 0.63f);
+    }
+
+    void on_mouse_down(pulp::view::Point) override {
+        if (on_press_) on_press_();
+    }
+    bool wants_mouse_input() const override { return true; }
+
+private:
+    int mode_ = 0;
+    std::function<void()> on_press_;
+};
+
 class BeasyEditor final : public pulp::view::View {
 public:
     BeasyEditor(Beasy& processor, pulp::state::StateStore& store)
@@ -385,6 +450,26 @@ private:
             if (p.id != 0) bindings_.push_back(pulp::view::bind_parameter(*raw, store_, p.id));
             controls_.push_back({raw, p.x, p.y, p.r});
         }
+
+        // Keep the Seed control after the mapped geometry so existing panel
+        // child ordering remains stable for hosts and screenshot probes.
+        auto seed = std::make_unique<SeedModeControl>();
+        seed_mode_ = seed.get();
+        seed_mode_->set_mode(static_cast<int>(std::lround(store_.get_value(kSeedMode))));
+        seed_mode_->set_on_press([this] {
+            const int next = (seed_mode_->mode() + 1) % 3;
+            store_.begin_gesture(kSeedMode);
+            store_.set_value(kSeedMode, static_cast<float>(next));
+            store_.end_gesture(kSeedMode);
+        });
+        seed_mode_binding_ = store_.add_listener(
+            [this](pulp::state::ParamID changed, float) {
+                if (changed == kSeedMode && seed_mode_)
+                    seed_mode_->set_mode(static_cast<int>(std::lround(
+                        store_.get_value(kSeedMode))));
+            }, pulp::state::ListenerThread::Main,
+            pulp::state::ListenerRestoreBehavior::Reconcile);
+        add_child(std::move(seed));
     }
 
     void layout_controls() {
@@ -408,6 +493,14 @@ private:
             p.view->set_position(pulp::view::View::Position::absolute);
             p.view->set_bounds({x, y, diameter, diameter});
         }
+        if (seed_mode_) {
+            const float width = 13.0f * std::min(sx, sy);
+            const float height = 10.0f * std::min(sx, sy);
+            const float x = 35.4f * sx - width * 0.5f;
+            const float y = (128.5f - 40.5f) * sy - height * 0.5f;
+            seed_mode_->set_position(pulp::view::View::Position::absolute);
+            seed_mode_->set_bounds({x, y, width, height});
+        }
     }
 
     struct Control { detail::PanelKnob* knob; float x; float y; float radius; };
@@ -418,6 +511,8 @@ private:
     std::vector<Control> controls_;
     std::vector<Port> ports_;
     std::vector<pulp::view::ParameterBinding> bindings_;
+    SeedModeControl* seed_mode_ = nullptr;
+    pulp::state::ListenerToken seed_mode_binding_;
     std::optional<pulp::state::ParamID> context_target_;
 };
 

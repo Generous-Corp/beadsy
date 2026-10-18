@@ -148,7 +148,7 @@ TEST_CASE("Beasy binds source-backed auxiliary controls and labels ports") {
     auto editor = processor.create_view();
     auto* native = dynamic_cast<beasy::BeasyEditor*>(editor.get());
     REQUIRE(native != nullptr);
-    REQUIRE(native->child_count() == 24);
+    REQUIRE(native->child_count() == 25);
 
     // Five primary controls plus seven PCB-net-backed auxiliary pots are
     // automatable. The twelve remaining regions are physical I/O ports.
@@ -169,6 +169,35 @@ TEST_CASE("Beasy binds source-backed auxiliary controls and labels ports") {
         REQUIRE(port->access_label().find(ports[i]) != std::string::npos);
         REQUIRE(port->access_label().find("non-automatable") != std::string::npos);
     }
+}
+
+TEST_CASE("Beasy Seed Mode button cycles the source-backed LED states") {
+    beasy::Beasy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beasy::BeasyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+
+    beasy::SeedModeControl* seed = nullptr;
+    for (std::size_t i = 0; i < native->child_count(); ++i)
+        if ((seed = dynamic_cast<beasy::SeedModeControl*>(native->child_at(i)))) break;
+    REQUIRE(seed != nullptr);
+    REQUIRE(seed->mode() == 0);
+    REQUIRE(seed->access_label().find("off") != std::string::npos);
+
+    seed->on_mouse_down({});
+    REQUIRE(store.get_value(beasy::kSeedMode) == 1.0f);
+    REQUIRE(seed->mode() == 1);
+    REQUIRE(seed->access_label().find("on") != std::string::npos);
+    seed->on_mouse_down({});
+    REQUIRE(store.get_value(beasy::kSeedMode) == 2.0f);
+    REQUIRE(seed->mode() == 2);
+    REQUIRE(seed->access_label().find("locked") != std::string::npos);
+    seed->on_mouse_down({});
+    REQUIRE(store.get_value(beasy::kSeedMode) == 0.0f);
+    REQUIRE(seed->mode() == 0);
 }
 
 TEST_CASE("Beasy modulation context menu updates and resets the selected LFO") {
