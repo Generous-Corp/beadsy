@@ -20,9 +20,9 @@
       "verified_from": "local stmlib reference checkout at commit e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
-      "source": "https://github.com/pichenettes/mutable-instruments-documentation/tree/<commit>/docs/modules/beads",
+      "source": "https://github.com/pichenettes/mutable-instruments-documentation/tree/14d04a75ad54cd97e5e5f7b8f5a2ec7bb23046d5/docs/modules/beads",
       "observed": "Documentation and product imagery describe the Beads hardware and controls; no independent permission to redistribute those documents, photographs, logos, or artwork was found in the audited files.",
-      "verified_from": "local mutable-instruments-documentation checkout"
+      "verified_from": "local mutable-instruments-documentation checkout at commit 14d04a75ad54cd97e5e5f7b8f5a2ec7bb23046d5"
     }
   ],
   "redistribution_matrix": [
