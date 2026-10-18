@@ -1,26 +1,29 @@
 # Beasy adversarial review — current integration head
 
-Reviewed at source head `aa2cd6b` on 2026-10-18. This review is intentionally conservative: a passing focused test or artifact receipt does not close a broader host, rights, UI, or release gate.
+Reviewed at source head `e98e81c` on 2026-10-18. This review remains conservative: focused tests and artifact receipts do not close broader host, rights, UI, or release gates.
 
 ## Evidence that holds
 
-- `ctest --test-dir build-beasy-renamed --output-on-failure`: 35/35 tests passed after the source-backed seed mode and finite host-value hardening.
-- `provenance/beasy-source-port-comparison-current-20261018.json`: 48/48 direct-DSP fixtures byte-identical, max absolute error 0, RMSE 0.
-- `provenance/beasy-source-port-comparison-seed-current-20261018.json`: 144/144 direct-DSP seed/gate fixtures byte-identical, max absolute error 0, RMSE 0.
-- `provenance/beasy-format-status-current.json`: current artifact hashes verify for CLAP, VST3, LV2, AU, and standalone; AAX is blocked by unavailable proprietary SDK and host evidence.
-- The current source is independently branded Beasy, MIT licensed, and credits Emilie Gillet and Mutable Instruments with an explicit non-affiliation notice.
+- `ctest --test-dir build-beasy-renamed --output-on-failure`: 36/36 tests passed.
+- Direct DSP fixtures remain byte-identical: 48 baseline fixtures and 144 seed/gate fixtures, max absolute error 0 and RMSE 0.
+- Native editor capture and the source-backed Seed Mode button are proven. The Seed control cycles OFF → ON → LOCKED, updates its LED and accessibility label, and follows host state restoration.
+- The standalone state CLI saves a 386-byte state file and loads it successfully in a fresh process.
+- CLAP and VST3 host validation pass; governed GUI-bootstrap AU validation passes. The LV2 custom ABI probe now proves URID negotiation, 19 connected ports, finite audible MIDI output, and state save/restore.
+- The importer hardening candidate is separately validated from current Pulp `origin/main`: six clean commits add validation-only preconverted SVG/control-map handling and explicit fail-closed Illustrator/AI/PDF refusal. It is not yet integrated into Pulp main or Beasy.
+- Beasy is independently branded and MIT licensed, with explicit non-affiliation and attribution to Emilie Gillet and Mutable Instruments.
 
 ## Open or bounded claims
 
-- The direct-DSP matrices do not prove Processor adapter MIDI ordering, velocity/pitch-bend behavior at every host boundary, CV/attenuverter projection, freeze-buffer persistence, effect-path parity, or unsupported-rate behavior.
-- The editor is a procedural independent scaffold. It has deterministic knob/jack geometry, automation gestures, and right-click LFO seams, but pixel-faithful panel equivalence remains open and the Seed Mode parameter is host-automation-only pending a source-backed button/LED mapping.
-- The 24-control map has 12 bound controls and 12 explicitly provisional socket regions. Ambiguous hardware semantics remain unbound.
-- AU registration/auval, LV2 host state/MIDI behavior, VST3 validator/module-info evidence, signing/notarization/install behavior, and AAX remain release gates unless separately evidenced.
-- Artwork/CAD redistribution, share-alike obligations, trademark clearance, and any `waves.bin` or resource lineage decisions remain rights gates. The project does not currently redistribute upstream panel artwork, CAD, photographs, or manuals.
+- No installed third-party LV2 host or validator is available; DAW-level LV2 integration remains unproven.
+- AU installed-component discovery remains open even though the isolated governed `auval` path passes.
+- AAX remains blocked by the unavailable proprietary SDK and host evidence.
+- The editor is a clean-room procedural panel. Straight-on geometry, knobs, jacks, automation, LFO context menus, and Seed control are implemented, but pixel comparison against a rights-cleared reference is open.
+- Upstream panel artwork, CAD, photos, manuals, trademarks, and unresolved resource lineage remain rights gates. They are not redistributed.
+- The importer candidate refuses unconverted AI/PDF rather than parsing them. Integration requires landing the current-main Pulp commit range and then validating a rights-bearing converted SVG/control-map sidecar.
 
 ## Required next review actions
 
-1. Run adapter-level audio-harness fixtures for MIDI event order, velocity, pitch bend, CV, freeze, effect mode, and supported host rates.
-2. Produce a current visual comparison against a rights-cleared straight-on reference and reconcile the remaining control-map regions.
-3. Run current host validators and installed behavior checks for every claimed format; retain explicit blocked/not-run states where tooling or rights are unavailable.
-4. Re-audit the clean release tree, notices, attribution, signatures, and package contents before any release-complete claim.
+1. Land or formally accept the current-main importer hardening range through Pulp's normal review process, then validate Beasy's converted SVG/control-map sidecar without bundling rights-sensitive source artwork.
+2. Obtain a third-party LV2 host or a working REAPER project and capture audible MIDI plus state evidence.
+3. Produce a rights-cleared straight-on visual comparison and resolve any remaining geometry deltas.
+4. Re-audit notices, attribution, package contents, signing, notarization, installation, and all format receipts before any release-complete claim.
