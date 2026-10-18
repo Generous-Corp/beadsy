@@ -2,11 +2,14 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <limits>
+#include <utility>
 #include <vector>
 #include <pulp/format/headless.hpp>
 #include <pulp/audio/buffer.hpp>
 #include <pulp/midi/buffer.hpp>
 #include "beasy.hpp"
+#include "beads/dsp/trigger_generator.h"
 #include "stmlib/utils/random.h"
 #if defined(BEASY_HAS_RT_ALLOCATION_PROBE)
 #include "rt_allocation_probe.hpp"
@@ -23,6 +26,102 @@ TEST_CASE("Beasy descriptor is an instrument") {
     REQUIRE(desc.input_buses[0].default_channels == 2);
     REQUIRE(desc.input_buses[0].optional);
     REQUIRE(desc.output_buses.size() == 1);
+}
+
+TEST_CASE("Beasy seed mode mapping is bounded and source-backed") {
+    REQUIRE(beasy::seed_button_state_from_value(-100.0f) ==
+            beads::SEED_BUTTON_STATE_OFF);
+    REQUIRE(beasy::seed_button_state_from_value(0.49f) ==
+            beads::SEED_BUTTON_STATE_OFF);
+    REQUIRE(beasy::seed_button_state_from_value(0.5f) ==
+            beads::SEED_BUTTON_STATE_ON);
+    REQUIRE(beasy::seed_button_state_from_value(1.0f) ==
+            beads::SEED_BUTTON_STATE_ON);
+    REQUIRE(beasy::seed_button_state_from_value(1.5f) ==
+            beads::SEED_BUTTON_STATE_LOCKED);
+    REQUIRE(beasy::seed_button_state_from_value(2.0f) ==
+            beads::SEED_BUTTON_STATE_LOCKED);
+    REQUIRE(beasy::seed_button_state_from_value(100.0f) ==
+            beads::SEED_BUTTON_STATE_LOCKED);
+    REQUIRE(beasy::seed_button_state_from_value(
+                std::numeric_limits<float>::quiet_NaN()) ==
+            beads::SEED_BUTTON_STATE_OFF);
+}
+
+TEST_CASE("Beasy seed states preserve the upstream trigger contract") {
+    using Flags = stmlib::GateFlags;
+    std::array<Flags, 8> no_external{};
+    std::array<Flags, 8> merged{};
+    std::array<beads::TriggerGenerator::Output, 8> output{};
+
+    // With the manual-tap density midpoint, OFF stays idle while ON acts as
+    // a held seed button. LOCKED deliberately suppresses manual taps; with a
+    // supplied external stream it selects the upstream divider path instead.
+    beads::TriggerGenerator off;
+    beads::TriggerGenerator on;
+    beads::TriggerGenerator locked;
+    off.Init(48000.0f);
+    on.Init(48000.0f);
+    locked.Init(48000.0f);
+    off.Render(beads::SEED_BUTTON_STATE_OFF, no_external.data(), 0.5f,
+               0.0f, 0.0f, output.data(), merged, output.size());
+    REQUIRE_FALSE(output[0].trigger);
+    REQUIRE_FALSE(output[0].gate);
+
+    on.Render(beads::SEED_BUTTON_STATE_ON, no_external.data(), 0.5f,
+              0.0f, 0.0f, output.data(), merged, output.size());
+    REQUIRE(output[0].trigger);
+    REQUIRE(output[0].gate);
+
+    locked.Render(beads::SEED_BUTTON_STATE_LOCKED, no_external.data(), 0.5f,
+                  0.0f, 0.0f, output.data(), merged, output.size());
+    for (const auto& sample : output) {
+        REQUIRE_FALSE(sample.trigger);
+        REQUIRE_FALSE(sample.gate);
+    }
+
+    std::array<Flags, 8> external{};
+    external[0] = static_cast<Flags>(stmlib::GATE_FLAG_HIGH |
+                                     stmlib::GATE_FLAG_RISING);
+    for (std::size_t i = 1; i < external.size(); ++i)
+        external[i] = stmlib::GATE_FLAG_HIGH;
+    locked.Init(48000.0f);
+    locked.Render(beads::SEED_BUTTON_STATE_LOCKED, external.data(), 1.0f,
+                  0.0f, 0.0f, output.data(), merged, output.size());
+    REQUIRE(output[0].trigger);
+    REQUIRE(output[0].gate);
+}
+
+TEST_CASE("Beasy routes the Seed Mode parameter to the adapted DSP") {
+    beasy::Beasy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    processor.prepare({.sample_rate = 48000.0,
+                       .max_buffer_size = 8,
+                       .input_channels = 0,
+                       .output_channels = 2});
+
+    pulp::midi::MidiBuffer midi_in;
+    pulp::midi::MidiBuffer midi_out;
+    pulp::audio::Buffer<float> output(2, 8);
+    pulp::audio::BufferView<const float> empty_input(nullptr, 0, 0);
+    pulp::format::ProcessContext context{.sample_rate = 48000.0,
+                                         .num_samples = 8};
+    const std::array<std::pair<float, beads::SeedButtonState>, 5> cases{{
+        {-1.0f, beads::SEED_BUTTON_STATE_OFF},
+        {0.0f, beads::SEED_BUTTON_STATE_OFF},
+        {1.0f, beads::SEED_BUTTON_STATE_ON},
+        {2.0f, beads::SEED_BUTTON_STATE_LOCKED},
+        {99.0f, beads::SEED_BUTTON_STATE_LOCKED},
+    }};
+    for (const auto [value, expected] : cases) {
+        store.set_value(beasy::kSeedMode, value);
+        output.clear();
+        auto output_view = output.view();
+        processor.process(output_view, empty_input, midi_in, midi_out, context);
+        REQUIRE(processor.debug_seed_button_state() == expected);
+    }
 }
 
 #if defined(BEASY_HAS_RT_ALLOCATION_PROBE)

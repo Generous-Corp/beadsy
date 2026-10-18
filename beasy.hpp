@@ -37,7 +37,27 @@ enum ParamIDs : pulp::state::ParamID {
     kSizeAmount,
     kShapeAmount,
     kPitchAmount,
+    // Seed is a discrete button-mode contract rather than an attenuverter.
+    // Keep it after the existing IDs so current automation and state payloads
+    // retain their meanings when this source-backed mode is introduced.
+    kSeedMode,
 };
+
+// This mapping mirrors the published Beads TriggerGenerator contract.  The
+// hardware UI exposes OFF, ON (the seed button held), and LOCKED (the seed
+// input is used as a clock/divider source).  Hosts can automate arbitrary
+// floating-point values, so round and clamp at the product boundary before
+// passing the value to the adapted DSP.  No additional hardware combinations
+// are inferred here.
+inline beads::SeedButtonState seed_button_state_from_value(float value) {
+    if (!std::isfinite(value)) return beads::SEED_BUTTON_STATE_OFF;
+    const int mode = std::clamp(static_cast<int>(std::lround(value)), 0, 2);
+    switch (mode) {
+        case 1: return beads::SEED_BUTTON_STATE_ON;
+        case 2: return beads::SEED_BUTTON_STATE_LOCKED;
+        default: return beads::SEED_BUTTON_STATE_OFF;
+    }
+}
 
 // Parameter IDs are intentionally 1-based.  Keep the LFO table sized by the
 // declared parameter range rather than by an unrelated historical count so a
@@ -119,6 +139,8 @@ public:
                              .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
         store.add_parameter({.id = kMode, .name = "Mode", .unit = "mode",
                              .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
+        store.add_parameter({.id = kSeedMode, .name = "Seed Mode", .unit = "mode",
+                             .range = pulp::state::ParamRange::linear(0.0f, 2.0f, 0.0f, 1.0f)});
         // Source-backed Beads attenurandomizer amounts. These are separate
         // host parameters so automation remains explicit and stable. The
         // hardware LAW_ATTENUVERTER is bipolar: its physical midpoint is
@@ -378,18 +400,19 @@ public:
         const bool frozen = state().get_modulated(kFreeze) >= 0.5f;
         std::fill_n(freeze_.get(), n, frozen);
         const bool live_input = state().get_modulated(kMode) >= 0.5f;
+        const auto seed = seed_button_state_from_value(state().get_modulated(kSeedMode));
+        last_seed_button_state_ = seed;
         if (live_input) {
             if (input.num_channels() < 2 || input.num_samples() < n) return;
             for (std::size_t i = 0; i < n; ++i) {
                 input_frames_[i].l = input.channel(0)[i];
                 input_frames_[i].r = input.channel(1)[i];
             }
-            effect_.Process(beads::SEED_BUTTON_STATE_OFF, seed_gate_flags_.data(),
+            effect_.Process(seed, seed_gate_flags_.data(),
                             freeze_.get(), density, parameters, mix,
                             input_frames_.data(), frames_.data(), n,
                             effect_scratch_);
         } else {
-        const auto seed = beads::SEED_BUTTON_STATE_OFF;
         const auto quality_index = std::clamp(
             static_cast<int>(std::lround(state().get_modulated(kQuality))), 0, 3);
         const auto quality = static_cast<beads::Synth::Resolution>(quality_index);
@@ -463,6 +486,7 @@ private:
     bool supported_rate_ = false;
     beads::Processor::Media effect_media_ = beads::Processor::MEDIA_DIGITAL;
     bool resources_ok_ = false;
+    beads::SeedButtonState last_seed_button_state_ = beads::SEED_BUTTON_STATE_OFF;
     bool gate_ = false;
     std::uint8_t current_note_ = 60;
     std::array<bool, 128> active_notes_{};
@@ -475,6 +499,9 @@ private:
     std::size_t last_velocity_gain_size_ = 0;
 #if defined(BEASY_TESTING)
 public:
+    beads::SeedButtonState debug_seed_button_state() const {
+        return last_seed_button_state_;
+    }
     std::span<const stmlib::GateFlags> debug_seed_gate_flags() const {
         return {seed_gate_flags_.data(), last_gate_size_};
     }

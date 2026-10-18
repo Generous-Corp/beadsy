@@ -23,5 +23,6 @@
  [ a lv2:InputPort, lv2:ControlPort ; lv2:index 13 ; lv2:symbol "quality" ; lv2:name "Quality" ; lv2:default 3 ; lv2:minimum 0 ; lv2:maximum 3 ; lv2:portProperty lv2:enumeration, lv2:integer ],
  [ a lv2:InputPort, lv2:ControlPort ; lv2:index 14 ; lv2:symbol "freeze" ; lv2:name "Freeze" ; lv2:default 0 ; lv2:minimum 0 ; lv2:maximum 1 ; lv2:portProperty lv2:toggled, lv2:integer ],
  [ a lv2:InputPort, lv2:ControlPort ; lv2:index 15 ; lv2:symbol "mode" ; lv2:name "Mode" ; lv2:default 0 ; lv2:minimum 0 ; lv2:maximum 1 ; lv2:portProperty lv2:enumeration, lv2:integer ],
- [ a lv2:InputPort, atom:AtomPort ; lv2:index 16 ; lv2:symbol "midi_in" ; lv2:name "MIDI In" ; atom:bufferType atom:Sequence ; atom:supports midi:MidiEvent ; lv2:minimumSize 32768 ],
- [ a lv2:OutputPort, lv2:ControlPort ; lv2:index 17 ; lv2:symbol "latency" ; lv2:name "Latency" ; lv2:minimum 0 ; lv2:maximum 192000 ; lv2:portProperty lv2:reportsLatency, lv2:integer ; lv2:designation lv2:latency .
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 16 ; lv2:symbol "seed_mode" ; lv2:name "Seed Mode" ; lv2:default 0 ; lv2:minimum 0 ; lv2:maximum 2 ; lv2:portProperty lv2:enumeration, lv2:integer ],
+ [ a lv2:InputPort, atom:AtomPort ; lv2:index 17 ; lv2:symbol "midi_in" ; lv2:name "MIDI In" ; atom:bufferType atom:Sequence ; atom:supports midi:MidiEvent ; lv2:minimumSize 32768 ],
+ [ a lv2:OutputPort, lv2:ControlPort ; lv2:index 18 ; lv2:symbol "latency" ; lv2:name "Latency" ; lv2:minimum 0 ; lv2:maximum 192000 ; lv2:portProperty lv2:reportsLatency, lv2:integer ; lv2:designation lv2:latency .
