@@ -4,6 +4,7 @@
 #include <pulp/midi/buffer.hpp>
 #include "beads/dsp/synth.h"
 
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdint>
@@ -62,7 +63,8 @@ public:
         if (!supported_rate_) return;
         synth_.Init(reverb_buffer_.data());
         frames_.resize(max_block_size_);
-        freeze_.assign(max_block_size_, false);
+        freeze_.reset(new bool[max_block_size_]);
+        std::fill_n(freeze_.get(), max_block_size_, false);
     }
 
     void process(pulp::audio::BufferView<float>& output,
@@ -120,7 +122,7 @@ private:
     beads::Synth synth_;
     std::array<std::uint16_t, 32768> reverb_buffer_{};
     std::vector<beads::FloatFrame> frames_;
-    std::vector<bool> freeze_;
+    std::unique_ptr<bool[]> freeze_;
     double sample_rate_ = 48000.0;
     std::size_t max_block_size_ = 0;
     bool supported_rate_ = false;
