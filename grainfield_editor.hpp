@@ -69,21 +69,64 @@ public:
         const float angle = pulp::view::Knob::start_angle +
                             (pulp::view::Knob::end_angle - pulp::view::Knob::start_angle) * value();
 
-        canvas.set_fill_color(pulp::canvas::Color::rgba8(20, 20, 20));
-        canvas.fill_circle(cx, cy, radius * 1.14f);
-        canvas.set_fill_color(pulp::canvas::Color::rgba8(43, 42, 39));
-        canvas.fill_circle(cx - radius * 0.05f, cy - radius * 0.07f, radius);
-        canvas.set_stroke_color(pulp::canvas::Color::rgba8(164, 150, 113));
-        canvas.set_line_width(std::max(1.0f, radius * 0.045f));
-        canvas.stroke_circle(cx, cy, radius);
+        // The straight-on reference shows a black, physically segmented
+        // annulus around a pale inset cap.  Keep this entirely procedural:
+        // the reference photo is provenance only and is never embedded.
+        const float outer_radius = radius * 1.14f;
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(11, 11, 11));
+        canvas.fill_circle(cx, cy, outer_radius);
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(24, 24, 24));
+        canvas.fill_circle(cx - radius * 0.04f, cy - radius * 0.05f,
+                           radius * 1.01f);
 
-        canvas.set_stroke_color(pulp::canvas::Color::rgba8(224, 209, 169));
-        canvas.set_line_cap(pulp::canvas::LineCap::round);
-        canvas.set_line_width(std::max(1.2f, radius * 0.075f));
-        canvas.stroke_line(cx + radius * 0.18f * std::cos(angle),
-                           cy + radius * 0.18f * std::sin(angle),
-                           cx + radius * 0.76f * std::cos(angle),
-                           cy + radius * 0.76f * std::sin(angle));
+        // Recessed radial grooves break up the annulus without relying on
+        // image assets. Their spacing is stable at every control size.
+        canvas.set_stroke_color(pulp::canvas::Color::rgba8(8, 8, 8));
+        canvas.set_line_cap(pulp::canvas::LineCap::butt);
+        canvas.set_line_width(std::max(1.0f, radius * 0.045f));
+        constexpr int kGrooveCount = 28;
+        constexpr float kTwoPi = 6.28318530717958647692f;
+        for (int i = 0; i < kGrooveCount; ++i) {
+            const float groove_angle =
+                static_cast<float>(i) * kTwoPi /
+                static_cast<float>(kGrooveCount);
+            canvas.stroke_line(
+                cx + radius * 0.70f * std::cos(groove_angle),
+                cy + radius * 0.70f * std::sin(groove_angle),
+                cx + radius * 0.99f * std::cos(groove_angle),
+                cy + radius * 0.99f * std::sin(groove_angle));
+        }
+
+        // The measured reference cap occupies approximately 53–61% of the
+        // outer diameter.  A 0.62-radius inset lands at the middle of that
+        // range after the outer shadow is included.
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(232, 230, 218));
+        canvas.fill_circle(cx - radius * 0.055f, cy - radius * 0.07f,
+                           radius * 0.62f);
+
+        // Broad trapezoid pointer: the reference is a white slot rather than
+        // the prior 6 px hairline.  It remains centered on the existing Knob
+        // value angle, preserving automation and gesture semantics.
+        const float ux = std::cos(angle);
+        const float uy = std::sin(angle);
+        const float px = -uy;
+        const float py = ux;
+        const float inner = radius * 0.42f;
+        const float outer = radius * 0.97f;
+        const float inner_half_width = radius * 0.070f;
+        const float outer_half_width = radius * 0.040f;
+        const pulp::canvas::Canvas::Point2D pointer[] = {
+            {cx + ux * inner + px * inner_half_width,
+             cy + uy * inner + py * inner_half_width},
+            {cx + ux * inner - px * inner_half_width,
+             cy + uy * inner - py * inner_half_width},
+            {cx + ux * outer - px * outer_half_width,
+             cy + uy * outer - py * outer_half_width},
+            {cx + ux * outer + px * outer_half_width,
+             cy + uy * outer + py * outer_half_width},
+        };
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(244, 242, 230));
+        canvas.fill_path(pointer, 4);
 
         // A restrained amber outer arc makes an enabled product-local LFO
         // visible without changing the original panel's black-and-brass knob.

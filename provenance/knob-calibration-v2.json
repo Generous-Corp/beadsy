@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "grainfield.knob-calibration.v2",
+  "status": "procedural-calibration; visual-release-gate-open",
+  "project": "Grainfield",
+  "source_head": "0817c370445797e3cfe19323de9890c55dc8a7c0",
+  "prior_audit": "provenance/knob-render-audit-20261018.json",
+  "reference_boundary": {
+    "photo": "/Users/danielraffel/Code/mutable-instruments-documentation/docs/modules/beads/images/front.jpg",
+    "photo_sha256": "4346619e9d47cb8d8ac9604d3661776b7ce5dcc37cfe74f36d3d7f3d62b031bf",
+    "embedded": false,
+    "rights_state": "reference-only; redistribution review remains required"
+  },
+  "measured_targets": {
+    "major_white_cap_ratio_to_outer": [0.53, 0.61],
+    "medium_white_cap_ratio_to_outer": 0.529,
+    "pointer": {
+      "material": "off-white",
+      "geometry": "tapered slot/trapezoid",
+      "reference_width_ratio": 0.09,
+      "prior_width_ratio": 0.036
+    },
+    "body": {
+      "material": "black",
+      "geometry": "segmented annulus with recessed radial grooves",
+      "continuous_brass_outline": false
+    }
+  },
+  "implementation": {
+    "file": "grainfield_editor.hpp",
+    "annulus_segment_count": 28,
+    "groove_radius_fraction": [0.70, 0.99],
+    "cap_radius_fraction": 0.62,
+    "pointer_radius_fraction": [0.42, 0.97],
+    "pointer_half_width_fraction": [0.07, 0.04],
+    "value_angle_mapping": "unchanged pulp::view::Knob::start_angle/end_angle"
+  },
+  "acceptance": {
+    "procedural_asset_only": true,
+    "source_photo_pixel_diff": "not-run; rights/reference scale and panel capture are separate gates",
+    "isolated_render_determinism": "required",
+    "full_panel_alignment": "required before release",
+    "semantic_bindings": "unchanged; no inferred controls"
+  }
+}

@@ -25,8 +25,21 @@
     ],
     "pointer": {
       "state": "provisional",
-      "shape": "narrow-line",
-      "length_fraction": 0.62
+      "shape": "broad-tapered-slot",
+      "length_fraction": 0.55,
+      "inner_half_width_fraction": 0.07,
+      "outer_half_width_fraction": 0.04
+    },
+    "annulus": {
+      "state": "procedural-calibration-v2",
+      "segment_count": 28,
+      "groove_inner_radius_fraction": 0.70,
+      "groove_outer_radius_fraction": 0.99
+    },
+    "cap": {
+      "state": "provisional",
+      "radius_fraction": 0.62,
+      "material": "off-white-inset"
     },
     "modulation_indicator": {
       "state": "implemented",
