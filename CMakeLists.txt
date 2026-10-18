@@ -146,7 +146,7 @@ endif()
 pulp_add_plugin(Beasy
     FORMATS         VST3 CLAP LV2 AU AAX Standalone
     PLUGIN_NAME     "Beasy"
-    BUNDLE_ID       "com.independent_audio.beasy"
+    BUNDLE_ID       "com.independent-audio.beasy"
     MANUFACTURER    "Independent Audio"
     VERSION         "1.0.0"
     CATEGORY        Instrument
