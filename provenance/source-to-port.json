@@ -932,5 +932,6 @@
       }
     ],
     "conclusion": "Beads local origins and stmlib audit paths compared byte-for-byte; remaining stmlib gaps are explicit."
-  }
+  },
+  "conclusion": "Beads local origins and stmlib metadata/audit paths are recorded; stmlib copied-file byte verification remains unavailable and all legal/source gaps stay explicit."
 }

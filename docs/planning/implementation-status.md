@@ -1,7 +1,7 @@
 # Grainfield implementation status
 
 Updated 2026-10-18 against the integrated checkout head
-`d7ebdfa5b74614a37cc519542ecab62e3f870dfb`.
+`f15ed3fe0bbfb104ab49000e17a0a049e45623a3`.
 
 ## Current executable slice
 
@@ -25,6 +25,7 @@ Updated 2026-10-18 against the integrated checkout head
   and full delay parity remain unclaimed.
 - MIDI pitch: the bound PITCH parameter is now -24 to +24 semitones, with MIDI
   note 60 as the neutral reference and note offsets applied to the synth path.
+  MIDI events from all channels are accepted; channel filtering is not implemented.
 - Quality: the product-local QUALITY parameter now selects all four upstream
   Beads synth `Resolution` paths (4-bit, 16/6-bit, 7-bit, and 16-bit). This is
   deterministic coverage of the internal wavetable branch; the external-input
@@ -34,9 +35,10 @@ Updated 2026-10-18 against the integrated checkout head
   per-sample freeze input and persists through the normal Pulp parameter state.
   Freeze-buffer serialization/restore remains unavailable because the
   internal `beads::Synth` exposes no buffer snapshot API.
-- Native editor prototype: the converted panel SVG is embedded at build time,
-  all 24 DXF-derived knob placements are rendered at the calibrated centres
-  and diameters, and five controls are parameter-bound. The bound knobs have
+- Native editor prototype: the current build uses a deterministic neutral fallback
+  because the rights-gated converted panel SVG is absent. Historical authoring
+  probes recorded 24 DXF-derived placements, but the current checkout makes no
+  converted-artwork or visual-fidelity claim; five controls are parameter-bound. The bound knobs have
   working Pulp context menus for LFO enable/reset, host automation bindings,
   and a visible modulation arc. A headless capture is recorded at 402 x 728
   pixels. Knob material remains provisional; the straight-on reference is the

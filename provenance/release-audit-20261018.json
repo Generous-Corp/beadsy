@@ -241,8 +241,8 @@
   "audit_receipt_head": "c071afa84f41632577a53a8c2ac94662eea287d9",
   "audited_base_head": "cd5b96c3e64d3725c1039f5ffbaa540766dbe1c3",
   "current_checkout": {
-    "head": "3f36bcdaf6c84e27a82312ded8551e92cd20df47",
-    "role": "current checkout after 48 kHz fail-closed correction; receipt inputs audited at audited_base_head",
-    "note": "Receipt evidence remains bound to audited_base_head; this field identifies the current code checkout after the DSP contract correction."
+    "head": "f15ed3fe0bbfb104ab49000e17a0a049e45623a3",
+    "role": "audited checkout before this metadata correction commit",
+    "note": "Receipt inputs remain bound to audited_base_head; this field identifies the checkout used for the bounded metadata correction."
   }
 }

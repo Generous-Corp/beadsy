@@ -1,7 +1,7 @@
 # Independent Beads-inspired Pulp instrument
 
 Status: implementation plan, Ultra-reviewed 2026-10-17
-Planning head: Pulp `origin/main` `5a359c9`
+Planning head: Pulp `origin/main` snapshot `5a359c9` (historical; remote origin is unavailable in this checkout).
 Reference source head: Beads `f4cfa7697095a28d292bff758beb51deb49b5a86`
 Documentation reference: [`beads-documentation-review.md`](beads-documentation-review.md),
 based on the local Mutable Instruments manual/index and image set.
@@ -16,7 +16,7 @@ The first release is a fixed-topology MIDI instrument implemented as a Pulp `Pro
 - Note-off follows the declared gate behavior; it does not create an independent release envelope per note.
 - Pitch bend, channel pressure, sustain, and overlapping notes are either implemented and tested or explicitly reported unsupported.
 - “Seed” is a trigger/gate event, not a random-seed parameter. Deterministic tests receive an injected/resettable RNG seam.
-- Beads’ internal DSP modes are 24/32/48 kHz. Pulp’s 44.1/48/88.2/96 kHz support requires an explicit resampling strategy and a reference comparison; it cannot be assumed equivalent.
+- The current v1 synth contract is 48 kHz only; unsupported host rates fail closed. Existing 24/32 kHz matrix receipts are historical experimental evidence and do not establish current v1 support.
 - Audio input/effect mode, polyphony, alternate MIDI semantics, and an AAX AudioSuite path are later extensions, not hidden scope.
 
 The UI will reproduce the straight-on panel composition and interaction hierarchy. It will use the supplied panel art for static geometry and custom native knob skins for the physical appearance. It will not ship a 3D view.
@@ -131,7 +131,7 @@ Before touching those paths, run the Pulp/Vellum route report. The active framew
 
 The v1 product is synth-only: it renders the global Beads voice/granular path and does not claim the original hardware’s external audio-input/effect path until that path has its own parity evidence. The provenance manifest must include `resources/waves.bin` and its BRAIDS/PLAITS resource lineage, every initialized submodule, and third-party license boundaries inside stmlib (including GPL components that must not be copied into the MIT product). Preserve the relevant authors and notices from the source files.
 
-The MIDI contract must define note-on velocity, note-off, overlapping notes, retrigger timing, channel filtering, pitch bend range, pressure, sustain, and reset behavior. The default is one global voice: the latest accepted note controls pitch, note-on retriggers the global gate, and note-off only changes the gate when it releases the currently held note according to the documented overlap policy. Tests must exercise each policy and use sample-offset events where the host format exposes them. VST3, AUv3, and CLAP event offsets must be honored; AUv2 and AAX block-rate limitations must be documented and tested separately.
+The MIDI contract must define note-on velocity, note-off, overlapping notes, retrigger timing, all-channel acceptance (channel filtering is not implemented), pitch bend range, pressure, sustain, and reset behavior. The default is one global voice: the latest accepted note controls pitch, note-on retriggers the global gate, and note-off only changes the gate when it releases the currently held note according to the documented overlap policy. Tests must exercise each policy and use sample-offset events where the host format exposes them. VST3, AUv3, and CLAP event offsets must be honored; AUv2 and AAX block-rate limitations must be documented and tested separately.
 
 The format matrix must identify the product as an instrument: AUv2 `aumu`/instrument metadata, AUv3 instrument metadata, CLAP instrument features, and VST3 instrument bus/category. AAX remains blocked without the SDK, entry point, validator, and Pro Tools evidence. The modulation lane depends on a landed, reviewed Spectr-compatible API; a context menu or modulated indicator alone is not evidence that LFO assignment is available.
 
