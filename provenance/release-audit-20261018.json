@@ -241,8 +241,8 @@
   "audit_receipt_head": "c071afa84f41632577a53a8c2ac94662eea287d9",
   "audited_base_head": "cd5b96c3e64d3725c1039f5ffbaa540766dbe1c3",
   "current_checkout": {
-    "head": "3aac5d0ec42942f4c2ce8b178093f32585458212",
-    "role": "audited checkout before this release-envelope commit",
-    "note": "source_head/audited_base_head identify the non-circular receipt base; this field identifies the exact checkout used for the envelope inputs."
+    "head": "3f36bcd",
+    "role": "current checkout after 48 kHz fail-closed correction; receipt inputs audited at audited_base_head",
+    "note": "Receipt evidence remains bound to audited_base_head; this field identifies the current code checkout after the DSP contract correction."
   }
 }
