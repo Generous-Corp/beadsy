@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inspect Grainfield's declared Pulp formats against one build tree.
+"""Inspect Beasy's declared Pulp formats against one build tree.
 
 This is an artifact/metadata receipt only. It does not inspect installed hosts,
 load plugins, or run format validators. Missing artifacts are reported as
@@ -16,12 +16,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 FORMAT_ARTIFACTS = {
-    "VST3": "VST3/Grainfield.vst3/Contents/MacOS/Grainfield",
-    "CLAP": "CLAP/Grainfield.clap/Contents/MacOS/Grainfield",
-    "LV2": "LV2/Grainfield.lv2/Grainfield.so",
-    "AU": "AU/Grainfield.component/Contents/MacOS/Grainfield",
-    "AAX": "AAX/Grainfield.aaxplugin/Contents/MacOS/Grainfield",
-    "Standalone": "Grainfield.app/Contents/MacOS/Grainfield",
+    "VST3": "VST3/Beasy.vst3/Contents/MacOS/Beasy",
+    "CLAP": "CLAP/Beasy.clap/Contents/MacOS/Beasy",
+    "LV2": "LV2/Beasy.lv2/Beasy.so",
+    "AU": "AU/Beasy.component/Contents/MacOS/Beasy",
+    "AAX": "AAX/Beasy.aaxplugin/Contents/MacOS/Beasy",
+    "Standalone": "Beasy.app/Contents/MacOS/Beasy",
 }
 
 
@@ -64,7 +64,7 @@ def target_present(build: Path, fmt: str) -> bool:
     ninja = build / "build.ninja"
     if not ninja.exists():
         return False
-    target = f"Grainfield_{fmt}"
+    target = f"Beasy_{fmt}"
     return re.search(rf"(?:target_|TARGET_FILE\s*=\s*).*{re.escape(target)}", ninja.read_text(errors="replace")) is not None
 
 
@@ -100,9 +100,9 @@ def inspect(source: Path, build: Path) -> dict:
                 reason = "declared target produced no artifact in the inspected build tree"
         entries.append({"format": fmt, "status": status, "reason": reason, "evidence": evidence})
     return {
-        "schema": "grainfield.format-status.v1",
+        "schema": "beasy.format-status.v1",
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        "project": "Grainfield",
+        "project": "Beasy",
         "source": {"path": str(source), "git_head": git_head(source)},
         "build": {
             "path": str(build),

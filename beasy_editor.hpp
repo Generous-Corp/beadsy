@@ -2,8 +2,8 @@
 
 #if !defined(PULP_HEADLESS)
 
-#include "grainfield_panel_svg.hpp"
-#include "grainfield.hpp"
+#include "beasy_panel_svg.hpp"
+#include "beasy.hpp"
 
 #include <pulp/canvas/canvas.hpp>
 #include <pulp/canvas/svg.hpp>
@@ -22,7 +22,7 @@
 #include <vector>
 #include <string_view>
 
-namespace grainfield {
+namespace beasy {
 
 namespace detail {
 
@@ -55,7 +55,7 @@ public:
         : caption_(std::move(caption)), diameter_(diameter) {
         set_show_label(false);
         set_render_style(pulp::view::WidgetRenderStyle::standard);
-        set_id("grainfield-" + caption_);
+        set_id("beasy-" + caption_);
     }
 
     void set_modulation_indicator(std::function<bool()> active) {
@@ -150,7 +150,7 @@ private:
 class PortRegion final : public pulp::view::View {
 public:
     explicit PortRegion(std::string label) : label_(std::move(label)) {
-        set_id("grainfield-port-" + label_);
+        set_id("beasy-port-" + label_);
         set_access_label(label_ + " (I/O port; non-automatable)");
         set_access_disabled("false");
     }
@@ -189,11 +189,11 @@ private:
     std::string label_;
 };
 
-class GrainfieldEditor final : public pulp::view::View {
+class BeasyEditor final : public pulp::view::View {
 public:
-    GrainfieldEditor(Grainfield& processor, pulp::state::StateStore& store)
-        : processor_(processor), store_(store), panel_(pulp::canvas::SvgImage::from_string(kGrainfieldPanelSvg)) {
-        set_id("grainfield-editor");
+    BeasyEditor(Beasy& processor, pulp::state::StateStore& store)
+        : processor_(processor), store_(store), panel_(pulp::canvas::SvgImage::from_string(kBeasyPanelSvg)) {
+        set_id("beasy-editor");
         set_background_color(pulp::canvas::Color::rgba8(22, 21, 19));
         build_controls();
         layout_controls();
@@ -214,7 +214,7 @@ public:
             canvas.set_fill_color(pulp::canvas::Color::rgba8(22, 21, 19));
             canvas.fill_rect(0, 0, b.width, b.height);
         }
-        if (std::string_view(kGrainfieldPanelSourceStatus) ==
+        if (std::string_view(kBeasyPanelSourceStatus) ==
             "independent scaffold; rights-gated artwork probe unavailable") {
             paint_scaffold_labels(canvas, b.width, b.height);
         }
@@ -308,7 +308,7 @@ private:
         const auto ink = pulp::canvas::Color::rgba8(238, 233, 220);
         const auto accent = pulp::canvas::Color::rgba8(217, 194, 158);
         const auto muted = pulp::canvas::Color::rgba8(185, 192, 201);
-        label("GRAINFIELD", 100.3465f, 17.0f, 8.0f, ink, pulp::canvas::TextAlign::center, 700);
+        label("BEASY", 100.3465f, 17.0f, 8.0f, ink, pulp::canvas::TextAlign::center, 700);
         label("MIDI GRAIN SYNTH", 100.3465f, 25.0f, 3.1f, accent);
         label("GRAIN", 100.3465f, 46.0f, 3.2f, accent, pulp::canvas::TextAlign::center, 700);
         label("DENSITY", 101.4f, 97.0f, 3.8f, ink, pulp::canvas::TextAlign::center, 700);
@@ -412,7 +412,7 @@ private:
 
     struct Control { detail::PanelKnob* knob; float x; float y; float radius; };
     struct Port { PortRegion* view; float x; float y; float radius; };
-    Grainfield& processor_;
+    Beasy& processor_;
     pulp::state::StateStore& store_;
     pulp::canvas::SvgImage panel_;
     std::vector<Control> controls_;
@@ -421,6 +421,6 @@ private:
     std::optional<pulp::state::ParamID> context_target_;
 };
 
-} // namespace grainfield
+} // namespace beasy
 
 #endif // !PULP_HEADLESS

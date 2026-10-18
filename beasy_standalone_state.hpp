@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <string_view>
 
-namespace grainfield {
+namespace beasy {
 
 using StandaloneStateResult = pulp::format::StandaloneStateFileResult;
 using StandaloneStatePolicy = pulp::format::StandaloneStateFilePolicy;
@@ -24,4 +24,4 @@ inline StandaloneStateResult load_state(
     return pulp::format::load_standalone_state_file(app, path, policy);
 }
 
-} // namespace grainfield
+} // namespace beasy

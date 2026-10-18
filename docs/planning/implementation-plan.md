@@ -6,7 +6,7 @@ Reference source head: Beads `f4cfa7697095a28d292bff758beb51deb49b5a86`
 Documentation reference: [`beads-documentation-review.md`](beads-documentation-review.md),
 based on the local Mutable Instruments manual/index and image set.
 
-This project will be an independent MIT-licensed Pulp instrument inspired by the Mutable Instruments Beads architecture and panel layout. It must not imply endorsement or affiliation. The product name is provisional until the rights review; use an independent name such as **Grainfield** rather than “Beads,” “Mutable,” or a confusing abbreviation. The README and editor About view will state the relationship accurately and link to the upstream source and licenses.
+This project will be an independent MIT-licensed Pulp instrument inspired by the Mutable Instruments Beads architecture and panel layout. It must not imply endorsement or affiliation. The product name is provisional until the rights review; use an independent name such as **Beasy** rather than “Beads,” “Mutable,” or a confusing abbreviation. The README and editor About view will state the relationship accurately and link to the upstream source and licenses.
 
 ## Product boundary
 

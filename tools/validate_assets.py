@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate Grainfield's converted panel and control-map sidecar.
+"""Validate Beasy's converted panel and control-map sidecar.
 
 This is intentionally a build-time check. It validates the small, reviewed
 authoring surface without attempting to parse Illustrator or CAD files at
@@ -76,7 +76,7 @@ def validate(svg_path: Path, map_path: Path) -> dict:
             fail(f"control geometry out of bounds: {ident}")
 
     return {
-        "schema": "grainfield.asset-validation.v1",
+        "schema": "beasy.asset-validation.v1",
         "status": "pass",
         "svg": {"path": str(svg_path), "sha256": sha256(svg_path), "viewBox": view_box},
         "control_map": {"path": str(map_path), "sha256": sha256(map_path), "controls": len(controls)},

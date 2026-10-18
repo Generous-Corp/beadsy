@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(Grainfield VERSION 1.0.0 LANGUAGES CXX)
+project(Beasy VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -11,28 +11,28 @@ find_package(Pulp CONFIG REQUIRED)
 # checkout may not contain the probe asset while its rights review is pending;
 # use a deterministic neutral panel in that case so DSP and headless builds do
 # not depend on an ignored developer artifact.
-set(GRAINFIELD_PANEL_ASSET "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel.svg")
-if(EXISTS "${GRAINFIELD_PANEL_ASSET}")
-    file(READ "${GRAINFIELD_PANEL_ASSET}" GRAINFIELD_PANEL_SVG)
-    set(GRAINFIELD_PANEL_SOURCE_STATUS "rights-gated authoring probe")
+set(BEASY_PANEL_ASSET "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel.svg")
+if(EXISTS "${BEASY_PANEL_ASSET}")
+    file(READ "${BEASY_PANEL_ASSET}" BEASY_PANEL_SVG)
+    set(BEASY_PANEL_SOURCE_STATUS "rights-gated authoring probe")
 else()
     # Keep the product useful when the rights-gated authoring probe is absent.
     # This is an original, deliberately sparse panel scaffold: its labels and
-    # section marks describe Grainfield's own five bound controls, while the
+    # section marks describe Beasy's own five bound controls, while the
     # guide rings make the existing placement map inspectable. It does not
     # reproduce Beads artwork or imply a fidelity comparison.
-    set(GRAINFIELD_PANEL_SVG [=[
+    set(BEASY_PANEL_SVG [=[
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.693 364.252">
   <rect width="200.693" height="364.252" fill="#111419"/>
   <rect x="3" y="3" width="194.693" height="358.252" rx="4" fill="#191e25" stroke="#8f6a45" stroke-width="1"/>
   <path d="M14 28H186 M14 33H186" stroke="#8f6a45" stroke-width="0.5" opacity="0.72"/>
-  <text x="100.3465" y="17" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" letter-spacing="2" fill="#eee9dc">GRAINFIELD</text>
+  <text x="100.3465" y="17" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" letter-spacing="2" fill="#eee9dc">BEASY</text>
   <text x="100.3465" y="25" text-anchor="middle" font-family="sans-serif" font-size="3.1" letter-spacing="1" fill="#c9b59a">MIDI GRAIN SYNTH</text>
 
   <text x="100.3465" y="46" text-anchor="middle" font-family="sans-serif" font-size="3.2" font-weight="700" letter-spacing="1.2" fill="#d9c29e">GRAIN</text>
   <path d="M24 49H176" stroke="#d9c29e" stroke-width="0.5" opacity="0.45"/>
 
-  <!-- Functional labels for the five source-backed Grainfield parameters. -->
+  <!-- Functional labels for the five source-backed Beasy parameters. -->
   <g font-family="sans-serif" font-size="3.2" font-weight="700" letter-spacing="0.65" fill="#eee9dc">
     <text x="101.4" y="97" text-anchor="middle">DENSITY</text>
     <text x="33.8" y="139" text-anchor="middle">TIME</text>
@@ -62,13 +62,13 @@ else()
   <text x="100.3465" y="344" text-anchor="middle" font-family="sans-serif" font-size="3" letter-spacing="0.85" fill="#c9b59a">48 KHZ  •  MONO VOICE  •  MIDI</text>
   <text x="100.3465" y="353" text-anchor="middle" font-family="sans-serif" font-size="2.5" letter-spacing="0.5" fill="#7f8b99">INDEPENDENT PRODUCT SCAFFOLD</text>
 </svg>]=])
-    set(GRAINFIELD_PANEL_SOURCE_STATUS "independent scaffold; rights-gated artwork probe unavailable")
-    message(STATUS "Grainfield panel probe unavailable; using independent panel scaffold")
+    set(BEASY_PANEL_SOURCE_STATUS "independent scaffold; rights-gated artwork probe unavailable")
+    message(STATUS "Beasy panel probe unavailable; using independent panel scaffold")
 endif()
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/grainfield_panel_svg.hpp.in
-               ${CMAKE_CURRENT_BINARY_DIR}/grainfield_panel_svg.hpp @ONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/beasy_panel_svg.hpp.in
+               ${CMAKE_CURRENT_BINARY_DIR}/beasy_panel_svg.hpp @ONLY)
 
-add_library(grainfield_beads_dsp STATIC
+add_library(beasy_beads_dsp STATIC
     third_party/beads_dsp/beads/dsp/processor.cc
     third_party/beads_dsp/beads/dsp/delay_controller.cc
     third_party/beads_dsp/beads/dsp/delay_clock.cc
@@ -79,10 +79,10 @@ add_library(grainfield_beads_dsp STATIC
     third_party/beads_dsp/stmlib/dsp/units.cc
     third_party/beads_dsp/stmlib/utils/random.cc
 )
-target_include_directories(grainfield_beads_dsp PUBLIC
+target_include_directories(beasy_beads_dsp PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/beads_dsp
 )
-target_compile_features(grainfield_beads_dsp PUBLIC cxx_std_20)
+target_compile_features(beasy_beads_dsp PUBLIC cxx_std_20)
 
 # Tests
 include(FetchContent)
@@ -95,95 +95,95 @@ include(CTest)
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 include(Catch)
 
-add_executable(Grainfield-test test_grainfield.cpp)
-target_link_libraries(Grainfield-test PRIVATE Pulp::format Catch2::Catch2WithMain grainfield_beads_dsp)
-target_include_directories(Grainfield-test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_compile_definitions(Grainfield-test PRIVATE GRAINFIELD_TESTING=1)
+add_executable(Beasy-test test_beasy.cpp)
+target_link_libraries(Beasy-test PRIVATE Pulp::format Catch2::Catch2WithMain beasy_beads_dsp)
+target_include_directories(Beasy-test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_definitions(Beasy-test PRIVATE BEASY_TESTING=1)
 
 # Pulp keeps the allocation probe in its test harness (it is not part of the
 # installed SDK).  Point this test-only target at a matching Pulp checkout
 # when the realtime allocation gate is desired; ordinary SDK consumers can
 # continue building the functional tests without the private harness.
-set(GRAINFIELD_PULP_TEST_HARNESS_DIR "" CACHE PATH
-    "Pulp test/harness directory for Grainfield realtime allocation tests")
-if(NOT GRAINFIELD_PULP_TEST_HARNESS_DIR AND DEFINED ENV{PULP_SOURCE_DIR})
-    set(GRAINFIELD_PULP_TEST_HARNESS_DIR
+set(BEASY_PULP_TEST_HARNESS_DIR "" CACHE PATH
+    "Pulp test/harness directory for Beasy realtime allocation tests")
+if(NOT BEASY_PULP_TEST_HARNESS_DIR AND DEFINED ENV{PULP_SOURCE_DIR})
+    set(BEASY_PULP_TEST_HARNESS_DIR
         "$ENV{PULP_SOURCE_DIR}/test/harness")
 endif()
-if(EXISTS "${GRAINFIELD_PULP_TEST_HARNESS_DIR}/rt_allocation_probe.cpp")
-    target_sources(Grainfield-test PRIVATE
-        "${GRAINFIELD_PULP_TEST_HARNESS_DIR}/rt_allocation_probe.cpp")
-    target_include_directories(Grainfield-test PRIVATE
-        "${GRAINFIELD_PULP_TEST_HARNESS_DIR}")
-    target_compile_definitions(Grainfield-test PRIVATE
-        GRAINFIELD_HAS_RT_ALLOCATION_PROBE=1)
+if(EXISTS "${BEASY_PULP_TEST_HARNESS_DIR}/rt_allocation_probe.cpp")
+    target_sources(Beasy-test PRIVATE
+        "${BEASY_PULP_TEST_HARNESS_DIR}/rt_allocation_probe.cpp")
+    target_include_directories(Beasy-test PRIVATE
+        "${BEASY_PULP_TEST_HARNESS_DIR}")
+    target_compile_definitions(Beasy-test PRIVATE
+        BEASY_HAS_RT_ALLOCATION_PROBE=1)
 else()
     message(STATUS
-        "Grainfield realtime allocation probe unavailable; set "
-        "GRAINFIELD_PULP_TEST_HARNESS_DIR to Pulp's test/harness")
+        "Beasy realtime allocation probe unavailable; set "
+        "BEASY_PULP_TEST_HARNESS_DIR to Pulp's test/harness")
 endif()
-catch_discover_tests(Grainfield-test)
+catch_discover_tests(Beasy-test)
 
 # Small, authorized offline harness for standalone-adjacent audio/state proof.
 # It uses Pulp's HeadlessHost seam rather than claiming that the GUI app itself
 # exposes a state or audio measurement bridge.
-add_executable(Grainfield-headless-harness grainfield_headless_harness.cpp)
-target_link_libraries(Grainfield-headless-harness PRIVATE
-    Pulp::format grainfield_beads_dsp)
-target_include_directories(Grainfield-headless-harness PRIVATE
+add_executable(Beasy-headless-harness beasy_headless_harness.cpp)
+target_link_libraries(Beasy-headless-harness PRIVATE
+    Pulp::format beasy_beads_dsp)
+target_include_directories(Beasy-headless-harness PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR})
 
 if(TARGET Pulp::view)
-    add_executable(Grainfield-editor-test test_grainfield_editor.cpp)
-    target_link_libraries(Grainfield-editor-test PRIVATE
-        Pulp::format Pulp::view Catch2::Catch2WithMain grainfield_beads_dsp)
-    target_include_directories(Grainfield-editor-test PRIVATE
+    add_executable(Beasy-editor-test test_beasy_editor.cpp)
+    target_link_libraries(Beasy-editor-test PRIVATE
+        Pulp::format Pulp::view Catch2::Catch2WithMain beasy_beads_dsp)
+    target_include_directories(Beasy-editor-test PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-    target_compile_definitions(Grainfield-editor-test PRIVATE GRAINFIELD_NATIVE_EDITOR=1)
-    catch_discover_tests(Grainfield-editor-test)
+    target_compile_definitions(Beasy-editor-test PRIVATE BEASY_NATIVE_EDITOR=1)
+    catch_discover_tests(Beasy-editor-test)
 endif()
 
-pulp_add_plugin(Grainfield
+pulp_add_plugin(Beasy
     FORMATS         VST3 CLAP LV2 AU AAX Standalone
-    PLUGIN_NAME     "Grainfield"
-    BUNDLE_ID       "com.independent_audio.grainfield"
+    PLUGIN_NAME     "Beasy"
+    BUNDLE_ID       "com.independent_audio.beasy"
     MANUFACTURER    "Independent Audio"
     VERSION         "1.0.0"
     CATEGORY        Instrument
-    PLUGIN_CODE     "Grai"
+    PLUGIN_CODE     "Bead"
     MANUFACTURER_CODE "Inde"
     AAX_PRODUCT_CODE "GraP"
-    AAX_NATIVE_CODE "Grai"
+    AAX_NATIVE_CODE "Bead"
 )
 
 foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AAX Standalone)
-    if(TARGET Grainfield_${_fmt})
-        target_link_libraries(Grainfield_${_fmt} PRIVATE grainfield_beads_dsp)
+    if(TARGET Beasy_${_fmt})
+        target_link_libraries(Beasy_${_fmt} PRIVATE beasy_beads_dsp)
         if(TARGET Pulp::view)
-            target_link_libraries(Grainfield_${_fmt} PRIVATE Pulp::view)
-            target_include_directories(Grainfield_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-            target_compile_definitions(Grainfield_${_fmt} PRIVATE GRAINFIELD_NATIVE_EDITOR=1)
+            target_link_libraries(Beasy_${_fmt} PRIVATE Pulp::view)
+            target_include_directories(Beasy_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+            target_compile_definitions(Beasy_${_fmt} PRIVATE BEASY_NATIVE_EDITOR=1)
         endif()
     endif()
 endforeach()
 
 # The installed Pulp SDK builds the LV2 shared object but does not emit the
 # discovery TTL files. Keep this product-local manifest in the bundle so LV2
-# hosts can discover Grainfield's audio, control, and MIDI ports.
-if(TARGET Grainfield_LV2)
-    add_custom_command(TARGET Grainfield_LV2 POST_BUILD
+# hosts can discover Beasy's audio, control, and MIDI ports.
+if(TARGET Beasy_LV2)
+    add_custom_command(TARGET Beasy_LV2 POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             "${CMAKE_CURRENT_SOURCE_DIR}/lv2"
-            "${CMAKE_BINARY_DIR}/LV2/Grainfield.lv2"
+            "${CMAKE_BINARY_DIR}/LV2/Beasy.lv2"
         VERBATIM)
 endif()
 
 # Standalone state command/control-thread integration against Pulp's state bridge.
 if(TARGET Pulp::standalone)
-    add_executable(Grainfield-standalone-state-test test_grainfield_standalone_state.cpp)
-    target_link_libraries(Grainfield-standalone-state-test PRIVATE
-        Pulp::standalone Catch2::Catch2WithMain grainfield_beads_dsp)
-    target_include_directories(Grainfield-standalone-state-test PRIVATE
+    add_executable(Beasy-standalone-state-test test_beasy_standalone_state.cpp)
+    target_link_libraries(Beasy-standalone-state-test PRIVATE
+        Pulp::standalone Catch2::Catch2WithMain beasy_beads_dsp)
+    target_include_directories(Beasy-standalone-state-test PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR})
-    catch_discover_tests(Grainfield-standalone-state-test)
+    catch_discover_tests(Beasy-standalone-state-test)
 endif()

@@ -1,4 +1,4 @@
-#include "grainfield.hpp"
+#include "beasy.hpp"
 #include <pulp/format/aax_entry.hpp>
 
-PULP_AAX_PLUGIN(grainfield::create_grainfield)
+PULP_AAX_PLUGIN(beasy::create_beasy)

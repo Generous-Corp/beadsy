@@ -15,9 +15,9 @@
 #include <vector>
 
 
-// Grainfield — an independent Pulp instrument inspired by the published Beads
+// Beasy — an independent Pulp instrument inspired by the published Beads
 // architecture. Upstream notices for the adapted DSP live under third_party/.
-namespace grainfield {
+namespace beasy {
 
 enum ParamIDs : pulp::state::ParamID {
     kTime = 1,
@@ -57,9 +57,9 @@ struct LfoModulation {
 
 inline pulp::format::PluginDescriptor make_descriptor() {
     return {
-        .name = "Grainfield",
+        .name = "Beasy",
         .manufacturer = "Independent Audio",
-        .bundle_id = "com.independent_audio.grainfield",
+        .bundle_id = "com.independent_audio.beasy",
         .version = "1.0.0",
         .category = pulp::format::PluginCategory::Instrument,
         .input_buses = {{"Main In", 2, true}},
@@ -68,7 +68,7 @@ inline pulp::format::PluginDescriptor make_descriptor() {
     };
 }
 
-class Grainfield : public pulp::format::Processor {
+class Beasy : public pulp::format::Processor {
 public:
     pulp::format::PluginDescriptor descriptor() const override { return make_descriptor(); }
 
@@ -94,7 +94,7 @@ public:
         };
     }
 
-#if defined(GRAINFIELD_NATIVE_EDITOR) && !defined(PULP_HEADLESS)
+#if defined(BEASY_NATIVE_EDITOR) && !defined(PULP_HEADLESS)
     pulp::format::ViewSize view_size() const override { return {201, 364, 201, 364, 401, 729}; }
     std::unique_ptr<pulp::view::View> create_view() override;
 #endif
@@ -141,7 +141,7 @@ public:
         state().set_mod_offset(id, 0.0f);
     }
 
-#if defined(GRAINFIELD_TESTING)
+#if defined(BEASY_TESTING)
     // Test-only seam: expose the four source-backed Beads attenurandomizer
     // values without widening the shipping processor API.  This keeps the
     // control-to-DSP contract directly verifiable while the runtime remains
@@ -438,7 +438,7 @@ private:
     float velocity_gain_ = 1.0f;
     float pitch_bend_semitones_ = 0.0f;
     std::size_t last_gate_size_ = 0;
-#if defined(GRAINFIELD_TESTING)
+#if defined(BEASY_TESTING)
 public:
     std::span<const stmlib::GateFlags> debug_seed_gate_flags() const {
         return {seed_gate_flags_.data(), last_gate_size_};
@@ -467,15 +467,15 @@ private:
     }
 };
 
-inline std::unique_ptr<pulp::format::Processor> create_grainfield() {
-    return std::make_unique<Grainfield>();
+inline std::unique_ptr<pulp::format::Processor> create_beasy() {
+    return std::make_unique<Beasy>();
 }
 
-} // namespace grainfield
+} // namespace beasy
 
-#if defined(GRAINFIELD_NATIVE_EDITOR) && !defined(PULP_HEADLESS)
-#include "grainfield_editor.hpp"
-inline std::unique_ptr<pulp::view::View> grainfield::Grainfield::create_view() {
-    return std::make_unique<grainfield::GrainfieldEditor>(*this, state());
+#if defined(BEASY_NATIVE_EDITOR) && !defined(PULP_HEADLESS)
+#include "beasy_editor.hpp"
+inline std::unique_ptr<pulp::view::View> beasy::Beasy::create_view() {
+    return std::make_unique<beasy::BeasyEditor>(*this, state());
 }
 #endif

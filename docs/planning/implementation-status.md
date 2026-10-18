@@ -1,4 +1,4 @@
-# Grainfield implementation status
+# Beasy implementation status
 
 Updated 2026-10-18 against the integrated source head
 `bb3d8529363b2dd38d071d9822c982201744556d`; receipt updates are recorded in
@@ -6,9 +6,9 @@ Updated 2026-10-18 against the integrated source head
 
 ## Current executable slice
 
-- Independent product name: Grainfield.
+- Independent product name: Beasy.
 - Project license: MIT for original project code.
-- Provenance: the source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings, `waves.bin` lineage, and stmlib upstream license metadata are recorded. Hash verification records 29 Beads matches and 7 mismatches, plus 14 stmlib matches and 1 mismatch; all eight mismatches are classified as intentional portability adaptations with deterministic unified-diff metadata in `provenance/source-to-port.json`. The stmlib audit is metadata-only, and legal/source redistribution remains blocked. The existing Pulp `RtAllocationProbe` is linked into Grainfield-test. Release and alternate Debug arm64 AppleClang configurations pass focused 1/1 and ten-run 64/256/1024 matrices with zero allocations/bytes, but the prior one-allocation/192-byte observation remains unresolved; the allocation/realtime gate is inconclusive pending recurrence backtrace and broader cross-toolchain evidence. Pulp commit `f9752e4` proves fail-closed `illustrator`/`ai`/`pdf` aliases with preconverted-SVG validation-only behavior; this does not claim Illustrator conversion support. External `pdftocairo` feature diagnostics remain inconclusive.
+- Provenance: the source-to-port inventory is complete for the recorded port files, with hashes, local Beads origins, notices, and redistribution states; adapted DSP notice mappings, `waves.bin` lineage, and stmlib upstream license metadata are recorded. Hash verification records 29 Beads matches and 7 mismatches, plus 14 stmlib matches and 1 mismatch; all eight mismatches are classified as intentional portability adaptations with deterministic unified-diff metadata in `provenance/source-to-port.json`. The stmlib audit is metadata-only, and legal/source redistribution remains blocked. The existing Pulp `RtAllocationProbe` is linked into Beasy-test. Release and alternate Debug arm64 AppleClang configurations pass focused 1/1 and ten-run 64/256/1024 matrices with zero allocations/bytes, but the prior one-allocation/192-byte observation remains unresolved; the allocation/realtime gate is inconclusive pending recurrence backtrace and broader cross-toolchain evidence. Pulp commit `f9752e4` proves fail-closed `illustrator`/`ai`/`pdf` aliases with preconverted-SVG validation-only behavior; this does not claim Illustrator conversion support. External `pdftocairo` feature diagnostics remain inconclusive.
 - Release scope (`v1-synth-only-20261018`): the shipped first release is the
   global MIDI synth voice with no external audio-input requirement.
 - DSP boundary: the Beads synth path is the v1 release path, with the reachable

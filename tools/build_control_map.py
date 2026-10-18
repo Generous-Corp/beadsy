@@ -13,7 +13,7 @@ controls=[]
 for g in draft['dxf_knob_geometry']:
     handle=g['handle']; parameter=handle_to_name.get(handle)
     if parameter:
-        cid=parameter; binding='bound'; role=named[parameter]['role']; automation=f'grainfield.{parameter}'
+        cid=parameter; binding='bound'; role=named[parameter]['role']; automation=f'beasy.{parameter}'
     elif g['class']=='small':
         cid=f"small-{sum(1 for x in controls if x['id'].startswith('small-'))+1:02d}"; binding='provisional'; role='auxiliary_parameter_candidate'; automation=None
     else:
@@ -31,8 +31,8 @@ for g in draft['dxf_knob_geometry']:
     })
 control_map={
  '$schema':'https://json-schema.org/draft/2020-12/schema',
- 'schema':'grainfield.control-map.v1', 'status':'geometry-validated-parameter-bindings-partial',
- 'product':{'name':'Grainfield','affiliation':'independent','artwork_use':'provisional-calibration-only'},
+ 'schema':'beasy.control-map.v1', 'status':'geometry-validated-parameter-bindings-partial',
+ 'product':{'name':'Beasy','affiliation':'independent','artwork_use':'provisional-calibration-only'},
  'source':{
    'dxf':draft['source']['dxf'],'dxf_sha256':draft['source']['dxf_sha256'],'units':'millimetres','panel_mm':draft['source']['panel_mm'],
    'coordinate_system':draft['source']['coordinate_system'],'ai_page_pt':{'width':view_w,'height':view_h},

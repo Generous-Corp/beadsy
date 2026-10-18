@@ -1,7 +1,7 @@
-# Grainfield actionable implementation plan
+# Beasy actionable implementation plan
 
-**Planning snapshot:** integrated Grainfield head `73163d1` (`73163d15d43a42cf6b0b8059f38de3713f68132f`; branch `feature/grainfield-v1-scope-integrated-20261018`).
-**Product scope:** independently branded, MIT-licensed Grainfield; v1 is the 48 kHz, global/mono MIDI synth path. Live input/effect, freeze-buffer serialization, polyphony, MPE, AudioSuite, and AAX remain deferred or blocked unless their own evidence closes them.
+**Planning snapshot:** integrated Beasy head `73163d1` (`73163d15d43a42cf6b0b8059f38de3713f68132f`; branch `feature/beasy-v1-scope-integrated-20261018`).
+**Product scope:** independently branded, MIT-licensed Beasy; v1 is the 48 kHz, global/mono MIDI synth path. Live input/effect, freeze-buffer serialization, polyphony, MPE, AudioSuite, and AAX remain deferred or blocked unless their own evidence closes them.
 
 This plan is intentionally evidence-led. A receipt from an older source head is historical until regenerated at the exact integrated head. No artwork, adapted DSP, `stmlib`, or `waves.bin` is distributable until its rights and notice decision is closed.
 
@@ -12,7 +12,7 @@ This plan is intentionally evidence-led. A receipt from an older source head is 
 - **Knobs:** procedural v2 calibration is implemented (segmented black annulus, off-white cap, broad pointer), but the full-panel/photo pixel comparison remains open and rights-gated.
 - **Interaction:** native editor-to-StateStore automation gesture and contextual LFO seam are proven. External DAW automation, complete LFO shape/rate/depth interaction, and host state restoration remain open.
 - **Formats:** CLAP has a host probe; AU metadata/temporary registration exists but Pulp host discovery is blocked; VST3 evidence is historical/development-SDK based; LV2 host instantiation lacks `LV2_URID__map` and atom/MIDI support; standalone launch/quit passes but editor/audio/state evidence is incomplete; AAX has no SDK/validator/host evidence.
-- **Importer:** PR [#10533](https://github.com/Generous-Corp/pulp/pull/10533) remains open at head `633ef485c6fa74993f9a4935fed27a3108b23f48`. Live state at the audit: `MERGEABLE` but `BEHIND`; 39 checks succeeded, 13 were skipped, and macOS Build/Test plus macOS AddressSanitizer and UndefinedBehaviorSanitizer remain in progress. Current `origin/main` is `fb53091de4dedcbae4753e2371f90263558230b3`, so the sidecar lane is not yet integrated into current main or Grainfield. The importer PR already owns the routed DesignIR/source-contract changes; no overlapping core mutation is safe while it is behind and running checks.
+- **Importer:** PR [#10533](https://github.com/Generous-Corp/pulp/pull/10533) remains open at head `633ef485c6fa74993f9a4935fed27a3108b23f48`. Live state at the audit: `MERGEABLE` but `BEHIND`; 39 checks succeeded, 13 were skipped, and macOS Build/Test plus macOS AddressSanitizer and UndefinedBehaviorSanitizer remain in progress. Current `origin/main` is `fb53091de4dedcbae4753e2371f90263558230b3`, so the sidecar lane is not yet integrated into current main or Beasy. The importer PR already owns the routed DesignIR/source-contract changes; no overlapping core mutation is safe while it is behind and running checks.
 
 ## Phases, dependencies, and acceptance
 
@@ -30,9 +30,9 @@ This plan is intentionally evidence-led. A receipt from an older source head is 
 
 ## Parallel ownership and integration rules
 
-P1 asset/rights, P3 DSP, and P5 importer can proceed concurrently after P0. P2 depends on P1; P4 depends on P2 and P3; P6 depends on P3/P4; P7 depends on all prior phases and rights closure; P8 is last. Shared Pulp importer/core edits are serial integration work and require the Vellum/source-authority route report before mutation. Every workstream claims its paths, uses a named Grainfield/Beads workspace, and reports exact worktree, commit, tests, receipts, blocker, and one next action.
+P1 asset/rights, P3 DSP, and P5 importer can proceed concurrently after P0. P2 depends on P1; P4 depends on P2 and P3; P6 depends on P3/P4; P7 depends on all prior phases and rights closure; P8 is last. Shared Pulp importer/core edits are serial integration work and require the Vellum/source-authority route report before mutation. Every workstream claims its paths, uses a named Beasy/Beads workspace, and reports exact worktree, commit, tests, receipts, blocker, and one next action.
 
 ## Release decision rule
 
-Grainfield remains **blocked for release** until source/DSP, control semantics, full-panel fidelity, rights, realtime safety, claimed host formats, automation/modulation/state, and packaging receipts are current at the same exact head. A partial or historical receipt can guide work but cannot close a current gate.
+Beasy remains **blocked for release** until source/DSP, control semantics, full-panel fidelity, rights, realtime safety, claimed host formats, automation/modulation/state, and packaging receipts are current at the same exact head. A partial or historical receipt can guide work but cannot close a current gate.
 

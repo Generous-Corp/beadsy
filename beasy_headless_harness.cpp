@@ -1,4 +1,4 @@
-#include "grainfield.hpp"
+#include "beasy.hpp"
 
 #include <cmath>
 #include <iostream>
@@ -10,11 +10,11 @@
 
 int main() {
     constexpr int kFrames = 512;
-    pulp::format::HeadlessHost host(grainfield::create_grainfield);
+    pulp::format::HeadlessHost host(beasy::create_beasy);
     host.prepare(48000.0, kFrames, 0, 2);
 
-    host.state().set_value(grainfield::kGain, -6.0f);
-    host.state().set_value(grainfield::kFreeze, 1.0f);
+    host.state().set_value(beasy::kGain, -6.0f);
+    host.state().set_value(beasy::kFreeze, 1.0f);
     const auto state = host.save_state();
 
     pulp::audio::Buffer<float> output(2, kFrames);
@@ -40,11 +40,11 @@ int main() {
         }
     }
 
-    host.state().set_value(grainfield::kGain, 0.0f);
-    host.state().set_value(grainfield::kFreeze, 0.0f);
+    host.state().set_value(beasy::kGain, 0.0f);
+    host.state().set_value(beasy::kFreeze, 0.0f);
     const bool restored = host.load_state(state) &&
-                          host.state().get_value(grainfield::kGain) == -6.0f &&
-                          host.state().get_value(grainfield::kFreeze) == 1.0f;
+                          host.state().get_value(beasy::kGain) == -6.0f &&
+                          host.state().get_value(beasy::kFreeze) == 1.0f;
     const double rms = std::sqrt(sum_squares / (2.0 * kFrames));
 
     std::cout << "{\"sample_rate\":48000,\"frames\":" << kFrames

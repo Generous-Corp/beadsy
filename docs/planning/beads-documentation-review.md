@@ -21,7 +21,7 @@ delay and beat-slicing behavior when SIZE is set to an endless grain. FEEDBACK,
 DRY/WET, and REVERB form the stereo mix path. With no audio input, the module
 falls back after a delay to eight internal Plaits-derived wavetable banks.
 
-The current Grainfield product implements the documented internal wavetable
+The current Beasy product implements the documented internal wavetable
 synth branch only. Its explicit boundaries are global MIDI triggering, five
 bound panel parameters, a fixed 48 kHz engine, and no live audio-input path.
 The missing input/freeze/quality/attenurandomizer/delay-mode behavior remains a
@@ -50,7 +50,7 @@ the review date. The primary reference is:
 | `images/wavetable_quality_table.png` | 554 x 108 | `6f95e755fb140f39bf5ed45b475f57ed13c3964d7c574cd9ca28b808f492e705` |
 
 The full inventory remains in the source checkout; no documentation image is
-embedded in the Grainfield build. Artwork and trademarks remain rights-gated.
+embedded in the Beasy build. Artwork and trademarks remain rights-gated.
 
 ## Fidelity impact
 

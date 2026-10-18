@@ -1,7 +1,7 @@
 # Quality mode slice
 
 This slice exposes the four quality paths already present in the copied Beads
-synth source through Grainfield's `Quality` parameter:
+synth source through Beasy's `Quality` parameter:
 
 | Value | Upstream `beads::Synth::Resolution` |
 | ---: | --- |

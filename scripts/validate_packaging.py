@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate local Grainfield AU/VST3 packaging without changing the project.
+"""Validate local Beasy AU/VST3 packaging without changing the project.
 
 AU registration is opt-in and reversible: --register-au copies the AU bundle
 to a uniquely named user Components directory, restarts Apple's registrar,
@@ -31,19 +31,19 @@ def run(command: list[str], timeout: int = 45) -> tuple[int, str]:
 
 
 def au_receipt(build: Path, register: bool) -> dict:
-    bundle = build / "AU" / "Grainfield.component"
-    binary = bundle / "Contents" / "MacOS" / "Grainfield"
+    bundle = build / "AU" / "Beasy.component"
+    binary = bundle / "Contents" / "MacOS" / "Beasy"
     entry = {"format": "AUv2", "bundle": str(bundle), "status": "blocked"}
     if not binary.is_file():
-        entry["reason"] = "AU artifact is absent; run pulp build --target Grainfield_AU"
+        entry["reason"] = "AU artifact is absent; run pulp build --target Beasy_AU"
         return entry
     plist_path = bundle / "Contents" / "Info.plist"
     try:
         info = plistlib.loads(plist_path.read_bytes())
         component = info["AudioComponents"][0]
-        expected = {"type": "aumu", "subtype": "Grai", "manufacturer": "Inde"}
+        expected = {"type": "aumu", "subtype": "Bead", "manufacturer": "Inde"}
         if any(component.get(k) != v for k, v in expected.items()):
-            entry["reason"] = "Info.plist AudioComponents does not match Grainfield AU identity"
+            entry["reason"] = "Info.plist AudioComponents does not match Beasy AU identity"
             entry["component"] = component
             return entry
     except (OSError, KeyError, IndexError, plistlib.InvalidFileException) as exc:
@@ -58,7 +58,7 @@ def au_receipt(build: Path, register: bool) -> dict:
     destination_root = Path.home() / "Library" / "Audio" / "Plug-Ins" / "Components"
     # AudioComponentRegistrar discovers the conventional bundle name.  Refuse
     # to replace an existing install so this path remains reversible.
-    destination = destination_root / "Grainfield.component"
+    destination = destination_root / "Beasy.component"
     destination_root.mkdir(parents=True, exist_ok=True)
     if destination.exists():
         entry["reason"] = f"refusing to replace existing user install: {destination}"
@@ -67,14 +67,14 @@ def au_receipt(build: Path, register: bool) -> dict:
         shutil.copytree(bundle, destination)
         run(["killall", "AudioComponentRegistrar"], timeout=10)
         time.sleep(2)
-        code, output = run(["auval", "-v", "aumu", "Grai", "Inde"])
+        code, output = run(["auval", "-v", "aumu", "Bead", "Inde"])
         # AudioComponentRegistrar can race its first daemon restart.  A
         # single bounded retry keeps this validation deterministic without
         # polling or leaving a registrar process running.
         if "didn't find the component" in output:
             run(["killall", "AudioComponentRegistrar"], timeout=10)
             time.sleep(2)
-            code, retry_output = run(["auval", "-v", "aumu", "Grai", "Inde"])
+            code, retry_output = run(["auval", "-v", "aumu", "Bead", "Inde"])
             output += "\n--- retry ---\n" + retry_output
         entry["auval_output"] = output
         entry["auval_exit_code"] = code
@@ -90,8 +90,8 @@ def au_receipt(build: Path, register: bool) -> dict:
 
 
 def vst3_receipt(build: Path, validator: str | None) -> dict:
-    bundle = build / "VST3" / "Grainfield.vst3"
-    binary = bundle / "Contents" / "MacOS" / "Grainfield"
+    bundle = build / "VST3" / "Beasy.vst3"
+    binary = bundle / "Contents" / "MacOS" / "Beasy"
     entry = {"format": "VST3", "bundle": str(bundle), "status": "blocked"}
     if not binary.is_file():
         entry["reason"] = "VST3 artifact absent; the installed SDK did not provide a VST3 target"
@@ -116,7 +116,7 @@ def main() -> int:
     args = parser.parse_args()
     build = args.build_dir.resolve()
     receipt = {
-        "schema": "grainfield.packaging-validation.v1",
+        "schema": "beasy.packaging-validation.v1",
         "build_dir": str(build),
         "checks": [au_receipt(build, args.register_au),
                    vst3_receipt(build, args.vst3validator)],

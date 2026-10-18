@@ -6,16 +6,16 @@
 #include <pulp/format/headless.hpp>
 #include <pulp/audio/buffer.hpp>
 #include <pulp/midi/buffer.hpp>
-#include "grainfield.hpp"
+#include "beasy.hpp"
 #include "stmlib/utils/random.h"
-#if defined(GRAINFIELD_HAS_RT_ALLOCATION_PROBE)
+#if defined(BEASY_HAS_RT_ALLOCATION_PROBE)
 #include "rt_allocation_probe.hpp"
 #endif
 
-TEST_CASE("Grainfield descriptor is an instrument") {
-    auto proc = grainfield::create_grainfield();
+TEST_CASE("Beasy descriptor is an instrument") {
+    auto proc = beasy::create_beasy();
     const auto desc = proc->descriptor();
-    REQUIRE(desc.name == "Grainfield");
+    REQUIRE(desc.name == "Beasy");
     REQUIRE(desc.manufacturer == "Independent Audio");
     REQUIRE(desc.category == pulp::format::PluginCategory::Instrument);
     REQUIRE(desc.accepts_midi);
@@ -25,10 +25,10 @@ TEST_CASE("Grainfield descriptor is an instrument") {
     REQUIRE(desc.output_buses.size() == 1);
 }
 
-#if defined(GRAINFIELD_HAS_RT_ALLOCATION_PROBE)
-TEST_CASE("Grainfield prepared processing allocates no realtime memory",
+#if defined(BEASY_HAS_RT_ALLOCATION_PROBE)
+TEST_CASE("Beasy prepared processing allocates no realtime memory",
           "[realtime][allocation]") {
-    auto proc = grainfield::create_grainfield();
+    auto proc = beasy::create_beasy();
     pulp::state::StateStore store;
     proc->set_state_store(&store);
     proc->define_parameters(store);
@@ -57,11 +57,11 @@ TEST_CASE("Grainfield prepared processing allocates no realtime memory",
     REQUIRE_FALSE(probe.saw_allocation());
 }
 
-TEST_CASE("Grainfield prepared processing stays allocation-free across block sizes",
+TEST_CASE("Beasy prepared processing stays allocation-free across block sizes",
           "[realtime][allocation][matrix]") {
     for (const std::size_t block_size : {std::size_t{64}, std::size_t{256},
                                          std::size_t{1024}}) {
-        auto proc = grainfield::create_grainfield();
+        auto proc = beasy::create_beasy();
         pulp::state::StateStore store;
         proc->set_state_store(&store);
         proc->define_parameters(store);
@@ -107,9 +107,9 @@ TEST_CASE("Grainfield prepared processing stays allocation-free across block siz
 }
 #endif
 
-TEST_CASE("Grainfield exposes Beads semitone pitch range and maps MIDI note offsets") {
+TEST_CASE("Beasy exposes Beads semitone pitch range and maps MIDI note offsets") {
     auto render_note = [](std::uint8_t note) {
-        auto proc = grainfield::create_grainfield();
+        auto proc = beasy::create_beasy();
         pulp::state::StateStore store;
         proc->set_state_store(&store);
         proc->define_parameters(store);
@@ -134,19 +134,19 @@ TEST_CASE("Grainfield exposes Beads semitone pitch range and maps MIDI note offs
         return energy;
     };
 
-    auto proc = grainfield::create_grainfield();
+    auto proc = beasy::create_beasy();
     pulp::state::StateStore store;
     proc->set_state_store(&store);
     proc->define_parameters(store);
-    REQUIRE(store.info(grainfield::kPitch)->range.min == -24.0f);
-    REQUIRE(store.info(grainfield::kPitch)->range.max == 24.0f);
+    REQUIRE(store.info(beasy::kPitch)->range.min == -24.0f);
+    REQUIRE(store.info(beasy::kPitch)->range.max == 24.0f);
     REQUIRE(render_note(60) != render_note(72));
 }
 
-TEST_CASE("Grainfield maps MIDI velocity to deterministic output gain") {
+TEST_CASE("Beasy maps MIDI velocity to deterministic output gain") {
     auto render_energy = [](std::uint8_t velocity) {
         stmlib::Random::Seed(0x13579bdu);
-        auto proc = grainfield::create_grainfield();
+        auto proc = beasy::create_beasy();
         pulp::state::StateStore store;
         proc->set_state_store(&store);
         proc->define_parameters(store);
@@ -175,10 +175,10 @@ TEST_CASE("Grainfield maps MIDI velocity to deterministic output gain") {
     REQUIRE(half < full);
 }
 
-TEST_CASE("Grainfield maps pitch bend to the Beads pitch offset") {
+TEST_CASE("Beasy maps pitch bend to the Beads pitch offset") {
     auto render_energy = [](std::uint16_t bend) {
         stmlib::Random::Seed(0x2468aceu);
-        auto proc = grainfield::create_grainfield();
+        auto proc = beasy::create_beasy();
         pulp::state::StateStore store;
         proc->set_state_store(&store);
         proc->define_parameters(store);
@@ -208,10 +208,10 @@ TEST_CASE("Grainfield maps pitch bend to the Beads pitch offset") {
     REQUIRE(center != up);
 }
 
-TEST_CASE("Grainfield sustain and overlap handling is deterministic") {
+TEST_CASE("Beasy sustain and overlap handling is deterministic") {
     auto render_sequence = [](uint8_t midi_channel) {
         stmlib::Random::Seed(0x1020304u);
-        auto proc = grainfield::create_grainfield();
+        auto proc = beasy::create_beasy();
         pulp::state::StateStore store;
         proc->set_state_store(&store);
         proc->define_parameters(store);
@@ -250,8 +250,8 @@ TEST_CASE("Grainfield sustain and overlap handling is deterministic") {
     }));
 }
 
-TEST_CASE("Grainfield MIDI gate transitions occur at event sample offsets") {
-    grainfield::Grainfield processor;
+TEST_CASE("Beasy MIDI gate transitions occur at event sample offsets") {
+    beasy::Beasy processor;
     pulp::state::StateStore store;
     processor.set_state_store(&store);
     processor.define_parameters(store);
@@ -291,8 +291,8 @@ TEST_CASE("Grainfield MIDI gate transitions occur at event sample offsets") {
     REQUIRE((flags[7] & stmlib::GATE_FLAG_HIGH) == 0);
 }
 
-TEST_CASE("Grainfield produces audio from one global MIDI trigger") {
-    auto proc = grainfield::create_grainfield();
+TEST_CASE("Beasy produces audio from one global MIDI trigger") {
+    auto proc = beasy::create_beasy();
     pulp::state::StateStore store;
     proc->set_state_store(&store);
     proc->define_parameters(store);
@@ -321,13 +321,13 @@ TEST_CASE("Grainfield produces audio from one global MIDI trigger") {
     REQUIRE(audible);
 }
 
-TEST_CASE("Grainfield live-input mode processes stereo input") {
-    auto proc = grainfield::create_grainfield();
+TEST_CASE("Beasy live-input mode processes stereo input") {
+    auto proc = beasy::create_beasy();
     pulp::state::StateStore store;
     proc->set_state_store(&store);
     proc->define_parameters(store);
-    store.set_value(grainfield::kMode, 1.0f);
-    store.set_value(grainfield::kDryWet, 0.5f);
+    store.set_value(beasy::kMode, 1.0f);
+    store.set_value(beasy::kDryWet, 0.5f);
     pulp::format::PrepareContext prep{.sample_rate = 48000.0,
                                       .max_buffer_size = 256,
                                       .input_channels = 2,
@@ -360,72 +360,72 @@ TEST_CASE("Grainfield live-input mode processes stereo input") {
     REQUIRE(audible);
 }
 
-TEST_CASE("Grainfield state round trips") {
-    pulp::format::HeadlessHost host(grainfield::create_grainfield);
+TEST_CASE("Beasy state round trips") {
+    pulp::format::HeadlessHost host(beasy::create_beasy);
     host.prepare(48000, 512, 0, 2);
-    host.state().set_value(grainfield::kGain, -12.0f);
-    host.state().set_value(grainfield::kFreeze, 1.0f);
+    host.state().set_value(beasy::kGain, -12.0f);
+    host.state().set_value(beasy::kFreeze, 1.0f);
     const auto data = host.save_state();
-    host.state().set_value(grainfield::kGain, 0.0f);
-    host.state().set_value(grainfield::kFreeze, 0.0f);
+    host.state().set_value(beasy::kGain, 0.0f);
+    host.state().set_value(beasy::kFreeze, 0.0f);
     REQUIRE(host.load_state(data));
-    REQUIRE(host.state().get_value(grainfield::kGain) == -12.0f);
-    REQUIRE(host.state().get_value(grainfield::kFreeze) == 1.0f);
+    REQUIRE(host.state().get_value(beasy::kGain) == -12.0f);
+    REQUIRE(host.state().get_value(beasy::kFreeze) == 1.0f);
 }
 
-TEST_CASE("Grainfield freeze persistence is parameter-only") {
+TEST_CASE("Beasy freeze persistence is parameter-only") {
     // Pulp persists automatable parameters through StateStore.  The Beads
     // Synth wrapper exposes Init/Reset/Render only; its delay lines, grains,
     // envelopes, and reverb buffers remain private runtime state.  This
     // diagnostic pins the resulting boundary: the Freeze toggle is in the
     // host state, while the processor-owned payload is unchanged by it.
-    grainfield::Grainfield processor;
+    beasy::Beasy processor;
     pulp::state::StateStore store;
     processor.set_state_store(&store);
     processor.define_parameters(store);
 
-    store.set_value(grainfield::kFreeze, 0.0f);
+    store.set_value(beasy::kFreeze, 0.0f);
     const auto live_payload = processor.serialize_plugin_state();
     const auto live_state = store.serialize();
-    store.set_value(grainfield::kFreeze, 1.0f);
+    store.set_value(beasy::kFreeze, 1.0f);
     const auto frozen_payload = processor.serialize_plugin_state();
     const auto frozen_state = store.serialize();
 
-    REQUIRE(store.get_value(grainfield::kFreeze) == 1.0f);
+    REQUIRE(store.get_value(beasy::kFreeze) == 1.0f);
     REQUIRE(live_state != frozen_state);
     REQUIRE(live_payload == frozen_payload);
 }
 
-TEST_CASE("Grainfield LFO modulation leaves base automation intact and persists") {
-    grainfield::Grainfield first;
+TEST_CASE("Beasy LFO modulation leaves base automation intact and persists") {
+    beasy::Beasy first;
     pulp::state::StateStore first_store;
     first.set_state_store(&first_store);
     first.define_parameters(first_store);
-    first_store.set_value(grainfield::kDensity, 0.25f);
-    first.set_lfo(grainfield::kDensity,
+    first_store.set_value(beasy::kDensity, 0.25f);
+    first.set_lfo(beasy::kDensity,
                              {.enabled = true, .rate_hz = 2.0f, .depth = 0.1f, .phase = 0.0f});
     const auto data = first.serialize_plugin_state();
-    REQUIRE(first_store.get_value(grainfield::kDensity) == 0.25f);
-    grainfield::Grainfield restored_processor;
+    REQUIRE(first_store.get_value(beasy::kDensity) == 0.25f);
+    beasy::Beasy restored_processor;
     pulp::state::StateStore restored_store;
     restored_processor.set_state_store(&restored_store);
     restored_processor.define_parameters(restored_store);
     REQUIRE(restored_processor.deserialize_plugin_state(data));
     REQUIRE(restored_store.deserialize(first_store.serialize()));
-    REQUIRE(restored_store.get_value(grainfield::kDensity) == 0.25f);
-    const auto restored = restored_processor.lfo(grainfield::kDensity);
+    REQUIRE(restored_store.get_value(beasy::kDensity) == 0.25f);
+    const auto restored = restored_processor.lfo(beasy::kDensity);
     REQUIRE(restored.enabled);
     REQUIRE(restored.depth == 0.1f);
 }
 
-TEST_CASE("Grainfield exposes every declared parameter as a bounded LFO target") {
-    grainfield::Grainfield processor;
+TEST_CASE("Beasy exposes every declared parameter as a bounded LFO target") {
+    beasy::Beasy processor;
     pulp::state::StateStore store;
     processor.set_state_store(&store);
     processor.define_parameters(store);
 
-    for (pulp::state::ParamID id = grainfield::kFirstModulatableParam;
-         id <= grainfield::kLastModulatableParam; ++id) {
+    for (pulp::state::ParamID id = beasy::kFirstModulatableParam;
+         id <= beasy::kLastModulatableParam; ++id) {
         processor.set_lfo(id, {.enabled = true, .rate_hz = 2.0f,
                                 .depth = 0.25f, .phase = 0.125f});
         const auto modulation = processor.lfo(id);
@@ -438,32 +438,32 @@ TEST_CASE("Grainfield exposes every declared parameter as a bounded LFO target")
     // Slot zero and IDs beyond the declared range must not alias a real
     // parameter or grow the product-local modulation surface accidentally.
     processor.set_lfo(0, {.enabled = true, .depth = 1.0f});
-    processor.set_lfo(grainfield::kLastModulatableParam + 1,
+    processor.set_lfo(beasy::kLastModulatableParam + 1,
                       {.enabled = true, .depth = 1.0f});
     REQUIRE_FALSE(processor.lfo(0).enabled);
-    REQUIRE_FALSE(processor.lfo(grainfield::kLastModulatableParam + 1).enabled);
+    REQUIRE_FALSE(processor.lfo(beasy::kLastModulatableParam + 1).enabled);
 
     const auto payload = processor.serialize_plugin_state();
-    grainfield::Grainfield restored;
+    beasy::Beasy restored;
     pulp::state::StateStore restored_store;
     restored.set_state_store(&restored_store);
     restored.define_parameters(restored_store);
     REQUIRE(restored.deserialize_plugin_state(payload));
-    for (pulp::state::ParamID id = grainfield::kFirstModulatableParam;
-         id <= grainfield::kLastModulatableParam; ++id)
+    for (pulp::state::ParamID id = beasy::kFirstModulatableParam;
+         id <= beasy::kLastModulatableParam; ++id)
         REQUIRE(restored.lfo(id).enabled);
 }
 
-TEST_CASE("Grainfield maps source-backed CV amounts into Beads attenurandomizers") {
-    grainfield::Grainfield processor;
+TEST_CASE("Beasy maps source-backed CV amounts into Beads attenurandomizers") {
+    beasy::Beasy processor;
     pulp::state::StateStore store;
     processor.set_state_store(&store);
     processor.define_parameters(store);
 
-    store.set_value(grainfield::kTimeAmount, 0.125f);
-    store.set_value(grainfield::kSizeAmount, 0.25f);
-    store.set_value(grainfield::kShapeAmount, 0.5f);
-    store.set_value(grainfield::kPitchAmount, 0.875f);
+    store.set_value(beasy::kTimeAmount, 0.125f);
+    store.set_value(beasy::kSizeAmount, 0.25f);
+    store.set_value(beasy::kShapeAmount, 0.5f);
+    store.set_value(beasy::kPitchAmount, 0.875f);
     const auto values = processor.debug_randomized_parameters();
     REQUIRE(values[0].attenuverter == 0.125f);
     REQUIRE(values[1].attenuverter == 0.25f);
@@ -475,12 +475,12 @@ TEST_CASE("Grainfield maps source-backed CV amounts into Beads attenurandomizers
     REQUIRE_FALSE(values[3].has_cv);
 }
 
-TEST_CASE("Grainfield accepts legacy ten-slot modulation state") {
-    grainfield::Grainfield source;
+TEST_CASE("Beasy accepts legacy ten-slot modulation state") {
+    beasy::Beasy source;
     pulp::state::StateStore source_store;
     source.set_state_store(&source_store);
     source.define_parameters(source_store);
-    source.set_lfo(grainfield::kDensity,
+    source.set_lfo(beasy::kDensity,
                    {.enabled = true, .rate_hz = 3.0f, .depth = 0.2f, .phase = 0.4f});
     constexpr std::size_t stride = 1 + sizeof(float) * 3;
     const auto current = source.serialize_plugin_state();
@@ -489,18 +489,18 @@ TEST_CASE("Grainfield accepts legacy ten-slot modulation state") {
     // The old format included slot zero before IDs 1..9; reconstruct that
     // layout explicitly instead of truncating the current ID-ordered form.
     std::copy_n(current.begin() + 6 +
-                    (static_cast<std::size_t>(grainfield::kDensity) - 1) * stride,
+                    (static_cast<std::size_t>(beasy::kDensity) - 1) * stride,
                 stride, legacy.begin() + 6 +
-                    static_cast<std::size_t>(grainfield::kDensity) * stride);
+                    static_cast<std::size_t>(beasy::kDensity) * stride);
 
-    grainfield::Grainfield restored;
+    beasy::Beasy restored;
     pulp::state::StateStore restored_store;
     restored.set_state_store(&restored_store);
     restored.define_parameters(restored_store);
     REQUIRE(restored.deserialize_plugin_state(legacy));
-    REQUIRE(restored.lfo(grainfield::kDensity).enabled);
-    REQUIRE(restored.lfo(grainfield::kDensity).depth == 0.2f);
-    REQUIRE_FALSE(restored.lfo(grainfield::kMode).enabled);
+    REQUIRE(restored.lfo(beasy::kDensity).enabled);
+    REQUIRE(restored.lfo(beasy::kDensity).depth == 0.2f);
+    REQUIRE_FALSE(restored.lfo(beasy::kMode).enabled);
 }
 
 
@@ -513,12 +513,12 @@ struct RenderedBlocks {
 
 RenderedBlocks render_seeded_note(int quality = 3, bool freeze = false) {
     stmlib::Random::Seed(0x12345678u);
-    auto proc = grainfield::create_grainfield();
+    auto proc = beasy::create_beasy();
     pulp::state::StateStore store;
     proc->set_state_store(&store);
     proc->define_parameters(store);
-    store.set_value(grainfield::kQuality, static_cast<float>(quality));
-    store.set_value(grainfield::kFreeze, freeze ? 1.0f : 0.0f);
+    store.set_value(beasy::kQuality, static_cast<float>(quality));
+    store.set_value(beasy::kFreeze, freeze ? 1.0f : 0.0f);
 
     pulp::format::PrepareContext prep;
     prep.sample_rate = 48000.0;
@@ -550,7 +550,7 @@ RenderedBlocks render_seeded_note(int quality = 3, bool freeze = false) {
 
 } // namespace
 
-TEST_CASE("Grainfield seeded renders are deterministic") {
+TEST_CASE("Beasy seeded renders are deterministic") {
     const auto first = render_seeded_note();
     const auto second = render_seeded_note();
     REQUIRE(first.left == second.left);
@@ -560,7 +560,7 @@ TEST_CASE("Grainfield seeded renders are deterministic") {
     }));
 }
 
-TEST_CASE("Grainfield quality selects the four Beads synth resolutions") {
+TEST_CASE("Beasy quality selects the four Beads synth resolutions") {
     std::array<RenderedBlocks, 4> renders;
     for (int quality = 0; quality < 4; ++quality) {
         renders[quality] = render_seeded_note(quality);
@@ -573,7 +573,7 @@ TEST_CASE("Grainfield quality selects the four Beads synth resolutions") {
     REQUIRE(renders[0].left != renders[3].left);
 }
 
-TEST_CASE("Grainfield freeze toggle reaches the internal Beads synth path") {
+TEST_CASE("Beasy freeze toggle reaches the internal Beads synth path") {
     const auto live = render_seeded_note(3, false);
     const auto frozen = render_seeded_note(3, true);
     REQUIRE(std::all_of(frozen.left.begin(), frozen.left.end(),
@@ -581,13 +581,13 @@ TEST_CASE("Grainfield freeze toggle reaches the internal Beads synth path") {
     REQUIRE(frozen.left != live.left);
 }
 
-TEST_CASE("Grainfield sample-rate and mode matrix is finite and fail-closed") {
+TEST_CASE("Beasy sample-rate and mode matrix is finite and fail-closed") {
     auto render_at = [](double sample_rate, bool live_input) {
-        auto proc = grainfield::create_grainfield();
+        auto proc = beasy::create_beasy();
         pulp::state::StateStore store;
         proc->set_state_store(&store);
         proc->define_parameters(store);
-        store.set_value(grainfield::kMode, live_input ? 1.0f : 0.0f);
+        store.set_value(beasy::kMode, live_input ? 1.0f : 0.0f);
 
         pulp::format::PrepareContext prep;
         prep.sample_rate = sample_rate;

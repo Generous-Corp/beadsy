@@ -1,4 +1,4 @@
-#include "grainfield.hpp"
+#include "beasy.hpp"
 #include <pulp/format/clap_entry.hpp>
 
-PULP_CLAP_PLUGIN(grainfield::create_grainfield)
+PULP_CLAP_PLUGIN(beasy::create_beasy)
