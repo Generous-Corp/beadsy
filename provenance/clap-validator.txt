@@ -51,7 +51,7 @@ Plugin library tests:
 
    - scan-time: Checks whether the plugin can be scanned in under 100
        milliseconds.
-     PASSED: The plugin can be scanned in 5 milliseconds.
+     PASSED: The plugin can be scanned in 6 milliseconds.
 
 Plugin tests:
 

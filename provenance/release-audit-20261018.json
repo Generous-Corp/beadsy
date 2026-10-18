@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "e6a2c87e81b3fb3c6bcb3bce7b7ac8750de8756d",
+  "source_head": "42369e90606f7451565ba6336da468804dcea6aa",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -239,10 +239,10 @@
     }
   ],
   "audit_receipt_head": "c071afa84f41632577a53a8c2ac94662eea287d9",
-  "audited_base_head": "e6a2c87e81b3fb3c6bcb3bce7b7ac8750de8756d",
+  "audited_base_head": "42369e90606f7451565ba6336da468804dcea6aa",
   "current_checkout": {
-    "head": "e6a2c87e81b3fb3c6bcb3bce7b7ac8750de8756d",
+    "head": "42369e90606f7451565ba6336da468804dcea6aa",
     "role": "current rebuilt checkout before this envelope refresh",
-    "note": "Artifact receipts below were regenerated from this exact checkout; the envelope commit itself is intentionally non-circular."
+    "note": "Artifact receipts were regenerated from this exact checkout; envelope commit is intentionally non-circular."
   }
 }
