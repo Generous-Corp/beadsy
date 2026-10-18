@@ -200,6 +200,10 @@
     {
       "path": "provenance/au-registration-diagnostic.json",
       "role": "current reversible AU registration/auval receipt"
+    },
+    {
+      "path": "provenance/importer-validation.json",
+      "role": "separate current-main importer validation and integration boundary"
     }
   ],
   "audit_receipt_head": "c071afa84f41632577a53a8c2ac94662eea287d9"
