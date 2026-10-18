@@ -156,10 +156,33 @@ public:
     }
     void paint(pulp::canvas::Canvas& canvas) override {
         const auto b = local_bounds();
-        const float r = std::min(b.width, b.height) * 0.34f;
-        canvas.set_stroke_color(pulp::canvas::Color::rgba8(181, 171, 151));
-        canvas.set_line_width(std::max(1.0f, r * 0.12f));
-        canvas.stroke_circle(b.width * 0.5f, b.height * 0.5f, r);
+        const float cx = b.width * 0.5f;
+        const float cy = b.height * 0.5f;
+        const float r = std::min(b.width, b.height) * 0.38f;
+
+        // Procedural straight-on jack treatment. It follows the measured
+        // geometry of the reference panel while keeping all upstream photos
+        // and artwork outside the product bundle.
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(9, 9, 10));
+        canvas.fill_circle(cx + r * 0.06f, cy + r * 0.10f, r * 1.08f);
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(184, 157, 136));
+        canvas.fill_circle(cx, cy, r * 1.02f);
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(239, 222, 202));
+        canvas.fill_circle(cx - r * 0.04f, cy - r * 0.05f, r * 0.88f);
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(32, 31, 31));
+        canvas.fill_circle(cx, cy, r * 0.69f);
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(7, 7, 8));
+        canvas.fill_circle(cx + r * 0.02f, cy + r * 0.03f, r * 0.53f);
+
+        // A short highlight and lower shadow give the metal collar depth at
+        // small sizes without introducing a bitmap skin.
+        canvas.set_stroke_color(pulp::canvas::Color::rgba8(255, 245, 227));
+        canvas.set_line_width(std::max(1.0f, r * 0.08f));
+        canvas.set_line_cap(pulp::canvas::LineCap::round);
+        canvas.stroke_arc(cx, cy, r * 0.91f, -2.65f, -0.35f);
+        canvas.set_stroke_color(pulp::canvas::Color::rgba8(105, 81, 70));
+        canvas.set_line_width(std::max(1.0f, r * 0.07f));
+        canvas.stroke_arc(cx, cy, r * 0.94f, 0.45f, 2.55f);
     }
     const std::string& label() const { return label_; }
 private:
