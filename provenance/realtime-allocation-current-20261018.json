@@ -25,6 +25,7 @@
     "assertions_per_run": 6,
     "result": "all 10 runs passed; allocation_count and allocated_bytes were zero at every block size"
   },
+  "full_suite": "1971 assertions in 20 test cases passed in the same harness-enabled build",
   "historical_observation": {
     "allocation_count": 1,
     "allocated_bytes": 192,
