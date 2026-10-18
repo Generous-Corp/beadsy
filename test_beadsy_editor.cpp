@@ -30,7 +30,8 @@ TEST_CASE("Beadsy clean-room panel scaffold names the product and bound controls
     REQUIRE(panel.find("GRAIN") != std::string_view::npos);
     REQUIRE(panel.find("MIX / MOTION") != std::string_view::npos);
     REQUIRE(panel.find("PARAMETER CONTROLS") != std::string_view::npos);
-    REQUIRE(panel.find("Beads") == std::string_view::npos);
+    // Beadsy intentionally begins with the lineage name; reject a bare upstream label.
+    REQUIRE(panel.find("Beads ") == std::string_view::npos);
     REQUIRE(panel.find("INDEPENDENT PRODUCT SCAFFOLD") != std::string_view::npos);
 }
 
