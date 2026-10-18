@@ -1,10 +1,10 @@
 {
-  "schema": "beasy.importer-validation.v2",
+  "schema": "beadsy.importer-validation.v2",
   "status": "validated_separate_worktree",
-  "project": "Beasy",
+  "project": "Beadsy",
   "historical_code_name": "Grainfield",
-  "importer_worktree": "/Users/danielraffel/Code/agent-worktrees/beasy-importer-focused-20261018",
-  "importer_branch": "feat/beasy-importer-preconverted-svg-20261018",
+  "importer_worktree": "/Users/danielraffel/Code/agent-worktrees/beadsy-importer-focused-20261018",
+  "importer_branch": "feat/beadsy-importer-preconverted-svg-20261018",
   "importer_base": "ed95575e65817b2388696c47c8a6861a0e64ae00",
   "importer_head": "dc1ddb2b40",
   "integration_status": "validated_integration_worktree_not_landed",
@@ -46,8 +46,8 @@
     "pulp-test-design-import": "2e4e2baae24f5c92f2ed0e1a2bb5e07de31594a6f1891c929f30087a34e0aaa5"
   },
   "scope_note": "Validated in a fresh current-main integration worktree with governed Release builds. The six commits are not yet landed in Pulp main; no AI/PDF parser or rights-sensitive artwork is bundled.",
-  "integration_worktree": "/Users/danielraffel/Code/agent-worktrees/beasy-importer-origin-main-integration-20261018",
-  "integration_branch": "chore/beasy-importer-origin-main-integration-20261018",
+  "integration_worktree": "/Users/danielraffel/Code/agent-worktrees/beadsy-importer-origin-main-integration-20261018",
+  "integration_branch": "chore/beadsy-importer-origin-main-integration-20261018",
   "integration_base": "ed95575e65817b2388696c47c8a6861a0e64ae00",
   "integration_head": "c25b8cc865fb15942d07ea0e5a3b23c4fc7f020e",
   "integration_commits": [

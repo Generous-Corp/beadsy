@@ -1,0 +1,14 @@
+{
+  "schema": "beadsy.clap-arm64-validator.v1",
+  "captured_at": "2026-10-18T20:29:40.331280Z",
+  "source_head": "3e5cfa5d988458c790b44fa666de7c36098aac15",
+  "host_architecture": "arm64",
+  "command": "clap-validator validate build-beadsy-renamed/CLAP/Beadsy.clap",
+  "output_sha256": "d3eecebe58f9060411d145ada52c4f56c035d964eae1fd29615ce94fb89e5eaa",
+  "tests_run": 20,
+  "passed": 17,
+  "failed": 0,
+  "skipped": 3,
+  "warnings": 1,
+  "result": "PASS_WITH_SCAN_TIME_WARNING"
+}

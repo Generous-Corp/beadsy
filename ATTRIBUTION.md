@@ -1,6 +1,6 @@
 # Attribution and non-affiliation
 
-Beasy is an independent software instrument inspired by the Mutable Instruments Beads architecture and hardware workflow. We offer our sincere thanks to Emilie Gillet for the original work and for making the relevant source available under its stated licenses. Mutable Instruments and Emilie Gillet are not affiliated with or endorsing this project. Any redistributed upstream software or artwork will retain its original author, license, and attribution requirements.
+Beadsy is an independent software instrument inspired by the Mutable Instruments Beads architecture and hardware workflow. We offer our sincere thanks to Emilie Gillet for the original work and for making the relevant source available under its stated licenses. Mutable Instruments and Emilie Gillet are not affiliated with or endorsing this project. Any redistributed upstream software or artwork will retain its original author, license, and attribution requirements.
 
 Final attribution text and links remain a release prerequisite before any artwork or adapted DSP is distributed. The manifest uses `pending` states; this file does not imply legal clearance.
 

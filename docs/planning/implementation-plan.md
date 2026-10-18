@@ -6,7 +6,7 @@ Reference source head: Beads `f4cfa7697095a28d292bff758beb51deb49b5a86`
 Documentation reference: [`beads-documentation-review.md`](beads-documentation-review.md),
 based on the local Mutable Instruments manual/index and image set.
 
-This project is **Beasy**, an independent MIT-licensed Pulp instrument inspired by the Mutable Instruments Beads architecture and panel layout. It must not imply endorsement or affiliation. Beasy is an independent product name and must remain distinct from “Beads,” “Mutable,” and confusing abbreviations. The README and editor About view will state the relationship accurately and link to the upstream source and licenses. Final artwork and trademark clearance remain separate rights-review gates.
+This project is **Beadsy**, an independent MIT-licensed Pulp instrument inspired by the Mutable Instruments Beads architecture and panel layout. It must not imply endorsement or affiliation. Beadsy is an independent product name and must remain distinct from “Beads,” “Mutable,” and confusing abbreviations. The README and editor About view will state the relationship accurately and link to the upstream source and licenses. Final artwork and trademark clearance remain separate rights-review gates.
 
 ## Product boundary
 

@@ -25,7 +25,7 @@ class alone is not enough.
 
 ## Why it cannot be enabled in the current slice
 
-1. **It is not in the build.** Beasy's DSP target currently compiles
+1. **It is not in the build.** Beadsy's DSP target currently compiles
    `synth.cc`, `trigger_generator.cc`, resources, and two reachable stmlib
    units. It does not compile `processor.cc` or the effect dependency graph
    (`CMakeLists.txt:27-37`).
@@ -37,20 +37,20 @@ class alone is not enough.
 3. **Quality modes have different internal rates.** With
    `ENABLE_HARDWARE_24K`, the mode table is 24 kHz dirty tape, 48 kHz clean
    tape, 32 kHz vintage digital, and 48 kHz digital (`processor.h:78-85`).
-   Initialization confirms those rates (`processor.cc:46-49`). Beasy's
-   current host contract accepts only 48 kHz (`beasy.hpp:132-143`), so
+   Initialization confirms those rates (`processor.cc:46-49`). Beadsy's
+   current host contract accepts only 48 kHz (`beadsy.hpp:132-143`), so
    enabling all modes requires an explicit resampling and latency/quality
    policy. Silently running the internal mode at the host rate would be
    incorrect.
 4. **The host format is currently an instrument with no input bus.** The
    descriptor declares `input_buses = {}`, stereo output, and MIDI acceptance
-   (`beasy.hpp:45-55`). Adding live stereo input changes host metadata and
+   (`beadsy.hpp:45-55`). Adding live stereo input changes host metadata and
    product scope; it cannot be hidden behind a parameter while retaining an
    honest descriptor.
 5. **Effect state is a separate product seam.** The processor has delay-mode
    transition state, four media-specific processors, freeze input, dry/wet,
    reverb, limiter, and optional output-gate behavior (`processor.cc:102-119,
-   131-170,206-251`). The current Beasy state and synth adapter do not
+   131-170,206-251`). The current Beadsy state and synth adapter do not
    define reset, snapshot, or automation semantics for that branch.
 
 The existing reconnaissance reaches the same boundary: the effect branch is
@@ -63,7 +63,7 @@ and does not claim live-input processor quality modes
 
 ## Required design for a future slice
 
-1. Decide whether Beasy becomes a dual-purpose instrument/effect with a
+1. Decide whether Beadsy becomes a dual-purpose instrument/effect with a
    declared stereo input bus, or whether live input gets a separately
    identified effect product/bundle. Record the decision before changing the
    descriptor.

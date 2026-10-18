@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Deterministic, dependency-free validation for Beasy's UI provenance maps."""
+"""Deterministic, dependency-free validation for Beadsy's UI provenance maps."""
 from __future__ import annotations
 import argparse, json, math
 from pathlib import Path
 
-# These are the controls the current Beasy editor actually binds.  The five
+# These are the controls the current Beadsy editor actually binds.  The five
 # grain controls are joined by seven source-audited auxiliary pots whose
-# product parameter contracts now exist in beasy.hpp.  Keep the allow-list
+# product parameter contracts now exist in beadsy.hpp.  Keep the allow-list
 # here as a deliberate release gate: a placement alone must never promote a
 # geometry candidate to an automatable control.
 EXPECTED_BOUND = {
@@ -24,8 +24,8 @@ def validate(control_path: Path, skin_path: Path) -> list[str]:
     except Exception as e: return [f"control map unreadable: {e}"]
     try: skin = json.loads(skin_path.read_text())
     except Exception as e: return [f"skin manifest unreadable: {e}"]
-    if control.get("schema") != "beasy.control-map.v1": errors.append("control schema must be beasy.control-map.v1")
-    if skin.get("schema") != "beasy.knob-skin-manifest.v1": errors.append("skin schema must be beasy.knob-skin-manifest.v1")
+    if control.get("schema") != "beadsy.control-map.v1": errors.append("control schema must be beadsy.control-map.v1")
+    if skin.get("schema") != "beadsy.knob-skin-manifest.v1": errors.append("skin schema must be beadsy.knob-skin-manifest.v1")
     source = control.get("source", {}); panel = source.get("panel_mm", {})
     W,H = panel.get("width"), panel.get("height")
     if not (isinstance(W,(int,float)) and isinstance(H,(int,float)) and W > 0 and H > 0): errors.append("source.panel_mm must have positive width and height")

@@ -1,4 +1,4 @@
-#include "beasy.hpp"
+#include "beadsy.hpp"
 #include <pulp/format/aax_entry.hpp>
 
-PULP_AAX_PLUGIN(beasy::create_beasy)
+PULP_AAX_PLUGIN(beadsy::create_beadsy)

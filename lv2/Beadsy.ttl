@@ -1,0 +1,28 @@
+@prefix atom: <http://lv2plug.in/ns/ext/atom#> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix lv2: <http://lv2plug.in/ns/lv2core#> .
+@prefix midi: <http://lv2plug.in/ns/ext/midi#> .
+@prefix urid: <http://lv2plug.in/ns/ext/urid#> .
+
+<http://pulp.audio/plugins/beadsy>
+ a lv2:Plugin, lv2:InstrumentPlugin ; doap:name "Beadsy" ;
+ doap:developer [ doap:name "Independent Audio" ] ; lv2:requiredFeature urid:map ; lv2:port
+ [ a lv2:InputPort, lv2:AudioPort ; lv2:index 0 ; lv2:symbol "audio_in_0" ; lv2:name "Main In 1" ],
+ [ a lv2:InputPort, lv2:AudioPort ; lv2:index 1 ; lv2:symbol "audio_in_1" ; lv2:name "Main In 2" ],
+ [ a lv2:OutputPort, lv2:AudioPort ; lv2:index 2 ; lv2:symbol "audio_out_0" ; lv2:name "Main Out 1" ],
+ [ a lv2:OutputPort, lv2:AudioPort ; lv2:index 3 ; lv2:symbol "audio_out_1" ; lv2:name "Main Out 2" ],
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 4 ; lv2:symbol "time" ; lv2:name "Time" ; lv2:default 0.5 ; lv2:minimum 0 ; lv2:maximum 1 ],
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 5 ; lv2:symbol "size" ; lv2:name "Size" ; lv2:default 0.5 ; lv2:minimum 0 ; lv2:maximum 1 ],
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 6 ; lv2:symbol "shape" ; lv2:name "Shape" ; lv2:default 0.5 ; lv2:minimum 0 ; lv2:maximum 1 ],
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 7 ; lv2:symbol "pitch" ; lv2:name "Pitch" ; lv2:default 0 ; lv2:minimum -24 ; lv2:maximum 24 ],
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 8 ; lv2:symbol "density" ; lv2:name "Density" ; lv2:default 0.5 ; lv2:minimum 0 ; lv2:maximum 1 ],
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 9 ; lv2:symbol "feedback" ; lv2:name "Feedback" ; lv2:default 0 ; lv2:minimum 0 ; lv2:maximum 1 ],
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 10 ; lv2:symbol "dry_wet" ; lv2:name "Dry/Wet" ; lv2:default 0.5 ; lv2:minimum 0 ; lv2:maximum 1 ],
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 11 ; lv2:symbol "reverb" ; lv2:name "Reverb" ; lv2:default 0 ; lv2:minimum 0 ; lv2:maximum 1 ],
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 12 ; lv2:symbol "gain" ; lv2:name "Gain" ; lv2:default 0 ; lv2:minimum -60 ; lv2:maximum 12 ],
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 13 ; lv2:symbol "quality" ; lv2:name "Quality" ; lv2:default 3 ; lv2:minimum 0 ; lv2:maximum 3 ; lv2:portProperty lv2:enumeration, lv2:integer ],
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 14 ; lv2:symbol "freeze" ; lv2:name "Freeze" ; lv2:default 0 ; lv2:minimum 0 ; lv2:maximum 1 ; lv2:portProperty lv2:toggled, lv2:integer ],
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 15 ; lv2:symbol "mode" ; lv2:name "Mode" ; lv2:default 0 ; lv2:minimum 0 ; lv2:maximum 1 ; lv2:portProperty lv2:enumeration, lv2:integer ],
+ [ a lv2:InputPort, lv2:ControlPort ; lv2:index 16 ; lv2:symbol "seed_mode" ; lv2:name "Seed Mode" ; lv2:default 0 ; lv2:minimum 0 ; lv2:maximum 2 ; lv2:portProperty lv2:enumeration, lv2:integer ],
+ [ a lv2:InputPort, atom:AtomPort ; lv2:index 17 ; lv2:symbol "midi_in" ; lv2:name "MIDI In" ; atom:bufferType atom:Sequence ; atom:supports midi:MidiEvent ; lv2:minimumSize 32768 ],
+ [ a lv2:OutputPort, lv2:ControlPort ; lv2:index 18 ; lv2:symbol "latency" ; lv2:name "Latency" ; lv2:minimum 0 ; lv2:maximum 192000 ; lv2:portProperty lv2:reportsLatency, lv2:integer ; lv2:designation lv2:latency .

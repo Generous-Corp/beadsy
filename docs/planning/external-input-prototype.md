@@ -1,6 +1,6 @@
 # External input prototype
 
-This isolated prototype starts at Beasy head `33417e1` and adds a real
+This isolated prototype starts at Beadsy head `33417e1` and adds a real
 stereo live-input path beside the existing MIDI wavetable synth. It is a
 development slice, not a claim of full Beads hardware parity.
 

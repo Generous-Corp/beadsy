@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify a Beasy format receipt against the exact source and build artifacts.
+"""Verify a Beadsy format receipt against the exact source and build artifacts.
 
 The format inspector records evidence; this verifier prevents that evidence from
 being reused after the source or binaries change.  It checks the receipt's git
@@ -84,8 +84,8 @@ def verify(receipt_path: Path, source: Path | None = None,
         receipt: dict[str, Any] = json.loads(receipt_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         return [f"receipt unreadable: {exc}"]
-    if receipt.get("schema") != "beasy.format-status.v1":
-        return ["receipt schema must be beasy.format-status.v1"]
+    if receipt.get("schema") != "beadsy.format-status.v1":
+        return ["receipt schema must be beadsy.format-status.v1"]
 
     source = (source or Path(receipt.get("source", {}).get("path", "."))).resolve()
     build = (build or Path(receipt.get("build", {}).get("path", "build"))).resolve()

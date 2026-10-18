@@ -1,6 +1,0 @@
-#pragma once
-inline constexpr const char kBeasyPanelSvg[] = R"BEASY_SVG(
-@BEASY_PANEL_SVG@
-)BEASY_SVG";
-inline constexpr const char kBeasyPanelSourceStatus[] =
-    "@BEASY_PANEL_SOURCE_STATUS@";

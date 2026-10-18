@@ -1,0 +1,6 @@
+#pragma once
+inline constexpr const char kBeadsyPanelSvg[] = R"BEADSY_SVG(
+@BEADSY_PANEL_SVG@
+)BEADSY_SVG";
+inline constexpr const char kBeadsyPanelSourceStatus[] =
+    "@BEADSY_PANEL_SOURCE_STATUS@";

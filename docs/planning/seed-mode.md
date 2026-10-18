@@ -9,7 +9,7 @@ Beads' `TriggerGenerator::Render` accepts the source enum
   the manual-tap density midpoint, the upstream implementation emits no taps
   while locked.
 
-Beasy exposes those three source-backed states as the host parameter
+Beadsy exposes those three source-backed states as the host parameter
 `Seed Mode` (`kSeedMode`, values `0`, `1`, and `2`). The boundary helper rounds
 and clamps host floating-point values and maps non-finite values to `OFF`.
 The MIDI-derived gate stream remains the software equivalent of the external
@@ -21,8 +21,8 @@ output-gate selection, monophonic setting, freeze-buffer persistence, or an
 independent random-seed control. Those behaviors require separate source and
 host evidence.
 
-Focused evidence is in `test_beasy.cpp`:
+Focused evidence is in `test_beadsy.cpp`:
 
-- `Beasy seed mode mapping is bounded and source-backed`
-- `Beasy seed states preserve the upstream trigger contract`
-- `Beasy routes the Seed Mode parameter to the adapted DSP`
+- `Beadsy seed mode mapping is bounded and source-backed`
+- `Beadsy seed states preserve the upstream trigger contract`
+- `Beadsy routes the Seed Mode parameter to the adapted DSP`

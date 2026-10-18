@@ -1,4 +1,4 @@
-#include "beasy.hpp"
+#include "beadsy.hpp"
 #include <pulp/format/clap_entry.hpp>
 
-PULP_CLAP_PLUGIN(beasy::create_beasy)
+PULP_CLAP_PLUGIN(beadsy::create_beadsy)

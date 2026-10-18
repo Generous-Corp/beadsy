@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "schema": "beasy.control-map.v1",
+  "schema": "beadsy.control-map.v1",
   "status": "geometry-validated-parameter-bindings-partial",
   "product": {
-    "name": "Beasy",
+    "name": "Beadsy",
     "affiliation": "independent",
     "artwork_use": "provisional-calibration-only"
   },
@@ -50,7 +50,7 @@
       "role": "primary_parameter",
       "binding_status": "bound",
       "parameter_id": "density",
-      "automation_id": "beasy.density",
+      "automation_id": "beadsy.density",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2472",
@@ -90,7 +90,7 @@
       "role": "primary_parameter",
       "binding_status": "bound",
       "parameter_id": "time",
-      "automation_id": "beasy.time",
+      "automation_id": "beadsy.time",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2473",
@@ -130,7 +130,7 @@
       "role": "primary_parameter",
       "binding_status": "bound",
       "parameter_id": "pitch",
-      "automation_id": "beasy.pitch",
+      "automation_id": "beadsy.pitch",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2474",
@@ -170,7 +170,7 @@
       "role": "auxiliary_parameter",
       "binding_status": "bound",
       "parameter_id": "feedback",
-      "automation_id": "beasy.feedback",
+      "automation_id": "beadsy.feedback",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2477",
@@ -210,7 +210,7 @@
       "role": "primary_parameter",
       "binding_status": "bound",
       "parameter_id": "size",
-      "automation_id": "beasy.size",
+      "automation_id": "beadsy.size",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2470",
@@ -250,7 +250,7 @@
       "role": "primary_parameter",
       "binding_status": "bound",
       "parameter_id": "shape",
-      "automation_id": "beasy.shape",
+      "automation_id": "beadsy.shape",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2471",
@@ -290,7 +290,7 @@
       "role": "auxiliary_parameter",
       "binding_status": "bound",
       "parameter_id": "dry_wet",
-      "automation_id": "beasy.dry_wet",
+      "automation_id": "beadsy.dry_wet",
       "geometry_ref": {
         "source": "dxf",
         "handle": "247A",
@@ -330,7 +330,7 @@
       "role": "auxiliary_parameter",
       "binding_status": "bound",
       "parameter_id": "reverb",
-      "automation_id": "beasy.reverb",
+      "automation_id": "beadsy.reverb",
       "geometry_ref": {
         "source": "dxf",
         "handle": "247B",
@@ -370,7 +370,7 @@
       "role": "auxiliary_parameter",
       "binding_status": "bound",
       "parameter_id": "time_cv_amount",
-      "automation_id": "beasy.time_cv_amount",
+      "automation_id": "beadsy.time_cv_amount",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2475",
@@ -410,7 +410,7 @@
       "role": "auxiliary_parameter",
       "binding_status": "bound",
       "parameter_id": "size_cv_amount",
-      "automation_id": "beasy.size_cv_amount",
+      "automation_id": "beadsy.size_cv_amount",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2476",
@@ -450,7 +450,7 @@
       "role": "auxiliary_parameter",
       "binding_status": "bound",
       "parameter_id": "shape_cv_amount",
-      "automation_id": "beasy.shape_cv_amount",
+      "automation_id": "beadsy.shape_cv_amount",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2478",
@@ -490,7 +490,7 @@
       "role": "auxiliary_parameter",
       "binding_status": "bound",
       "parameter_id": "pitch_cv_amount",
-      "automation_id": "beasy.pitch_cv_amount",
+      "automation_id": "beadsy.pitch_cv_amount",
       "geometry_ref": {
         "source": "dxf",
         "handle": "2479",

@@ -1,4 +1,4 @@
-#include "beasy.hpp"
+#include "beadsy.hpp"
 #include <pulp/format/au_v2_instrument_entry.hpp>
 
-PULP_AU_INSTRUMENT(BeasyAU, beasy::create_beasy)
+PULP_AU_INSTRUMENT(BeadsyAU, beadsy::create_beadsy)

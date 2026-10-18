@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build and compare Beasy's adapted Beads DSP against the local source.
+"""Build and compare Beadsy's adapted Beads DSP against the local source.
 
 The generated binary fixtures are deliberately kept outside the repository.
 This command is an internal, source-backed parity check; it does not grant
@@ -88,7 +88,7 @@ def compile_probe(cxx: str, probe: Path, include_root: Path, source_files: list[
                "-I", str(include_root / "stmlib"), str(probe)]
     command.extend(str(path) for path in source_files)
     if port_api:
-        command.append("-DBEASY_PORT_API")
+        command.append("-DBEADSY_PORT_API")
     command.extend(["-o", str(output)])
     run(command)
 
@@ -164,7 +164,7 @@ def main() -> int:
         raise SystemExit(f"port DSP root is incomplete: {port_root}")
 
     out = args.output_dir.resolve() if args.output_dir else Path(
-        tempfile.mkdtemp(prefix="beasy-source-port-", dir=str(repo.parent)))
+        tempfile.mkdtemp(prefix="beadsy-source-port-", dir=str(repo.parent)))
     out.mkdir(parents=True, exist_ok=True)
     build = out / "build"
     build.mkdir(exist_ok=True)
@@ -183,7 +183,7 @@ def main() -> int:
                 raise SystemExit(f"refusing to replace private include path: {link}")
             os.symlink(target, link)
 
-    probe = repo / "scripts" / "beasy_dsp_matrix_probe.cpp"
+    probe = repo / "scripts" / "beadsy_dsp_matrix_probe.cpp"
     source_files = [source_build_include / relative for relative in SOURCE_FILES]
     port_files = [port_root / relative for relative in SOURCE_FILES]
     for path in source_files + port_files:
@@ -217,11 +217,11 @@ def main() -> int:
                     if pair["rmse"] is not None), default=0.0)
     current_head = git_head(repo)
     receipt = {
-        "schema": "beasy.source-port-comparison.v3",
+        "schema": "beadsy.source-port-comparison.v3",
         "status": "pass_internal_reference_only" if len(matching) == len(pairs)
                   else "mismatch",
         "verified_at": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "project": "Beasy",
+        "project": "Beadsy",
         "port": {
             "repository": str(repo),
             "head": current_head,
@@ -259,7 +259,7 @@ def main() -> int:
             "distribution": "private generated evidence; fixtures are not committed",
         },
         "limitations": [
-            "This compares the adapted DSP direct-render contract only; it does not prove Beasy Processor adapter behavior.",
+            "This compares the adapted DSP direct-render contract only; it does not prove Beadsy Processor adapter behavior.",
             "MIDI sample-offset ordering, velocity, pitch bend, seed modes, CV, freeze persistence, and host state are separate gates.",
             "The source fixture is used under the recorded local MIT source notice; no upstream source, artwork, or fixture is redistributed.",
         ],

@@ -1,4 +1,4 @@
-#include "beasy.hpp"
+#include "beadsy.hpp"
 #include <pulp/format/lv2_entry.hpp>
 
-PULP_LV2_PLUGIN(beasy::create_beasy, "http://pulp.audio/plugins/beasy")
+PULP_LV2_PLUGIN(beadsy::create_beadsy, "http://pulp.audio/plugins/beadsy")

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regression tests for exact-head Beasy format receipt verification."""
+"""Regression tests for exact-head Beadsy format receipt verification."""
 from __future__ import annotations
 
 import importlib.util
@@ -24,8 +24,8 @@ class FormatReceiptTests(unittest.TestCase):
             args, cwd=source, check=True,
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         run("git", "init", "-q")
-        run("git", "config", "user.email", "beasy-tests@example.invalid")
-        run("git", "config", "user.name", "Beasy tests")
+        run("git", "config", "user.email", "beadsy-tests@example.invalid")
+        run("git", "config", "user.name", "Beadsy tests")
         tracked = source / "tracked.txt"
         tracked.write_text("committed\n", encoding="utf-8")
         run("git", "add", "tracked.txt")
@@ -35,19 +35,19 @@ class FormatReceiptTests(unittest.TestCase):
     def _receipt(self, root: Path, source_head: str | None = None,
                  source: Path | None = None) -> tuple[Path, Path]:
         build = root / "build"
-        artifact = build / "VST3" / "Beasy.vst3" / "Contents" / "MacOS" / "Beasy"
+        artifact = build / "VST3" / "Beadsy.vst3" / "Contents" / "MacOS" / "Beadsy"
         artifact.parent.mkdir(parents=True)
         artifact.write_bytes(b"known artifact")
         source = source or ROOT
         receipt = {
-            "schema": "beasy.format-status.v1",
+            "schema": "beadsy.format-status.v1",
             "source": {"path": str(source),
                        "git_head": source_head or _verify.current_head(source)},
             "build": {"path": str(build)},
             "formats": [{
                 "format": "VST3", "status": "supported",
                 "evidence": {"artifact": {
-                    "path": "VST3/Beasy.vst3/Contents/MacOS/Beasy",
+                    "path": "VST3/Beadsy.vst3/Contents/MacOS/Beadsy",
                     "exists": True, "is_file": True,
                     "bytes": artifact.stat().st_size,
                     "sha256": _verify.sha256(artifact),
@@ -55,7 +55,7 @@ class FormatReceiptTests(unittest.TestCase):
             }, {
                 "format": "AAX", "status": "blocked",
                 "evidence": {"artifact": {
-                    "path": "AAX/Beasy.aaxplugin/Contents/MacOS/Beasy",
+                    "path": "AAX/Beadsy.aaxplugin/Contents/MacOS/Beadsy",
                     "exists": False, "is_file": False,
                 }},
             }],
@@ -84,7 +84,7 @@ class FormatReceiptTests(unittest.TestCase):
             root = Path(directory)
             source = self._source_fixture(root)
             receipt, build = self._receipt(root, source=source)
-            artifact = build / "VST3" / "Beasy.vst3" / "Contents" / "MacOS" / "Beasy"
+            artifact = build / "VST3" / "Beadsy.vst3" / "Contents" / "MacOS" / "Beadsy"
             artifact.write_bytes(b"changed artifact")
             errors = _verify.verify(receipt, source, build)
             self.assertTrue(any("SHA-256 changed" in error for error in errors))

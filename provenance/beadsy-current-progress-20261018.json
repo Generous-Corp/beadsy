@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "beadsy.current-progress.v1",
+  "project": "Beadsy",
+  "source_head": "96cf0f7aae9f66d9005103853be178f6293552b3",
+  "status": "in_progress_release_blocked",
+  "validated": {
+    "tests": {
+      "command": "ctest --test-dir build-beadsy-renamed --output-on-failure",
+      "passed": 38,
+      "failed": 0
+    },
+    "control_map": {
+      "path": "provenance/control-map.json",
+      "controls": 24,
+      "bound": 12,
+      "provisional": 12
+    },
+    "format_receipt": {
+      "path": "provenance/beadsy-format-status-current.json",
+      "verifier": "scripts/verify_format_receipt.py",
+      "status": "pass"
+    },
+    "editor_capture": {
+      "path": "build-beadsy-renamed/beadsy-editor-knob-aesthetic-pass.png",
+      "sha256": "f0b911c38c6434fe93f1b2547cbbe1278f240ed86e98cdfa1134b5e9622f57dc",
+      "status": "partial_visual_fidelity_pass; procedural reference-aligned layout with knob calibration"
+    },
+    "attenuverter": {
+      "status": "implemented",
+      "law": "centered -1..1 host amount parameters",
+      "test": "Beadsy preserves centered Beads attenuverter law"
+    },
+    "midi_velocity_timing": {
+      "status": "implemented",
+      "tests": [
+        "Beadsy MIDI velocity gain changes at a mid-block note-on",
+        "Beadsy MIDI note replacement restores the active note velocity"
+      ],
+      "allocation": "prepared event/stream buffers; no callback allocation"
+    },
+    "source_port_parity": {
+      "path": "provenance/beadsy-source-port-comparison-current-20261018.json",
+      "status": "pass_internal_reference_only",
+      "fixtures_checked": 48,
+      "byte_identical": 48,
+      "max_abs_error": 0.0,
+      "max_rmse": 0.0,
+      "scope": "direct adapted DSP only; adapter and host contracts remain separate",
+      "seed_gate": {
+        "path": "provenance/beadsy-source-port-comparison-seed-current-20261018.json",
+        "status": "pass_internal_reference_only",
+        "fixtures_checked": 144,
+        "byte_identical": 144,
+        "max_abs_error": 0.0,
+        "max_rmse": 0.0,
+        "scenarios": [
+          "ON then OFF/no external",
+          "LOCKED with external gate",
+          "OFF with external gate"
+        ]
+      }
+    },
+    "seed_mode": {
+      "status": "implemented_source_backed",
+      "parameter": "kSeedMode",
+      "states": [
+        "OFF",
+        "ON",
+        "LOCKED"
+      ],
+      "panel_binding": "implemented; native button cycles OFF/ON/LOCKED and reflects host automation/state",
+      "receipt": "provenance/beadsy-seed-control-current-20261018.json"
+    },
+    "headless_audio_state": {
+      "path": "provenance/beadsy-headless-audio-state-current-20261018.json",
+      "status": "pass_headless_audio_and_state",
+      "sample_rate_hz": 48000,
+      "frames": 512,
+      "finite": true,
+      "audible": true,
+      "state_restored": true
+    },
+    "host_format_validation": {
+      "path": "provenance/beadsy-host-format-validation-current-20261018.json",
+      "clap": "pass with scan-time warning (20 run, 17 pass, 3 skip, 0 fail)",
+      "au": "pass (current-head governed GUI-bootstrap auval; installed registration remains separate)",
+      "vst3": "pass (current-head pluginval strictness 5)",
+      "lv2": "partial (custom ABI/URID/audio/state probe pass; no third-party host installed; current-head availability receipt)",
+      "standalone": "partial (real CoreAudio/MIDI/editor launch observed; app state and clean shutdown unproven)",
+      "au_control": "Pulp Hot-Reload Synth passes auval; Beadsy remains undiscoverable",
+      "arm64_auval": "pass; provenance/beadsy-auval-arm64-current-20261018.json",
+      "arm64_clap": "pass_with_scan_time_warning; provenance/beadsy-clap-arm64-validator-current-20261018.json",
+      "arm64_vst3": "pass_pluginval_strictness_5; provenance/beadsy-vst3-arm64-pluginval-current-20261018.json"
+    },
+    "standalone_state_cli": {
+      "path": "provenance/beadsy-standalone-state-cli-current-20261018.json",
+      "status": "pass",
+      "save_exit_code": 0,
+      "load_exit_code": 0,
+      "state_bytes": 386,
+      "startup_mode": "screenshot-only bounded startup; no audio device opened"
+    },
+    "editor_seed_control": {
+      "status": "pass",
+      "capture": "build-beadsy-renamed/beadsy-editor-seed-current.png",
+      "focused_test": "Beadsy-editor-test; full suite includes Seed Mode button test (36/36)"
+    },
+    "importer_hardening": {
+      "path": "provenance/importer-validation.json",
+      "status": "validated_integration_worktree_not_landed",
+      "integration_head": "c25b8cc865fb15942d07ea0e5a3b23c4fc7f020e",
+      "tests": "focused and broad importer suites pass",
+      "integration_gates": "inconclusive_environmental; focused importer tests pass, full gates unavailable due missing codemodel/optional SDK/host configuration"
+    },
+    "lv2_custom_host": {
+      "path": "provenance/beadsy-lv2-host-state-validation-current-20261018.json",
+      "status": "pass_with_scope",
+      "peak": 0.664628983,
+      "finite_frames": "102400/102400",
+      "state_save_restore": "pass"
+    },
+    "visual_reference_comparison": "provenance/beadsy-visual-reference-comparison-current-20261018.json",
+    "packaging_registration": {
+      "path": "provenance/beadsy-packaging-status-current.json",
+      "status": "partial",
+      "au": "blocked_existing_user_install_hash_mismatch",
+      "vst3": "blocked_vst3validator_unavailable"
+    },
+    "knob_aesthetic": {
+      "path": "provenance/beadsy-knob-aesthetic-current-20261018.json",
+      "status": "procedural_calibration_pass_visual_release_gate_open",
+      "focused_tests": 4,
+      "capture_sha256": "f0b911c38c6434fe93f1b2547cbbe1278f240ed86e98cdfa1134b5e9622f57dc"
+    },
+    "source_notice_integrity": {
+      "path": "provenance/source-to-port.json",
+      "entries": 51,
+      "missing_port_files": 0,
+      "hash_mismatches": 0,
+      "status": "pass_exact_port_hashes"
+    },
+    "macos_arm64_artifacts": {
+      "path": "provenance/beadsy-macos-arm64-artifact-audit-current-20261018.json",
+      "status": "pass_architecture_and_hashes"
+    }
+  },
+  "open_gates": [
+    {
+      "id": "source_dsp_parity",
+      "status": "pass_internal_reference_only",
+      "next": "extend fixtures to Processor adapter MIDI ordering, CV, freeze persistence, effect path, and supported host rates"
+    },
+    {
+      "id": "ui_fidelity",
+      "status": "partial_visual_fidelity_pass",
+      "next": "rights-cleared straight-on reference comparison and provenance decision for any distributable panel artwork"
+    },
+    {
+      "id": "rights",
+      "status": "blocked",
+      "next": "file-level artwork/CAD/share-alike/trademark decisions"
+    },
+    {
+      "id": "host_formats",
+      "status": "partial",
+      "next": "trusted exact-head importer verdict/landing; independent third-party LV2 host; M5s ARM lane after quiescence"
+    },
+    {
+      "id": "release",
+      "status": "blocked",
+      "next": "close required gates before signing/notarization/release claim"
+    }
+  ],
+  "historical_evidence_policy": "Older Grainfield receipts are historical and do not prove this Beadsy head.",
+  "receipt_scope": "current Beadsy worktree; historical Grainfield receipts are excluded from acceptance evidence"
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "beadsy.standalone-state-cli.v1",
+  "project": "Beadsy",
+  "source_head": "c7a27ce77f0d750b789758272036dc9e9ef46d0a",
+  "binary": "build-beadsy-renamed/Beadsy.app/Contents/MacOS/Beadsy",
+  "save": {
+    "command": "Beadsy --save-state <file>",
+    "exit_code": 0,
+    "state_file_exists": true,
+    "bytes": 386,
+    "sha256": "61512913ce1670840e49b6cd698b100f21e6e70c199e8119ce86821d06ddbc62"
+  },
+  "load": {
+    "command": "Beadsy --load-state <file>",
+    "exit_code": 0
+  },
+  "startup_mode": "screenshot-only bounded startup; no audio device opened",
+  "status": "pass"
+}

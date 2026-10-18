@@ -1,5 +1,5 @@
-#include "beasy.hpp"
-#include "beasy_standalone_state.hpp"
+#include "beadsy.hpp"
+#include "beadsy_standalone_state.hpp"
 
 #include <pulp/format/standalone.hpp>
 
@@ -35,11 +35,11 @@ std::optional<StateCommand> parse_state_command(int argc, char** argv) {
 int main(int argc, char** argv) {
     const auto command = parse_state_command(argc, argv);
     if (!command) {
-        std::cerr << "usage: Beasy [--load-state FILE] [--save-state FILE]\n";
+        std::cerr << "usage: Beadsy [--load-state FILE] [--save-state FILE]\n";
         return 2;
     }
 
-    pulp::format::StandaloneApp app(beasy::create_beasy);
+    pulp::format::StandaloneApp app(beadsy::create_beadsy);
     pulp::format::StandaloneConfig config;
     config.input_channels = 0;
     config.output_channels = 2;
@@ -50,23 +50,23 @@ int main(int argc, char** argv) {
     // through the normal editor/audio path below.
     if (command->load || command->save) {
         const auto temp_capture = std::filesystem::temp_directory_path() /
-                                  "beasy-state-command.png";
+                                  "beadsy-state-command.png";
         config.screenshot_path = temp_capture.string();
         config.screenshot_frame_delay = 1;
         app.set_config(config);
         if (!app.start()) return 1;
         if (command->load) {
-            const auto result = beasy::load_state(app, *command->load);
+            const auto result = beadsy::load_state(app, *command->load);
             if (!result.ok) {
-                std::cerr << "Beasy state load failed: " << result.message << "\n";
+                std::cerr << "Beadsy state load failed: " << result.message << "\n";
                 app.stop();
                 return 1;
             }
         }
         if (command->save) {
-            const auto result = beasy::save_state(app, *command->save);
+            const auto result = beadsy::save_state(app, *command->save);
             if (!result.ok) {
-                std::cerr << "Beasy state save failed: " << result.message << "\n";
+                std::cerr << "Beadsy state save failed: " << result.message << "\n";
                 app.stop();
                 return 1;
             }
