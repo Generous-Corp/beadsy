@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "04ebb47828927b146ceffead2cc748edff95c91f",
+  "source_head": "9fdad092f9d6aa93383fd3ac3eeeee28d59f22c9",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -20,8 +20,8 @@
       "id": "realtime-allocation",
       "status": "inconclusive",
       "evidence": "provenance/realtime-allocation-probe.json",
-      "result": "Ten sequential rebuilt-baseline runs passed, while prior 1 allocation/192-byte failures at 256/1024 (and prior 64 attempt) were not reproduced",
-      "reason": "Allocation counts are not exposed by the committed assertion; capture a backtrace on recurrence and run the 64/256/1024 matrix across toolchains before closing the gate"
+      "result": "Fifty repeated temporary diagnostic runs passed 50/50 with no allocation failure or backtrace; prior 1 allocation/192-byte observations at 256/1024 (and prior 64 attempt) remain unresolved",
+      "reason": "The committed assertion does not expose allocation counts and no backtrace was triggered; retain the gate and require cross-toolchain 64/256/1024 evidence before closure"
     },
     {
       "id": "panel-asset",
@@ -126,6 +126,11 @@
       "path": "provenance/realtime-allocation-probe.json",
       "source_head": "04ebb47828927b146ceffead2cc748edff95c91f",
       "note": "inconclusive allocation reproducibility: 10/10 passes, prior 192-byte failures not reproduced; counts/backtrace and cross-toolchain matrix remain open"
+    },
+    {
+      "path": "provenance/realtime-allocation-probe.json",
+      "source_head": "9fdad092f9d6aa93383fd3ac3eeeee28d59f22c9",
+      "note": "50/50 repeated temporary diagnostic passes with no failure/backtrace; prior 192-byte observation remains unresolved"
     }
   ],
   "release_decision": "blocked"
