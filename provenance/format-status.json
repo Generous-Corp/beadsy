@@ -4,7 +4,7 @@
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
-    "git_head": "a48fe2ec9cca5e360901d48f7c7c6398c37493df"
+    "git_head": "6080f7d0b6ec8fa9d5024fbc3590f95eae577c89"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build",
@@ -17,14 +17,14 @@
     {
       "format": "VST3",
       "status": "partial",
-      "reason": "VST3 artifact built against installed development SDK; pluginval passes, moduleinfo and Steinberg validator evidence remain open",
+      "reason": "Validated VST3 artifact built against installed development SDK; pluginval passes, moduleinfo and Steinberg validator evidence remain open",
       "evidence": {
         "artifact": {
-          "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3/Contents/MacOS/Grainfield",
+          "path": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
           "bytes": 44788600,
-          "sha256": "8893a78e8248849109512b32db2ae4d72c85f03c39ab8135ce089530b489c72f"
+          "sha256": "84d1afee197ba073c1d2dbc56e011b1664008432d3f521f9a3178463b2344a3a"
         },
         "pulp_target_present": true,
         "host_validation": "partial"

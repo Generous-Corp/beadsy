@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "46361e8387b35ba86f6e394a464ab1f29f223def",
+  "source_head": "6080f7d0b6ec8fa9d5024fbc3590f95eae577c89",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -27,13 +27,14 @@
       "id": "format-artifacts",
       "status": "partial",
       "evidence": "provenance/format-status.json plus SHA-256 recheck of build outputs",
-      "result": "CLAP, LV2, AU, and Standalone artifact hashes match; VST3 and AAX are blocked"
+      "result": "CLAP, LV2, AU, and Standalone artifact hashes match; VST3 is partial with pluginval pass and open moduleinfo/Steinberg-validator/development-SDK gates; AAX remains blocked"
     },
     {
       "id": "vst3",
-      "status": "blocked",
-      "evidence": "provenance/vst3-validation.json",
-      "reason": "installed Pulp SDK does not export a VST3 target; no artifact or validator receipt"
+      "status": "partial",
+      "evidence": "provenance/vst3-validation.json and provenance/vst3-pluginval.txt",
+      "reason": "SDK provenance is development; moduleinfo.json is absent; Steinberg vst3validator is unavailable; host/editor/audio/state evidence beyond pluginval is not included",
+      "result": "VST3 bundle built against installed development SDK; pluginval 1.0.4 passes (SUCCESS); moduleinfo.json and Steinberg vst3validator evidence remain unavailable"
     },
     {
       "id": "aax",
@@ -61,8 +62,8 @@
     },
     {
       "path": "provenance/vst3-validation.json",
-      "source_head": "3bf5d90f19b5094c1f8830a4c4b5c60c84407ed4",
-      "note": "blocked result remains applicable; current-head audit supersedes its provenance timestamp"
+      "source_head": "6080f7d0b6ec8fa9d5024fbc3590f95eae577c89",
+      "note": "current-head VST3 receipt: pluginval passes; moduleinfo/Steinberg validator and release-SDK gates remain open"
     }
   ],
   "release_decision": "blocked"

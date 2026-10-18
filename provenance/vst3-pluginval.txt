@@ -1,16 +1,16 @@
-Started validating: /Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3
+Started validating: /Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3
 Random seed: 0x3886459
 Validation started
 Strictness level: 5
 -----------------------------------------------------------------
-Starting tests in: pluginval / Scan for plugins located in: /Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3...
+Starting tests in: pluginval / Scan for plugins located in: /Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3...
 [pulp:info]  VST3: IHostApplication present; publishing ARA factory under kVst3AraFactoryContextKey='com.celemony.ara/vst3-host-factory-v1'
 [pulp:info]  VST3: initialized 'Grainfield' with 13 parameters
 Num plugins found: 1
 
 Testing plugin: VST3-Grainfield-f4a7a9a5-6d88ba99
 Independent Audio: Grainfield v1.0.0
-Completed tests in pluginval / Scan for plugins located in: /Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3
+Completed tests in pluginval / Scan for plugins located in: /Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3
 -----------------------------------------------------------------
 Starting tests in: pluginval / Open plugin (cold)...
 [pulp:info]  VST3: IHostApplication present; publishing ARA factory under kVst3AraFactoryContextKey='com.celemony.ara/vst3-host-factory-v1'

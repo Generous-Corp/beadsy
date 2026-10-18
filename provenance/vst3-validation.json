@@ -1,9 +1,9 @@
 {
   "schema": "grainfield.vst3-validation.v1",
   "status": "partial",
-  "source_head": "a48fe2ec9cca5e360901d48f7c7c6398c37493df",
+  "source_head": "6080f7d0b6ec8fa9d5024fbc3590f95eae577c89",
   "source": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
-  "build": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3",
+  "build": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0",
   "configure": {
     "command": "cmake -S /Users/danielraffel/Code/grainfield-quality-mode-integration -B /Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0; /Users/danielraffel/Code/pulp/tools/ci/governed-build.sh cmake --build build-vst3 --target Grainfield_VST3",
     "status": "pass",
@@ -15,9 +15,9 @@
     "vst3_sdk_present": true
   },
   "artifact": {
-    "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3",
+    "path": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3",
     "exists": true,
-    "binary": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3/Contents/MacOS/Grainfield",
+    "binary": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3/Contents/MacOS/Grainfield",
     "binary_exists": true,
     "binary_bytes": 44788600,
     "binary_sha256": "84d1afee197ba073c1d2dbc56e011b1664008432d3f521f9a3178463b2344a3a"
@@ -29,7 +29,7 @@
       "status": "pass",
       "result": "SUCCESS",
       "receipt": "provenance/vst3-pluginval.txt",
-      "receipt_sha256": "dac9dc4aed38493d3d52dc20b770eb2484ff7abfc3439fdfe3baac3adb020871"
+      "receipt_sha256": "f71d8f9bcedaf80ccc43ec0a9e913aab9735cc517958e3dcfa6237b718ecf6c9"
     },
     "vst3validator": {
       "path": null,
@@ -39,22 +39,22 @@
   },
   "bundle_inspection": {
     "moduleinfo": {
-      "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3/Contents/Resources/moduleinfo.json",
+      "path": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3/Contents/Resources/moduleinfo.json",
       "exists": false,
       "reason": "SDK build emitted no moduleinfo.json"
     },
     "info_plist": {
-      "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3/Contents/Info.plist",
+      "path": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3/Contents/Info.plist",
       "exists": true,
       "sha256": "b6da748f0e372d32b1cebae2ef19750f5019320fe632b9641dcad8566044926b2"
     },
     "control_shipping": {
-      "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3/Contents/Resources/Grainfield.VST3.control-shipping.json",
+      "path": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3/Contents/Resources/Grainfield.VST3.control-shipping.json",
       "exists": true,
       "sha256": "47ceb36af178b4088d981eb936b279c6036753d4e4645f1e3e3a40cabba5c652"
     },
     "control_shipping_report": {
-      "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build-vst3/VST3/Grainfield.vst3/Contents/Resources/Grainfield.VST3.control-shipping-report.json",
+      "path": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3/Contents/Resources/Grainfield.VST3.control-shipping-report.json",
       "exists": true,
       "sha256": "bdb0fdce2afee461262473f1ea7f8efbd731b54784e4ed2c00675163d5b138cd"
     }

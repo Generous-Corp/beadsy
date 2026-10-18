@@ -1,7 +1,7 @@
 # Grainfield implementation status
 
 Updated 2026-10-18 against Grainfield source head
-`e44066f4e8c0c978dd5aa50130b9ca03ec47e010`.
+`6080f7d0b6ec8fa9d5024fbc3590f95eae577c89`.
 
 ## Current executable slice
 

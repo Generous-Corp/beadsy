@@ -1,7 +1,7 @@
 # Independent Beads-inspired Pulp instrument
 
 Status: implementation plan, Ultra-reviewed 2026-10-17
-Planning head: Pulp `origin/main` `0eadeac05ed8176abcce566edadbcd7cc2fafd29`
+Planning head: Pulp `origin/main` `5a359c9`
 Reference source head: Beads `f4cfa7697095a28d292bff758beb51deb49b5a86`
 Documentation reference: [`beads-documentation-review.md`](beads-documentation-review.md),
 based on the local Mutable Instruments manual/index and image set.
