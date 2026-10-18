@@ -42,8 +42,9 @@
   },
   "realtime_allocation": {
     "status": "inconclusive",
-    "current_probe": "The integrated Grainfield-test binary does not list the [realtime][allocation][matrix] case in this SDK configuration, so no current-head matrix claim is made.",
-    "historical_evidence": "Release and Debug AppleClang 64/256/1024 ten-run matrices recorded zero allocations, but the prior intermittent one-allocation/192-byte observation was not reproduced and has no owner backtrace.",
+    "current_probe": "Harness-enabled current-head Release AppleClang Grainfield-test ran the [realtime][allocation][matrix] case 10 times across 64/256/1024 blocks; all runs passed with zero allocations and zero bytes.",
+    "current_receipt": "provenance/realtime-allocation-current-20261018.json",
+    "historical_evidence": "The prior intermittent one-allocation/192-byte observation was not reproduced and has no owner backtrace.",
     "next_evidence": "Build the allocation harness into the supported current-head test configuration and capture a backtrace if a nonzero allocation recurs."
   },
   "lv2": {
