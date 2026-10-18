@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "b9e446a945e57e6635539dc8d8f37ee1484e52cc",
+  "source_head": "29fce5ec270c6ff3b93bbb301c414d7e1bbf3152",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -46,9 +46,9 @@
     {
       "id": "source-provenance",
       "status": "partial",
-      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, and provenance/converter-report.json",
+      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, provenance/converter-report.json, and Pulp commit f9752e4 importer diagnostics",
       "result": "Source-to-port inventory is complete for recorded files; all 8 hash mismatches are classified as intentional portability adaptations with deterministic unified-diff metadata (29 Beads equal/7 mismatches; 14 stmlib equal/1 mismatch); notices and upstream license metadata are recorded",
-      "reason": "Intentional adaptations have deterministic diff evidence, but source/legal redistribution remains blocked pending internal license review, copied-byte provenance closure, and converter diagnostics"
+      "reason": "Intentional adaptations have deterministic diff evidence, but source/legal redistribution remains blocked pending internal license review and copied-byte provenance closure; external pdftocairo feature diagnostics remain inconclusive, while Pulp importer fail-closed behavior is proven"
     },
     {
       "id": "aax",
@@ -59,9 +59,9 @@
     {
       "id": "rights-and-release",
       "status": "blocked",
-      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, ATTRIBUTION.md, LICENSES.md, and provenance/converter-report.json",
-      "reason": "Panel artwork/reference permission and trademark clearance are pending; legal/source redistribution and internal GPL review remain open despite classified portability adaptations; converter diagnostics are inconclusive",
-      "result": "All eight hash mismatches have deterministic intentional-portability classifications; legal, source redistribution, and artwork/trademark gates keep release blocked"
+      "evidence": "provenance/source-manifest.json, provenance/source-to-port.json, provenance/stmlib-license-audit.json, provenance/converter-report.json, ATTRIBUTION.md, and LICENSES.md",
+      "reason": "Panel artwork/reference permission and trademark clearance are pending; legal/source redistribution and internal GPL review remain open; external pdftocairo feature diagnostics are inconclusive, and importer validation-only behavior does not provide Illustrator conversion support",
+      "result": "Pulp commit f9752e4 proves fail-closed aliases and preconverted-SVG validation-only behavior; artwork, legal/source redistribution, and external conversion gates keep release blocked"
     }
   ],
   "historical_receipts": [

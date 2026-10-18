@@ -1,6 +1,6 @@
 {
   "schema": "grainfield.converter-report.v1",
-  "status": "probe_only",
+  "status": "probe_only_external_importer_fail_closed",
   "input": "/Users/danielraffel/Code/eurorack/beads/hardware_design/panel/beads.ai",
   "input_sha256": "bdc4e394703fa99e6e7997683e1b4dee2bada5cc6eff95af36d40086f6f86c5e",
   "tool": "/opt/homebrew/bin/pdftocairo",
@@ -19,7 +19,19 @@
     "tool_observed": "pdftocairo emitted no stderr diagnostics for SVG or PNG conversion",
     "svg_probe": "completed_exit_0",
     "png_probe": "completed_exit_0",
-    "feature_coverage": "pdftocairo does not provide a complete Illustrator feature compatibility report; vector-art adapter diagnostics remain required"
+    "feature_coverage": "pdftocairo does not provide a complete Illustrator feature compatibility report; external conversion probe remains inconclusive, while the Pulp importer fail-closed diagnostics are proven by the recorded commit"
   },
-  "release_decision": "do not package until artwork rights are resolved"
+  "release_decision": "do not package until artwork rights and importer/source provenance gates are resolved",
+  "pulp_importer_diagnostics": {
+    "status": "pass",
+    "pulp_commit": "f9752e4",
+    "aliases": [
+      "illustrator",
+      "ai",
+      "pdf"
+    ],
+    "preconverted_svg": "validation_only",
+    "result": "Unsupported Illustrator/AI/PDF source conversion paths fail closed; preconverted SVG is accepted only for validation and does not claim source conversion support",
+    "conversion_support_claimed": false
+  }
 }
