@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "beasy.current-progress.v1",
+  "project": "Beasy",
+  "source_head": "23b3686529d7b991a4bce24c214154cc108710ce",
+  "status": "in_progress_release_blocked",
+  "validated": {
+    "tests": {
+      "command": "ctest --test-dir build-beasy-renamed --output-on-failure",
+      "passed": 30,
+      "failed": 0
+    },
+    "control_map": {
+      "path": "provenance/control-map.json",
+      "controls": 24,
+      "bound": 12,
+      "provisional": 12
+    },
+    "format_receipt": {
+      "path": "provenance/beasy-format-status-current.json",
+      "verifier": "scripts/verify_format_receipt.py",
+      "status": "pass"
+    },
+    "editor_capture": {
+      "path": "build-beasy-renamed/beasy-editor-current.png",
+      "sha256": "6d1e0f4c56b0f2c04e3d7439acfa58f75a243475957b94de081d39749895d273",
+      "status": "procedural independent scaffold; pixel fidelity open"
+    },
+    "attenuverter": {
+      "status": "implemented",
+      "law": "centered -1..1 host amount parameters",
+      "test": "Beasy preserves centered Beads attenuverter law"
+    }
+  },
+  "open_gates": [
+    {
+      "id": "source_dsp_parity",
+      "status": "partial",
+      "next": "regenerate broad source-vs-port matrix at this head; cover seed/mode, CV, freeze, MIDI ordering"
+    },
+    {
+      "id": "ui_fidelity",
+      "status": "open",
+      "next": "rights-cleared straight-on reference and pixel/geometry comparison"
+    },
+    {
+      "id": "rights",
+      "status": "blocked",
+      "next": "file-level artwork/CAD/share-alike/trademark decisions"
+    },
+    {
+      "id": "host_formats",
+      "status": "partial",
+      "next": "AU registration, VST3 validator, LV2 state/MIDI host, AAX SDK/validator"
+    },
+    {
+      "id": "release",
+      "status": "blocked",
+      "next": "close required gates before signing/notarization/release claim"
+    }
+  ],
+  "historical_evidence_policy": "Older Grainfield receipts are historical and do not prove this Beasy head."
+}
