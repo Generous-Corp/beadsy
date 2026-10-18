@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.current-gate-matrix.v1",
   "verified_at": "2026-10-18",
-  "source_head": "bb3d8529363b2dd38d071d9822c982201744556d",
+  "source_head": "a120135e877288f077b2a3fc38ef48678f8fb916",
   "receipts": {
     "integration": {
       "path": "provenance/current-integration-validation-20261018.json",

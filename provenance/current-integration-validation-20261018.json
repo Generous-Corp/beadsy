@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.current-integration-validation.v1",
   "status": "pass_with_open_format_gates",
-  "grainfield_head": "bb3d8529363b2dd38d071d9822c982201744556d",
+  "grainfield_head": "a120135e877288f077b2a3fc38ef48678f8fb916",
   "receipt_head": "3086950",
   "product_base_head": "6235f0c8f955f0f78691662a0d09e130d1710b7e",
   "integrated_commits": [

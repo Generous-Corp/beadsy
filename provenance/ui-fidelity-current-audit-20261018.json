@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.ui-fidelity-current-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "bb3d8529363b2dd38d071d9822c982201744556d",
+  "source_head": "a120135e877288f077b2a3fc38ef48678f8fb916",
   "supersedes": "provenance/ui-fidelity-gate-audit-20261018.json",
   "evidence": {
     "provenance/control-map-source-audit-20261018.json": "7dcd3610f6d1089127fb9c79c8836e22b893a7fdc54d4f5942b00cb3b9635f7b",
