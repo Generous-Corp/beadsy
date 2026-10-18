@@ -70,7 +70,7 @@
       "receipts": [
         {
           "receipt": "provenance/matrix-24000-synth.json",
-          "sha256": "b2719de47fe9b67969c3181a43faac3c293313100c2cc88e0e271af13dadd2ee"
+          "sha256": "502de3f543afd158b8ef6c12efcb7845898691446c84df28fe183c92ea2b69f8"
         },
         {
           "wav": "provenance/matrix-24000-synth.wav",
@@ -78,7 +78,7 @@
         },
         {
           "receipt": "provenance/matrix-24000-live.json",
-          "sha256": "06057467e786dfb532abbb7aa27ff3ac5c194748b52dfdfad6e8c7b4af835145"
+          "sha256": "ec83c09aa72868502ab04c1ed8c322f4dc986d986493d9345e926aced87fc286"
         },
         {
           "wav": "provenance/matrix-24000-live.wav",
@@ -86,7 +86,7 @@
         },
         {
           "receipt": "provenance/matrix-32000-synth.json",
-          "sha256": "fa2a5a1829192d3535cc891324cb60708d854b476e5472b51b34142d97f89116"
+          "sha256": "c5dc7e12e4a0c7211c2f82d9e8abea12933bbcc809c176bacab0ba760801aa0e"
         },
         {
           "wav": "provenance/matrix-32000-synth.wav",
@@ -94,7 +94,7 @@
         },
         {
           "receipt": "provenance/matrix-32000-live.json",
-          "sha256": "1c79055316423cfddef422bc8ffcf9304d7107b2ad00600ac19372f81d21b9c5"
+          "sha256": "077971e531875904951bf52c6871f9c5791ae2d8fdbb50ef6bc0018ed809f814"
         },
         {
           "wav": "provenance/matrix-32000-live.wav",
@@ -102,7 +102,7 @@
         },
         {
           "receipt": "provenance/matrix-48000-synth.json",
-          "sha256": "828d70777a55ad7eb795d74bde94a7c81559144b9e0174b2b91087495658f5ed"
+          "sha256": "e6fb2dda6260eb2f0bafdc1f00f48916f67cc816301d294a80b8ae323e6064d8"
         },
         {
           "wav": "provenance/matrix-48000-synth.wav",
@@ -110,7 +110,7 @@
         },
         {
           "receipt": "provenance/matrix-48000-live.json",
-          "sha256": "d31802f6bf7c92d0fc22ce8885c1a523294245a8e213ef142a78916fc4f2639f"
+          "sha256": "16a0bd083c89506446520cc8c11b6ee159fb396cdd8f430cdf59e6482e4eddbc"
         },
         {
           "wav": "provenance/matrix-48000-live.wav",

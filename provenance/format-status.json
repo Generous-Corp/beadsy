@@ -119,5 +119,5 @@
     }
   ],
   "host_validation_receipt": "provenance/host-validation.json",
-  "host_validation_receipt_sha256": "dc8f20a173f7ba6db43b7a2f15e413e2d9c72f108d0e624f0fae0b2b7f8f26a6"
+  "host_validation_receipt_sha256": "43bf8cc783b357590a538c87cd6ea93614d36dbf5d7e3ef9bc25f20e084b2cc4"
 }
