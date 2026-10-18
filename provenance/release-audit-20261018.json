@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "e8f054ce6f6957e546c5f810727be1c7412a62d0",
+  "source_head": "126f4202beec3495f344526921f0618dd0a966ad",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -44,6 +44,13 @@
       "reason": "AU registration remains unavailable; LV2 bundle lacks usable audio ports/URID mapping; Standalone state/audio/clean-shutdown evidence remains incomplete"
     },
     {
+      "id": "source-provenance",
+      "status": "partial",
+      "evidence": "provenance/source-manifest.json and provenance/converter-report.json",
+      "result": "Adapted DSP notice mappings, reachable stmlib origin commit, and waves.bin generator lineage are recorded locally",
+      "reason": "stmlib internal audit, complete source-to-port map, and Illustrator feature diagnostics remain open/inconclusive"
+    },
+    {
       "id": "aax",
       "status": "blocked",
       "evidence": "provenance/format-status.json",
@@ -52,8 +59,9 @@
     {
       "id": "rights-and-release",
       "status": "blocked",
-      "evidence": "provenance/source-manifest.json and provenance/converter-report.json",
-      "reason": "panel artwork and reference material remain pending rights review"
+      "evidence": "provenance/source-manifest.json, ATTRIBUTION.md, LICENSES.md, and provenance/converter-report.json",
+      "reason": "Panel artwork/reference permission and trademark clearance are pending; stmlib internal third-party audit and source-to-port map remain open; converter feature diagnostics are inconclusive",
+      "result": "Local notice mappings for adapted DSP and reachable stmlib subset, plus waves.bin lineage, are recorded; artwork permission and trademark clearance remain unresolved"
     }
   ],
   "historical_receipts": [
@@ -65,7 +73,7 @@
     {
       "path": "provenance/host-validation.json",
       "source_head": "e8f054ce6f6957e546c5f810727be1c7412a62d0",
-      "note": "current-head host matrix: CLAP and VST3 load/audio pass; AU and LV2 host evidence blocked; Standalone launch/editor partial"
+      "note": "prior current-head host matrix; provenance commit 126f420 supersedes source head while host outcomes remain applicable"
     },
     {
       "path": "provenance/vst3-validation.json",
