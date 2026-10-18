@@ -1,6 +1,6 @@
 {
   "schema": "beasy.seed-control.v1",
-  "source_head": "c68624ea0ca767a2c248839a07fefbbd758fc6ef",
+  "source_head": "6ffdeba756ba250368c0d28a0c20c5fe2cb01580",
   "status": "pass",
   "semantic_source": {
     "contract": "third_party/beads_dsp/beads/dsp/trigger_generator.h",

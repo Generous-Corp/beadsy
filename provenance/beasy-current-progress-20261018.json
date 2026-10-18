@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "287820f52407914ca455ee8339d94d655b5ce711",
+  "source_head": "6ffdeba756ba250368c0d28a0c20c5fe2cb01580",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
