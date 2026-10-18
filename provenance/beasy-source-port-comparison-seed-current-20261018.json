@@ -1,12 +1,12 @@
 {
   "schema": "beasy.source-port-comparison.v3",
   "status": "pass_internal_reference_only",
-  "verified_at": "2026-10-18T17:29:49.689181+00:00",
+  "verified_at": "2026-10-18T17:30:26.779483+00:00",
   "project": "Beasy",
   "port": {
     "repository": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018",
-    "head": "75e33b04cb2534097d1185407151c097c51a0e8f",
-    "tracked_changes": true,
+    "head": "88a36828156029bddccf4b8e6c3f5b26eb7238d7",
+    "tracked_changes": false,
     "dsp_root": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/third_party/beads_dsp"
   },
   "source": {
