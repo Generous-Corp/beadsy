@@ -1,0 +1,34 @@
+{
+  "schema": "grainfield.editor-capture.v3",
+  "status": "rendered-provisional-calibration",
+  "project": "Grainfield",
+  "source_head": "1b101e2fc66e2c4fafb855333d156e40ba1d0fec",
+  "renderer": "pulp::view::capture_view",
+  "backend": "auto_select",
+  "logical_size": [201, 364],
+  "scale": 2,
+  "capture_artifact": {
+    "path": "build/grainfield-provisional-controls-v2.png",
+    "bytes": 83065,
+    "sha256": "e35dbb3dd406dee0ea102bbd8fb222e1dd758d5754184f5827b5fef36430f95b",
+    "binary_sha256": "3a72eb1ba4200c7ed288d25aa467e04be89682fd7618636f968dc4a41d19a1ec",
+    "generated_by": "GRAINFIELD_EDITOR_CAPTURE=build/grainfield-provisional-controls-v2.png ./build/Grainfield-editor-test 'Grainfield native editor captures a non-empty faithful panel frame'"
+  },
+  "controls": {
+    "bound": ["density", "time", "pitch", "size", "shape"],
+    "provisional_disabled": 19,
+    "geometry_source": "provenance/control-map.json",
+    "knob_skin": "calibrated-procedural-v2",
+    "rendered_count": 24
+  },
+  "validation": {
+    "capture_test": "pass; 5 assertions",
+    "full_suite_parent_receipt": "provenance/panel-scaffold-receipt-20261018.json"
+  },
+  "open_gates": [
+    "pixel diff against rights-cleared straight-on reference",
+    "GPU Skia/Dawn backend identification and capture",
+    "rights review for panel artwork and reference use"
+  ],
+  "release_claim": "none"
+}

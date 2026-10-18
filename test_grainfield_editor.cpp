@@ -135,7 +135,9 @@ TEST_CASE("Grainfield leaves geometry-only controls visibly provisional") {
             REQUIRE(knob->access_disabled().empty());
         } else {
             REQUIRE_FALSE(knob->enabled());
-            REQUIRE(knob->access_disabled() == "Provisional control mapping");
+            REQUIRE(knob->access_disabled() == "true");
+            REQUIRE(knob->access_label().find(
+                        " (Provisional control mapping)") != std::string::npos);
         }
     }
 }

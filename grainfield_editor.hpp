@@ -325,7 +325,11 @@ private:
                 // them explicitly disabled until an authoritative semantic
                 // mapping is available from the source artwork/documentation.
                 raw->set_enabled(false);
-                raw->set_access_disabled("Provisional control mapping");
+                // The accessibility bridge consumes the ARIA-compatible
+                // boolean token, while the reason belongs in the label.
+                raw->set_access_disabled("true");
+                raw->set_access_label(std::string(p.name) +
+                                      " (Provisional control mapping)");
             }
             add_child(std::move(knob));
             if (p.id != 0) bindings_.push_back(pulp::view::bind_parameter(*raw, store_, p.id));
