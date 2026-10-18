@@ -170,19 +170,40 @@ private:
             {kPitch, "Pitch", 59.515f, 90.1f, 9.25f},
             {kSize, "Size", 24.615f, 67.9f, 7.2f},
             {kShape, "Shape", 46.865f, 67.9f, 7.2f},
+            {0, "Aux 01", 7.115f, 67.9f, 3.0f},
+            {0, "Aux 02", 64.365f, 67.9f, 3.0f},
+            {0, "Aux 03", 64.365f, 51.7f, 3.0f},
+            {0, "Aux 04", 18.565f, 47.9f, 3.0f},
+            {0, "Aux 05", 30.015f, 47.9f, 3.0f},
+            {0, "Aux 06", 41.465f, 47.9f, 3.0f},
+            {0, "Aux 07", 52.915f, 47.9f, 3.0f},
+            {0, "Small 01", 7.115f, 32.0f, 4.4f},
+            {0, "Small 02", 18.565f, 32.0f, 4.4f},
+            {0, "Small 03", 30.015f, 32.0f, 4.4f},
+            {0, "Small 04", 41.465f, 32.0f, 4.4f},
+            {0, "Small 05", 52.915f, 32.0f, 4.4f},
+            {0, "Small 06", 64.365f, 32.0f, 4.4f},
+            {0, "Small 07", 7.115f, 17.4f, 4.4f},
+            {0, "Small 08", 18.565f, 17.4f, 4.4f},
+            {0, "Small 09", 30.015f, 17.4f, 4.4f},
+            {0, "Small 10", 41.465f, 17.4f, 4.4f},
+            {0, "Small 11", 52.915f, 17.4f, 4.4f},
+            {0, "Small 12", 64.365f, 17.4f, 4.4f},
         };
         for (const auto& p : placements) {
             const float diameter = p.r * 2.0f;
             auto knob = std::make_unique<detail::PanelKnob>(p.name, diameter);
             auto* raw = knob.get();
-            raw->set_modulation_indicator([this, id = p.id] {
-                return processor_.lfo(id).enabled;
-            });
-            raw->on_context_menu = [this, id = p.id](pulp::view::Point position) {
-                show_modulation_context_menu(id, position);
-            };
+            if (p.id != 0) {
+                raw->set_modulation_indicator([this, id = p.id] {
+                    return processor_.lfo(id).enabled;
+                });
+                raw->on_context_menu = [this, id = p.id](pulp::view::Point position) {
+                    show_modulation_context_menu(id, position);
+                };
+            }
             add_child(std::move(knob));
-            bindings_.push_back(pulp::view::bind_parameter(*raw, store_, p.id));
+            if (p.id != 0) bindings_.push_back(pulp::view::bind_parameter(*raw, store_, p.id));
             controls_.push_back({raw, p.x, p.y, p.r});
         }
     }
