@@ -31,6 +31,32 @@ def current_head(source: Path) -> str:
     ).strip()
 
 
+def receipt_tip_is_metadata_only(source: Path, receipt_path: Path,
+                                 expected_head: str, actual_head: str) -> bool:
+    """Allow a receipt-only commit to publish evidence for its source parent.
+
+    A tracked receipt cannot record the hash of the commit that contains it
+    without becoming self-invalidating. The exception is deliberately narrow:
+    HEAD must have exactly one parent, the recorded head must be that parent,
+    and the tip commit may change only this receipt.
+    """
+    try:
+        parent = subprocess.check_output(
+            ["git", "-C", str(source), "rev-parse", f"{actual_head}^"], text=True
+        ).strip()
+        changed = subprocess.check_output(
+            ["git", "-C", str(source), "diff-tree", "--no-commit-id", "--name-only",
+             "-r", actual_head], text=True
+        ).splitlines()
+    except (OSError, subprocess.CalledProcessError):
+        return False
+    try:
+        relative_receipt = receipt_path.resolve().relative_to(source.resolve()).as_posix()
+    except ValueError:
+        return False
+    return parent == expected_head and changed == [relative_receipt]
+
+
 def _confined(build: Path, relative: str) -> Path:
     candidate = (build / relative).resolve()
     root = build.resolve()
@@ -62,7 +88,8 @@ def verify(receipt_path: Path, source: Path | None = None,
     else:
         if not expected_head:
             errors.append("receipt is missing source.git_head")
-        elif expected_head != actual_head:
+        elif expected_head != actual_head and not receipt_tip_is_metadata_only(
+                source, receipt_path, expected_head, actual_head):
             errors.append(f"stale source head: receipt={expected_head}, current={actual_head}")
 
     for entry in receipt.get("formats", []):
