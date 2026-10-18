@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "f794015bee27c74b7878e09ee4099d6dd73c9614",
+  "source_head": "7f047b093701ae1794d7b7e33329ce5422c89655",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -158,5 +158,6 @@
       "next": "close required gates before signing/notarization/release claim"
     }
   ],
-  "historical_evidence_policy": "Older Grainfield receipts are historical and do not prove this Beasy head."
+  "historical_evidence_policy": "Older Grainfield receipts are historical and do not prove this Beasy head.",
+  "receipt_scope": "current Beasy worktree; historical Grainfield receipts are excluded from acceptance evidence"
 }
