@@ -1,0 +1,20 @@
+{
+  "schema": "grainfield.asset-validation.v1",
+  "status": "pass",
+  "svg": {
+    "path": "provenance/generated/beads-panel.svg",
+    "sha256": "24f895b0cb3744ea41d45b1e34494513d493090680a793104b8b7400836fb05d",
+    "viewBox": [
+      "0",
+      "0",
+      "200.693",
+      "364.252"
+    ]
+  },
+  "control_map": {
+    "path": "provenance/control-map.draft.json",
+    "sha256": "dc82a987ab7b477533045530c081072d10fd5ade477c92e037bda29f85f077e6",
+    "controls": 5
+  },
+  "rights": "authoring_probe_only; artwork_release_blocked_pending_rights_review"
+}
