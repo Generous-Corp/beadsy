@@ -4,7 +4,7 @@
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
-    "git_head": "6080f7d0b6ec8fa9d5024fbc3590f95eae577c89"
+    "git_head": "6c1deb5c288f02347b088d0af930e40824d2974c"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build",
@@ -12,12 +12,12 @@
     "build_ninja_present": true,
     "pulp_dir": "/Users/danielraffel/pulp-sdk/lib/cmake/Pulp"
   },
-  "host_validation": "not_run",
+  "host_validation": "partial",
   "formats": [
     {
       "format": "VST3",
       "status": "partial",
-      "reason": "Validated VST3 artifact built against installed development SDK; pluginval passes, moduleinfo and Steinberg validator evidence remain open",
+      "reason": "Validated external VST3 artifact built against installed development SDK; pluginval and pulp host load/audio probe pass; moduleinfo and Steinberg validator evidence remain open",
       "evidence": {
         "artifact": {
           "path": "/Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3/Contents/MacOS/Grainfield",
@@ -33,7 +33,7 @@
     {
       "format": "CLAP",
       "status": "supported",
-      "reason": "declared target produced an artifact; CLAP validator, host load, stereo-input render, and 24/32/48 kHz matrix receipts are present",
+      "reason": "declared target produced an artifact; clap-validator, pulp host load/audio probe, stereo-input render, and 24/32/48 kHz matrix receipts are present",
       "evidence": {
         "artifact": {
           "path": "CLAP/Grainfield.clap/Contents/MacOS/Grainfield",
@@ -43,13 +43,13 @@
           "sha256": "23709cebe0044ed46bbdbffb1455bb9d941f22d425451be310d09c371a25c359"
         },
         "pulp_target_present": true,
-        "host_validation": "partial"
+        "host_validation": "pass"
       }
     },
     {
       "format": "LV2",
       "status": "supported",
-      "reason": "declared target produced an artifact in the inspected build tree",
+      "reason": "declared target produced an artifact, but pulp host cannot instantiate it: TTLs expose no audio ports and URID mapping is unavailable",
       "evidence": {
         "artifact": {
           "path": "LV2/Grainfield.lv2/Grainfield.so",
@@ -59,13 +59,13 @@
           "sha256": "4752741abdf6739a4bd2f5b78efc3e3a7c747f75bc4337d9f482be940feb2e6b"
         },
         "pulp_target_present": true,
-        "host_validation": "not_run"
+        "host_validation": "blocked"
       }
     },
     {
       "format": "AU",
       "status": "supported",
-      "reason": "declared target produced an artifact; packaging metadata passes, AU registration/auval remains blocked",
+      "reason": "declared target produced an artifact; packaging metadata passes, but AU registration and pulp host load are blocked",
       "evidence": {
         "artifact": {
           "path": "AU/Grainfield.component/Contents/MacOS/Grainfield",
@@ -75,7 +75,7 @@
           "sha256": "1fe9bf43634ae1241cea49ec350f04d5782a658efe83fc052b276a39bd9ae8e1"
         },
         "pulp_target_present": true,
-        "host_validation": "partial"
+        "host_validation": "blocked"
       }
     },
     {
@@ -95,7 +95,7 @@
     {
       "format": "Standalone",
       "status": "supported",
-      "reason": "declared target produced an artifact in the inspected build tree",
+      "reason": "declared target produced an artifact; bounded launch/editor probe passed, while state/audio/clean-shutdown evidence remains incomplete",
       "evidence": {
         "artifact": {
           "path": "Grainfield.app/Contents/MacOS/Grainfield",
@@ -105,8 +105,10 @@
           "sha256": "1b07b3fb52514dbf90a5f859ef9beaef86aad52b62e459bf1ed787bd7b883705"
         },
         "pulp_target_present": true,
-        "host_validation": "not_run"
+        "host_validation": "partial"
       }
     }
-  ]
+  ],
+  "host_validation_receipt": "provenance/host-validation-matrix.txt",
+  "host_validation_receipt_sha256": "330c2c31e252b65e7b9a7922a25d2693b28075f947cb9c94bebd4b261e1b16a6"
 }

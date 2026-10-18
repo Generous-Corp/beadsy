@@ -1,0 +1,23 @@
+Grainfield host validation matrix
+source_head: 6c1deb5c288f02347b088d0af930e40824d2974c
+external_vst3: /Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3
+
+CLAP (pass)
+command: pulp host build/CLAP/Grainfield.clap --format clap
+result: Loaded Grainfield; 13 params; finite peak 0.190 on a 256-sample synthetic block.
+
+VST3 (pass)
+command: pulp host /Users/danielraffel/Code/grainfield-vst3-evidence-6080f7d0/Grainfield.vst3 --format vst3
+result: Loaded Grainfield; VST3 bus arrangement accepted (1 in/1 out); finite peak 0.190 on a 256-sample synthetic block.
+
+AUv2 (blocked)
+command: pulp host build/AU/Grainfield.component --format au
+result: AudioComponentFindNext failed for aumu:Grai:Inde; host load unavailable. auval registration remains blocked.
+
+LV2 (blocked)
+command: pulp host build/LV2/Grainfield.lv2 --format lv2
+result: Bundle exposes no audio ports in TTLs and host lacks LV2_URID__map; instantiate/prepare failed.
+
+Standalone (partial)
+command: timeout 5s build/Grainfield.app/Contents/MacOS/Grainfield
+result: CoreAudio opened at 48 kHz/256 frames, MIDI connected, and editor window opened; bounded probe timed out, so state/audio/clean-shutdown evidence is incomplete.
