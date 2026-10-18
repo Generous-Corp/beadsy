@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "20090e9f4eeb5cc07a2a4c89a15872157f573428",
+  "source_head": "47159940a6cbbdcf788eeecd1c0dcfba5ea18062",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -46,7 +46,20 @@
       "byte_identical": 48,
       "max_abs_error": 0.0,
       "max_rmse": 0.0,
-      "scope": "direct adapted DSP only; adapter and host contracts remain separate"
+      "scope": "direct adapted DSP only; adapter and host contracts remain separate",
+      "seed_gate": {
+        "path": "provenance/beasy-source-port-comparison-seed-current-20261018.json",
+        "status": "pass_internal_reference_only",
+        "fixtures_checked": 144,
+        "byte_identical": 144,
+        "max_abs_error": 0.0,
+        "max_rmse": 0.0,
+        "scenarios": [
+          "ON then OFF/no external",
+          "LOCKED with external gate",
+          "OFF with external gate"
+        ]
+      }
     },
     "seed_mode": {
       "status": "implemented_source_backed",
@@ -63,7 +76,7 @@
     {
       "id": "source_dsp_parity",
       "status": "pass_internal_reference_only",
-      "next": "extend fixtures to adapter MIDI ordering, CV, freeze persistence, effect path, and supported host rates"
+      "next": "extend fixtures to Processor adapter MIDI ordering, CV, freeze persistence, effect path, and supported host rates"
     },
     {
       "id": "ui_fidelity",
