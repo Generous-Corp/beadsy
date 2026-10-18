@@ -116,6 +116,30 @@ TEST_CASE("Grainfield editor exposes a right-click modulation target seam") {
     REQUIRE_FALSE(native->modulation_context_target().has_value());
 }
 
+TEST_CASE("Grainfield leaves geometry-only controls visibly provisional") {
+    grainfield::Grainfield processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<grainfield::GrainfieldEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    REQUIRE(native->child_count() == 24);
+
+    // The first five controls are the only source-backed parameter bindings.
+    for (std::size_t i = 0; i < native->child_count(); ++i) {
+        auto* knob = dynamic_cast<grainfield::detail::PanelKnob*>(native->child_at(i));
+        REQUIRE(knob != nullptr);
+        if (i < 5) {
+            REQUIRE(knob->enabled());
+            REQUIRE(knob->access_disabled().empty());
+        } else {
+            REQUIRE_FALSE(knob->enabled());
+            REQUIRE(knob->access_disabled() == "Provisional control mapping");
+        }
+    }
+}
+
 TEST_CASE("Grainfield modulation context menu updates and resets the selected LFO") {
     grainfield::Grainfield processor;
     pulp::state::StateStore store;

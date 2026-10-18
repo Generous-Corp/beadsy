@@ -319,6 +319,13 @@ private:
                 raw->on_context_menu = [this, id = p.id](pulp::view::Point position) {
                     show_modulation_context_menu(id, position);
                 };
+            } else {
+                // Geometry-only controls remain visible for layout inspection,
+                // but must not look or behave like guessed parameters. Keep
+                // them explicitly disabled until an authoritative semantic
+                // mapping is available from the source artwork/documentation.
+                raw->set_enabled(false);
+                raw->set_access_disabled("Provisional control mapping");
             }
             add_child(std::move(knob));
             if (p.id != 0) bindings_.push_back(pulp::view::bind_parameter(*raw, store_, p.id));
