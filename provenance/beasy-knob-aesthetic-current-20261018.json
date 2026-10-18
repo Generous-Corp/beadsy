@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "beasy.knob-aesthetic.v1",
+  "source_head": "658936a6d53425a3abde5c0ef3c46da16a79c1c3",
+  "status": "procedural_calibration_pass_visual_release_gate_open",
+  "reference": {
+    "path": "/Users/danielraffel/Code/mutable-instruments-documentation/docs/modules/beads/images/front.jpg",
+    "sha256": "4346619e9d47cb8d8ac9604d3661776b7ce5dcc37cfe74f36d3d7f3d62b031bf",
+    "use": "local reference-only material and proportion audit",
+    "embedded_or_redistributed": false
+  },
+  "implementation": {
+    "file": "beasy_editor.hpp",
+    "outer_radius_fraction": 1.14,
+    "cap_radius_fraction": 0.62,
+    "cap_to_outer_ratio": 0.5438596491,
+    "pointer_inner_half_width_fraction": 0.10,
+    "pointer_outer_half_width_fraction": 0.055,
+    "pointer_inner_to_outer_ratio": 0.0877192982,
+    "major_medium_cast_shadow": "procedural gray offset halo for radius > 12",
+    "mapped_dxf_diameter": "unchanged"
+  },
+  "capture": {
+    "path": "build-beasy-renamed/beasy-editor-knob-aesthetic-pass.png",
+    "sha256": "f0b911c38c6434fe93f1b2547cbbe1278f240ed86e98cdfa1134b5e9622f57dc",
+    "size": [402, 728]
+  },
+  "isolated_renders": {
+    "directory": "build-beasy-renamed/knob-aesthetic-pass",
+    "min_sha256": "f9b9ae6cddd59fb633eeeedc8555e39d813821289e0eee97b68cc3b891bf03c6",
+    "mid_sha256": "62be4bd28694e32e7f328886996e6583a7075557e9ac8436e9bcbb6d37129ebb",
+    "max_sha256": "a103929b0a006c0cf76f024ffb720e00b5f4611a7d4055f6946b8e2b1df937eb"
+  },
+  "validation": {
+    "command": "ctest --test-dir build-beasy-renamed -R 'Beasy (knob skin|procedural knob|native editor)' --output-on-failure",
+    "passed": 4,
+    "failed": 0,
+    "full_panel_pixel_fidelity": "not_claimed; reference remains rights-sensitive"
+  },
+  "remaining": [
+    "rights-cleared full-panel comparison",
+    "final artwork/trademark/provenance review"
+  ]
+}
