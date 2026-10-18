@@ -2,7 +2,7 @@
   "schema": "grainfield.audio-contract.v1",
   "status": "partial",
   "project": "Grainfield",
-  "source_head": "c54be0df570431ddbea3fc41948dfd2686da868b",
+  "source_head": "3bf33dea1f0ea9001b100c5cb5db123e00228084",
   "engine": {
     "implementation": "beads::Synth",
     "internal_sample_rate_hz": 48000,
@@ -46,11 +46,12 @@
       "Grainfield sustain and overlap handling is deterministic",
       "Grainfield quality selects the four Beads synth resolutions",
       "Grainfield freeze toggle reaches the internal Beads synth path",
-      "Beads ratio-2 processor uses prepared scratch"
+      "Beads ratio-2 processor uses prepared scratch",
+      "Grainfield sustain and overlap handling is deterministic with sample-offset MIDI events"
     ],
     "command": "pulp test",
     "execution": "passed locally",
-    "result": "18/18 CTest tests passed",
+    "result": "21/21 Grainfield CTest tests passed",
     "seed": "stmlib::Random::Seed(0x12345678) before each seeded render"
   },
   "open_gates": [
@@ -63,7 +64,7 @@
   "receipt_refresh": {
     "validated_at": "2026-10-18",
     "command": "pulp test",
-    "result": "18/18 CTest tests passed"
+    "result": "21/21 Grainfield CTest tests passed"
   },
   "release_scope": {
     "version": "v1-synth-only-20261018",

@@ -216,6 +216,10 @@
     {
       "path": "provenance/midi-event-validation.json",
       "role": "sample-offset MIDI overlap and sustain contract"
+    },
+    {
+      "path": "provenance/audio-contract.json",
+      "role": "current sample-rate and audio contract"
     }
   ],
   "audit_receipt_head": "c071afa84f41632577a53a8c2ac94662eea287d9"
