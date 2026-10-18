@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "908b8878dc8d7e4158f80a9f60f91cad900f2dbe",
+  "source_head": "ba54c7a972617fbb3cc46debf888a6b0ac4b4c3c",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -117,7 +117,13 @@
       "finite_frames": "102400/102400",
       "state_save_restore": "pass"
     },
-    "visual_reference_comparison": "provenance/beasy-visual-reference-comparison-current-20261018.json"
+    "visual_reference_comparison": "provenance/beasy-visual-reference-comparison-current-20261018.json",
+    "packaging_registration": {
+      "path": "provenance/beasy-packaging-status-current.json",
+      "status": "partial",
+      "au": "blocked_existing_user_install_hash_mismatch",
+      "vst3": "blocked_vst3validator_unavailable"
+    }
   },
   "open_gates": [
     {

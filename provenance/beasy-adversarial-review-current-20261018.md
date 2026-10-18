@@ -1,6 +1,6 @@
 # Beasy adversarial review — current integration head
 
-Reviewed at source head `908b887` on 2026-10-18. This review remains conservative: focused tests and artifact receipts do not close broader host, rights, UI, or release gates.
+Reviewed at source head `ba54c7a` on 2026-10-18. This review remains conservative: focused tests and artifact receipts do not close broader host, rights, UI, or release gates.
 
 ## Evidence that holds
 
@@ -15,7 +15,7 @@ Reviewed at source head `908b887` on 2026-10-18. This review remains conservativ
 ## Open or bounded claims
 
 - No installed third-party LV2 host or validator is available; DAW-level LV2 integration remains unproven.
-- AU installed-component discovery remains open even though the isolated governed `auval` path passes.
+- AU installed-component discovery remains open: the current registration helper refused to replace an existing user-installed Beasy bundle whose binary hash differs from the current build, while the isolated governed `auval` path passes.
 - AAX remains blocked by the unavailable proprietary SDK and host evidence.
 - The editor is a clean-room procedural panel. Straight-on geometry, knobs, jacks, automation, LFO context menus, Freeze/Seed controls, compact I/O labels, and colored auxiliary controls are implemented. The current private comparison reports mean RGB error 54.58 and edge correlation 0.096; this is geometry-only evidence, not pixel-fidelity closure.
 - Upstream panel artwork, CAD, photos, manuals, trademarks, and unresolved resource lineage remain rights gates. They are not redistributed.
