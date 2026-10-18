@@ -34,7 +34,7 @@
     "vst3validator": {
       "path": null,
       "status": "unavailable",
-      "reason": "No vst3validator executable or configured SDK validator build target was found; SDK contains validator sample headers only"
+      "reason": "No vst3validator executable, implementation source, or configured SDK validator build target was found; SDK contains validator sample headers only"
     }
   },
   "bundle_inspection": {

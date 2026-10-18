@@ -12,13 +12,21 @@
       "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0/external/vst3sdk/public.sdk/source/vst/moduleinfo/moduleinfoparser.h"
     ],
     "generator_executable_found": false,
-    "configured_generation_target_found": false
+    "configured_generation_target_found": false,
+    "creator_implementation_source_found": false,
+    "source_blocker": "SDK checkout contains moduleinfocreator.h declarations but no moduleinfocreator.cpp/implementation source or standalone generator CMake target"
   },
   "validator": {
     "command": "vst3validator",
     "executable_found": false,
     "sdk_validator_source_present": "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/dcfc23f487a2a54e5e4a57a341eabad7c8963161/90c06c5b00f0/external/vst3sdk/public.sdk/samples/vst-hosting/validator/source/validator.h",
-    "sdk_validator_build_target_found": false
+    "sdk_validator_build_target_found": false,
+    "implementation_source_found": false,
+    "source_blocker": "SDK checkout contains validator headers/test headers but no standalone validator implementation target in the installed development SDK"
   },
-  "conclusion": "Installed development SDK exposes moduleinfo parser/creator headers and validator sample sources only; no generator/validator executable or configured build target was found. VST3 remains partial."
+  "conclusion": "Installed development SDK exposes moduleinfo parser/creator headers and validator sample sources only; no generator/validator executable or configured build target was found. VST3 remains partial.",
+  "standalone_build_attempt": {
+    "status": "blocked",
+    "reason": "No creator implementation source or CMake target is present, so a standalone generator cannot be built from this SDK checkout without inventing a tool outside the SDK"
+  }
 }
