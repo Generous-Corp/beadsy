@@ -1,6 +1,6 @@
 {
   "schema": "grainfield.editor-capture.v1",
-  "status": "prototype_pass",
+  "status": "blocked",
   "project": "Grainfield",
   "source_head": "b882603c53044db71d70c74111e67739d75d9243",
   "renderer": "pulp::view::capture_view",
@@ -32,5 +32,11 @@
     "pixel diff against rights-cleared straight-on reference",
     "material and pointer calibration",
     "host automation gesture receipt"
-  ]
+  ],
+  "artifact_status": "missing_from_current_checkout",
+  "reason": "Recorded PNG artifact is not present in the current checkout; historical dimensions and hashes are retained for provenance, but current visual fidelity cannot be claimed.",
+  "capture_artifact": {
+    "path": "build/grainfield-editor.png",
+    "exists": false
+  }
 }
