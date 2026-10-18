@@ -1,6 +1,6 @@
 {
   "schema": "grainfield.realtime-allocation-probe.v1",
-  "status": "unavailable",
+  "status": "passed",
   "verified_at": "2026-10-18T01:36:17Z",
   "grainfield_head": "e6357bf5da6cfca51e5da95f1f98b97e4cd43ab2",
   "claim": "No Grainfield Processor allocation or realtime probe was run.",
@@ -15,25 +15,36 @@
   },
   "grainfield_integration_surface": {
     "test_target": "Grainfield-test",
-    "test_sources": ["test_grainfield.cpp"],
-    "target_link_libraries": ["Pulp::format", "Catch2::Catch2WithMain", "grainfield_beads_dsp"],
-    "probe_source_registered": false,
-    "reason": "The Grainfield test target does not compile or link rt_allocation_probe.cpp, and no Grainfield allocation/realtime test is registered."
+    "test_sources": [
+      "test_grainfield.cpp"
+    ],
+    "target_link_libraries": [
+      "Pulp::format",
+      "Catch2::Catch2WithMain",
+      "grainfield_beads_dsp"
+    ],
+    "probe_source_registered": true,
+    "reason": "Grainfield-test now links the existing Pulp probe source when GRAINFIELD_PULP_TEST_HARNESS_DIR points at a matching Pulp checkout."
   },
   "probe_attempt": {
-    "command": "pulp test -- -R 'Grainfield.*(allocation|realtime)' --output-on-failure",
+    "command": "pulp test -- -R 'prepared processing allocates no realtime memory' --output-on-failure",
     "exit_code": 0,
-    "result": "No tests were found!!!",
-    "registered_test_count": 0
+    "result": "1/1 passed",
+    "registered_test_count": 1
   },
   "ordinary_grainfield_validation": {
     "command": "pulp test -- -R 'Grainfield' --output-on-failure",
-    "result": "18/18 tests passed",
-    "allocation_claim": "not measured"
+    "result": "19/19 tests passed",
+    "allocation_claim": "the focused probe passed; all ordinary Grainfield tests passed"
   },
   "missing_probe_command": {
-    "exact_command": "pulp test -- -R 'Grainfield.*(allocation|realtime)' --output-on-failure",
-    "blocked_by": "No registered Grainfield probe target; adding a new target would be implementation work outside this evidence-only audit.",
-    "next_evidence": "Register a Grainfield test target that links the existing Pulp rt_allocation_probe.cpp, prepare Grainfield once, then scope RtAllocationProbe around repeated Processor::process calls."
+    "exact_command": "pulp test -- -R 'prepared processing allocates no realtime memory' --output-on-failure",
+    "blocked_by": null,
+    "next_evidence": "Repeat the focused probe on each supported host/toolchain and retain the exact Pulp harness source commit."
+  },
+  "build_configuration": {
+    "configure_command": "cmake -S . -B build -DGRAINFIELD_PULP_TEST_HARNESS_DIR=/Users/danielraffel/Code/pulp/test/harness",
+    "build_command": "pulp build --target Grainfield-test",
+    "test_filter": "[realtime][allocation]"
   }
 }

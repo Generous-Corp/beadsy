@@ -54,6 +54,29 @@ include(Catch)
 add_executable(Grainfield-test test_grainfield.cpp)
 target_link_libraries(Grainfield-test PRIVATE Pulp::format Catch2::Catch2WithMain grainfield_beads_dsp)
 target_include_directories(Grainfield-test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+# Pulp keeps the allocation probe in its test harness (it is not part of the
+# installed SDK).  Point this test-only target at a matching Pulp checkout
+# when the realtime allocation gate is desired; ordinary SDK consumers can
+# continue building the functional tests without the private harness.
+set(GRAINFIELD_PULP_TEST_HARNESS_DIR "" CACHE PATH
+    "Pulp test/harness directory for Grainfield realtime allocation tests")
+if(NOT GRAINFIELD_PULP_TEST_HARNESS_DIR AND DEFINED ENV{PULP_SOURCE_DIR})
+    set(GRAINFIELD_PULP_TEST_HARNESS_DIR
+        "$ENV{PULP_SOURCE_DIR}/test/harness")
+endif()
+if(EXISTS "${GRAINFIELD_PULP_TEST_HARNESS_DIR}/rt_allocation_probe.cpp")
+    target_sources(Grainfield-test PRIVATE
+        "${GRAINFIELD_PULP_TEST_HARNESS_DIR}/rt_allocation_probe.cpp")
+    target_include_directories(Grainfield-test PRIVATE
+        "${GRAINFIELD_PULP_TEST_HARNESS_DIR}")
+    target_compile_definitions(Grainfield-test PRIVATE
+        GRAINFIELD_HAS_RT_ALLOCATION_PROBE=1)
+else()
+    message(STATUS
+        "Grainfield realtime allocation probe unavailable; set "
+        "GRAINFIELD_PULP_TEST_HARNESS_DIR to Pulp's test/harness")
+endif()
 catch_discover_tests(Grainfield-test)
 
 if(TARGET Pulp::view)

@@ -7,6 +7,9 @@
 #include <pulp/midi/buffer.hpp>
 #include "grainfield.hpp"
 #include "stmlib/utils/random.h"
+#if defined(GRAINFIELD_HAS_RT_ALLOCATION_PROBE)
+#include "rt_allocation_probe.hpp"
+#endif
 
 TEST_CASE("Grainfield descriptor is an instrument") {
     auto proc = grainfield::create_grainfield();
@@ -19,6 +22,39 @@ TEST_CASE("Grainfield descriptor is an instrument") {
     REQUIRE(desc.input_buses[0].default_channels == 2);
     REQUIRE(desc.output_buses.size() == 1);
 }
+
+#if defined(GRAINFIELD_HAS_RT_ALLOCATION_PROBE)
+TEST_CASE("Grainfield prepared processing allocates no realtime memory",
+          "[realtime][allocation]") {
+    auto proc = grainfield::create_grainfield();
+    pulp::state::StateStore store;
+    proc->set_state_store(&store);
+    proc->define_parameters(store);
+    pulp::format::PrepareContext prep{.sample_rate = 48000.0,
+                                      .max_buffer_size = 256,
+                                      .input_channels = 0,
+                                      .output_channels = 2};
+    proc->prepare(prep);
+
+    pulp::midi::MidiBuffer input;
+    pulp::midi::MidiBuffer output_midi;
+    input.add(pulp::midi::MidiEvent::note_on(0, 60, 100));
+    pulp::audio::Buffer<float> output(2, 256);
+    auto view = output.view();
+    pulp::audio::BufferView<const float> empty(nullptr, 0, 0);
+    pulp::format::ProcessContext context{.sample_rate = 48000.0,
+                                         .num_samples = 256};
+
+    // Warm up state transitions before observing the steady-state callback.
+    proc->process(view, empty, input, output_midi, context);
+
+    pulp::test::RtAllocationProbe probe;
+    for (int block = 0; block < 32; ++block)
+        proc->process(view, empty, input, output_midi, context);
+
+    REQUIRE_FALSE(probe.saw_allocation());
+}
+#endif
 
 TEST_CASE("Grainfield exposes Beads semitone pitch range and maps MIDI note offsets") {
     auto render_note = [](std::uint8_t note) {
