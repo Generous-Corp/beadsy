@@ -1,10 +1,10 @@
 {
   "schema": "grainfield.format-status.v1",
-  "generated_at": "2026-10-18T00:21:09.273187Z",
+  "generated_at": "2026-10-18T00:21:45.684479Z",
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield",
-    "git_head": "ef324a7a62b1fbb12dda750c1985cbe2af5b1a53"
+    "git_head": "80571c0dbf17cd14aff0cfdcb523d66d950e176b"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield/build",
