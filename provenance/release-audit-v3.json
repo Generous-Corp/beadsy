@@ -329,6 +329,18 @@
       "sha256": "ef5d8677276c2d4a9bdfa59b3d10d0a83f72cec20c01953f03fe4ed752404a44",
       "source_head": "0a2bcbae4fceb41b2ced46cc9a26c5d960944076",
       "evidence_freshness": "current_exact_head_with_historical_external_evidence"
+    },
+    {
+      "path": "provenance/native-editor-audio-state-audit-20261018.json",
+      "sha256": "45f8777f0d1e1e4326d7ca4a8c5f006f9704ef2629f14e49d6eb9a443c66512b",
+      "source_head": "62286f18f7065501a9920be0fa28b7c1a755b5bd",
+      "evidence_freshness": "current_exact_head_with_historical_external_evidence"
+    },
+    {
+      "path": "provenance/vst3-moduleinfo-toolchain-audit-20261018.json",
+      "sha256": "363fcbc93e659fa33e458cf882ed0e01cf6941388c32eecca82ec4ba3afa8a31",
+      "source_head": "0a2bcbae4fceb41b2ced46cc9a26c5d960944076",
+      "evidence_freshness": "current_exact_head_with_historical_external_evidence"
     }
   ],
   "non_claims": [
