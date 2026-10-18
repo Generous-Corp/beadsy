@@ -7,21 +7,132 @@
     "geometry": "provenance/control-map.json",
     "material_reference": "/Users/danielraffel/Documents/beads-panel.png",
     "material_reference_sha256": "6ba7ede50ad6baab8d6c96bb41eb51355026ac9a3fd012fc6fe0ff96214664db",
-    "rights": {"state": "pending_rights_review", "redistribution": "blocked_until_cleared"}
+    "rights": {
+      "state": "pending_rights_review",
+      "redistribution": "blocked_until_cleared"
+    }
   },
   "render_contract": {
     "renderer": "native-parameterized-skia",
-    "rotation": {"unit": "degrees", "zero": "12-o-clock", "direction": "clockwise"},
-    "value_range": [0.0, 1.0],
-    "pointer": {"state": "provisional", "shape": "narrow-line", "length_fraction": 0.62},
-    "modulation_indicator": {"state": "planned", "style": "outer-arc", "color": "#D89B45"},
-    "reference_renders": {"min": "not-run", "mid": "not-run", "max": "not-run"}
+    "rotation": {
+      "unit": "degrees",
+      "zero": "12-o-clock",
+      "direction": "clockwise"
+    },
+    "value_range": [
+      0.0,
+      1.0
+    ],
+    "pointer": {
+      "state": "provisional",
+      "shape": "narrow-line",
+      "length_fraction": 0.62
+    },
+    "modulation_indicator": {
+      "state": "implemented",
+      "style": "outer-arc",
+      "color": "#D89B45"
+    },
+    "reference_renders": {
+      "min": "not-run",
+      "mid": "not-run",
+      "max": "not-run"
+    }
   },
   "skins": [
-    {"id":"major-ornate","used_by":["density","time","pitch"],"diameter_mm":18.5,"material":{"state":"provisional","base":"#1B1B1B","cap":"#252525","ring":"#B2A17C"},"scale":{"min_px":44,"max_px":96}},
-    {"id":"major-large","used_by":["size","shape"],"diameter_mm":14.4,"material":{"state":"provisional","base":"#1B1B1B","cap":"#252525","ring":"#A99776"},"scale":{"min_px":36,"max_px":80}},
-    {"id":"small-black","used_by":["small-01","small-02","small-03","small-04","small-05","small-06","small-07","small-08","small-09","small-10","small-11","small-12"],"diameter_mm":8.8,"material":{"state":"provisional","base":"#171717","cap":"#202020","ring":"#756E62"},"scale":{"min_px":24,"max_px":52}},
-    {"id":"auxiliary","used_by":["aux-01","aux-02","aux-03","aux-04","aux-05","aux-06","aux-07"],"diameter_mm":6.0,"material":{"state":"unresolved","base":null,"cap":null,"ring":null},"scale":{"min_px":18,"max_px":40}}
+    {
+      "id": "major-ornate",
+      "used_by": [
+        "density",
+        "time",
+        "pitch"
+      ],
+      "diameter_mm": 18.5,
+      "material": {
+        "state": "provisional",
+        "base": "#1B1B1B",
+        "cap": "#252525",
+        "ring": "#B2A17C"
+      },
+      "scale": {
+        "min_px": 44,
+        "max_px": 96
+      }
+    },
+    {
+      "id": "major-large",
+      "used_by": [
+        "size",
+        "shape"
+      ],
+      "diameter_mm": 14.4,
+      "material": {
+        "state": "provisional",
+        "base": "#1B1B1B",
+        "cap": "#252525",
+        "ring": "#A99776"
+      },
+      "scale": {
+        "min_px": 36,
+        "max_px": 80
+      }
+    },
+    {
+      "id": "small-black",
+      "used_by": [
+        "small-01",
+        "small-02",
+        "small-03",
+        "small-04",
+        "small-05",
+        "small-06",
+        "small-07",
+        "small-08",
+        "small-09",
+        "small-10",
+        "small-11",
+        "small-12"
+      ],
+      "diameter_mm": 8.8,
+      "material": {
+        "state": "provisional",
+        "base": "#171717",
+        "cap": "#202020",
+        "ring": "#756E62"
+      },
+      "scale": {
+        "min_px": 24,
+        "max_px": 52
+      }
+    },
+    {
+      "id": "auxiliary",
+      "used_by": [
+        "aux-01",
+        "aux-02",
+        "aux-03",
+        "aux-04",
+        "aux-05",
+        "aux-06",
+        "aux-07"
+      ],
+      "diameter_mm": 6.0,
+      "material": {
+        "state": "unresolved",
+        "base": null,
+        "cap": null,
+        "ring": null
+      },
+      "scale": {
+        "min_px": 18,
+        "max_px": 40
+      }
+    }
   ],
-  "validation": {"geometry_source":"DXF only","material_calibration":"not-run","pixel_diff":"not-run","release_gate":"blocked_until_rights_and_calibration"}
+  "validation": {
+    "geometry_source": "DXF only; all 24 placements rendered",
+    "material_calibration": "provisional visual calibration from straight-on reference",
+    "pixel_diff": "not-run",
+    "release_gate": "blocked_until_rights_and_calibration"
+  }
 }

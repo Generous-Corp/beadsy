@@ -1011,8 +1011,8 @@
     "geometry_tolerance_mm": 0.01,
     "expected_dxf_knob_count": 24,
     "screenshot_overlay": {
-      "status": "not-run",
-      "reason": "requires resolved artwork rights and straight-on calibration"
+      "status": "provisional-rendered",
+      "reason": "all 24 DXF placements rendered; pixel acceptance remains rights/calibration gated"
     },
     "parameter_binding_review": {
       "status": "partial",

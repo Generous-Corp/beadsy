@@ -2,7 +2,7 @@
   "schema": "grainfield.editor-capture.v1",
   "status": "prototype_pass",
   "project": "Grainfield",
-  "source_head": "",
+  "source_head": "b882603c53044db71d70c74111e67739d75d9243",
   "renderer": "pulp::view::capture_view",
   "backend": "auto_select",
   "logical_size": [
@@ -25,7 +25,8 @@
       "shape"
     ],
     "geometry_source": "provenance/control-map.json",
-    "knob_skin": "provisional-calibration-only"
+    "knob_skin": "provisional-calibration-only",
+    "rendered_count": 24
   },
   "open_gates": [
     "pixel diff against rights-cleared straight-on reference",
