@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.host-validation.v1",
   "project": "Grainfield",
-  "source_head": "33417e125e26567a3af18aac8c5f2a9833ef4b2a",
+  "source_head": "3bf5d90f19b5094c1f8830a4c4b5c60c84407ed4",
   "status": "partial",
   "checks": [
     {
@@ -11,27 +11,27 @@
       "command": "clap-validator validate /Users/danielraffel/Code/grainfield-quality-mode-integration/build/CLAP/Grainfield.clap",
       "result": "21 tests run, 18 passed, 0 failed, 3 skipped, 0 warnings",
       "receipt": "provenance/clap-validator.txt",
-      "receipt_sha256": "51182392d569882c305a64fedb5648984129b27b0294ad0e192b765854025e38"
+      "receipt_sha256": "8d1f9ba21e33003b2abdeb57b70de8f82725ec080ad0f75cc6ab9ea31015d7bb"
     },
     {
       "format": "CLAP",
       "check": "pulp host load",
       "status": "pass",
       "command": "pulp-cpp host build/CLAP/Grainfield.clap --format clap",
-      "result": "loaded Grainfield; 12 params; finite peak 0.190",
+      "result": "loaded Grainfield; 13 params; finite peak 0.190; descriptor exposes required stereo input and stereo output",
       "receipt": "provenance/clap-host.txt",
-      "receipt_sha256": "be9efa009460c9c8094445b2a7e789150810602170e0a04a42cd4816f9dfb6a7"
+      "receipt_sha256": "59bce003a896bb80b8323a65c32bd70504c2058caa82d2e0b7ce4c0da9aa3063"
     },
     {
       "format": "CLAP",
-      "check": "offline MIDI render",
+      "check": "offline stereo-input render",
       "status": "pass",
-      "command": "pulp audio render --plugin build/CLAP/Grainfield.clap --in-channels 0 --out-channels 2 --duration-ms 250 --midi note:60,100,0,200",
-      "result": "12,000 stereo frames; peak 0.3674/0.3750; RMS 0.1465/0.1465; no NaN, Inf, or clipped samples",
+      "command": "pulp audio render --plugin build/CLAP/Grainfield.clap --in-channels 2 --out-channels 2 --input-signal sine:440,-12 --duration-ms 250 --param 12=1",
+      "result": "12,000 stereo frames at 48 kHz; peak 0.14129/0.14129; RMS 0.09820/0.09820; no NaN, Inf, or clipped samples",
       "receipt": "provenance/clap-render.json",
       "wav": "provenance/clap-render.wav",
-      "receipt_sha256": "b15d348f55231a460bfe9c1c82ac3033d874bbcf8f04a79ed0d2e6267252aeb6",
-      "wav_sha256": "6bb28ac6d091c56e351dbf71a09fbf6c76f39befdc73c855bcc9e3ffe7d73242"
+      "receipt_sha256": "e068bc4288d60e2b6b8babca35236145528f1024a3ea84ec51c66d11296bd537",
+      "wav_sha256": "ff6382b426037d0a1c2a2e66737d0544e458670ae29d885bd55545652e9204f2"
     },
     {
       "format": "AUv2",
@@ -41,24 +41,33 @@
       "result": "component not registered; auval could not find the component",
       "receipt": "provenance/auval.txt",
       "receipt_sha256": "892ea3f8a0bb0fb38116e7a63b04d8e35a42ae1b9de69eddd1b90dca72b6d3fb"
+    },
+    {
+      "format": "AUv2",
+      "check": "AU packaging validator",
+      "status": "pass",
+      "command": "python3 scripts/validate_packaging.py --build-dir build --output provenance/packaging-validation.json",
+      "result": "AUv2 metadata pass (aumu/Grai/Inde); registration not requested",
+      "receipt": "provenance/packaging-validation.json",
+      "receipt_sha256": "4e909d19f5941debfd14b1278619ab4046fd0a50e5e2059e9ce5bc24987769ce"
     }
   ],
   "open_gates": [
-    "resolve host-inspect metadata discrepancy",
+    "AU registration/auval host evidence",
     "VST3 validator/artifact",
     "AAX SDK and validator",
     "DAW editor/audio/state smoke",
+    "upstream ratio-2 path remains unsupported because it contains VLA scratch",
+    "24/32 kHz media modes remain unsupported; only 48 kHz MEDIA_DIGITAL is supported",
     "MPE/aftertouch support is not implemented"
   ],
   "metadata_note": {
-    "status": "inconclusive-host-tool-discrepancy",
-    "direct_processor_test": "Grainfield descriptor reports Instrument, zero input buses, stereo output",
-    "host_inspect": "pulp-cpp plugin-inspect currently reports effect=true and inputs=2 while host load logs zero-input operation",
-    "action": "investigate SDK host-inspect metadata path before release",
+    "status": "descriptor-updated",
+    "direct_processor_test": "Grainfield descriptor now requires stereo Main In and stereo Main Out; Mode parameter selects synth or live-input effect mode",
+    "host_inspect": "pulp audio plugin-inspect reports effect=true, inputs=2, outputs=2, and 13 parameters including Mode (id 12)",
+    "action": "retain exact descriptor and host receipts; investigate any host classification discrepancy before release",
     "receipt": "provenance/clap-inspect.json",
-    "receipt_sha256": "44019cf452c706f890f22816ac7083a2f261ee7983d1d122e925a0cedac8f5bf",
-    "direct_clap_entry_receipt": "provenance/clap-entry-features.txt",
-    "direct_clap_entry_receipt_sha256": "09ad87426b28b25ef34ebead5434a310e572b89d3ac21409a1677bc76583f526",
-    "source_head": "33417e125e26567a3af18aac8c5f2a9833ef4b2a"
+    "receipt_sha256": "38e2426f629f29a69239450d6d0d0590bcccd78f3b58281f143a39aa9835ff19",
+    "source_head": "3bf5d90f19b5094c1f8830a4c4b5c60c84407ed4"
   }
 }

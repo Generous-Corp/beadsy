@@ -2,7 +2,7 @@
   "schema": "grainfield.audio-contract.v1",
   "status": "partial",
   "project": "Grainfield",
-  "source_head": "33417e125e26567a3af18aac8c5f2a9833ef4b2a",
+  "source_head": "3bf5d90f19b5094c1f8830a4c4b5c60c84407ed4",
   "engine": {
     "implementation": "beads::Synth",
     "internal_sample_rate_hz": 48000,
@@ -10,15 +10,23 @@
       48000
     ],
     "unsupported_host_sample_rates_behavior": "clear_output_and_return",
-    "resampling": false
+    "resampling": false,
+    "mode_parameter": {
+      "id": 12,
+      "name": "Mode",
+      "synth_value": 0,
+      "live_input_value": 1
+    }
   },
   "render_contract": {
     "output_channels": 2,
-    "input_channels": 0,
+    "input_channels": 2,
     "max_block_size": "prepare_context.max_buffer_size",
     "finite_output_required": true,
     "seed_trigger": "global MIDI note-on maps to SEED_BUTTON_STATE_ON",
-    "determinism": "fresh instances with identical parameters and MIDI input produce identical samples"
+    "determinism": "fresh instances with identical parameters and MIDI input produce identical samples",
+    "input_descriptor": "required stereo Main In",
+    "live_input_processing": "stereo input routed through Beads Processor in live-input mode"
   },
   "validation": {
     "test_target": "Grainfield-test + Grainfield-editor-test",
@@ -34,14 +42,14 @@
     ],
     "command": "pulp test",
     "execution": "passed locally",
-    "result": "17/17 CTest tests passed",
+    "result": "18/18 CTest tests passed",
     "seed": "stmlib::Random::Seed(0x12345678) before each seeded render"
   },
   "open_gates": [
-    "sample-rate conversion is not implemented",
+    "24/32 kHz media modes unsupported; only 48 kHz MEDIA_DIGITAL",
+    "upstream ratio-2 branch contains VLA scratch and remains unsupported",
     "allocation/real-time probe is not included",
     "source-vs-port reference render is not included",
-    "MIDI note-to-pitch and sample-offset policy receipts are not included",
     "MPE/aftertouch support is not implemented"
   ]
 }

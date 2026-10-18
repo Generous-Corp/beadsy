@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.vst3-validation.v1",
   "status": "blocked",
-  "source_head": "33417e125e26567a3af18aac8c5f2a9833ef4b2a",
+  "source_head": "3bf5d90f19b5094c1f8830a4c4b5c60c84407ed4",
   "source": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
   "build": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build",
   "configure": {

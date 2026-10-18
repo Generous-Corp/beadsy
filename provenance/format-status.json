@@ -1,10 +1,10 @@
 {
   "schema": "grainfield.format-status.v1",
-  "generated_at": "2026-10-18T00:50:28.471396Z",
+  "generated_at": "2026-10-18T01:00:00Z",
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
-    "git_head": "33417e125e26567a3af18aac8c5f2a9833ef4b2a"
+    "git_head": "3bf5d90f19b5094c1f8830a4c4b5c60c84407ed4"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build",
@@ -31,17 +31,17 @@
     {
       "format": "CLAP",
       "status": "supported",
-      "reason": "declared target produced an artifact in the inspected build tree",
+      "reason": "declared target produced an artifact; CLAP validator, host load, and stereo-input offline render receipts are present",
       "evidence": {
         "artifact": {
           "path": "CLAP/Grainfield.clap/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
-          "bytes": 6677048,
-          "sha256": "f3993f5b8409b9c20886d81a6b885a54a5e2e46157d2612afe24096f7c046f42"
+          "bytes": 6752536,
+          "sha256": "01dac4f29ae9bb4fdf75e735d5c73eb44e4d2d6aefbb7a3fafec7af9de5312b5"
         },
         "pulp_target_present": true,
-        "host_validation": "not_run"
+        "host_validation": "partial"
       }
     },
     {
@@ -53,8 +53,8 @@
           "path": "LV2/Grainfield.lv2/Grainfield.so",
           "exists": true,
           "is_file": true,
-          "bytes": 1469552,
-          "sha256": "ceeab4847d24eae9c77425f2608af5f13280104490617338b0c23499e82c6718"
+          "bytes": 1545552,
+          "sha256": "ae2e2255309831631ac4a20022167b02cb93d364becee1dcecea2faae252c4b7"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -63,17 +63,17 @@
     {
       "format": "AU",
       "status": "supported",
-      "reason": "declared target produced an artifact in the inspected build tree",
+      "reason": "declared target produced an artifact; packaging metadata passes, AU registration/auval remains blocked",
       "evidence": {
         "artifact": {
           "path": "AU/Grainfield.component/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
-          "bytes": 6029864,
-          "sha256": "ad33685d74ff9006d9e1dc734e2d78bf6d83d2a337a691a237bf2dad4115559b"
+          "bytes": 6105352,
+          "sha256": "c99412e3e5bd4f438d28d91bcf1dd25744d5387af199e615872060e5c86082a8"
         },
         "pulp_target_present": true,
-        "host_validation": "not_run"
+        "host_validation": "partial"
       }
     },
     {
@@ -99,8 +99,8 @@
           "path": "Grainfield.app/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
-          "bytes": 6181336,
-          "sha256": "282e874d13e66000bc3b62e92e2f5ce7d52c82e05c61558e2bab88a9910a9abc"
+          "bytes": 6257272,
+          "sha256": "07e5545d2c2eae746fd5c4e6878f61db8229fcb021b8e967af5210aac5ccfa9c"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"

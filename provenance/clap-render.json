@@ -1,31 +1,31 @@
 {
   "schema_version": 1,
-  "scenario": "provenance/clap-render.wav",
+  "scenario": "/Users/danielraffel/Code/grainfield-format-audit/provenance/clap-render.wav",
   "sample_rate": 48000,
   "frames": 12000,
   "num_channels": 2,
   "channels": [
     {
-      "peak": 0.36737844347953796,
-      "peak_dbfs": -8.697726604182975,
-      "rms": 0.14647495115318784,
-      "rms_dbfs": -16.68473276299939,
-      "dc_offset": 8.562327149888916e-05,
+      "peak": 0.14129361510276795,
+      "peak_dbfs": -16.99754925960167,
+      "rms": 0.09819576058726096,
+      "rms_dbfs": -20.158145232713684,
+      "dc_offset": -0.00021773351043964992,
       "nan_samples": 0,
       "inf_samples": 0,
       "clipped_samples": 0,
-      "longest_silence_run": 5
+      "longest_silence_run": 10
     },
     {
-      "peak": 0.37497806549072266,
-      "peak_dbfs": -8.519882715576388,
-      "rms": 0.14654153660093092,
-      "rms_dbfs": -16.68078517721686,
-      "dc_offset": 8.727201264707673e-05,
+      "peak": 0.14129361510276795,
+      "peak_dbfs": -16.99754925960167,
+      "rms": 0.09819576058726096,
+      "rms_dbfs": -20.158145232713684,
+      "dc_offset": -0.00021773351043964992,
       "nan_samples": 0,
       "inf_samples": 0,
       "clipped_samples": 0,
-      "longest_silence_run": 5
+      "longest_silence_run": 10
     }
   ]
 }

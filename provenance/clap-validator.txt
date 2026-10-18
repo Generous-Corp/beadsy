@@ -15,8 +15,7 @@
 [pulp:info]  CLAP: initialized 'Grainfield'
 Plugin library tests:
 
- - /Users/danielraffel/Code/grainfield-quality-mode-integration/build/CLAP/
-     Grainfield.clap
+ - build/CLAP/Grainfield.clap
 
    - create-id-with-trailing-garbage: Attempts to create a plugin instance using
        an existing plugin ID with some extra text appended to the end. This
@@ -52,7 +51,7 @@ Plugin library tests:
 
    - scan-time: Checks whether the plugin can be scanned in under 100
        milliseconds.
-     PASSED: The plugin can be scanned in 5 milliseconds.
+     PASSED: The plugin can be scanned in 4 milliseconds.
 
 Plugin tests:
 
