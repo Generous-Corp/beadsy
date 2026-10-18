@@ -80,6 +80,15 @@ else()
 endif()
 catch_discover_tests(Grainfield-test)
 
+# Small, authorized offline harness for standalone-adjacent audio/state proof.
+# It uses Pulp's HeadlessHost seam rather than claiming that the GUI app itself
+# exposes a state or audio measurement bridge.
+add_executable(Grainfield-headless-harness grainfield_headless_harness.cpp)
+target_link_libraries(Grainfield-headless-harness PRIVATE
+    Pulp::format grainfield_beads_dsp)
+target_include_directories(Grainfield-headless-harness PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR})
+
 if(TARGET Pulp::view)
     add_executable(Grainfield-editor-test test_grainfield_editor.cpp)
     target_link_libraries(Grainfield-editor-test PRIVATE
