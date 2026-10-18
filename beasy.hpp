@@ -84,10 +84,11 @@ public:
             (sizeof(beads::TriggerGenerator::Output) +
              sizeof(beads::DelayController::Output) + sizeof(bool) +
              sizeof(beads::FloatFrame) + sizeof(stmlib::GateFlags));
+        const auto velocity_storage = block * sizeof(float) * 2;
         return {
             .persistent_bytes = kDelayStorageBytes +
                 sizeof(reverb_buffer_) + sizeof(effect_reverb_buffer_) +
-                frame_storage + synth_storage + effect_storage,
+                frame_storage + synth_storage + effect_storage + velocity_storage,
             .block_scratch_bytes = 0,
             .block_size = ctx.max_buffer_size,
             .input_channels = 2,
