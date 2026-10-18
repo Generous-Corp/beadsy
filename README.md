@@ -2,8 +2,9 @@
 
 Beasy is an independent, open-source Pulp software instrument inspired by the published Mutable Instruments Beads architecture. It is not affiliated with, endorsed by, or sponsored by Mutable Instruments. The product name, branding, and UI implementation are independent.
 
-With deep respect and gratitude to **Emilie Gillet**, whose pioneering work
-and generous open-source releases made this lineage possible. Emilie and
+With deep respect and gratitude to **Emilie Gillet**, the GOAT whose pioneering
+work and generous open-source releases made this lineage possible. Thank you,
+Emilie, for showing what instrument design and open hardware can be. Emilie and
 Mutable Instruments are not affiliated with or endorsing Beasy; their names
 and marks remain their own.
 
