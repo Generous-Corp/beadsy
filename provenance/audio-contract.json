@@ -2,7 +2,7 @@
   "schema": "grainfield.audio-contract.v1",
   "status": "partial",
   "project": "Grainfield",
-  "source_head": "fb3e1969a2ccaf6d489810fc7881e0fbe92a9f66",
+  "source_head": "ac25db9",
   "engine": {
     "implementation": "beads::Synth",
     "internal_sample_rate_hz": 48000,
@@ -21,19 +21,21 @@
     "determinism": "fresh instances with identical parameters and MIDI input produce identical samples"
   },
   "validation": {
-    "test_target": "Grainfield-test",
+    "test_target": "Grainfield-test + Grainfield-editor-test",
     "tests": [
       "Grainfield seeded renders are deterministic",
-      "Grainfield 48 kHz contract is finite and rejects other rates"
+      "Grainfield 48 kHz contract is finite and rejects other rates",
+      "Grainfield modulation context menu updates and resets the selected LFO"
     ],
     "command": "pulp test -- --output-on-failure",
     "execution": "passed locally",
-    "result": "5/5 tests passed",
+    "result": "9/9 CTest tests passed",
     "seed": "stmlib::Random::Seed(0x12345678) before each seeded render"
   },
   "open_gates": [
     "sample-rate conversion is not implemented",
     "allocation/real-time probe is not included",
-    "source-vs-port reference render is not included"
+    "source-vs-port reference render is not included",
+    "MIDI note-to-pitch and sample-offset policy receipts are not included"
   ]
 }
