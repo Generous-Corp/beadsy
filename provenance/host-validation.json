@@ -1,11 +1,12 @@
 {
   "schema": "grainfield.host-validation.v1",
   "project": "Grainfield",
-  "source_head": "6e132c2f883f5687fe11b86fa4c8b0983cd71f7b",
+  "source_head": "fa376386162a7447e406d6f3bb84c1bed326a3ba",
   "status": "partial",
   "checks": [
     {
       "format": "CLAP",
+      "check": "clap-validator",
       "status": "pass",
       "command": "clap-validator validate build/CLAP/Grainfield.clap",
       "result": "20 tests run, 17 passed, 0 failed, 3 skipped, 1 warning",
@@ -13,7 +14,28 @@
       "receipt_sha256": "168b4057aa106fca4dc136b48b6a3afca28bc7cc2569240ed44104735fc79187"
     },
     {
+      "format": "CLAP",
+      "check": "pulp host load",
+      "status": "pass",
+      "command": "pulp-cpp host build/CLAP/Grainfield.clap --format clap",
+      "result": "loaded Grainfield; 10 params; finite peak 0.185",
+      "receipt": "provenance/clap-host.txt",
+      "receipt_sha256": "0083f5906d5ef6797e4bf7eafd07931288fc52a6e022dc65b0fc0d4f1a53e47f"
+    },
+    {
+      "format": "CLAP",
+      "check": "offline MIDI render",
+      "status": "pass",
+      "command": "pulp-cpp audio render --plugin build/CLAP/Grainfield.clap --in-channels 0 --out-channels 2 --duration-ms 250 --midi note:60,100,0,200",
+      "result": "12,000 stereo frames; peak 0.4277/0.4247; RMS 0.1840/0.1838; no NaN, Inf, or clipped samples",
+      "receipt": "provenance/clap-render.json",
+      "wav": "provenance/clap-render.wav",
+      "receipt_sha256": "a0645c062016f14162f80c4e606c22cd5360e36fec0050a6f3bf8fbb20f089a3",
+      "wav_sha256": "c08318c9af37be75a626f0d9a89e02b6ac7d033a26659403d5fda4a167a9c7b9"
+    },
+    {
       "format": "AUv2",
+      "check": "auval registration",
       "status": "blocked",
       "command": "auval -v aumu Grai Inde",
       "result": "component not registered; auval could not find the component",
@@ -22,9 +44,18 @@
     }
   ],
   "open_gates": [
+    "resolve host-inspect metadata discrepancy",
     "registered AUv2 component validation",
     "VST3 validator/artifact",
     "AAX SDK and validator",
     "DAW editor/audio/state smoke"
-  ]
+  ],
+  "metadata_note": {
+    "status": "inconclusive",
+    "direct_processor_test": "Grainfield descriptor reports Instrument, zero input buses, stereo output",
+    "host_inspect": "pulp-cpp plugin-inspect currently reports effect=true and inputs=2 while host load logs zero-input operation",
+    "action": "investigate SDK host-inspect metadata path before release",
+    "receipt": "provenance/clap-inspect.json",
+    "receipt_sha256": "cdeca4d04d1128d14325938c8f26cf7c37625759614d55b98c19c3ea2efb67f8"
+  }
 }

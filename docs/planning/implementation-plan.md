@@ -3,12 +3,14 @@
 Status: implementation plan, Ultra-reviewed 2026-10-17
 Planning head: Pulp `origin/main` `0eadeac05ed8176abcce566edadbcd7cc2fafd29`
 Reference source head: Beads `f4cfa7697095a28d292bff758beb51deb49b5a86`
+Documentation reference: [`beads-documentation-review.md`](beads-documentation-review.md),
+based on the local Mutable Instruments manual/index and image set.
 
 This project will be an independent MIT-licensed Pulp instrument inspired by the Mutable Instruments Beads architecture and panel layout. It must not imply endorsement or affiliation. The product name is provisional until the rights review; use an independent name such as **Grainfield** rather than “Beads,” “Mutable,” or a confusing abbreviation. The README and editor About view will state the relationship accurately and link to the upstream source and licenses.
 
 ## Product boundary
 
-The first release is a fixed-topology MIDI instrument implemented as a Pulp `Processor`, with native Skia/Dawn/ViewBridge UI and host parameter automation. It models Beads’ global synthesis/granular signal path. It is not a per-note polyphonic instrument: the initial MIDI contract is mono/global and documented as follows.
+The first release is a fixed-topology MIDI instrument implemented as a Pulp `Processor`, with native Skia/Dawn/ViewBridge UI and host parameter automation. It models the documented internal wavetable synthesis/granular branch. Live audio acquisition, freeze, quality switching, attenurandomizers, and delay mode remain explicit follow-on parity phases. It is not a per-note polyphonic instrument: the initial MIDI contract is mono/global and documented as follows.
 
 - A MIDI note-on updates the pitch mapping and triggers the global voice/granular event.
 - Note-off follows the declared gate behavior; it does not create an independent release envelope per note.

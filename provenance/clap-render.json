@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "scenario": "provenance/clap-render.wav",
+  "sample_rate": 48000,
+  "frames": 12000,
+  "num_channels": 2,
+  "channels": [
+    {
+      "peak": 0.42774659395217898,
+      "peak_dbfs": -7.376268799204835,
+      "rms": 0.18395497079919094,
+      "rms_dbfs": -14.705769444888475,
+      "dc_offset": -0.000052623029640813,
+      "nan_samples": 0,
+      "inf_samples": 0,
+      "clipped_samples": 0,
+      "longest_silence_run": 4
+    },
+    {
+      "peak": 0.42469537258148196,
+      "peak_dbfs": -7.438449419850942,
+      "rms": 0.1838250729537322,
+      "rms_dbfs": -14.711905059998419,
+      "dc_offset": -0.00005264549875327399,
+      "nan_samples": 0,
+      "inf_samples": 0,
+      "clipped_samples": 0,
+      "longest_silence_run": 4
+    }
+  ]
+}
