@@ -29,3 +29,9 @@ result: Temporary user registration and AudioComponentRegistrar restart complete
 Standalone controlled shutdown (partial)
 command: launch build/Grainfield.app/Contents/MacOS/Grainfield; wait 8s; kill -TERM; wait
 result: CoreAudio opened at 48 kHz/256 frames, MIDI connected, and editor window opened; SIGTERM produced exit 143 with no clean-shutdown/state receipt.
+
+
+Standalone normal application path (partial)
+command: open -n build/Grainfield.app; osascript tell application "Grainfield" to quit
+result: open exited 0; process observed running; AppleScript quit exited 0; process exited within 5 seconds. No standalone state save/restore or independent audio measurement was exposed.
+receipt: provenance/standalone-app-validation.json

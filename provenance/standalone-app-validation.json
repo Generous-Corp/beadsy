@@ -1,0 +1,30 @@
+{
+  "schema": "grainfield.standalone-app-validation.v1",
+  "source_head": "27fd07e6d5dc87ad9b7fc7edf409e05460f02e3e",
+  "bundle": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build/Grainfield.app",
+  "launch": {
+    "status": "pass",
+    "command": "open -n /Users/danielraffel/Code/grainfield-quality-mode-integration/build/Grainfield.app",
+    "exit_code": 0,
+    "process_observed": true
+  },
+  "editor": {
+    "status": "not_observed",
+    "reason": "normal application-path probe did not expose a structured editor receipt"
+  },
+  "audio": {
+    "status": "not_observed",
+    "reason": "normal application-path probe did not expose an independent audio measurement"
+  },
+  "state": {
+    "status": "not_run",
+    "reason": "no standalone state save/restore probe is available"
+  },
+  "shutdown": {
+    "status": "pass",
+    "command": "osascript -e 'tell application \\\"Grainfield\\\" to quit'",
+    "exit_code": 0,
+    "process_exited_within_seconds": 5,
+    "mechanism": "AppleScript graceful application quit"
+  }
+}

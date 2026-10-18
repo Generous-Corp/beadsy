@@ -96,7 +96,7 @@
     {
       "format": "Standalone",
       "status": "supported",
-      "reason": "declared target produced an artifact; launch/editor and CoreAudio open pass, but controlled shutdown/state evidence remains incomplete",
+      "reason": "normal application-path launch and AppleScript graceful quit pass; standalone state save/restore and independent audio evidence remain unavailable",
       "evidence": {
         "artifact": {
           "path": "Grainfield.app/Contents/MacOS/Grainfield",
@@ -106,10 +106,11 @@
           "sha256": "1b07b3fb52514dbf90a5f859ef9beaef86aad52b62e459bf1ed787bd7b883705"
         },
         "pulp_target_present": true,
-        "host_validation": "partial"
+        "host_validation": "partial",
+        "app_validation_receipt": "provenance/standalone-app-validation.json"
       }
     }
   ],
   "host_validation_receipt": "provenance/host-validation-matrix.txt",
-  "host_validation_receipt_sha256": "f61ad8fe04e0de3f039d52d15017d2d26ecc4824b124827c9992dedb57bca68b"
+  "host_validation_receipt_sha256": "c18336709f65867230465a1a4cb251b2b7154e40580564343c89c638d85be8ef"
 }
