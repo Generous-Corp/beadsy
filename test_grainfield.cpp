@@ -98,6 +98,29 @@ TEST_CASE("Grainfield state round trips") {
     REQUIRE(host.state().get_value(grainfield::kFreeze) == 1.0f);
 }
 
+TEST_CASE("Grainfield freeze persistence is parameter-only") {
+    // Pulp persists automatable parameters through StateStore.  The Beads
+    // Synth wrapper exposes Init/Reset/Render only; its delay lines, grains,
+    // envelopes, and reverb buffers remain private runtime state.  This
+    // diagnostic pins the resulting boundary: the Freeze toggle is in the
+    // host state, while the processor-owned payload is unchanged by it.
+    grainfield::Grainfield processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+
+    store.set_value(grainfield::kFreeze, 0.0f);
+    const auto live_payload = processor.serialize_plugin_state();
+    const auto live_state = store.serialize();
+    store.set_value(grainfield::kFreeze, 1.0f);
+    const auto frozen_payload = processor.serialize_plugin_state();
+    const auto frozen_state = store.serialize();
+
+    REQUIRE(store.get_value(grainfield::kFreeze) == 1.0f);
+    REQUIRE(live_state != frozen_state);
+    REQUIRE(live_payload == frozen_payload);
+}
+
 TEST_CASE("Grainfield LFO modulation leaves base automation intact and persists") {
     grainfield::Grainfield first;
     pulp::state::StateStore first_store;
