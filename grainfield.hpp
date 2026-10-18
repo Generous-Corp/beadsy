@@ -58,7 +58,7 @@ inline pulp::format::PluginDescriptor make_descriptor() {
         .bundle_id = "com.independent_audio.grainfield",
         .version = "1.0.0",
         .category = pulp::format::PluginCategory::Instrument,
-        .input_buses = {{"Main In", 2, false}},
+        .input_buses = {{"Main In", 2, true}},
         .output_buses = {{"Main Out", 2, false}},
         .accepts_midi = true,
     };

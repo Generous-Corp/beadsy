@@ -21,6 +21,7 @@ TEST_CASE("Grainfield descriptor is an instrument") {
     REQUIRE(desc.accepts_midi);
     REQUIRE(desc.input_buses.size() == 1);
     REQUIRE(desc.input_buses[0].default_channels == 2);
+    REQUIRE(desc.input_buses[0].optional);
     REQUIRE(desc.output_buses.size() == 1);
 }
 

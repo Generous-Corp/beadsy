@@ -6,8 +6,9 @@ development slice, not a claim of full Beads hardware parity.
 
 ## Contract
 
-- The descriptor declares one required stereo `Main In` bus and one stereo
-  `Main Out` bus.
+- The descriptor declares one optional stereo `Main In` bus and one stereo
+  `Main Out` bus. Hosts may omit the input bus for the v1 synth path; the
+  live-input mode consumes it when supplied.
 - The product-local `Mode` parameter selects the existing synth (`0`) or live
   input (`1`). MIDI remains accepted in both modes; live input currently uses
   the input signal as its source and does not use MIDI as a second audio voice.
