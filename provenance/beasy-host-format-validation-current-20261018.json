@@ -1,6 +1,6 @@
 {
   "schema": "beasy.host-format-validation.v1",
-  "source_head": "c7a27ce77f0d750b789758272036dc9e9ef46d0a",
+  "source_head": "7c26114d0a42c4caecd0fdfbcc6c6e43239d9c22",
   "clap": {
     "status": "pass",
     "command": "clap-validator validate build-beasy-renamed/CLAP/Beasy.clap",
@@ -33,7 +33,12 @@
       "result": "PASS; AU validation succeeded",
       "implication": "auval and the local AudioUnit host are functional; Beasy-specific discovery/registration remains the blocker"
     },
-    "bundle_id": "com.independent-audio.beasy"
+    "bundle_id": "com.independent-audio.beasy",
+    "current_head_probe": {
+      "command": "bash /Users/danielraffel/Code/pulp/tools/ci/run-auval-component.sh build-beasy-renamed/AU/Beasy.component aumu Bead Inde",
+      "status": "pass",
+      "result": "AU VALIDATION SUCCEEDED; custom UI, 17 parameters, formats, render, parameter setting, and MIDI checks passed"
+    }
   },
   "vst3": {
     "status": "pass",

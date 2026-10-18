@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "ba54c7a972617fbb3cc46debf888a6b0ac4b4c3c",
+  "source_head": "7c26114d0a42c4caecd0fdfbcc6c6e43239d9c22",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -84,7 +84,7 @@
     "host_format_validation": {
       "path": "provenance/beasy-host-format-validation-current-20261018.json",
       "clap": "pass (21 run, 18 pass, 3 skip)",
-      "au": "pass (governed GUI-bootstrap auval; instrument, UI, parameters, render, MIDI)",
+      "au": "pass (current-head governed GUI-bootstrap auval; installed registration remains separate)",
       "vst3": "pass (pluginval strictness 5)",
       "lv2": "partial (custom ABI/URID/audio/state probe pass; no third-party host installed)",
       "standalone": "partial (real CoreAudio/MIDI/editor launch observed; app state and clean shutdown unproven)",
