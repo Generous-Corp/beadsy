@@ -1,10 +1,10 @@
 {
   "schema": "grainfield.format-status.v1",
-  "generated_at": "2026-10-18T02:22:13.636234Z",
+  "generated_at": "2026-10-18T02:50:09.077487Z",
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield-v1-scope-integrated",
-    "git_head": "cd5b96c3e64d3725c1039f5ffbaa540766dbe1c3"
+    "git_head": "e6a2c87e81b3fb3c6bcb3bce7b7ac8750de8756d"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build",
@@ -17,7 +17,7 @@
     {
       "format": "VST3",
       "status": "blocked",
-      "reason": "no VST3 artifact in current checkout build; external development-SDK evidence is retained as historical partial evidence",
+      "reason": "no VST3 artifact in current checkout; external development-SDK evidence remains historical partial",
       "evidence": {
         "artifact": {
           "path": "VST3/Grainfield.vst3/Contents/MacOS/Grainfield",
@@ -31,14 +31,14 @@
     {
       "format": "CLAP",
       "status": "supported",
-      "reason": "artifact present; current CLAP validator and Pulp host load passed",
+      "reason": "current artifact, CLAP validator, and Pulp host load pass",
       "evidence": {
         "artifact": {
           "path": "CLAP/Grainfield.clap/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
           "bytes": 6753144,
-          "sha256": "345b97fbad36484a0188568511b1c93bcb4ac94b347d7f3ba93d2ec324de4147"
+          "sha256": "b2803820d1ea6424577ceb69ecc76606c3724c1f7bd7535c83a3f3d9336ba71c"
         },
         "pulp_target_present": true,
         "host_validation": "pass",
@@ -51,14 +51,14 @@
     {
       "format": "LV2",
       "status": "partial",
-      "reason": "artifact present, but current Pulp LV2 host probe is blocked by missing audio ports and LV2_URID__map",
+      "reason": "current artifact present, but Pulp LV2 host probe is blocked by missing audio ports and LV2_URID__map",
       "evidence": {
         "artifact": {
           "path": "LV2/Grainfield.lv2/Grainfield.so",
           "exists": true,
           "is_file": true,
           "bytes": 1546112,
-          "sha256": "80186bf033c18f4e611c8a3d2eabaef1c1a32e6e02b3171722f55f91eefe905e"
+          "sha256": "1004a09214aeb6830d2608605490c338f55914791a154b3e9d348dd03f400eda"
         },
         "pulp_target_present": true,
         "host_validation": "blocked",
@@ -70,20 +70,20 @@
     {
       "format": "AU",
       "status": "partial",
-      "reason": "artifact and metadata present; temporary registration/auval passed, but current Pulp AU host probe cannot discover the component",
+      "reason": "current artifact and metadata present; Pulp AU host probe cannot discover the component",
       "evidence": {
         "artifact": {
           "path": "AU/Grainfield.component/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
           "bytes": 6105992,
-          "sha256": "e76041d10a1352b1617bda7c4138ad7de9ae33d8143c7b686715ae17f2fdbc55"
+          "sha256": "2006a79e711aef3db5167f35130f6d8e63028d70d56fdd518472d7e4248762a5"
         },
         "pulp_target_present": true,
         "host_validation": "blocked",
         "host_receipts": [
-          "provenance/au-registration-diagnostic.json",
-          "provenance/au-host.txt"
+          "provenance/au-host.txt",
+          "provenance/au-registration-diagnostic.json"
         ]
       }
     },
@@ -104,21 +104,20 @@
     {
       "format": "Standalone",
       "status": "partial",
-      "reason": "artifact present; structured editor/audio/state host evidence is unavailable",
+      "reason": "current artifact present; structured editor/audio/state host evidence is unavailable",
       "evidence": {
         "artifact": {
           "path": "Grainfield.app/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
           "bytes": 6257896,
-          "sha256": "669d61cacab636175a733262d81f059accff61bb0c1fed02f1a37af4f88b16c4"
+          "sha256": "85d170013f169f70f9724c5383a06d2546c90259532200f8f76adc90ca124af6"
         },
         "pulp_target_present": true,
-        "host_validation": "partial",
-        "app_validation_receipt": "provenance/standalone-app-validation.json"
+        "host_validation": "partial"
       }
     }
   ],
   "host_validation_receipt": "provenance/host-validation.json",
-  "host_validation_receipt_sha256": "2222bd5defa7bfaa880b4985649b003215d6e5543a39d5d569b1d691128cca57"
+  "host_validation_receipt_sha256": "2861c169082bbb2b0301cf5f6b48a4d054ffe163fd4ee493e9e89232ce3c4b85"
 }

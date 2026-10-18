@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.host-validation.v1",
   "project": "Grainfield",
-  "source_head": "cd5b96c3e64d3725c1039f5ffbaa540766dbe1c3",
+  "source_head": "e6a2c87e81b3fb3c6bcb3bce7b7ac8750de8756d",
   "status": "partial",
   "checks": [
     {
@@ -11,7 +11,7 @@
       "command": "clap-validator validate /Users/danielraffel/Code/grainfield-quality-mode-integration/build/CLAP/Grainfield.clap",
       "result": "21 tests run, 18 passed, 0 failed, 3 skipped, 0 warnings",
       "receipt": "provenance/clap-validator.txt",
-      "receipt_sha256": "8d1f9ba21e33003b2abdeb57b70de8f82725ec080ad0f75cc6ab9ea31015d7bb",
+      "receipt_sha256": "e37bb58a0713ce59652fde3bcc6cf0e0b993a7f96078e794b16b99fb963d428b",
       "source_head": "6c1deb5c288f02347b088d0af930e40824d2974c",
       "evidence_scope": "historical_external_or_prior_checkout"
     },
@@ -22,7 +22,7 @@
       "command": "pulp-cpp host build/CLAP/Grainfield.clap --format clap",
       "result": "loaded Grainfield; 13 params; finite peak 0.190; required stereo input and stereo output",
       "receipt": "provenance/clap-host.txt",
-      "receipt_sha256": "233e25773894a3dadbdd38d8c5bce48d41fe57096c3e534a5f22d77374fe91c8",
+      "receipt_sha256": "604b9f591f8a332ae3d1c75beaaea0437a83f3fc27599e027f0b624242f964ce",
       "source_head": "6c1deb5c288f02347b088d0af930e40824d2974c",
       "evidence_scope": "historical_external_or_prior_checkout"
     },
@@ -172,7 +172,7 @@
     "live_input_release_claim": false
   },
   "current_checkout": {
-    "source_head": "cd5b96c3e64d3725c1039f5ffbaa540766dbe1c3",
+    "source_head": "e6a2c87e81b3fb3c6bcb3bce7b7ac8750de8756d",
     "build": "/Users/danielraffel/Code/grainfield-v1-scope-integrated/build",
     "checks": [
       {
@@ -181,7 +181,8 @@
         "status": "pass",
         "command": "pulp host build/CLAP/Grainfield.clap --format clap",
         "receipt": "provenance/clap-host.txt",
-        "receipt_sha256": "233e25773894a3dadbdd38d8c5bce48d41fe57096c3e534a5f22d77374fe91c8"
+        "receipt_sha256": "604b9f591f8a332ae3d1c75beaaea0437a83f3fc27599e027f0b624242f964ce",
+        "source_head": "e6a2c87e81b3fb3c6bcb3bce7b7ac8750de8756d"
       },
       {
         "format": "CLAP",
@@ -189,7 +190,8 @@
         "status": "pass",
         "command": "clap-validator validate build/CLAP/Grainfield.clap",
         "receipt": "provenance/clap-validator.txt",
-        "receipt_sha256": "8d1f9ba21e33003b2abdeb57b70de8f82725ec080ad0f75cc6ab9ea31015d7bb"
+        "receipt_sha256": "e37bb58a0713ce59652fde3bcc6cf0e0b993a7f96078e794b16b99fb963d428b",
+        "source_head": "e6a2c87e81b3fb3c6bcb3bce7b7ac8750de8756d"
       },
       {
         "format": "AUv2",
@@ -205,7 +207,8 @@
         "status": "blocked",
         "command": "pulp host build/AU/Grainfield.component --format au",
         "receipt": "provenance/au-host.txt",
-        "receipt_sha256": "bf6dc85c5587facd1fe208745374a56086df23878a6bcac8870306a109d160e9"
+        "receipt_sha256": "bf6dc85c5587facd1fe208745374a56086df23878a6bcac8870306a109d160e9",
+        "source_head": "e6a2c87e81b3fb3c6bcb3bce7b7ac8750de8756d"
       },
       {
         "format": "LV2",
@@ -213,7 +216,8 @@
         "status": "blocked",
         "command": "pulp host build/LV2/Grainfield.lv2 --format lv2",
         "receipt": "provenance/lv2-host.txt",
-        "receipt_sha256": "6f13976df393eb71a44332417c9b6f4dc6ebca5ce22375c761e6c899024585b7"
+        "receipt_sha256": "c40dbb8b6e858d9eb1ccd7b3b65a7b9509b8c5b6ecdca08f43d5a054821f92da",
+        "source_head": "e6a2c87e81b3fb3c6bcb3bce7b7ac8750de8756d"
       }
     ]
   }
