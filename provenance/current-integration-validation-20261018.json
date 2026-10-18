@@ -44,6 +44,7 @@
     "status": "inconclusive",
     "current_probe": "Harness-enabled current-head Release AppleClang Grainfield-test ran the [realtime][allocation][matrix] case 10 times across 64/256/1024 blocks; all runs passed with zero allocations and zero bytes.",
     "current_receipt": "provenance/realtime-allocation-current-20261018.json",
+    "current_receipt_sha256": "005f50842a8c1afd0765003868e1669c623aee36ee10e1f7677a247188716e77",
     "historical_evidence": "The prior intermittent one-allocation/192-byte observation was not reproduced and has no owner backtrace.",
     "next_evidence": "Build the allocation harness into the supported current-head test configuration and capture a backtrace if a nonzero allocation recurs."
   },
