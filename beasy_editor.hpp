@@ -44,6 +44,11 @@ inline pulp::view::Point local_to_root(pulp::view::View* view,
 
 class PanelKnob final : public pulp::view::Knob {
 public:
+    static constexpr float kCapRadiusFraction = 0.62f;
+    static constexpr float kOuterRadiusFraction = 1.14f;
+    static constexpr float kPointerInnerHalfWidthFraction = 0.10f;
+    static constexpr float kPointerOuterHalfWidthFraction = 0.055f;
+
     static float paint_radius_for_bounds(float width, float height) {
         // The layout width is the DXF-mapped knob diameter. Leave a small
         // margin for the shadow and modulation arc while keeping the ring at
@@ -82,10 +87,22 @@ public:
                                      radius * 1.32f, radius * 4.80f, radius * 0.58f);
         }
 
+        // The major and medium reference knobs carry a soft gray cast shadow
+        // outside the black body. Keep it procedural and limit it to the
+        // mapped knob sizes so small utility pots remain compact.
+        if (radius > 12.0f) {
+            canvas.set_fill_color(pulp::canvas::Color::rgba8(112, 115, 124, 74));
+            canvas.fill_circle(cx + radius * 0.09f, cy + radius * 0.12f,
+                               radius * 1.27f);
+            canvas.set_fill_color(pulp::canvas::Color::rgba8(202, 204, 210, 170));
+            canvas.fill_circle(cx - radius * 0.02f, cy - radius * 0.02f,
+                               radius * 1.21f);
+        }
+
         // The straight-on reference shows a black, physically segmented
         // annulus around a pale inset cap.  Keep this entirely procedural:
         // the reference photo is provenance only and is never embedded.
-        const float outer_radius = radius * 1.14f;
+        const float outer_radius = radius * kOuterRadiusFraction;
         canvas.set_fill_color(pulp::canvas::Color::rgba8(11, 11, 11));
         canvas.fill_circle(cx, cy, outer_radius);
         canvas.set_fill_color(pulp::canvas::Color::rgba8(24, 24, 24));
@@ -115,7 +132,7 @@ public:
         // range after the outer shadow is included.
         canvas.set_fill_color(pulp::canvas::Color::rgba8(232, 230, 218));
         canvas.fill_circle(cx - radius * 0.055f, cy - radius * 0.07f,
-                           radius * 0.62f);
+                           radius * kCapRadiusFraction);
 
         // Broad trapezoid pointer: the reference is a white slot rather than
         // the prior 6 px hairline.  It remains centered on the existing Knob
@@ -126,8 +143,8 @@ public:
         const float py = ux;
         const float inner = radius * 0.42f;
         const float outer = radius * 0.97f;
-        const float inner_half_width = radius * 0.070f;
-        const float outer_half_width = radius * 0.040f;
+        const float inner_half_width = radius * kPointerInnerHalfWidthFraction;
+        const float outer_half_width = radius * kPointerOuterHalfWidthFraction;
         const pulp::canvas::Canvas::Point2D pointer[] = {
             {cx + ux * inner + px * inner_half_width,
              cy + uy * inner + py * inner_half_width},

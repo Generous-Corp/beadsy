@@ -45,6 +45,23 @@ TEST_CASE("Beasy knob skin preserves mapped DXF diameter") {
     REQUIRE(std::abs(radius - std::min(mapped_diameter, layout_height * 0.78f) * 0.43f) < 0.01f);
 }
 
+TEST_CASE("Beasy knob skin keeps measured cap and pointer proportions") {
+    // Ratios are taken from the local straight-on material reference and are
+    // checked as procedural geometry only; the reference image is never
+    // embedded in the product.
+    const float cap_to_outer = beasy::detail::PanelKnob::kCapRadiusFraction /
+                               beasy::detail::PanelKnob::kOuterRadiusFraction;
+    REQUIRE(cap_to_outer >= 0.53f);
+    REQUIRE(cap_to_outer <= 0.61f);
+    const float pointer_inner_to_outer =
+        beasy::detail::PanelKnob::kPointerInnerHalfWidthFraction /
+        beasy::detail::PanelKnob::kOuterRadiusFraction;
+    REQUIRE(pointer_inner_to_outer >= 0.08f);
+    REQUIRE(pointer_inner_to_outer <= 0.10f);
+    REQUIRE(beasy::detail::PanelKnob::kPointerOuterHalfWidthFraction <
+            beasy::detail::PanelKnob::kPointerInnerHalfWidthFraction);
+}
+
 TEST_CASE("Beasy native editor captures a non-empty faithful panel frame") {
     beasy::Beasy processor;
     pulp::state::StateStore store;
