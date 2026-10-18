@@ -305,9 +305,9 @@ private:
             canvas.set_fill_color(color);
             canvas.fill_text(value, x * sx, y * sy);
         };
-        const auto ink = pulp::canvas::Color::rgba8(238, 233, 220);
-        const auto accent = pulp::canvas::Color::rgba8(217, 194, 158);
-        const auto muted = pulp::canvas::Color::rgba8(185, 192, 201);
+        const auto ink = pulp::canvas::Color::rgba8(32, 35, 38);
+        const auto accent = pulp::canvas::Color::rgba8(51, 75, 85);
+        const auto muted = pulp::canvas::Color::rgba8(101, 112, 120);
         label("BEASY", 100.3465f, 17.0f, 8.0f, ink, pulp::canvas::TextAlign::center, 700);
         label("MIDI GRAIN SYNTH", 100.3465f, 25.0f, 3.1f, accent);
         label("GRAIN", 100.3465f, 46.0f, 3.2f, accent, pulp::canvas::TextAlign::center, 700);
