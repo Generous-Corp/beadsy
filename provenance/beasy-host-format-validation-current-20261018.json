@@ -1,6 +1,6 @@
 {
   "schema": "beasy.host-format-validation.v1",
-  "source_head": "61692ae68d8daa2b01b85c1216402266d35ae64d",
+  "source_head": "c181bcc51b8d733a4653f920203b829087f31a57",
   "clap": {
     "status": "pass",
     "command": "clap-validator validate build-beasy-renamed/CLAP/Beasy.clap",
@@ -56,8 +56,15 @@
     "limitation": "No external LV2 host/validator; MIDI/state host behavior remains unproven"
   },
   "standalone": {
-    "status": "partial",
-    "reason": "headless and state bridge pass; installed GUI/device routing not validated"
+    "status": "partial_launch_audio_editor_pass",
+    "command": "./build-beasy-renamed/Beasy.app/Contents/MacOS/Beasy",
+    "observed": [
+      "CoreAudio device opened: MacBook Pro Speakers, 48000 Hz, buffer 256, input 0ch, output 2ch",
+      "MIDI input connected",
+      "editor window open: 201x364, gpu=false, mode=autoui, chrome=tabs, inspector=ready"
+    ],
+    "shutdown": "partial; no documented clean-shutdown/state command exposed; SIGTERM used for cleanup",
+    "state": "not_run at app-host level"
   },
   "release_boundary": "No format is release-complete from this receipt alone."
 }
