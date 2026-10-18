@@ -1,10 +1,10 @@
 # Beasy adversarial review — current integration head
 
-Reviewed at source head `58b7610` on 2026-10-18. This review remains conservative: focused tests and artifact receipts do not close broader host, rights, UI, or release gates.
+Reviewed at source head `bb183d1` on 2026-10-18. This review remains conservative: focused tests and artifact receipts do not close broader host, rights, UI, or release gates.
 
 ## Evidence that holds
 
-- `ctest --test-dir build-beasy-renamed --output-on-failure`: 37/37 tests passed.
+- `ctest --test-dir build-beasy-renamed --output-on-failure`: 38/38 tests passed.
 - Direct DSP fixtures remain byte-identical: 48 baseline fixtures and 144 seed/gate fixtures, max absolute error 0 and RMSE 0.
 - Native editor capture and the source-backed Seed Mode button are proven. The Seed control cycles OFF → ON → LOCKED, updates its LED and accessibility label, and follows host state restoration.
 - The standalone state CLI saves a 386-byte state file and loads it successfully in a fresh process.
@@ -17,7 +17,7 @@ Reviewed at source head `58b7610` on 2026-10-18. This review remains conservativ
 - No installed third-party LV2 host or validator is available; DAW-level LV2 integration remains unproven.
 - AU installed-component discovery remains open: the current registration helper refused to replace an existing user-installed Beasy bundle whose binary hash differs from the current build, while the isolated governed `auval` path passes.
 - AAX remains blocked by the unavailable proprietary SDK and host evidence.
-- The editor is a clean-room procedural panel. Straight-on geometry, knobs, jacks, automation, LFO context menus, Freeze/Seed controls, compact I/O labels, and colored auxiliary controls are implemented. The current private comparison reports mean RGB error 54.58 and edge correlation 0.096; this is geometry-only evidence, not pixel-fidelity closure.
+- The editor is a clean-room procedural panel. Straight-on geometry, calibrated procedural knobs, jacks, automation, LFO context menus, Freeze/Seed controls, compact I/O labels, and colored auxiliary controls are implemented. The current knob calibration capture is recorded in `provenance/beasy-knob-aesthetic-current-20261018.json`; the private full-panel comparison remains geometry-only evidence, not pixel-fidelity closure.
 - Upstream panel artwork, CAD, photos, manuals, trademarks, and unresolved resource lineage remain rights gates. They are not redistributed.
 - The importer candidate refuses unconverted AI/PDF rather than parsing them. A fresh Pulp integration worktree has validated the six-commit range with the focused and broad importer suites; the full gates script was inconclusive because the isolated worktree lacked codemodel/optional SDK/host configuration. The commits are not yet landed in Pulp main, and Beasy still requires a rights-bearing converted SVG/control-map sidecar.
 
