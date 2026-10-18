@@ -2,9 +2,22 @@
 #include <pulp/state/store.hpp>
 #include <pulp/view/screenshot.hpp>
 #include "grainfield.hpp"
+#include "grainfield_editor.hpp"
 
 #include <cstdlib>
+#include <cmath>
 #include <fstream>
+
+TEST_CASE("Grainfield knob skin preserves mapped DXF diameter") {
+    constexpr float mapped_diameter = 9.25f * 2.0f * (201.0f / 70.8f);
+    constexpr float layout_height = mapped_diameter * 1.25f;
+    const float radius = grainfield::detail::PanelKnob::paint_radius_for_bounds(
+        mapped_diameter, layout_height);
+    // The outer shadow is still inside the mapped control bounds, while the
+    // visible ring is within 2% of the DXF-derived radius.
+    REQUIRE(radius * 1.14f <= mapped_diameter * 0.5f);
+    REQUIRE(std::abs(radius - std::min(mapped_diameter, layout_height * 0.78f) * 0.43f) < 0.01f);
+}
 
 TEST_CASE("Grainfield native editor captures a non-empty faithful panel frame") {
     grainfield::Grainfield processor;

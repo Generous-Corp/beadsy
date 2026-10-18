@@ -43,6 +43,13 @@ inline pulp::view::Point local_to_root(pulp::view::View* view,
 
 class PanelKnob final : public pulp::view::Knob {
 public:
+    static float paint_radius_for_bounds(float width, float height) {
+        // The layout width is the DXF-mapped knob diameter. Leave a small
+        // margin for the shadow and modulation arc while keeping the ring at
+        // the mapped physical diameter.
+        return std::min(width, height * 0.78f) * 0.43f;
+    }
+
     PanelKnob(std::string caption, float diameter)
         : caption_(std::move(caption)), diameter_(diameter) {
         set_show_label(false);
@@ -58,7 +65,7 @@ public:
         const auto b = local_bounds();
         const float cx = b.width * 0.5f;
         const float cy = b.height * 0.43f;
-        const float radius = std::min(b.width, b.height * 0.78f) * 0.34f;
+        const float radius = paint_radius_for_bounds(b.width, b.height);
         const float angle = pulp::view::Knob::start_angle +
                             (pulp::view::Knob::end_angle - pulp::view::Knob::start_angle) * value();
 
