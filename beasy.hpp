@@ -118,15 +118,20 @@ public:
         store.add_parameter({.id = kMode, .name = "Mode", .unit = "mode",
                              .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
         // Source-backed Beads attenurandomizer amounts. These are separate
-        // host parameters so automation remains explicit and stable.
+        // host parameters so automation remains explicit and stable. The
+        // hardware LAW_ATTENUVERTER is bipolar: its physical midpoint is
+        // zero, the positive half selects direct internal randomization, and
+        // the negative half selects the peaked/random-walk behavior. Keep
+        // that centered law in the host contract instead of exposing only
+        // the positive half as a 0..1 amount.
         store.add_parameter({.id = kTimeAmount, .name = "Time CV Amount", .unit = "%",
-                             .range = {0.0f, 1.0f, 0.0f}});
+                             .range = {-1.0f, 1.0f, 0.0f}});
         store.add_parameter({.id = kSizeAmount, .name = "Size CV Amount", .unit = "%",
-                             .range = {0.0f, 1.0f, 0.0f}});
+                             .range = {-1.0f, 1.0f, 0.0f}});
         store.add_parameter({.id = kShapeAmount, .name = "Shape CV Amount", .unit = "%",
-                             .range = {0.0f, 1.0f, 0.0f}});
+                             .range = {-1.0f, 1.0f, 0.0f}});
         store.add_parameter({.id = kPitchAmount, .name = "Pitch CV Amount", .unit = "%",
-                             .range = {0.0f, 1.0f, 0.0f}});
+                             .range = {-1.0f, 1.0f, 0.0f}});
     }
 
     void set_lfo(pulp::state::ParamID id, LfoModulation lfo) {
@@ -394,9 +399,10 @@ private:
 
     beads::RandomizedParameter randomized(pulp::state::ParamID id,
                                           float offset = 0.0f) const {
-        // Source-backed Beads attenurandomizer amounts are retained as the
-        // DSP attenuverter value. No CV input is synthesized here; a future
-        // host/CV bridge can provide it without changing this mapping.
+        // Source-backed Beads attenurandomizer amounts are passed through as
+        // the centered DSP attenuverter value. No CV input is synthesized
+        // here; a future host/CV bridge can provide it without changing this
+        // bipolar mapping.
         pulp::state::ParamID amount_id = 0;
         switch (id) {
             case kTime: amount_id = kTimeAmount; break;

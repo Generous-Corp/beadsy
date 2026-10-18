@@ -454,20 +454,24 @@ TEST_CASE("Beasy exposes every declared parameter as a bounded LFO target") {
         REQUIRE(restored.lfo(id).enabled);
 }
 
-TEST_CASE("Beasy maps source-backed CV amounts into Beads attenurandomizers") {
+TEST_CASE("Beasy preserves centered Beads attenuverter law") {
     beasy::Beasy processor;
     pulp::state::StateStore store;
     processor.set_state_store(&store);
     processor.define_parameters(store);
 
-    store.set_value(beasy::kTimeAmount, 0.125f);
-    store.set_value(beasy::kSizeAmount, 0.25f);
-    store.set_value(beasy::kShapeAmount, 0.5f);
+    REQUIRE(store.info(beasy::kTimeAmount)->range.min == -1.0f);
+    REQUIRE(store.info(beasy::kTimeAmount)->range.max == 1.0f);
+    REQUIRE(store.info(beasy::kTimeAmount)->range.default_value == 0.0f);
+
+    store.set_value(beasy::kTimeAmount, -1.0f);
+    store.set_value(beasy::kSizeAmount, -0.25f);
+    store.set_value(beasy::kShapeAmount, 0.0f);
     store.set_value(beasy::kPitchAmount, 0.875f);
     const auto values = processor.debug_randomized_parameters();
-    REQUIRE(values[0].attenuverter == 0.125f);
-    REQUIRE(values[1].attenuverter == 0.25f);
-    REQUIRE(values[2].attenuverter == 0.5f);
+    REQUIRE(values[0].attenuverter == -1.0f);
+    REQUIRE(values[1].attenuverter == -0.25f);
+    REQUIRE(values[2].attenuverter == 0.0f);
     REQUIRE(values[3].attenuverter == 0.875f);
     REQUIRE_FALSE(values[0].has_cv);
     REQUIRE_FALSE(values[1].has_cv);
