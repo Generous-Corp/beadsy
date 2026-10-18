@@ -1,0 +1,79 @@
+{
+  "schema": "grainfield.rights-attribution-audit.v2",
+  "audited_at": "2026-10-18",
+  "project": {
+    "name": "Grainfield",
+    "head": "9768d06ed8ee3cefbf23ec30b4b0c4dec5f10216",
+    "license": "MIT",
+    "author": "Independent Audio",
+    "affiliation": "independent; no Mutable Instruments endorsement or affiliation"
+  },
+  "evidence": [
+    {
+      "source": "https://github.com/pichenettes/eurorack/blob/f4cfa7697095a28d292bff758beb51deb49b5a86/README.md",
+      "observed": "README states STM32F code is MIT, AVR code is GPL-3.0, hardware is CC BY-SA 3.0, and derivative works should not use the Mutable Instruments name or original module name.",
+      "verified_from": "local Beads source harness README at commit f4cfa7697095a28d292bff758beb51deb49b5a86"
+    },
+    {
+      "source": "https://github.com/pichenettes/stmlib/blob/e3bd7c9cc00e4364166f9905c0509b6ffd0535ec/LICENSE",
+      "observed": "stmlib LICENSE says code is MIT except separately identified third_party/STM and programming/serial GPL material.",
+      "verified_from": "local stmlib reference checkout at commit e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
+    },
+    {
+      "source": "https://github.com/pichenettes/mutable-instruments-documentation/tree/<commit>/docs/modules/beads",
+      "observed": "Documentation and product imagery describe the Beads hardware and controls; no independent permission to redistribute those documents, photographs, logos, or artwork was found in the audited files.",
+      "verified_from": "local mutable-instruments-documentation checkout"
+    }
+  ],
+  "redistribution_matrix": [
+    {
+      "material": "Grainfield-authored source and documentation",
+      "status": "allowed_under_project_mit",
+      "condition": "retain LICENSE and copyright notice"
+    },
+    {
+      "material": "Copied/adapted Beads DSP under third_party/beads_dsp/beads",
+      "status": "allowed_under_upstream_mit",
+      "condition": "retain Emilie Gillet per-file notices and provide upstream attribution; do not imply Mutable Instruments affiliation"
+    },
+    {
+      "material": "Reachable stmlib files listed in provenance/source-manifest.json",
+      "status": "allowed_under_upstream_mit",
+      "condition": "retain per-file notices and stmlib MIT notice; this does not clear unrelated stmlib directories"
+    },
+    {
+      "material": "Beads AVR firmware or AVR-only source",
+      "status": "blocked",
+      "condition": "GPL-3.0 obligations and scope were not part of this Grainfield port; do not add without a separate GPL compliance review"
+    },
+    {
+      "material": "stmlib third_party/STM and programming/serial",
+      "status": "blocked_from_current_bundle",
+      "condition": "separate STMicroelectronics and GPL terms; excluded from third_party/beads_dsp and not cleared by this audit"
+    },
+    {
+      "material": "Beads hardware CAD, panel AI/DWG/DXF, screenshots, photographs, logos, manuals, and documentation images",
+      "status": "blocked_pending_rights",
+      "condition": "README identifies hardware as CC BY-SA 3.0, but file-level provenance/attribution and share-alike treatment still need confirmation; no source artwork is redistributed"
+    },
+    {
+      "material": "Mutable Instruments and Beads names, logos, and trademarks",
+      "status": "blocked_as_branding",
+      "condition": "use Grainfield branding and explicit non-affiliation text; do not market as Beads or Mutable Instruments"
+    },
+    {
+      "material": "Generated wavetable/resource binaries",
+      "status": "blocked_pending_lineage",
+      "condition": "retain only after confirming source files, notices, and redistribution terms; current receipt does not infer rights from generated output"
+    }
+  ],
+  "current_bundle_check": {
+    "third_party_beads_dsp_files": 52,
+    "files_with_upstream_mit_header": 51,
+    "notice_file": "third_party/beads_dsp/NOTICE.md",
+    "artwork_files_in_bundle": [],
+    "external_fixture_binaries_in_bundle": [],
+    "source_manifest_artwork_inputs": "recorded as blocked_until_cleared"
+  },
+  "release_gate": "Do not publish a release containing upstream artwork, documentation images, CAD, logos, or unresolved resource binaries until a file-level rights receipt names the license, attribution text, source hash, and share-alike/permission decision."
+}
