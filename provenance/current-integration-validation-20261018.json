@@ -41,7 +41,24 @@
   },
   "lv2": {
     "host": "pass; Loaded Grainfield, 12 params, peak 0.190",
-    "audio": "not-run at this exact integrated head; core deterministic audio tests passed",
+    "audio": "pass; exact integrated LV2 host render produced 7200 frames at 48 kHz with no NaN, Inf, or clipped samples",
+    "audio_receipt": {
+      "wav": {
+        "path": "provenance/grainfield-lv2-current-render-integrated-20261018.wav",
+        "sha256": "4cdffdbcef83806a9a951256059ea6050452a61c4d047917757c64cecd206c5d"
+      },
+      "metrics": {
+        "path": "provenance/grainfield-lv2-current-render-integrated-20261018.json",
+        "sha256": "124b9551ef858ce6d55da8438f928ef169d469723717df12c57fb9424d10ce7a"
+      },
+      "log": {
+        "path": "provenance/grainfield-lv2-current-render-integrated-20261018.log",
+        "sha256": "29f4695dda7c95fac6a3a85528195f59567450babfa76b6eee188d83599108cc"
+      },
+      "peak": 0.3690662384033203,
+      "rms": 0.18232463462381455,
+      "longest_silence_run": 2
+    },
     "state": "not-run; no LV2 state extension declared and host has no state round-trip command",
     "artifacts": {
       "Grainfield.so": {
@@ -61,7 +78,6 @@
     "rights": "panel artwork, AI/PDF/CAD, logos, and reference photos remain external and rights-gated"
   },
   "open_gates": [
-    "exact-head LV2 audio render harness",
     "AU registration/auval",
     "AAX SDK/validator",
     "rights-cleared pixel fidelity comparison"
