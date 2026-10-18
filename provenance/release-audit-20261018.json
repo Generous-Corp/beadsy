@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.release-audit.v1",
   "audited_at": "2026-10-18",
-  "source_head": "d92ae1429eebf910c7d93643927079b4a1f295d6",
+  "source_head": "ac588c16659c81bd9cc1900eab23d398d48d1764",
   "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
   "requirements": [
     {
@@ -39,9 +39,9 @@
     {
       "id": "vst3",
       "status": "partial",
-      "evidence": "provenance/vst3-validation.json, provenance/vst3-pluginval.txt, and provenance/host-validation-matrix.txt, provenance/vst3-toolchain-diagnostic.json",
-      "reason": "Development SDK exposes moduleinfo/validator headers only; no moduleinfo generator or vst3validator executable/target was found; host load/audio passes but full release evidence remains unavailable",
-      "result": "VST3 bundle built against installed development SDK; pluginval 1.0.4 passes (SUCCESS); pulp host load/audio probe passes; moduleinfo.json and Steinberg vst3validator evidence remain unavailable"
+      "evidence": "provenance/vst3-validation.json, provenance/vst3-toolchain-diagnostic.json, provenance/vst3-pluginval.txt, and provenance/host-validation-matrix.txt",
+      "reason": "Development SDK exposes moduleinfo/validator headers only; no moduleinfo creator implementation/CMake target or vst3validator implementation/executable was found; host load/audio passes but full release evidence remains unavailable",
+      "result": "VST3 bundle built against installed development SDK; pluginval 1.0.4 and pulp host load/audio pass; moduleinfo generation and Steinberg validator remain blocked by exact SDK source/toolchain gaps"
     },
     {
       "id": "host-matrix",
@@ -136,6 +136,11 @@
       "path": "provenance/realtime-allocation-probe.json",
       "source_head": "d92ae1429eebf910c7d93643927079b4a1f295d6",
       "note": "10 runs each at 64/256/1024 pass with zero allocations; prior intermittent 192-byte observation remains unresolved"
+    },
+    {
+      "path": "provenance/vst3-toolchain-diagnostic.json",
+      "source_head": "ac588c16659c81bd9cc1900eab23d398d48d1764",
+      "note": "moduleinfo creator/validator implementation sources and configured targets absent; VST3 remains partial"
     }
   ],
   "release_decision": "blocked"
