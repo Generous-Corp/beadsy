@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "6ffdeba756ba250368c0d28a0c20c5fe2cb01580",
+  "source_head": "ea4f86be9efd5d5defc3029ff006065ad17f983a",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -105,9 +105,9 @@
     },
     "importer_hardening": {
       "path": "provenance/importer-validation.json",
-      "status": "validated_separate_worktree",
-      "candidate": "beasy-importer-focused-20261018 @ dc1ddb2b40",
-      "integration_status": "not_integrated_into_pulp_main_or_beasy"
+      "status": "validated_integration_worktree_not_landed",
+      "integration_head": "c25b8cc865fb15942d07ea0e5a3b23c4fc7f020e",
+      "tests": "focused and broad importer suites pass"
     },
     "lv2_custom_host": {
       "path": "provenance/beasy-lv2-host-state-validation-current-20261018.json",
