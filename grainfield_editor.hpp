@@ -20,6 +20,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <string_view>
 
 namespace grainfield {
 
@@ -171,6 +172,10 @@ public:
             canvas.set_fill_color(pulp::canvas::Color::rgba8(22, 21, 19));
             canvas.fill_rect(0, 0, b.width, b.height);
         }
+        if (std::string_view(kGrainfieldPanelSourceStatus) ==
+            "independent scaffold; rights-gated artwork probe unavailable") {
+            paint_scaffold_labels(canvas, b.width, b.height);
+        }
     }
 
     /// Target selected by the native right-click context interaction. Hosts
@@ -236,6 +241,45 @@ public:
 
 private:
     struct Placement { pulp::state::ParamID id; const char* name; float x; float y; float r; };
+
+    static void paint_scaffold_labels(pulp::canvas::Canvas& canvas,
+                                      float width, float height) {
+        // SvgImage intentionally keeps the fallback asset free of runtime
+        // font dependencies. Paint its labels through the native canvas so
+        // the clean-room scaffold remains legible in screenshots and hosts;
+        // rights-gated authoring SVGs are passed through without overlays.
+        const float sx = width / 200.693f;
+        const float sy = height / 364.252f;
+        const float scale = std::min(sx, sy);
+        const auto label = [&canvas, sx, sy, scale](const char* value,
+                                                     float x, float y,
+                                                     float size,
+                                                     pulp::canvas::Color color,
+                                                     pulp::canvas::TextAlign align = pulp::canvas::TextAlign::center,
+                                                     int weight = 500) {
+            canvas.set_font_full("Roboto Mono", size * scale, weight, 0,
+                                 size > 4.0f ? 0.8f * scale : 0.55f * scale);
+            canvas.set_text_align(align);
+            canvas.set_fill_color(color);
+            canvas.fill_text(value, x * sx, y * sy);
+        };
+        const auto ink = pulp::canvas::Color::rgba8(238, 233, 220);
+        const auto accent = pulp::canvas::Color::rgba8(217, 194, 158);
+        const auto muted = pulp::canvas::Color::rgba8(185, 192, 201);
+        label("GRAINFIELD", 100.3465f, 17.0f, 8.0f, ink, pulp::canvas::TextAlign::center, 700);
+        label("MIDI GRAIN SYNTH", 100.3465f, 25.0f, 3.1f, accent);
+        label("GRAIN", 100.3465f, 46.0f, 3.2f, accent, pulp::canvas::TextAlign::center, 700);
+        label("DENSITY", 101.4f, 97.0f, 3.8f, ink, pulp::canvas::TextAlign::center, 700);
+        label("TIME", 33.8f, 139.0f, 3.8f, ink, pulp::canvas::TextAlign::center, 700);
+        label("PITCH", 168.9f, 139.0f, 3.8f, ink, pulp::canvas::TextAlign::center, 700);
+        label("SIZE", 69.8f, 198.0f, 3.8f, ink, pulp::canvas::TextAlign::center, 700);
+        label("SHAPE", 133.0f, 198.0f, 3.8f, ink, pulp::canvas::TextAlign::center, 700);
+        label("MIX / MOTION", 100.3465f, 217.0f, 3.2f, accent,
+              pulp::canvas::TextAlign::center, 700);
+        label("PARAMETER CONTROLS", 100.3465f, 245.0f, 3.0f, muted);
+        label("48 KHZ  •  MONO VOICE  •  MIDI", 100.3465f, 344.0f, 3.0f, accent);
+        label("INDEPENDENT PRODUCT SCAFFOLD", 100.3465f, 353.0f, 2.5f, muted);
+    }
 
     void build_controls() {
         constexpr Placement placements[] = {

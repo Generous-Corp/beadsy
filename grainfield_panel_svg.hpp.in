@@ -2,3 +2,5 @@
 inline constexpr const char kGrainfieldPanelSvg[] = R"GRAINFIELD_SVG(
 @GRAINFIELD_PANEL_SVG@
 )GRAINFIELD_SVG";
+inline constexpr const char kGrainfieldPanelSourceStatus[] =
+    "@GRAINFIELD_PANEL_SOURCE_STATUS@";

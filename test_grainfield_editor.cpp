@@ -10,6 +10,29 @@
 #include <fstream>
 #include <filesystem>
 #include <vector>
+#include <string_view>
+
+TEST_CASE("Grainfield clean-room panel scaffold names the product and bound controls") {
+    const std::string_view status(kGrainfieldPanelSourceStatus);
+    const std::string_view panel(kGrainfieldPanelSvg);
+    REQUIRE((status == "independent scaffold; rights-gated artwork probe unavailable" ||
+             status == "rights-gated authoring probe"));
+    if (status == "rights-gated authoring probe") {
+        // A rights-cleared authoring probe is intentionally passed through
+        // unchanged; the scaffold assertions apply only to clean checkouts.
+        return;
+    }
+    REQUIRE(panel.find("GRAINFIELD") != std::string_view::npos);
+    REQUIRE(panel.find("MIDI GRAIN SYNTH") != std::string_view::npos);
+    for (const auto label : {"DENSITY", "TIME", "PITCH", "SIZE", "SHAPE"}) {
+        REQUIRE(panel.find(label) != std::string_view::npos);
+    }
+    REQUIRE(panel.find("GRAIN") != std::string_view::npos);
+    REQUIRE(panel.find("MIX / MOTION") != std::string_view::npos);
+    REQUIRE(panel.find("PARAMETER CONTROLS") != std::string_view::npos);
+    REQUIRE(panel.find("Beads") == std::string_view::npos);
+    REQUIRE(panel.find("INDEPENDENT PRODUCT SCAFFOLD") != std::string_view::npos);
+}
 
 TEST_CASE("Grainfield knob skin preserves mapped DXF diameter") {
     constexpr float mapped_diameter = 9.25f * 2.0f * (201.0f / 70.8f);

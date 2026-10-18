@@ -16,10 +16,54 @@ if(EXISTS "${GRAINFIELD_PANEL_ASSET}")
     file(READ "${GRAINFIELD_PANEL_ASSET}" GRAINFIELD_PANEL_SVG)
     set(GRAINFIELD_PANEL_SOURCE_STATUS "rights-gated authoring probe")
 else()
-    set(GRAINFIELD_PANEL_SVG
-        "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200.693 364.252\"><rect width=\"200.693\" height=\"364.252\" fill=\"#161513\"/></svg>")
-    set(GRAINFIELD_PANEL_SOURCE_STATUS "deterministic neutral fallback; artwork probe unavailable")
-    message(STATUS "Grainfield panel probe unavailable; using deterministic neutral fallback")
+    # Keep the product useful when the rights-gated authoring probe is absent.
+    # This is an original, deliberately sparse panel scaffold: its labels and
+    # section marks describe Grainfield's own five bound controls, while the
+    # guide rings make the existing placement map inspectable. It does not
+    # reproduce Beads artwork or imply a fidelity comparison.
+    set(GRAINFIELD_PANEL_SVG [=[
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.693 364.252">
+  <rect width="200.693" height="364.252" fill="#111419"/>
+  <rect x="3" y="3" width="194.693" height="358.252" rx="4" fill="#191e25" stroke="#8f6a45" stroke-width="1"/>
+  <path d="M14 28H186 M14 33H186" stroke="#8f6a45" stroke-width="0.5" opacity="0.72"/>
+  <text x="100.3465" y="17" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" letter-spacing="2" fill="#eee9dc">GRAINFIELD</text>
+  <text x="100.3465" y="25" text-anchor="middle" font-family="sans-serif" font-size="3.1" letter-spacing="1" fill="#c9b59a">MIDI GRAIN SYNTH</text>
+
+  <text x="100.3465" y="46" text-anchor="middle" font-family="sans-serif" font-size="3.2" font-weight="700" letter-spacing="1.2" fill="#d9c29e">GRAIN</text>
+  <path d="M24 49H176" stroke="#d9c29e" stroke-width="0.5" opacity="0.45"/>
+
+  <!-- Functional labels for the five source-backed Grainfield parameters. -->
+  <g font-family="sans-serif" font-size="3.2" font-weight="700" letter-spacing="0.65" fill="#eee9dc">
+    <text x="101.4" y="97" text-anchor="middle">DENSITY</text>
+    <text x="33.8" y="139" text-anchor="middle">TIME</text>
+    <text x="168.9" y="139" text-anchor="middle">PITCH</text>
+    <text x="69.8" y="198" text-anchor="middle">SIZE</text>
+    <text x="133" y="198" text-anchor="middle">SHAPE</text>
+  </g>
+
+  <!-- Placement guides are visual scaffolding, not captured panel artwork. -->
+  <g fill="none" stroke="#d9c29e" stroke-width="0.45" opacity="0.34" stroke-dasharray="1.2 1.2">
+    <circle cx="101.4" cy="68.2" r="26.2"/>
+    <circle cx="33.8" cy="108.6" r="26.2"/>
+    <circle cx="168.9" cy="108.6" r="26.2"/>
+    <circle cx="69.8" cy="171.5" r="20.4"/>
+    <circle cx="133" cy="171.5" r="20.4"/>
+  </g>
+
+  <path d="M24 205H176" stroke="#8f6a45" stroke-width="0.5" opacity="0.55"/>
+  <text x="100.3465" y="217" text-anchor="middle" font-family="sans-serif" font-size="3.2" font-weight="700" letter-spacing="1.2" fill="#d9c29e">MIX / MOTION</text>
+  <g fill="none" stroke="#8f6a45" stroke-width="0.5" opacity="0.42">
+    <path d="M24 224H176 M24 229H176 M24 234H176"/>
+    <path d="M24 224V234 M176 224V234"/>
+  </g>
+  <text x="100.3465" y="245" text-anchor="middle" font-family="sans-serif" font-size="3" letter-spacing="0.7" fill="#b9c0c9">PARAMETER CONTROLS</text>
+
+  <path d="M24 331H176" stroke="#8f6a45" stroke-width="0.5" opacity="0.6"/>
+  <text x="100.3465" y="344" text-anchor="middle" font-family="sans-serif" font-size="3" letter-spacing="0.85" fill="#c9b59a">48 KHZ  •  MONO VOICE  •  MIDI</text>
+  <text x="100.3465" y="353" text-anchor="middle" font-family="sans-serif" font-size="2.5" letter-spacing="0.5" fill="#7f8b99">INDEPENDENT PRODUCT SCAFFOLD</text>
+</svg>]=])
+    set(GRAINFIELD_PANEL_SOURCE_STATUS "independent scaffold; rights-gated artwork probe unavailable")
+    message(STATUS "Grainfield panel probe unavailable; using independent panel scaffold")
 endif()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/grainfield_panel_svg.hpp.in
                ${CMAKE_CURRENT_BINARY_DIR}/grainfield_panel_svg.hpp @ONLY)
