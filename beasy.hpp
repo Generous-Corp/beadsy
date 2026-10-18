@@ -51,6 +51,10 @@ enum ParamIDs : pulp::state::ParamID {
 // are inferred here.
 inline beads::SeedButtonState seed_button_state_from_value(float value) {
     if (!std::isfinite(value)) return beads::SEED_BUTTON_STATE_OFF;
+    // Clamp before converting to an integer so arbitrarily large finite host
+    // values cannot overflow the intermediate conversion.
+    if (value <= 0.0f) return beads::SEED_BUTTON_STATE_OFF;
+    if (value >= 2.0f) return beads::SEED_BUTTON_STATE_LOCKED;
     const int mode = std::clamp(static_cast<int>(std::lround(value)), 0, 2);
     switch (mode) {
         case 1: return beads::SEED_BUTTON_STATE_ON;

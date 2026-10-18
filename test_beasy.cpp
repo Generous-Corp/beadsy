@@ -29,7 +29,7 @@ TEST_CASE("Beasy descriptor is an instrument") {
 }
 
 TEST_CASE("Beasy seed mode mapping is bounded and source-backed") {
-    REQUIRE(beasy::seed_button_state_from_value(-100.0f) ==
+    REQUIRE(beasy::seed_button_state_from_value(-std::numeric_limits<float>::max()) ==
             beads::SEED_BUTTON_STATE_OFF);
     REQUIRE(beasy::seed_button_state_from_value(0.49f) ==
             beads::SEED_BUTTON_STATE_OFF);
@@ -41,7 +41,7 @@ TEST_CASE("Beasy seed mode mapping is bounded and source-backed") {
             beads::SEED_BUTTON_STATE_LOCKED);
     REQUIRE(beasy::seed_button_state_from_value(2.0f) ==
             beads::SEED_BUTTON_STATE_LOCKED);
-    REQUIRE(beasy::seed_button_state_from_value(100.0f) ==
+    REQUIRE(beasy::seed_button_state_from_value(std::numeric_limits<float>::max()) ==
             beads::SEED_BUTTON_STATE_LOCKED);
     REQUIRE(beasy::seed_button_state_from_value(
                 std::numeric_limits<float>::quiet_NaN()) ==
