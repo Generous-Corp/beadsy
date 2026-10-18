@@ -56,6 +56,16 @@
       "sample_rate": 48000,
       "wav": "build/grainfield-current-clap.wav",
       "wav_sha256": "ff6382b426037d0a1c2a2e66737d0544e458670ae29d885bd55545652e9204f2"
+    },
+    "Standalone_state_smoke": {
+      "status": "pass",
+      "commands": [
+        "build/Grainfield.app/Contents/MacOS/Grainfield --save-state build/current-standalone-state.pulpstate",
+        "build/Grainfield.app/Contents/MacOS/Grainfield --load-state build/current-standalone-state.pulpstate"
+      ],
+      "exit_code": 0,
+      "state_bytes": 294,
+      "state_sha256": "202e2b6142506e4b37631cf29b74e0574cf7b88c777ed9164751842644ed49f7"
     }
   },
   "open_gates": [
