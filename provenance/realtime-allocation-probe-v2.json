@@ -1,0 +1,89 @@
+{
+  "schema": "grainfield.realtime-allocation-probe.v2",
+  "status": "inconclusive",
+  "verified_at": "2026-10-18T04:05:01Z",
+  "grainfield_head": "7b48bdfec74d170078b5a1d4771afadde8f9b2b6",
+  "baseline_head": "7a3f9f2b8b7d002a6ac4305104934525839c517b",
+  "claim": "The prepared Grainfield process path is allocation-free across the declared 64/256/1024 block-size matrix in Release and Debug AppleClang runs. The historical one-allocation observation (192 bytes) did not recur and therefore has no owner backtrace; the release gate remains inconclusive rather than being declared closed.",
+  "harness": {
+    "pulp_head": "86c10d19989810394b56d6e592ad00acd557b307",
+    "probe": "pulp::test::RtAllocationProbe",
+    "header": "/Users/danielraffel/Code/pulp/test/harness/rt_allocation_probe.hpp",
+    "source": "/Users/danielraffel/Code/pulp/test/harness/rt_allocation_probe.cpp",
+    "header_sha256": "7d68cf38b7d6578641f00f0f5fba490981b9e9a2ba86e71f7ae050a92f536dc1",
+    "source_sha256": "112034d91dfaa2ab84681c173b373e4543e7f4e690809802ce1e213542f6e17f",
+    "behavior": "thread-local scoped global new/new[] allocation counting"
+  },
+  "test_change": {
+    "path": "test_grainfield.cpp",
+    "test": "Grainfield prepared processing stays allocation-free across block sizes",
+    "tag": "[realtime][allocation][matrix]",
+    "coverage": {
+      "sample_rate_hz": 48000,
+      "block_sizes": [
+        64,
+        256,
+        1024
+      ],
+      "steady_state_process_calls_per_size": 32,
+      "priming": "one note-on process before arming the probe; MIDI and output buffers cleared before measurement"
+    }
+  },
+  "runs": [
+    {
+      "configuration": "Release AppleClang arm64",
+      "build_command": "PULP_SOURCE_DIR=/Users/danielraffel/Code/pulp pulp build --target Grainfield-test",
+      "test_command": "./build/Grainfield-test [matrix] --reporter compact",
+      "repetitions": 10,
+      "result": "pass",
+      "allocation_count_per_size": {
+        "64": 0,
+        "256": 0,
+        "1024": 0
+      },
+      "allocated_bytes_per_size": {
+        "64": 0,
+        "256": 0,
+        "1024": 0
+      }
+    },
+    {
+      "configuration": "Debug AppleClang arm64",
+      "build_command": "cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug -DPulp_DIR=/Users/danielraffel/pulp-sdk/lib/cmake/Pulp -DGRAINFIELD_PULP_TEST_HARNESS_DIR=/Users/danielraffel/Code/pulp/test/harness && /Users/danielraffel/Code/pulp/tools/ci/governed-build.sh cmake --build build-debug --target Grainfield-test",
+      "test_command": "./build-debug/Grainfield-test [matrix] --reporter compact",
+      "repetitions": 10,
+      "result": "pass",
+      "allocation_count_per_size": {
+        "64": 0,
+        "256": 0,
+        "1024": 0
+      },
+      "allocated_bytes_per_size": {
+        "64": 0,
+        "256": 0,
+        "1024": 0
+      }
+    }
+  ],
+  "backtrace_diagnostic": {
+    "method": "temporary copy of rt_allocation_probe.cpp with backtrace_symbols_fd at allocation recording",
+    "configuration": "Release AppleClang arm64",
+    "result": "No process-path allocation occurred, so no owner stack was captured. The diagnostic run initially counted Catch2 INFO/reporting allocations because diagnostics were formatted while the probe scope was active; the committed matrix test snapshots counts before leaving the probe and formats diagnostics afterward.",
+    "dsp_changed": false,
+    "temporary_sources_committed": false
+  },
+  "historical_observation": {
+    "allocation_count": 1,
+    "allocated_bytes": 192,
+    "reproduced": false,
+    "owner_backtrace": "unavailable"
+  },
+  "validation": {
+    "focused_matrix": "pass",
+    "full_ctest": "19 of 20 runnable Grainfield tests passed; editor test was not built because Pulp::view is unavailable in this SDK configuration",
+    "diff_check": "pass",
+    "dsp_changes": "none"
+  },
+  "conclusion": "Keep the realtime allocation gate inconclusive. Current Release and Debug matrix evidence is clean, but it cannot prove that the prior intermittent 192-byte event was impossible. Close only after recurrence is captured and owned or after an independently justified cross-toolchain closure policy accepts the bounded evidence.",
+  "next_action": "Run the committed matrix test in the supported CI/toolchain set and capture a backtrace immediately if any nonzero count recurs."
+}
