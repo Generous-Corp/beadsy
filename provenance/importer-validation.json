@@ -7,7 +7,7 @@
   "importer_branch": "feat/beasy-importer-preconverted-svg-20261018",
   "importer_base": "ed95575e65817b2388696c47c8a6861a0e64ae00",
   "importer_head": "dc1ddb2b40",
-  "integration_status": "not_integrated_into_pulp_main_or_beasy",
+  "integration_status": "validated_integration_worktree_not_landed",
   "candidate_commits": [
     "7e385d4a85",
     "274d3fbdbc",
@@ -45,5 +45,54 @@
     "pulp-test-import-design-tool": "ee628b1b75f8dca219314e7d30347846f734bd78972c62f8208e6faa09be394c",
     "pulp-test-design-import": "2e4e2baae24f5c92f2ed0e1a2bb5e07de31594a6f1891c929f30087a34e0aaa5"
   },
-  "scope_note": "This is a clean current-main Pulp candidate, not yet integrated. It deliberately does not parse or convert AI/PDF and does not redistribute rights-sensitive artwork; Beasy can validate a rights-bearing converted SVG/control-map sidecar after the candidate lands."
+  "scope_note": "Validated in a fresh current-main integration worktree with governed Release builds. The six commits are not yet landed in Pulp main; no AI/PDF parser or rights-sensitive artwork is bundled.",
+  "integration_worktree": "/Users/danielraffel/Code/agent-worktrees/beasy-importer-origin-main-integration-20261018",
+  "integration_branch": "chore/beasy-importer-origin-main-integration-20261018",
+  "integration_base": "ed95575e65817b2388696c47c8a6861a0e64ae00",
+  "integration_head": "c25b8cc865fb15942d07ea0e5a3b23c4fc7f020e",
+  "integration_commits": [
+    "1b00d98969",
+    "83d0804295",
+    "7fe49e3efe",
+    "9f6eea2cb5",
+    "163069fc36",
+    "c25b8cc865"
+  ],
+  "integration_tests": [
+    {
+      "command": "pulp-test-design-import",
+      "result": "447 passed / 1 skipped; 3432 assertions",
+      "status": "pass"
+    },
+    {
+      "command": "pulp-test-faithful-port-toolkit",
+      "result": "28 cases / 201 assertions",
+      "status": "pass"
+    },
+    {
+      "command": "pulp-test-import-design-tool",
+      "result": "55 passed / 1 skipped; 11003 assertions",
+      "status": "pass"
+    },
+    {
+      "command": "pulp-test-import-design-tool [preconverted-svg][fail-closed]",
+      "result": "15 assertions",
+      "status": "pass"
+    },
+    {
+      "command": "pulp-test-design-import preconverted-svg source survives DesignIR JSON round-trip",
+      "result": "2 assertions",
+      "status": "pass"
+    },
+    {
+      "command": "pulp-import-design --from illustrator",
+      "result": "exit 2; explicit preconverted-svg refusal",
+      "status": "pass"
+    }
+  ],
+  "integration_artifact_hashes": {
+    "pulp-import-design": "4597b38ae10ba6ec92af0ecec8903879377c243bf5ea77c234241873fdd9b5a3",
+    "pulp-test-import-design-tool": "e646d6095f8204d189da9425856bf47d3dd44af3693e4180ea14447e39225299",
+    "pulp-test-design-import": "0a54b07ec17bcbe0f73ac710f206c8592185e1770e4b12174f5764903fd96c71"
+  }
 }
