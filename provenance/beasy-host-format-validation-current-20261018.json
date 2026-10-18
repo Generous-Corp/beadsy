@@ -1,6 +1,6 @@
 {
   "schema": "beasy.host-format-validation.v1",
-  "source_head": "5b36f85e1acadff89bed15d7441329894c3066a0",
+  "source_head": "431416454305126749cf2df406e821157158ec7c",
   "clap": {
     "status": "pass",
     "command": "clap-validator validate build-beasy-renamed/CLAP/Beasy.clap",
@@ -18,7 +18,14 @@
       "type": "aumu",
       "subtype": "Bead",
       "manufacturer": "Inde"
-    }
+    },
+    "registration_attempt": {
+      "path": "/Users/danielraffel/Library/Audio/Plug-Ins/Components/Beasy.component",
+      "command": "pluginkit -a <component>; auval -v aumu Bead Inde",
+      "result": "still not discoverable; auval reports component not found",
+      "status": "blocked"
+    },
+    "build_metadata_status": "present"
   },
   "vst3": {
     "status": "not_run",
