@@ -1,7 +1,8 @@
 # Grainfield implementation status
 
-Updated 2026-10-18 against the integrated checkout head
-`f15ed3fe0bbfb104ab49000e17a0a049e45623a3`.
+Updated 2026-10-18 against the integrated source head
+`bb3d8529363b2dd38d071d9822c982201744556d`; receipt updates are recorded in
+`provenance/current-integration-validation-20261018.json`.
 
 ## Current executable slice
 
@@ -35,22 +36,22 @@ Updated 2026-10-18 against the integrated checkout head
   per-sample freeze input and persists through the normal Pulp parameter state.
   Freeze-buffer serialization/restore remains unavailable because the
   internal `beads::Synth` exposes no buffer snapshot API.
-- Native editor prototype: the current build uses a deterministic neutral fallback
-  because the rights-gated converted panel SVG is absent. Historical authoring
-  probes recorded 24 DXF-derived placements, but the current checkout makes no
-  converted-artwork or visual-fidelity claim; five controls are parameter-bound. The bound knobs have
-  working Pulp context menus for LFO enable/reset, host automation bindings,
-  and a visible modulation arc. A headless capture is recorded at 402 x 728
-  pixels. Knob material remains provisional; the straight-on reference is the
-  calibration source. Clean checkouts without the rights-gated panel probe use
-  a deterministic neutral fallback for compilation; that fallback is not
-  visual fidelity evidence.
-- Formats declared by the scaffold: VST3, CLAP, LV2, AU, standalone. VST3
-  builds against the installed development SDK and passes pluginval 1.0.4; the
-  CLAP and VST3 host load/audio probes pass. AU metadata and the manual isolated-copy auval proof pass (see `provenance/auval-exact-20261018.json`); the stock registration helper still exits 2 on Grainfield's underscore bundle identifier and Pulp host load remains blocked by host discovery (see `provenance/au-registration-diagnostic.json`); LV2 host instantiation is blocked by missing
-  usable audio ports/URID mapping; the Standalone launch/editor probe is partial
-  HeadlessHost state roundtrip passes 10/10, but the Standalone app exposes no documented state save/load bridge; standalone audio/state/clean-shutdown evidence remains incomplete. VST3 remains partial: pluginval and host load/audio pass, but the development SDK exposes headers only, with no moduleinfo creator implementation/CMake target or Steinberg validator implementation/executable (see `provenance/vst3-toolchain-diagnostic.json`). AAX is declared only as a future validation
-  lane; it is not a release claim.
+- Native editor prototype: the current build uses a deterministic native
+  Skia/Dawn editor with procedural segmented knobs, off-white caps, broad
+  pointers, DXF-derived placement, five primary controls, seven source-mapped
+  auxiliary controls, labeled non-automatable jack regions, host automation
+  gestures, and contextual LFO enable/rate/depth/reset actions. Current-head
+  editor tests pass 132 assertions in 9 cases, and min/mid/max knob captures
+  are hash-recorded in the integrated validation receipt. The captures prove
+  native rendering and interaction coverage; exact visual fidelity remains
+  open because the straight-on reference and panel artwork are rights-gated.
+- Formats declared by the scaffold: VST3, CLAP, LV2, AU, standalone. The
+  integrated LV2 bundle loads with 12 parameters and has an exact-head host
+  audio render receipt (7,200 frames at 48 kHz; zero NaN, Inf, or clipped
+  samples). The standalone state test passes 5/5 assertions. VST3, CLAP, AU,
+  AAX, and remaining standalone/editor/state claims retain the explicit
+  partial or unavailable statuses in the packaging reconciliation; this is not
+  a release claim.
 
 ## Work in flight
 
