@@ -1,0 +1,27 @@
+{
+  "schema": "beasy.importer-pr-audit.v2",
+  "status": "terminal_pass_mergeable",
+  "audited_at": "2026-10-18T20:26:21.292442Z",
+  "pull_request": {
+    "url": "https://github.com/Generous-Corp/pulp/pull/10552",
+    "number": 10552,
+    "state": "OPEN",
+    "head": "30265dd1f40399228ae1d906268b10e09f702bbc",
+    "mergeable": true,
+    "merge_state": "CLEAN"
+  },
+  "checks": {
+    "required_active": 0,
+    "failed": 0,
+    "macos": "SUCCESS",
+    "linux": "SUCCESS",
+    "swift_analysis": "SUCCESS",
+    "codex_review": "SUCCESS"
+  },
+  "local_validation": {
+    "source_contract_tests": "29/29 passed",
+    "scope": "validation-only preconverted SVG sidecar"
+  },
+  "decision": "ready_for_normal_landing_or_merge-queue review; current receipt does not claim merged",
+  "next_action": "after landing, refresh exact-main importer receipt and rerun source-contract validation against landed head"
+}
