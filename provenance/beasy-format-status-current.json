@@ -1,10 +1,10 @@
 {
   "schema": "beasy.format-status.v1",
-  "generated_at": "2026-10-18T17:56:39.843097Z",
+  "generated_at": "2026-10-18T18:02:58.414489Z",
   "project": "Beasy",
   "source": {
     "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018",
-    "git_head": "8a276977e307a3a65a2a3437e6fe079d9a04f12f"
+    "git_head": "1ee4dbe18a9252047e81a56673ac890d2a8aaecd"
   },
   "build": {
     "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beasy-renamed",
@@ -101,8 +101,8 @@
           "path": "Beasy.app/Contents/MacOS/Beasy",
           "exists": true,
           "is_file": true,
-          "bytes": 46413560,
-          "sha256": "8edecb09b0792c5e9318fbd56d9b7731570ec4cf5c24413e17f6a86242a6ee50"
+          "bytes": 46417272,
+          "sha256": "4fa603a307d0b0934b37cf129fbf834bb92c284416bba909776528b32f243af6"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
