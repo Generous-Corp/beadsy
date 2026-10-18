@@ -199,9 +199,11 @@ def main() -> int:
     for block_size in BLOCK_SIZES:
         for quality in range(QUALITY_COUNT):
             for state in range(STATE_COUNT):
-                suffix = f"-b{block_size}-q{quality}-c{state}.bin"
-                pairs.append(compare_file(Path(f"{source_prefix}{suffix}"),
-                                          Path(f"{port_prefix}{suffix}")))
+                for seed_scenario in range(3):
+                    suffix = (f"-b{block_size}-q{quality}-c{state}"
+                              f"-s{seed_scenario}.bin")
+                    pairs.append(compare_file(Path(f"{source_prefix}{suffix}"),
+                                              Path(f"{port_prefix}{suffix}")))
     matching = [pair for pair in pairs if pair["byte_identical"]]
     max_abs = max((float(pair["max_abs_error"]) for pair in pairs
                    if pair["max_abs_error"] is not None), default=0.0)
@@ -233,7 +235,11 @@ def main() -> int:
             "quality_modes": QUALITY_COUNT,
             "parameter_states": ["neutral", "pitch_time", "density_size_mix",
                                   "shape_reverb_freeze"],
-            "seed_event": "SEED_BUTTON_STATE_ON at frame 0; OFF thereafter",
+            "seed_scenarios": {
+                "0": "SEED_BUTTON_STATE_ON at frame 0; OFF thereafter; no external gate",
+                "1": "SEED_BUTTON_STATE_LOCKED with a 64/256-sample external gate",
+                "2": "SEED_BUTTON_STATE_OFF with a 64/256-sample external gate",
+            },
         },
         "comparison": {
             "fixtures_checked": len(pairs),
