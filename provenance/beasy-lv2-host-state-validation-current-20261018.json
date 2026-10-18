@@ -1,7 +1,7 @@
 {
   "schema": "beasy.lv2-host-state-validation.v1",
-  "validated_at_utc": "2026-10-18T17:52:30.100559+00:00",
-  "source_head": "8727ee6c2455147b8c2b7b5fae528f9172fcf79a",
+  "validated_at_utc": "2026-10-18T18:10:13.573872+00:00",
+  "source_head": "275c047c1907c01cf931d2e82a2a9d7d95269d80",
   "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
   "bundle": {
     "path": "build-beasy-renamed/LV2/Beasy.lv2/Beasy.so",
@@ -9,21 +9,54 @@
     "descriptor_uri": "http://pulp.audio/plugins/beasy"
   },
   "installed_third_party_host": {
-    "status": "blocked",
+    "status": "not_run_unavailable",
     "searched": [
-      "jalv",
-      "jalv.qt",
-      "jalv.gtk",
-      "lv2ls",
-      "lv2info",
-      "lv2_validate",
-      "Ardour",
-      "REAPER LV2 command-line host"
+      "command -v jalv",
+      "command -v jalv.qt",
+      "command -v jalv.gtk",
+      "command -v lv2lint",
+      "command -v lv2_validate",
+      "command -v lv2ls",
+      "command -v lv2info",
+      "command -v carla",
+      "command -v ardour",
+      "command -v ardour8",
+      "command -v reaper",
+      "command -v REAPER",
+      "find /Applications for Carla/Ardour/REAPER/LV2 apps",
+      "brew list --versions"
     ],
     "found": [
       "/Applications/REAPER.app"
     ],
-    "reason": "No installed LV2 host/validator executable was available; REAPER is installed but its isolated scripted LV2 loading path was not usable in this headless validation session."
+    "reason": "No third-party LV2 host or validator is installed. REAPER is present as an app, but no isolated LV2 project/host probe was available in this session; no package was installed.",
+    "evidence": {
+      "commands_absent": [
+        "jalv",
+        "jalv.qt",
+        "jalv.gtk",
+        "lv2lint",
+        "lv2_validate",
+        "lv2ls",
+        "lv2info",
+        "carla",
+        "ardour",
+        "ardour8",
+        "reaper",
+        "REAPER"
+      ],
+      "reaper_executable": "/Applications/REAPER.app/Contents/MacOS/REAPER",
+      "brew_available_not_installed": {
+        "lv2": "1.18.10",
+        "lilv": "0.28.0",
+        "carla": "2.5.10"
+      },
+      "brew_unavailable_formula": [
+        "jalv",
+        "ardour"
+      ],
+      "brew_install_performed": false
+    }
   },
   "isolated_external_host": {
     "status": "pass_with_scope",
@@ -46,10 +79,10 @@
     },
     "scope": "Proves dynamic loading, descriptor/URID negotiation, all 19 port connections, repeated processing with synthesizer seed mode ON and instrument mode, finite audible MIDI-driven output, and LV2 state save/restore ABI. It is not a third-party host, and does not prove DAW integration."
   },
-  "overall_status": "partial_third_party_host_blocked",
+  "overall_status": "partial_third_party_host_not_run",
   "blockers": [
     "No installed third-party LV2 host/validator available."
   ],
-  "next_action": "Run the same bundle under an installed third-party LV2 host (Jalv/Carla/Ardour or a working REAPER LV2 project) for independent DAW evidence.",
+  "next_action": "Provide or install an approved third-party LV2 host (Jalv/Carla/Ardour) or a reproducible REAPER LV2 project, then run independent MIDI and state round-trip validation.",
   "probe_debug_note": "Initial zero-peak run used an incorrect control index (quality value was written to mode, selecting live-input effect mode). Correct mapping is quality port 13/value 3, mode port 15/value 0, seed_mode port 16/value 1; corrected run produced peak 0.664628983."
 }
