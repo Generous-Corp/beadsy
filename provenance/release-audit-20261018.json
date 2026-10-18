@@ -1,0 +1,69 @@
+{
+  "schema": "grainfield.release-audit.v1",
+  "audited_at": "2026-10-18",
+  "source_head": "46361e8387b35ba86f6e394a464ab1f29f223def",
+  "scope": "integrated Grainfield editor, converted-panel provenance, and plugin packaging",
+  "requirements": [
+    {
+      "id": "control-map",
+      "status": "pass",
+      "evidence": "python3 tools/validate_control_map.py",
+      "result": "24 controls; 5 bound; 19 provisional"
+    },
+    {
+      "id": "native-editor",
+      "status": "pass",
+      "evidence": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build/Grainfield-editor-test",
+      "result": "29 assertions in 4 test cases"
+    },
+    {
+      "id": "panel-asset",
+      "status": "blocked",
+      "evidence": "python3 tools/validate_assets.py",
+      "result": "SVG parse failed: provenance/generated/beads-panel.svg is absent",
+      "reason": "rights-gated authoring probe is not present in this checkout"
+    },
+    {
+      "id": "format-artifacts",
+      "status": "partial",
+      "evidence": "provenance/format-status.json plus SHA-256 recheck of build outputs",
+      "result": "CLAP, LV2, AU, and Standalone artifact hashes match; VST3 and AAX are blocked"
+    },
+    {
+      "id": "vst3",
+      "status": "blocked",
+      "evidence": "provenance/vst3-validation.json",
+      "reason": "installed Pulp SDK does not export a VST3 target; no artifact or validator receipt"
+    },
+    {
+      "id": "aax",
+      "status": "blocked",
+      "evidence": "provenance/format-status.json",
+      "reason": "AAX SDK, target, and host validator are unavailable"
+    },
+    {
+      "id": "rights-and-release",
+      "status": "blocked",
+      "evidence": "provenance/source-manifest.json and provenance/converter-report.json",
+      "reason": "panel artwork and reference material remain pending rights review"
+    }
+  ],
+  "historical_receipts": [
+    {
+      "path": "provenance/editor-capture.json",
+      "source_head": "b882603c53044db71d70c74111e67739d75d9243",
+      "note": "older capture receipt; referenced PNG is not checked in"
+    },
+    {
+      "path": "provenance/host-validation.json",
+      "source_head": "3bf5d90f19b5094c1f8830a4c4b5c60c84407ed4",
+      "note": "older host receipt; do not treat as current-head release evidence"
+    },
+    {
+      "path": "provenance/vst3-validation.json",
+      "source_head": "3bf5d90f19b5094c1f8830a4c4b5c60c84407ed4",
+      "note": "blocked result remains applicable; current-head audit supersedes its provenance timestamp"
+    }
+  ],
+  "release_decision": "blocked"
+}
