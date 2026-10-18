@@ -1,6 +1,6 @@
 {
   "schema": "beasy.host-format-validation.v1",
-  "source_head": "9f318f9ab2f231be73b62152bb2fd0c74bcbece5",
+  "source_head": "2f70d6316b6cdcc6d94c4d7fa729ff39d47beece",
   "clap": {
     "status": "pass",
     "command": "clap-validator validate build-beasy-renamed/CLAP/Beasy.clap",
@@ -8,7 +8,17 @@
     "passed": 18,
     "failed": 0,
     "skipped": 3,
-    "warnings": 0
+    "warnings": 0,
+    "current_head_probe": {
+      "command": "clap-validator validate build-beasy-renamed/CLAP/Beasy.clap",
+      "status": "pass_with_warning",
+      "tests_run": 20,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 3,
+      "warnings": 1,
+      "warning": "scan-time 283 ms"
+    }
   },
   "au": {
     "status": "pass",

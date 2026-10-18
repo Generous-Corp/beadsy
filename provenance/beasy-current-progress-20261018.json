@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beasy.current-progress.v1",
   "project": "Beasy",
-  "source_head": "9f318f9ab2f231be73b62152bb2fd0c74bcbece5",
+  "source_head": "2f70d6316b6cdcc6d94c4d7fa729ff39d47beece",
   "status": "in_progress_release_blocked",
   "validated": {
     "tests": {
@@ -83,7 +83,7 @@
     },
     "host_format_validation": {
       "path": "provenance/beasy-host-format-validation-current-20261018.json",
-      "clap": "pass (21 run, 18 pass, 3 skip)",
+      "clap": "pass with scan-time warning (20 run, 17 pass, 3 skip, 0 fail)",
       "au": "pass (current-head governed GUI-bootstrap auval; installed registration remains separate)",
       "vst3": "pass (current-head pluginval strictness 5)",
       "lv2": "partial (custom ABI/URID/audio/state probe pass; no third-party host installed)",
