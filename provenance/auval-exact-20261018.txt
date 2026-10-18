@@ -1,0 +1,222 @@
+
+    AU Validation Tool
+    Version: 1.10.0 
+    Copyright 2003-2019, Apple Inc. All Rights Reserved.
+    Specify -h (-help) for command options
+
+--------------------------------------------------
+VALIDATING AUDIO UNIT: 'aumu' - 'Grai' - 'Inde'
+--------------------------------------------------
+Manufacturer String: Independent Audio
+AudioUnit Name: Grainfield
+Component Version: 1.0.0 (0x10000)
+
+* * PASS
+--------------------------------------------------
+TESTING OPEN TIMES:
+COLD:
+Time to open AudioUnit:         189.641 ms
+WARM:
+Time to open AudioUnit:         0.129  ms
+This AudioUnit is a version 2 implementation.
+FIRST TIME:
+[pulp:info]  AU v2 instrument: initialized at 44100 Hz
+Time for initialization:        0.093 ms
+
+* * PASS
+--------------------------------------------------
+VERIFYING DEFAULT SCOPE FORMATS:
+Input Scope Bus Configuration:
+ Default Bus Count:0
+
+Output Scope Bus Configuration:
+ Default Bus Count:1
+    Default Format: AudioStreamBasicDescription:  2 ch,  44100 Hz, Float32, deinterleaved
+
+* * PASS
+--------------------------------------------------
+VERIFYING REQUIRED PROPERTIES:
+
+* * PASS
+--------------------------------------------------
+VERIFYING RECOMMENDED PROPERTIES:
+  VERIFYING PROPERTY: Latency
+    PASS
+
+* * PASS
+--------------------------------------------------
+VERIFYING OPTIONAL PROPERTIES:
+  VERIFYING PROPERTY: Tail Time
+    PASS
+
+* * PASS
+--------------------------------------------------
+VERIFYING SPECIAL PROPERTIES:
+
+VERIFYING CUSTOM UI
+Cocoa Views Available: 1
+  PulpAUCocoaViewFactory_Inde_Grai
+    PASS
+
+VERIFYING CLASS INFO
+    PASS
+
+TESTING HOST CALLBACKS
+    PASS
+
+* * PASS
+--------------------------------------------------
+PUBLISHED PARAMETER INFO:
+
+# # # 12 Global Scope Parameters:
+Parameter ID:1
+Name: Time
+Parameter Type: Generic
+Values: Minimum = 0.000000, Default = 0.500000, Maximum = 1.000000
+Flags: Readable, Writable 
+  -parameter PASS
+
+Parameter ID:2
+Name: Size
+Parameter Type: Generic
+Values: Minimum = 0.000000, Default = 0.500000, Maximum = 1.000000
+Flags: Readable, Writable 
+  -parameter PASS
+
+Parameter ID:3
+Name: Shape
+Parameter Type: Generic
+Values: Minimum = 0.000000, Default = 0.500000, Maximum = 1.000000
+Flags: Readable, Writable 
+  -parameter PASS
+
+Parameter ID:4
+Name: Pitch
+Parameter Type: Generic
+Values: Minimum = -24.000000, Default = 0.000000, Maximum = 24.000000
+Flags: Readable, Writable 
+  -parameter PASS
+
+Parameter ID:5
+Name: Density
+Parameter Type: Generic
+Values: Minimum = 0.000000, Default = 0.500000, Maximum = 1.000000
+Flags: Readable, Writable 
+  -parameter PASS
+
+Parameter ID:6
+Name: Feedback
+Parameter Type: Generic
+Values: Minimum = 0.000000, Default = 0.000000, Maximum = 1.000000
+Flags: Readable, Writable 
+  -parameter PASS
+
+Parameter ID:7
+Name: Dry/Wet
+Parameter Type: Generic
+Values: Minimum = 0.000000, Default = 0.500000, Maximum = 1.000000
+Flags: Readable, Writable 
+  -parameter PASS
+
+Parameter ID:8
+Name: Reverb
+Parameter Type: Generic
+Values: Minimum = 0.000000, Default = 0.000000, Maximum = 1.000000
+Flags: Readable, Writable 
+  -parameter PASS
+
+Parameter ID:9
+Name: Gain
+Parameter Type: Decibels
+Values: Minimum = -60.000000, Default = 0.000000, Maximum = 12.000000
+Flags: Readable, Writable 
+  -parameter PASS
+
+Parameter ID:10
+Name: Quality
+Parameter Type: Generic
+Values: Minimum = 0.000000, Default = 3.000000, Maximum = 3.000000
+Flags: Readable, Writable 
+  -parameter PASS
+
+Parameter ID:11
+Name: Freeze
+Parameter Type: Generic
+Values: Minimum = 0.000000, Default = 0.000000, Maximum = 1.000000
+Flags: Readable, Writable 
+  -parameter PASS
+
+Parameter ID:12
+Name: Mode
+Parameter Type: Generic
+Values: Minimum = 0.000000, Default = 0.000000, Maximum = 1.000000
+Flags: Readable, Writable 
+  -parameter PASS
+
+Testing that parameters retain value across reset and initialization
+[pulp:info]  AU v2 instrument: initialized at 44100 Hz
+  PASS
+
+* * PASS
+--------------------------------------------------
+FORMAT TESTS:
+
+Reported Channel Capabilities (default config only):
+      input:  0
+      output: 2
+[pulp:info]  AU v2 instrument: initialized at 44100 Hz
+WARNING: Can Initialize Unit to un-supported num channels:InputChan:0, OutputChan:1
+[pulp:info]  AU v2 instrument: initialized at 44100 Hz
+[pulp:info]  AU v2 instrument: initialized at 44100 Hz
+WARNING: Can Initialize Unit to un-supported num channels:InputChan:0, OutputChan:4
+[pulp:info]  AU v2 instrument: initialized at 44100 Hz
+WARNING: Can Initialize Unit to un-supported num channels:InputChan:0, OutputChan:5
+[pulp:info]  AU v2 instrument: initialized at 44100 Hz
+WARNING: Can Initialize Unit to un-supported num channels:InputChan:0, OutputChan:6
+[pulp:info]  AU v2 instrument: initialized at 44100 Hz
+WARNING: Can Initialize Unit to un-supported num channels:InputChan:0, OutputChan:7
+[pulp:info]  AU v2 instrument: initialized at 44100 Hz
+WARNING: Can Initialize Unit to un-supported num channels:InputChan:0, OutputChan:8
+[pulp:info]  AU v2 instrument: initialized at 44100 Hz
+
+* * PASS
+--------------------------------------------------
+RENDER TESTS:
+[pulp:info]  AU v2 instrument: initialized at 44100 Hz
+
+Output Format: AudioStreamBasicDescription:  2 ch,  44100 Hz, Float32, deinterleaved
+Render Test at 512 frames
+Slicing Render Test at 64 frames
+  PASS
+
+
+Render Test at 64 frames, sample rate: 22050 Hz
+[pulp:info]  AU v2 instrument: initialized at 22050 Hz
+Render Test at 137 frames, sample rate: 96000 Hz
+[pulp:info]  AU v2 instrument: initialized at 96000 Hz
+Render Test at 4096 frames, sample rate: 48000 Hz
+[pulp:info]  AU v2 instrument: initialized at 48000 Hz
+Render Test at 4096 frames, sample rate: 192000 Hz
+[pulp:info]  AU v2 instrument: initialized at 192000 Hz
+Render Test at 4096 frames, sample rate: 11025 Hz
+[pulp:info]  AU v2 instrument: initialized at 11025 Hz
+Render Test at 512 frames, sample rate: 44100 Hz
+[pulp:info]  AU v2 instrument: initialized at 44100 Hz
+  PASS
+[pulp:info]  AU v2 instrument: initialized at 44100 Hz
+
+Bad Max Frames - Render should fail
+  PASS
+
+Checking parameter setting
+Using AudioUnitSetParameter
+Using AudioUnitScheduleParameter
+  PASS
+
+Test MIDI
+  PASS
+
+* * PASS
+--------------------------------------------------
+AU VALIDATION SUCCEEDED.
+--------------------------------------------------
