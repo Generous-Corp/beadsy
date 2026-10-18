@@ -1,7 +1,7 @@
 # Grainfield implementation status
 
 Updated 2026-10-18 against Grainfield source head
-`6080f7d0b6ec8fa9d5024fbc3590f95eae577c89`.
+`e8f054ce6f6957e546c5f810727be1c7412a62d0`.
 
 ## Current executable slice
 
@@ -37,9 +37,13 @@ Updated 2026-10-18 against Grainfield source head
   a deterministic neutral fallback for compilation; that fallback is not
   visual fidelity evidence.
 - Formats declared by the scaffold: VST3, CLAP, LV2, AU, standalone. VST3
-  builds against the installed development SDK and passes pluginval 1.0.4;
-  moduleinfo and Steinberg validator evidence remain open. AAX is declared
-  only as a future validation lane; it is not a release claim.
+  builds against the installed development SDK and passes pluginval 1.0.4; the
+  CLAP and VST3 host load/audio probes pass. AU packaging passes but AU
+  registration/host load is blocked; LV2 host instantiation is blocked by missing
+  usable audio ports/URID mapping; the Standalone launch/editor probe is partial
+  pending state/audio/clean-shutdown evidence. VST3 moduleinfo and Steinberg
+  validator evidence remain open. AAX is declared only as a future validation
+  lane; it is not a release claim.
 
 ## Work in flight
 
@@ -48,9 +52,9 @@ Updated 2026-10-18 against Grainfield source head
 2. Calibrate the native panel capture against a rights-cleared straight-on
    reference, including ornate knob faces, pointer angles, labels, and pixel
    residuals.
-3. Add host load/editor/audio/state receipts for each supported format and
-   retain explicit negative evidence for missing VST3 moduleinfo/Steinberg
-   validator and for AAX.
+3. Complete host editor/audio/state receipts where the current matrix is partial
+   or blocked, retaining explicit negative evidence for AU/LV2/Standalone gaps,
+   VST3 moduleinfo/Steinberg validator, and AAX.
 4. Resolve panel artwork and knob reference rights before redistribution.
 
 ## Release gates
