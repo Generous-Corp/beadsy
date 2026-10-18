@@ -104,7 +104,7 @@ public:
         const std::size_t n = output.num_samples();
         for (std::size_t i = 0; i < n; ++i) frames_[i] = 0.0f;
         const auto seed = trigger ? beads::SEED_BUTTON_STATE_ON : beads::SEED_BUTTON_STATE_OFF;
-        synth_.Render(seed, nullptr, freeze_.data(), beads::Synth::RESOLUTION_16_BIT,
+        synth_.Render(seed, nullptr, freeze_.get(), beads::Synth::RESOLUTION_16_BIT,
                       density, parameters, mix, frames_.data(), n);
 
         const float gain = std::pow(10.0f, state().get_value(kGain) / 20.0f);
