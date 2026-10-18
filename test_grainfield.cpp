@@ -55,6 +55,111 @@ TEST_CASE("Grainfield exposes Beads semitone pitch range and maps MIDI note offs
     REQUIRE(render_note(60) != render_note(72));
 }
 
+TEST_CASE("Grainfield maps MIDI velocity to deterministic output gain") {
+    auto render_energy = [](std::uint8_t velocity) {
+        stmlib::Random::Seed(0x13579bdu);
+        auto proc = grainfield::create_grainfield();
+        pulp::state::StateStore store;
+        proc->set_state_store(&store);
+        proc->define_parameters(store);
+        pulp::format::PrepareContext prep{.sample_rate = 48000.0,
+                                          .max_buffer_size = 256,
+                                          .input_channels = 0,
+                                          .output_channels = 2};
+        proc->prepare(prep);
+        pulp::midi::MidiBuffer input;
+        pulp::midi::MidiBuffer output_midi;
+        input.add(pulp::midi::MidiEvent::note_on(0, 60, velocity));
+        pulp::audio::Buffer<float> output(2, 256);
+        auto view = output.view();
+        pulp::audio::BufferView<const float> empty(nullptr, 0, 0);
+        pulp::format::ProcessContext context{.sample_rate = 48000.0,
+                                             .num_samples = 256};
+        proc->process(view, empty, input, output_midi, context);
+        float energy = 0.0f;
+        for (float sample : output.channel(0)) energy += std::abs(sample);
+        return energy;
+    };
+    const float full = render_energy(127);
+    const float half = render_energy(64);
+    REQUIRE(full > 0.0f);
+    REQUIRE(half > 0.0f);
+    REQUIRE(half < full);
+}
+
+TEST_CASE("Grainfield maps pitch bend to the Beads pitch offset") {
+    auto render_energy = [](std::uint16_t bend) {
+        stmlib::Random::Seed(0x2468aceu);
+        auto proc = grainfield::create_grainfield();
+        pulp::state::StateStore store;
+        proc->set_state_store(&store);
+        proc->define_parameters(store);
+        pulp::format::PrepareContext prep{.sample_rate = 48000.0,
+                                          .max_buffer_size = 256,
+                                          .input_channels = 0,
+                                          .output_channels = 2};
+        proc->prepare(prep);
+        pulp::midi::MidiBuffer input;
+        pulp::midi::MidiBuffer output_midi;
+        input.add(pulp::midi::MidiEvent::pitch_bend(0, bend));
+        input.add(pulp::midi::MidiEvent::note_on(0, 60, 127));
+        pulp::audio::Buffer<float> output(2, 256);
+        auto view = output.view();
+        pulp::audio::BufferView<const float> empty(nullptr, 0, 0);
+        pulp::format::ProcessContext context{.sample_rate = 48000.0,
+                                             .num_samples = 256};
+        proc->process(view, empty, input, output_midi, context);
+        float energy = 0.0f;
+        for (float sample : output.channel(0)) energy += std::abs(sample);
+        return energy;
+    };
+    const float center = render_energy(8192);
+    const float up = render_energy(16383);
+    REQUIRE(center > 0.0f);
+    REQUIRE(up > 0.0f);
+    REQUIRE(center != up);
+}
+
+TEST_CASE("Grainfield sustain and overlap handling is deterministic") {
+    auto render_sequence = [] {
+        stmlib::Random::Seed(0x1020304u);
+        auto proc = grainfield::create_grainfield();
+        pulp::state::StateStore store;
+        proc->set_state_store(&store);
+        proc->define_parameters(store);
+        pulp::format::PrepareContext prep{.sample_rate = 48000.0,
+                                          .max_buffer_size = 256,
+                                          .input_channels = 0,
+                                          .output_channels = 2};
+        proc->prepare(prep);
+        pulp::midi::MidiBuffer input;
+        pulp::midi::MidiBuffer output_midi;
+        auto add = [&input](pulp::midi::MidiEvent event, int offset) {
+            event.sample_offset = offset;
+            REQUIRE(input.add(event));
+        };
+        add(pulp::midi::MidiEvent::note_on(0, 60, 100), 0);
+        add(pulp::midi::MidiEvent::note_on(0, 64, 80), 48);
+        add(pulp::midi::MidiEvent::cc(0, 64, 127), 96);
+        add(pulp::midi::MidiEvent::note_off(0, 60), 128);
+        add(pulp::midi::MidiEvent::note_off(0, 64), 160);
+        add(pulp::midi::MidiEvent::cc(0, 64, 0), 192);
+        pulp::audio::Buffer<float> output(2, 256);
+        auto view = output.view();
+        pulp::audio::BufferView<const float> empty(nullptr, 0, 0);
+        pulp::format::ProcessContext context{.sample_rate = 48000.0,
+                                             .num_samples = 256};
+        proc->process(view, empty, input, output_midi, context);
+        return std::vector<float>(output.channel(0).begin(), output.channel(0).end());
+    };
+    const auto first = render_sequence();
+    const auto second = render_sequence();
+    REQUIRE(first == second);
+    REQUIRE(std::all_of(first.begin(), first.end(), [](float sample) {
+        return std::isfinite(sample);
+    }));
+}
+
 TEST_CASE("Grainfield produces audio from one global MIDI trigger") {
     auto proc = grainfield::create_grainfield();
     pulp::state::StateStore store;

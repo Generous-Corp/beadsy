@@ -1,0 +1,27 @@
+{
+  "schema": "grainfield.expressive-midi.v1",
+  "source_head": "94a18b9dc6dbd37127406b4d55bd173f1fa467e1",
+  "status": "partial",
+  "supported": {
+    "note_velocity": "mapped to deterministic output gain",
+    "pitch_bend": "mapped to a clamped +/-2 semitone Beads pitch offset; state is latched for the next Render block",
+    "sustain_cc64": "sample-offset-aware gate hold and release",
+    "overlapping_notes": "active-note tracking with latest-note replacement",
+    "reset": "prepare resets active notes, sustain, velocity, pitch bend, and gate state"
+  },
+  "unsupported": {
+    "polyphonic_aftertouch": "no Beads parameter or voice-pressure input exists",
+    "channel_pressure": "no Beads parameter or voice-pressure input exists",
+    "mpe_per_note_expression": "the current processor uses one global note and one global pitch offset"
+  },
+  "tests": [
+    "Grainfield maps MIDI velocity to deterministic output gain",
+    "Grainfield maps pitch bend to the Beads pitch offset",
+    "Grainfield sustain and overlap handling is deterministic"
+  ],
+  "implementation_sources": [
+    "grainfield.hpp",
+    "third_party/beads_dsp/beads/dsp/synth.h",
+    "/Users/danielraffel/pulp-sdk/include/pulp/midi/message.hpp"
+  ]
+}

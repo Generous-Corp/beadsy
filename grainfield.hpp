@@ -133,6 +133,14 @@ public:
         sample_rate_ = ctx.sample_rate;
         max_block_size_ = static_cast<std::size_t>(ctx.max_buffer_size);
         supported_rate_ = std::abs(sample_rate_ - 48000.0) < 0.5;
+        active_notes_.fill(false);
+        sustained_notes_.fill(false);
+        note_velocity_gain_.fill(1.0f);
+        sustain_down_ = false;
+        gate_ = false;
+        current_note_ = 60;
+        velocity_gain_ = 1.0f;
+        pitch_bend_semitones_ = 0.0f;
         if (!supported_rate_) return;
         synth_.Init(reverb_buffer_.data());
         frames_.resize(max_block_size_);
@@ -161,15 +169,60 @@ public:
                 event.sample_offset < 0 ? 0 : static_cast<std::size_t>(event.sample_offset),
                 0, output.num_samples() == 0 ? 0 : output.num_samples() - 1);
             if (event.is_note_on() && event.velocity() > 0) {
+                active_notes_[event.note()] = true;
+                sustained_notes_[event.note()] = false;
+                note_velocity_gain_[event.note()] = static_cast<float>(event.velocity()) / 127.0f;
                 current_note_ = event.note();
+                velocity_gain_ = note_velocity_gain_[event.note()];
                 trigger = true;
                 seed_gate_flags_[offset] = static_cast<stmlib::GateFlags>(
                     seed_gate_flags_[offset] | stmlib::GATE_FLAG_HIGH |
                     stmlib::GATE_FLAG_RISING);
-            } else if (event.is_note_off() && event.note() == current_note_) {
-                gate_ = false;
-                seed_gate_flags_[offset] = static_cast<stmlib::GateFlags>(
-                    seed_gate_flags_[offset] | stmlib::GATE_FLAG_FALLING);
+            } else if (event.is_note_off()) {
+                active_notes_[event.note()] = false;
+                if (sustain_down_) {
+                    sustained_notes_[event.note()] = true;
+                } else if (event.note() == current_note_) {
+                    bool replacement = false;
+                    for (int note = 127; note >= 0; --note) {
+                        if (active_notes_[static_cast<std::size_t>(note)]) {
+                            current_note_ = static_cast<std::uint8_t>(note);
+                            velocity_gain_ = note_velocity_gain_[static_cast<std::size_t>(note)];
+                            replacement = true;
+                            break;
+                        }
+                    }
+                    if (!replacement) {
+                        gate_ = false;
+                        seed_gate_flags_[offset] = static_cast<stmlib::GateFlags>(
+                            seed_gate_flags_[offset] | stmlib::GATE_FLAG_FALLING);
+                    }
+                }
+            } else if (event.is_cc() && event.cc_number() == 64) {
+                const bool down = event.cc_value() >= 64;
+                if (sustain_down_ && !down) {
+                    sustained_notes_.fill(false);
+                    if (!active_notes_[current_note_]) {
+                        bool replacement = false;
+                        for (int note = 127; note >= 0; --note) {
+                            if (active_notes_[static_cast<std::size_t>(note)]) {
+                                current_note_ = static_cast<std::uint8_t>(note);
+                                velocity_gain_ = note_velocity_gain_[static_cast<std::size_t>(note)];
+                                replacement = true;
+                                break;
+                            }
+                        }
+                        if (!replacement) {
+                            gate_ = false;
+                            seed_gate_flags_[offset] = static_cast<stmlib::GateFlags>(
+                                seed_gate_flags_[offset] | stmlib::GATE_FLAG_FALLING);
+                        }
+                    }
+                }
+                sustain_down_ = down;
+            } else if (event.is_pitch_bend()) {
+                const float normalized = (static_cast<float>(event.message.getPitchWheelValue()) - 8192.0f) / 8192.0f;
+                pitch_bend_semitones_ = std::clamp(2.0f * normalized, -2.0f, 2.0f);
             }
         }
         if (trigger) gate_ = true;
@@ -194,7 +247,8 @@ public:
         // neutral reference for the software instrument, so note changes add
         // a musical transposition without overwriting host automation.
         parameters.pitch = randomized(kPitch,
-                                      static_cast<float>(current_note_) - 60.0f);
+                                      static_cast<float>(current_note_) - 60.0f +
+                                      pitch_bend_semitones_);
         parameters.monophonic_mode = false;
 
         beads::ModulatedParameter density{state().get_modulated(kDensity), 0.0f};
@@ -219,8 +273,8 @@ public:
 
         const float gain = std::pow(10.0f, state().get_modulated(kGain) / 20.0f);
         for (std::size_t i = 0; i < n; ++i) {
-            output.channel(0)[i] = frames_[i].l * gain;
-            output.channel(1)[i] = frames_[i].r * gain;
+            output.channel(0)[i] = frames_[i].l * gain * velocity_gain_;
+            output.channel(1)[i] = frames_[i].r * gain * velocity_gain_;
         }
     }
 
@@ -258,6 +312,12 @@ private:
     bool supported_rate_ = false;
     bool gate_ = false;
     std::uint8_t current_note_ = 60;
+    std::array<bool, 128> active_notes_{};
+    std::array<bool, 128> sustained_notes_{};
+    std::array<float, 128> note_velocity_gain_{};
+    bool sustain_down_ = false;
+    float velocity_gain_ = 1.0f;
+    float pitch_bend_semitones_ = 0.0f;
     std::array<LfoModulation, 10> lfo_{};
 };
 
