@@ -1,0 +1,49 @@
+{
+  "schema": "grainfield.panel-scaffold.v1",
+  "status": "pass",
+  "project": "Grainfield",
+  "source_head": "6d5c36f01ccf1aa83997ced1b4cc48ec1bcc3158",
+  "scope": "Clean-room fallback panel for a checkout without the rights-gated authoring SVG",
+  "source_policy": {
+    "fallback_status": "independent scaffold; rights-gated artwork probe unavailable",
+    "authoring_probe_behavior": "unchanged pass-through when provenance/generated/beads-panel.svg exists",
+    "artwork": "no Beads artwork, panel image, AI/PDF, CAD, or reference photo embedded",
+    "release_claim": "none; this scaffold is not a visual-fidelity or rights-cleared reference"
+  },
+  "ux_surface": {
+    "product_label": "GRAINFIELD",
+    "section_marks": ["GRAIN", "MIX / MOTION", "PARAMETER CONTROLS"],
+    "bound_control_labels": ["DENSITY", "TIME", "PITCH", "SIZE", "SHAPE"],
+    "layout_guides": "five dashed placement rings retained as inspectable scaffolding",
+    "native_label_rendering": "Canvas overlay is enabled only for the independent scaffold status"
+  },
+  "validation": {
+    "sdk_prefix": "/Users/danielraffel/Code/agent-worktrees/pulp-standalone-sdk-export-prefix-20261018",
+    "configure": "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/Users/danielraffel/Code/agent-worktrees/pulp-standalone-sdk-export-prefix-20261018 -DPULP_BUILD_TESTS=OFF -DPULP_BUILD_EXAMPLES=OFF",
+    "build": "cmake --build build --target Grainfield-editor-test",
+    "focused_test": {
+      "name": "Grainfield clean-room panel scaffold names the product and bound controls",
+      "result": "pass",
+      "assertions": 13
+    },
+    "full_ctest": {
+      "command": "ctest --test-dir build -R 'Grainfield' --output-on-failure",
+      "result": "25/25 passed",
+      "tests": 25
+    },
+    "capture_test": {
+      "name": "Grainfield native editor captures a non-empty faithful panel frame",
+      "result": "pass",
+      "assertions": 5,
+      "artifact": "build/grainfield-panel-scaffold.png",
+      "bytes": 83065,
+      "sha256": "e35dbb3dd406dee0ea102bbd8fb222e1dd758d5754184f5827b5fef36430f95b"
+    }
+  },
+  "negative_controls": [
+    "The scaffold test requires no Beads label or source token in the fallback SVG.",
+    "The native label overlay is skipped for a rights-gated authoring SVG.",
+    "The receipt does not claim panel fidelity, redistribution rights, or release readiness."
+  ],
+  "next_action": "Replace this scaffold only after a rights-cleared reference and exact-head geometry/fidelity evidence are available."
+}
