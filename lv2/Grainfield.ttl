@@ -1,7 +1,7 @@
 @prefix atom: <http://lv2plug.in/ns/ext/atom#> .
 @prefix doap: <http://usefulinc.com/ns/doap#> .
 @prefix lv2: <http://lv2plug.in/ns/lv2core#> .
-@prefix midi: <http://lv2plug.in/ns/midi#> .
+@prefix midi: <http://lv2plug.in/ns/ext/midi#> .
 @prefix urid: <http://lv2plug.in/ns/ext/urid#> .
 
 <http://pulp.audio/plugins/grainfield>
