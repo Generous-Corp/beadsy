@@ -122,7 +122,9 @@
   },
   "provenance": {
     "rights": "panel artwork, AI/PDF/CAD, logos, and reference photos remain external and rights-gated",
-    "source_control": "MIT DSP attribution is present; hardware/artwork rights are separate"
+    "source_control": "MIT DSP attribution is present; hardware/artwork rights are separate",
+    "current_reconciliation": "provenance/current-provenance-reconciliation-20261018.json",
+    "current_reconciliation_sha256": "c0b76e6c12b69991ecf0b7b0fe36a972aa8f9f990f0906bd65a0572421d82ffc"
   },
   "open_gates": [
     "AU registration and auval",
