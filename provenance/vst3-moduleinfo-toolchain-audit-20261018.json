@@ -1,0 +1,98 @@
+{
+  "schema": "grainfield.vst3-moduleinfo-toolchain-audit.v1",
+  "status": "partial",
+  "audited_at": "2026-10-18T04:38:00Z",
+  "worktree": "/Users/danielraffel/Code/grainfield-vst3-moduleinfo-20261018",
+  "source_head": "0a2bcbae4fceb41b2ced46cc9a26c5d960944076",
+  "scope": "fresh isolated audit of the installed Pulp SDK 0.923.0 and current-head Grainfield VST3 bundle",
+  "sdk": {
+    "prefix": "/Users/danielraffel/.pulp/sdk/0.923.0",
+    "version": "0.923.0",
+    "provenance_kind": "release",
+    "source_git_sha": "03eaf78d3e261e9b03427945fb299dc191c127a8",
+    "vst3_sdk_root": "/Users/danielraffel/.pulp/sdk/0.923.0/external/vst3sdk",
+    "vst3_sdk_root_exists": true,
+    "archive": {
+      "path": "/Users/danielraffel/.pulp/sdk/0.923.0/lib/libvst3-sdk.a",
+      "bytes": 637472,
+      "sha256": "42bf490dbaebf5e6c22ade37a3b7509feed3994314554ed1b9247189ae013097"
+    }
+  },
+  "moduleinfo": {
+    "headers": [
+      {
+        "path": "/Users/danielraffel/.pulp/sdk/0.923.0/external/vst3sdk/public.sdk/source/vst/moduleinfo/moduleinfo.h",
+        "bytes": 2292,
+        "sha256": "cb9463bdf7483d0fb44fa22f4716faf6cf44434cdcd8e7c0ad6c9cb2e91d63fe"
+      },
+      {
+        "path": "/Users/danielraffel/.pulp/sdk/0.923.0/external/vst3sdk/public.sdk/source/vst/moduleinfo/moduleinfocreator.h",
+        "bytes": 1946,
+        "sha256": "7354889fe286ece820a411899e29feb0a44b293c838573e74bb89f203999c360"
+      },
+      {
+        "path": "/Users/danielraffel/.pulp/sdk/0.923.0/external/vst3sdk/public.sdk/source/vst/moduleinfo/moduleinfoparser.h",
+        "bytes": 2159,
+        "sha256": "bf5c3e4313ada4d0bb218e5cc0a622a40408a69d8f79b3da945e4646c4891236"
+      }
+    ],
+    "implementation_source_count": 0,
+    "generator_executable_count": 0,
+    "archive_moduleinfo_object_found": false,
+    "archive_moduleinfo_symbols_found": false,
+    "conclusion": "The SDK exposes declarations only. It does not ship moduleinfocreator.cpp, moduleinfoparser.cpp, a generator executable, a moduleinfo CMake target, or creator/parser symbols in libvst3-sdk.a."
+  },
+  "validator": {
+    "headers": [
+      {
+        "path": "/Users/danielraffel/.pulp/sdk/0.923.0/external/vst3sdk/public.sdk/samples/vst-hosting/validator/source/validator.h",
+        "bytes": 3749,
+        "sha256": "561545885efe3a59dcf976e7536e4c700a487eb88ba5fd631bf2d62c3fc6cb03"
+      },
+      {
+        "path": "/Users/danielraffel/.pulp/sdk/0.923.0/external/vst3sdk/public.sdk/samples/vst-hosting/validator/source/testsuite.h",
+        "bytes": 3198,
+        "sha256": "2f9a0c20a28a6a83677b0417367c5f51b10587e3e0d10127ae896cd7cf8adecd"
+      }
+    ],
+    "implementation_source_count": 0,
+    "validator_executable_count": 0,
+    "path_tools": {
+      "vstvalidator": {"found": false},
+      "vst3validator": {"found": false}
+    },
+    "conclusion": "The SDK includes validator declarations/sample headers only. No supported Steinberg validator implementation or configured build target is installed. Pulp's optional validator name is vstvalidator."
+  },
+  "pulp_packaging_path": {
+    "file": "/Users/danielraffel/.pulp/sdk/0.923.0/lib/cmake/Pulp/PulpPluginFormats.cmake",
+    "bytes": 27290,
+    "sha256": "8c406157e8c5897a49dc1fefdf904a62cebbeb0c711567d6278e5b66cd5fd772",
+    "behavior": "_pulp_add_vst3 copies a project-owned moduleinfo.json into Contents/Resources/ when it exists; it does not generate or validate one",
+    "moduleinfo_copy_lines": "141-163"
+  },
+  "current_artifact": {
+    "bundle": "/Users/danielraffel/Code/grainfield-vst3-packaging-20261018/build/VST3/Grainfield.vst3",
+    "moduleinfo_path": "/Users/danielraffel/Code/grainfield-vst3-packaging-20261018/build/VST3/Grainfield.vst3/Contents/Resources/moduleinfo.json",
+    "moduleinfo_exists": false,
+    "layout_check": {
+      "command": "python3 /Users/danielraffel/Code/pulp/tools/cmake/scripts/check_vst3_bundle_layout.py /Users/danielraffel/Code/grainfield-vst3-packaging-20261018/build",
+      "status": "pass",
+      "result": "check_vst3_bundle_layout: 1 bundle(s) OK",
+      "interpretation": "Pulp's layout checker only rejects a misplaced moduleinfo.json; missing metadata is allowed."
+    }
+  },
+  "manual_generation": {
+    "schema_is_documented": true,
+    "project_metadata_is_source_visible": true,
+    "supported_generation_path": false,
+    "manual_json_would_be_unsupported": true,
+    "decision": "Do not add a hand-authored moduleinfo.json in this audit. A source-owned JSON can be copied by Pulp, but without the SDK creator implementation or an official validator its class/factory metadata would be ungenerated and unvalidated."
+  },
+  "open_gates": [
+    "official moduleinfo creator or generator unavailable",
+    "Steinberg vstvalidator/vst3validator unavailable",
+    "current Grainfield bundle has no moduleinfo.json",
+    "pluginval remains the available current-head runtime validator; it does not prove moduleinfo metadata"
+  ],
+  "conclusion": "No supported or installed tool can generate and validate Grainfield moduleinfo.json from SDK 0.923.0. The safe source-routed action is to preserve the absence as partial and only add a project-owned moduleinfo.json when authoritative metadata and an official validation path are available."
+}
