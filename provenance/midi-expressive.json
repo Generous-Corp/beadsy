@@ -1,6 +1,6 @@
 {
   "schema": "grainfield.expressive-midi.v1",
-  "source_head": "94a18b9dc6dbd37127406b4d55bd173f1fa467e1",
+  "source_head": "d49716abafe7b6f56fbaf70624e46e252eefc098",
   "status": "partial",
   "supported": {
     "note_velocity": "mapped to deterministic output gain",
@@ -23,5 +23,10 @@
     "grainfield.hpp",
     "third_party/beads_dsp/beads/dsp/synth.h",
     "/Users/danielraffel/pulp-sdk/include/pulp/midi/message.hpp"
-  ]
+  ],
+  "receipt_refresh": {
+    "validated_at": "2026-10-18",
+    "command": "pulp test",
+    "result": "18/18 CTest tests passed"
+  }
 }

@@ -2,7 +2,7 @@
   "schema": "grainfield.audio-contract.v1",
   "status": "partial",
   "project": "Grainfield",
-  "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f",
+  "source_head": "d49716abafe7b6f56fbaf70624e46e252eefc098",
   "engine": {
     "implementation": "beads::Synth",
     "internal_sample_rate_hz": 48000,
@@ -59,5 +59,10 @@
     "allocation/real-time probe is not included",
     "source-vs-port reference render is not included",
     "MPE/aftertouch support is not implemented"
-  ]
+  ],
+  "receipt_refresh": {
+    "validated_at": "2026-10-18",
+    "command": "pulp test",
+    "result": "18/18 CTest tests passed"
+  }
 }

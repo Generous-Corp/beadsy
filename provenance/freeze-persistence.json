@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.freeze-persistence.v1",
   "status": "toggle_only",
-  "source_head": "613274bab40f62f46642a756059c74c37211a24e",
+  "source_head": "d49716abafe7b6f56fbaf70624e46e252eefc098",
   "finding": "The Freeze parameter is persisted by StateStore, but the frozen Beads runtime buffers are not part of the processor-owned payload.",
   "evidence": {
     "diagnostic_test": "Grainfield freeze persistence is parameter-only",
@@ -10,5 +10,10 @@
     "beads_runtime": "third_party/beads_dsp/beads/dsp/delay_controller.h",
     "pulp_contract": "/Users/danielraffel/pulp-sdk/include/pulp/format/processor.hpp"
   },
-  "reason": "Beads::Synth exposes Init, Reset, and Render; its delay lines, grains, envelopes, and reverb state are private and have no snapshot/restore API. A complete frozen-buffer recall therefore requires an upstream Beads serialization seam or a product-local replacement sampler."
+  "reason": "Beads::Synth exposes Init, Reset, and Render; its delay lines, grains, envelopes, and reverb state are private and have no snapshot/restore API. A complete frozen-buffer recall therefore requires an upstream Beads serialization seam or a product-local replacement sampler.",
+  "receipt_refresh": {
+    "validated_at": "2026-10-18",
+    "command": "pulp test",
+    "result": "18/18 CTest tests passed"
+  }
 }
