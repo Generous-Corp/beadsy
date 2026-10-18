@@ -1,0 +1,40 @@
+{
+  "schema": "grainfield.stmlib-license-audit.v1",
+  "status": "metadata_verified_source_bytes_unverified",
+  "repo": "https://github.com/pichenettes/stmlib.git",
+  "commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec",
+  "commit_date": "2023-05-30T15:32:46+02:00",
+  "audit_location": "/Users/danielraffel/Code/stmlib-license-audit-e3bd7c9",
+  "file_count": 936,
+  "license_files": [
+    {
+      "path": "LICENSE",
+      "sha256": "6fde7600ac71ff9e4bdc28b642063d1a65e195f28bb07fb52a9b476efb5aa791",
+      "classification": "MIT default; contains STM disclaimer and GPL serial notice"
+    },
+    {
+      "path": "README.md",
+      "sha256": "caf5fefafc15b5cb0f70197c15401eb5b4a3d4ca1488b85bf1aa4a153c29d4eb",
+      "classification": "project description; points to LICENSE"
+    },
+    {
+      "path": "third_party/STM/CMSIS/DSP_Lib/license.txt",
+      "sha256": "ac11e8d3c1c7966f76e0fabd467bde62b501418905b22eaa93fb205e4b2cfbe9",
+      "classification": "ARM BSD-style license"
+    }
+  ],
+  "license_summary": {
+    "default": "MIT Emilie Gillet",
+    "third_party/STM": "STMicroelectronics guidance disclaimer; ARM CMSIS DSP license",
+    "programming/serial": "GPL v3 or later"
+  },
+  "excluded_from_grainfield": [
+    "third_party/STM",
+    "programming/serial"
+  ],
+  "open_gates": [
+    "verify copied stmlib bytes against this commit",
+    "complete per-file notice map for copied subset",
+    "legal redistribution review remains open"
+  ]
+}

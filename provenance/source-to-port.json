@@ -406,172 +406,188 @@
       "port_path": "third_party/beads_dsp/stmlib/dsp/cosine_oscillator.h",
       "port_sha256": "a7f6429e8bca85aa19ce91e3f1908fd7fb1fdf378a61fe2c87717a94d6f30a97",
       "source_relative": "stmlib/dsp/cosine_oscillator.h",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/dsp/cosine_oscillator.h",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2014 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/dsp/delay_line.h",
       "port_sha256": "d6d1bb8e33dedf80bfca976ca1d544fc6ef01bcb1d71a45f3946a0682fd68dcb",
       "source_relative": "stmlib/dsp/delay_line.h",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/dsp/delay_line.h",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2014 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/dsp/dsp.h",
       "port_sha256": "7ff2ffc81ddcadaf0cc6a6ce17b8bb69701426b3baafe01bfb42fafcfe05e500",
       "source_relative": "stmlib/dsp/dsp.h",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/dsp/dsp.h",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2012 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/dsp/filter.h",
       "port_sha256": "f4bbf97ac8dfdea255b8a37e179ba0286978c01a12ad8d3362eaa5862cf7c326",
       "source_relative": "stmlib/dsp/filter.h",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/dsp/filter.h",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2014 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/dsp/hysteresis_filter.h",
       "port_sha256": "63631d89cd35139ed01870e0589681600d3ce4421a4f0577e1125cdfce29ef26",
       "source_relative": "stmlib/dsp/hysteresis_filter.h",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/dsp/hysteresis_filter.h",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2019 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/dsp/hysteresis_quantizer.h",
       "port_sha256": "06032c1ec2e21cb7e904544f839a2a59b4c4a9f3f391918e6adfac7f68ecc243",
       "source_relative": "stmlib/dsp/hysteresis_quantizer.h",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/dsp/hysteresis_quantizer.h",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2015 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/dsp/parameter_interpolator.h",
       "port_sha256": "4b05028c320e6946418a36e9662a4e5a142e5bfab0423835a77d074d9c7fc217",
       "source_relative": "stmlib/dsp/parameter_interpolator.h",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/dsp/parameter_interpolator.h",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2015 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/dsp/sample_rate_converter.h",
       "port_sha256": "18e1b8481c1887d9e3c30e0f9d1373ba156029695233628fc25868c897b55653",
       "source_relative": "stmlib/dsp/sample_rate_converter.h",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/dsp/sample_rate_converter.h",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2015 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/dsp/units.cc",
       "port_sha256": "0acbe230ffaa2d181ba285fce54f2fd0b2339b3ec163a1dd00c946e6bf82ea4a",
       "source_relative": "stmlib/dsp/units.cc",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/dsp/units.cc",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2014 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/dsp/units.h",
       "port_sha256": "70cf104c06f0e34ada90416f121417a13d17b6736116f0fc07063c1cd2084877",
       "source_relative": "stmlib/dsp/units.h",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/dsp/units.h",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2014 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/stmlib.h",
       "port_sha256": "3afc8589a951e882d9eea16b3eda8623dd6fb0079dd11dfbce817e65be6cfba9",
       "source_relative": "stmlib/stmlib.h",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/stmlib.h",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2012 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/utils/dsp.h",
       "port_sha256": "c0fad7f6b5b20f053d184614a35baf595e41f1394db53f80ac742d7467dbbe1b",
       "source_relative": "stmlib/utils/dsp.h",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/utils/dsp.h",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2012 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/utils/gate_flags.h",
       "port_sha256": "548608ba37ee125903db4ba36507a678d1cdcdecddad30b11998b19d6ad00ca3",
       "source_relative": "stmlib/utils/gate_flags.h",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/utils/gate_flags.h",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2017 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/utils/random.cc",
       "port_sha256": "145c4d7a30e373d001fd664ce6f97a475458f7dc8286252d24ca6f592e0cdb93",
       "source_relative": "stmlib/utils/random.cc",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/utils/random.cc",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2012 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     },
     {
       "port_path": "third_party/beads_dsp/stmlib/utils/random.h",
       "port_sha256": "423f01e905fa279864878f34e42136ad1eb37a33dad58739affaaab06b793e5d",
       "source_relative": "stmlib/utils/random.h",
-      "source_origin": null,
+      "source_origin": "https://github.com/pichenettes/stmlib.git:stmlib/utils/random.h",
       "source_exists_locally": false,
-      "origin_status": "submodule_origin_not_present_locally",
+      "origin_status": "upstream_commit_verified_metadata_only",
       "copyright_notice": "Copyright 2012 Emilie Gillet.",
-      "license_classification": "MIT_notice_present",
-      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit"
+      "license_classification": "MIT_by_stmlib_LICENSE; internal third_party_exclusions_audited_separately",
+      "redistribution_status": "blocked_pending_complete_notice_and_rights_audit",
+      "upstream_commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec"
     }
   ],
   "blocked_gates": [
-    "stmlib source submodule is not present at the recorded local origin path",
     "verify every copied file against exact upstream commit",
     "audit internal third-party/GPL serial material",
-    "complete source-to-port notice map before redistribution"
-  ]
+    "complete source-to-port notice map before redistribution",
+    "stmlib copied-file byte verification requires materialized source checkout; metadata-only audit does not prove source equivalence"
+  ],
+  "stmlib_audit": "provenance/stmlib-license-audit.json"
 }
