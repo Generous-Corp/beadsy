@@ -7,8 +7,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Pulp CONFIG REQUIRED)
 
 # The converted panel is an authoring-time, rights-gated vector asset. Embed it
-# into the editor so installed plugins never read a developer checkout.
-file(READ "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel.svg" GRAINFIELD_PANEL_SVG)
+# into the editor so installed plugins never read a developer checkout. A clean
+# checkout may not contain the probe asset while its rights review is pending;
+# use a deterministic neutral panel in that case so DSP and headless builds do
+# not depend on an ignored developer artifact.
+set(GRAINFIELD_PANEL_ASSET "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel.svg")
+if(EXISTS "${GRAINFIELD_PANEL_ASSET}")
+    file(READ "${GRAINFIELD_PANEL_ASSET}" GRAINFIELD_PANEL_SVG)
+    set(GRAINFIELD_PANEL_SOURCE_STATUS "rights-gated authoring probe")
+else()
+    set(GRAINFIELD_PANEL_SVG
+        "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200.693 364.252\"><rect width=\"200.693\" height=\"364.252\" fill=\"#161513\"/></svg>")
+    set(GRAINFIELD_PANEL_SOURCE_STATUS "deterministic neutral fallback; artwork probe unavailable")
+    message(STATUS "Grainfield panel probe unavailable; using deterministic neutral fallback")
+endif()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/grainfield_panel_svg.hpp.in
                ${CMAKE_CURRENT_BINARY_DIR}/grainfield_panel_svg.hpp @ONLY)
 

@@ -27,7 +27,9 @@ Updated 2026-10-17 against the current Grainfield `main` checkout.
   working Pulp context menus for LFO enable/reset, host automation bindings,
   and a visible modulation arc. A headless capture is recorded at 402 x 728
   pixels. Knob material remains provisional; the straight-on reference is the
-  calibration source.
+  calibration source. Clean checkouts without the rights-gated panel probe use
+  a deterministic neutral fallback for compilation; that fallback is not
+  visual fidelity evidence.
 - Formats declared by the scaffold: VST3, CLAP, LV2, AU, standalone. AAX is
   declared only as a future validation lane; it is not a release claim.
 
