@@ -2,11 +2,13 @@
   "schema": "grainfield.audio-contract.v1",
   "status": "partial",
   "project": "Grainfield",
-  "source_head": "3bf5d90f19b5094c1f8830a4c4b5c60c84407ed4",
+  "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f",
   "engine": {
     "implementation": "beads::Synth",
     "internal_sample_rate_hz": 48000,
     "supported_host_sample_rates_hz": [
+      24000,
+      32000,
       48000
     ],
     "unsupported_host_sample_rates_behavior": "clear_output_and_return",
@@ -16,6 +18,11 @@
       "name": "Mode",
       "synth_value": 0,
       "live_input_value": 1
+    },
+    "media_by_host_sample_rate": {
+      "24000": "MEDIA_DIRTY_TAPE",
+      "32000": "MEDIA_VINTAGE_DIGITAL",
+      "48000": "MEDIA_DIGITAL"
     }
   },
   "render_contract": {
@@ -38,16 +45,17 @@
       "Grainfield maps pitch bend to the Beads pitch offset",
       "Grainfield sustain and overlap handling is deterministic",
       "Grainfield quality selects the four Beads synth resolutions",
-      "Grainfield freeze toggle reaches the internal Beads synth path"
+      "Grainfield freeze toggle reaches the internal Beads synth path",
+      "Beads ratio-2 processor uses prepared scratch"
     ],
     "command": "pulp test",
     "execution": "passed locally",
-    "result": "18/18 CTest tests passed",
+    "result": "19/19 CTest tests passed",
     "seed": "stmlib::Random::Seed(0x12345678) before each seeded render"
   },
   "open_gates": [
-    "24/32 kHz media modes unsupported; only 48 kHz MEDIA_DIGITAL",
-    "upstream ratio-2 branch contains VLA scratch and remains unsupported",
+    "ratio-2 direct Processor runtime is finite, but Grainfield host matrix does not select the ratio-2 CLEAN_TAPE path",
+    "sample rates other than 24/32/48 kHz are rejected",
     "allocation/real-time probe is not included",
     "source-vs-port reference render is not included",
     "MPE/aftertouch support is not implemented"

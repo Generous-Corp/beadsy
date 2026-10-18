@@ -1,10 +1,10 @@
 {
   "schema": "grainfield.format-status.v1",
-  "generated_at": "2026-10-18T01:00:00Z",
+  "generated_at": "2026-10-18T01:20:00Z",
   "project": "Grainfield",
   "source": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration",
-    "git_head": "3bf5d90f19b5094c1f8830a4c4b5c60c84407ed4"
+    "git_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f"
   },
   "build": {
     "path": "/Users/danielraffel/Code/grainfield-quality-mode-integration/build",
@@ -31,14 +31,14 @@
     {
       "format": "CLAP",
       "status": "supported",
-      "reason": "declared target produced an artifact; CLAP validator, host load, and stereo-input offline render receipts are present",
+      "reason": "declared target produced an artifact; CLAP validator, host load, stereo-input render, and 24/32/48 kHz matrix receipts are present",
       "evidence": {
         "artifact": {
           "path": "CLAP/Grainfield.clap/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
-          "bytes": 6752536,
-          "sha256": "01dac4f29ae9bb4fdf75e735d5c73eb44e4d2d6aefbb7a3fafec7af9de5312b5"
+          "bytes": 6753096,
+          "sha256": "23709cebe0044ed46bbdbffb1455bb9d941f22d425451be310d09c371a25c359"
         },
         "pulp_target_present": true,
         "host_validation": "partial"
@@ -53,8 +53,8 @@
           "path": "LV2/Grainfield.lv2/Grainfield.so",
           "exists": true,
           "is_file": true,
-          "bytes": 1545552,
-          "sha256": "ae2e2255309831631ac4a20022167b02cb93d364becee1dcecea2faae252c4b7"
+          "bytes": 1546048,
+          "sha256": "4752741abdf6739a4bd2f5b78efc3e3a7c747f75bc4337d9f482be940feb2e6b"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -69,8 +69,8 @@
           "path": "AU/Grainfield.component/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
-          "bytes": 6105352,
-          "sha256": "c99412e3e5bd4f438d28d91bcf1dd25744d5387af199e615872060e5c86082a8"
+          "bytes": 6105944,
+          "sha256": "1fe9bf43634ae1241cea49ec350f04d5782a658efe83fc052b276a39bd9ae8e1"
         },
         "pulp_target_present": true,
         "host_validation": "partial"
@@ -99,8 +99,8 @@
           "path": "Grainfield.app/Contents/MacOS/Grainfield",
           "exists": true,
           "is_file": true,
-          "bytes": 6257272,
-          "sha256": "07e5545d2c2eae746fd5c4e6878f61db8229fcb021b8e967af5210aac5ccfa9c"
+          "bytes": 6257832,
+          "sha256": "1b07b3fb52514dbf90a5f859ef9beaef86aad52b62e459bf1ed787bd7b883705"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"

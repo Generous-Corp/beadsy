@@ -1,0 +1,36 @@
+objc[62405]: Class PulpTextAccessibilityElement is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x103c28090) and /Users/danielraffel/Code/grainfield-quality-mode-integration/build/CLAP/Grainfield.clap/Contents/MacOS/Grainfield (0x10971dec8). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+objc[62405]: Class PulpView is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x103c28130) and /Users/danielraffel/Code/grainfield-quality-mode-integration/build/CLAP/Grainfield.clap/Contents/MacOS/Grainfield (0x10971df68). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+objc[62405]: Class PulpWindowDelegate is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x103c281a8) and /Users/danielraffel/Code/grainfield-quality-mode-integration/build/CLAP/Grainfield.clap/Contents/MacOS/Grainfield (0x10971dfe0). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+objc[62405]: Class PulpFileDragSource is implemented in both /Users/danielraffel/.pulp/bin/pulp-cpp (0x103c28298) and /Users/danielraffel/Code/grainfield-quality-mode-integration/build/CLAP/Grainfield.clap/Contents/MacOS/Grainfield (0x10971e0d0). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+[pulp:info]  CLAP: initialized 'Grainfield'
+{
+  "schema_version": 1,
+  "scenario": "/Users/danielraffel/Code/grainfield-format-audit/provenance/matrix-48000-synth.wav",
+  "sample_rate": 48000,
+  "frames": 12000,
+  "num_channels": 2,
+  "channels": [
+    {
+      "peak": 0.36737844347953799,
+      "peak_dbfs": -8.697726604182975,
+      "rms": 0.14647495115318785,
+      "rms_dbfs": -16.68473276299939,
+      "dc_offset": 0.00008562327149888916,
+      "nan_samples": 0,
+      "inf_samples": 0,
+      "clipped_samples": 0,
+      "longest_silence_run": 5
+    },
+    {
+      "peak": 0.37497806549072268,
+      "peak_dbfs": -8.519882715576389,
+      "rms": 0.14654153660093093,
+      "rms_dbfs": -16.68078517721686,
+      "dc_offset": 0.00008727201264707673,
+      "nan_samples": 0,
+      "inf_samples": 0,
+      "clipped_samples": 0,
+      "longest_silence_run": 5
+    }
+  ]
+}

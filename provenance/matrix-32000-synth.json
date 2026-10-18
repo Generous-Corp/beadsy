@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "scenario": "/Users/danielraffel/Code/grainfield-format-audit/provenance/matrix-32000-synth.wav",
+  "sample_rate": 32000,
+  "frames": 8000,
+  "num_channels": 2,
+  "channels": [
+    {
+      "peak": 0.36737844347953799,
+      "peak_dbfs": -8.697726604182975,
+      "rms": 0.14673369713935895,
+      "rms_dbfs": -16.669402794550956,
+      "dc_offset": -0.000015752709239677644,
+      "nan_samples": 0,
+      "inf_samples": 0,
+      "clipped_samples": 0,
+      "longest_silence_run": 5
+    },
+    {
+      "peak": 0.37497806549072268,
+      "peak_dbfs": -8.519882715576389,
+      "rms": 0.14683338798527716,
+      "rms_dbfs": -16.663503606510255,
+      "dc_offset": -0.000013279597517396269,
+      "nan_samples": 0,
+      "inf_samples": 0,
+      "clipped_samples": 0,
+      "longest_silence_run": 5
+    }
+  ]
+}

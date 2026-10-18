@@ -1,7 +1,7 @@
 {
   "schema": "grainfield.host-validation.v1",
   "project": "Grainfield",
-  "source_head": "3bf5d90f19b5094c1f8830a4c4b5c60c84407ed4",
+  "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f",
   "status": "partial",
   "checks": [
     {
@@ -11,16 +11,18 @@
       "command": "clap-validator validate /Users/danielraffel/Code/grainfield-quality-mode-integration/build/CLAP/Grainfield.clap",
       "result": "21 tests run, 18 passed, 0 failed, 3 skipped, 0 warnings",
       "receipt": "provenance/clap-validator.txt",
-      "receipt_sha256": "8d1f9ba21e33003b2abdeb57b70de8f82725ec080ad0f75cc6ab9ea31015d7bb"
+      "receipt_sha256": "8d1f9ba21e33003b2abdeb57b70de8f82725ec080ad0f75cc6ab9ea31015d7bb",
+      "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f"
     },
     {
       "format": "CLAP",
       "check": "pulp host load",
       "status": "pass",
       "command": "pulp-cpp host build/CLAP/Grainfield.clap --format clap",
-      "result": "loaded Grainfield; 13 params; finite peak 0.190; descriptor exposes required stereo input and stereo output",
+      "result": "loaded Grainfield; 13 params; finite peak 0.190; required stereo input and stereo output",
       "receipt": "provenance/clap-host.txt",
-      "receipt_sha256": "59bce003a896bb80b8323a65c32bd70504c2058caa82d2e0b7ce4c0da9aa3063"
+      "receipt_sha256": "59bce003a896bb80b8323a65c32bd70504c2058caa82d2e0b7ce4c0da9aa3063",
+      "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f"
     },
     {
       "format": "CLAP",
@@ -31,7 +33,8 @@
       "receipt": "provenance/clap-render.json",
       "wav": "provenance/clap-render.wav",
       "receipt_sha256": "e068bc4288d60e2b6b8babca35236145528f1024a3ea84ec51c66d11296bd537",
-      "wav_sha256": "ff6382b426037d0a1c2a2e66737d0544e458670ae29d885bd55545652e9204f2"
+      "wav_sha256": "ff6382b426037d0a1c2a2e66737d0544e458670ae29d885bd55545652e9204f2",
+      "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f"
     },
     {
       "format": "AUv2",
@@ -40,7 +43,8 @@
       "command": "auval -v aumu Grai Inde",
       "result": "component not registered; auval could not find the component",
       "receipt": "provenance/auval.txt",
-      "receipt_sha256": "892ea3f8a0bb0fb38116e7a63b04d8e35a42ae1b9de69eddd1b90dca72b6d3fb"
+      "receipt_sha256": "892ea3f8a0bb0fb38116e7a63b04d8e35a42ae1b9de69eddd1b90dca72b6d3fb",
+      "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f"
     },
     {
       "format": "AUv2",
@@ -49,7 +53,65 @@
       "command": "python3 scripts/validate_packaging.py --build-dir build --output provenance/packaging-validation.json",
       "result": "AUv2 metadata pass (aumu/Grai/Inde); registration not requested",
       "receipt": "provenance/packaging-validation.json",
-      "receipt_sha256": "4e909d19f5941debfd14b1278619ab4046fd0a50e5e2059e9ce5bc24987769ce"
+      "receipt_sha256": "4e909d19f5941debfd14b1278619ab4046fd0a50e5e2059e9ce5bc24987769ce",
+      "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f"
+    },
+    {
+      "format": "CLAP",
+      "check": "sample-rate/mode matrix",
+      "status": "pass",
+      "command": "pulp audio render at 24000, 32000, and 48000 Hz; synth and live-input modes",
+      "result": "6/6 renders passed; 6,000/8,000/12,000 stereo frames respectively; finite, unclipped, no NaN or Inf",
+      "receipts": [
+        {
+          "receipt": "provenance/matrix-24000-synth.json",
+          "sha256": "b2719de47fe9b67969c3181a43faac3c293313100c2cc88e0e271af13dadd2ee"
+        },
+        {
+          "wav": "provenance/matrix-24000-synth.wav",
+          "sha256": "dfd4d6e80cd105c3c30532b99f5ff8dc01096a1a92dca81fa9170fefe974866c"
+        },
+        {
+          "receipt": "provenance/matrix-24000-live.json",
+          "sha256": "06057467e786dfb532abbb7aa27ff3ac5c194748b52dfdfad6e8c7b4af835145"
+        },
+        {
+          "wav": "provenance/matrix-24000-live.wav",
+          "sha256": "cb2bc3a6ebe359523fad7e5c721c87ef3252a9e7af4d9cec58946a4866536ea0"
+        },
+        {
+          "receipt": "provenance/matrix-32000-synth.json",
+          "sha256": "fa2a5a1829192d3535cc891324cb60708d854b476e5472b51b34142d97f89116"
+        },
+        {
+          "wav": "provenance/matrix-32000-synth.wav",
+          "sha256": "db167aaf49de16b183d34453a5f8f85a880669329edbe5a089814301abbd1abd"
+        },
+        {
+          "receipt": "provenance/matrix-32000-live.json",
+          "sha256": "1c79055316423cfddef422bc8ffcf9304d7107b2ad00600ac19372f81d21b9c5"
+        },
+        {
+          "wav": "provenance/matrix-32000-live.wav",
+          "sha256": "aafe1305129f8740f9d99715e8d30cd40aa043198486722fbdfb222c47671207"
+        },
+        {
+          "receipt": "provenance/matrix-48000-synth.json",
+          "sha256": "828d70777a55ad7eb795d74bde94a7c81559144b9e0174b2b91087495658f5ed"
+        },
+        {
+          "wav": "provenance/matrix-48000-synth.wav",
+          "sha256": "6bb28ac6d091c56e351dbf71a09fbf6c76f39befdc73c855bcc9e3ffe7d73242"
+        },
+        {
+          "receipt": "provenance/matrix-48000-live.json",
+          "sha256": "d31802f6bf7c92d0fc22ce8885c1a523294245a8e213ef142a78916fc4f2639f"
+        },
+        {
+          "wav": "provenance/matrix-48000-live.wav",
+          "sha256": "ff6382b426037d0a1c2a2e66737d0544e458670ae29d885bd55545652e9204f2"
+        }
+      ]
     }
   ],
   "open_gates": [
@@ -57,8 +119,7 @@
     "VST3 validator/artifact",
     "AAX SDK and validator",
     "DAW editor/audio/state smoke",
-    "upstream ratio-2 path remains unsupported because it contains VLA scratch",
-    "24/32 kHz media modes remain unsupported; only 48 kHz MEDIA_DIGITAL is supported",
+    "ratio-2 upstream runtime is separately qualified by direct Processor test; Grainfield host matrix selects ratio-1 media at 24/32 kHz",
     "MPE/aftertouch support is not implemented"
   ],
   "metadata_note": {
@@ -68,6 +129,7 @@
     "action": "retain exact descriptor and host receipts; investigate any host classification discrepancy before release",
     "receipt": "provenance/clap-inspect.json",
     "receipt_sha256": "38e2426f629f29a69239450d6d0d0590bcccd78f3b58281f143a39aa9835ff19",
-    "source_head": "3bf5d90f19b5094c1f8830a4c4b5c60c84407ed4"
+    "source_head": "b326892482c0bd51bcf4ffcf83a53f32b7cba88f",
+    "sample_rate_matrix": "24 kHz DIRTY_TAPE, 32 kHz VINTAGE_DIGITAL, and 48 kHz MEDIA_DIGITAL; live-input mode uses required stereo Main In"
   }
 }
