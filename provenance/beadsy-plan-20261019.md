@@ -151,8 +151,8 @@ artifact hash are recorded in
 
 The exact route-enabled build was subsequently completed for the two auxiliary
 targets that had previously been registered as `NOT_BUILT` in CTest. The
-`build-route-exact-20261019` tree now runs all 45 registered entries with
-45/45 passing, including the BeadsyFX audio-input companion and standalone
+`build-route-exact-20261019` tree now runs all 46 registered entries with
+46/46 passing, including the BeadsyFX audio-input companion and standalone
 state bridge. This is local component-level evidence for the route picker,
 stable-ID refresh/restore, sidechain processing, DSP/MIDI, UI automation/LFO,
 FX bus, and standalone state contracts. It does not replace the remaining

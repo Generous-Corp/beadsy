@@ -68,10 +68,10 @@ the current Beadsy integration branch; receipt updates are recorded in
   cases; broader channel-pressure and host-format MIDI evidence remains open.
 
 - Route-enabled exact-head validation: the rebuilt `build-route-exact-20261019`
-  tree now runs all 45 registered Beadsy checks, including the FX companion,
+  tree now runs all 46 registered Beadsy checks, including the FX companion,
   standalone state bridge, dynamic route-picker refresh, stable route identity
   persistence, host-sidechain processing, and UI interaction coverage. The
-  result is 45/45 passing. This closes the local build/test omission that had
+  result is 46/46 passing. This closes the local build/test omission that had
   left the two auxiliary targets represented as `NOT_BUILT`; it does not turn
   host-owned Logic/REAPER project routing into a plug-in-owned capability.
 
