@@ -1,0 +1,17 @@
+{
+  "schema": "beadsy.route-sdk-consumer.v1",
+  "captured_at": "2026-10-19T05:24:00Z",
+  "beadsy_head": "c9957c3",
+  "pulp_head": "2dd517bee6e9f001536f346b19436af6d5bed81a",
+  "sdk_prefix": "/Users/danielraffel/Code/agent-worktrees/audio-route-capability-20261018/build/sdk-stage-test",
+  "configure": "cmake -S . -B build-route-sdk-consumer -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=<sdk> -DPulp_DIR=<sdk>/lib/cmake/Pulp",
+  "target": "Beadsy-editor-test",
+  "result": "pass",
+  "assertions": 158,
+  "test_cases": 15,
+  "route_header": "include/pulp/host/audio_route_catalog.hpp",
+  "limitations": [
+    "This proves the staged SDK consumer build and editor binding, not a real Logic or REAPER project-route selection.",
+    "The SDK configure reports LV2 manifest generation unavailable in this consumer environment; LV2 remains a separate blocked/partial format gate."
+  ]
+}
