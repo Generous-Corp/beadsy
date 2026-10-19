@@ -191,3 +191,10 @@ rates, and log are recorded in
 `provenance/beadsy-auval-current-20261019.json`. This closes AUv2 component
 validation while preserving the intentional zero-input-bus limitation and the
 separate AUv3/host-route gates.
+
+The previously missing AUv3 binaries were then built through
+`tools/ci/governed-build.sh` at the exact route-SDK source head. Both the
+`Beadsy.appex` extension and `Beadsy.app` AUv3 host now exist as native arm64
+Mach-O artifacts in `build-route-exact-20261019/AUv3`; the refreshed format
+receipt records AUv3 as an artifact-build pass. AUv3 installation/discovery in
+Logic and actual host-routed audio delivery remain unproven and stay open.
