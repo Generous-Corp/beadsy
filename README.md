@@ -56,3 +56,7 @@ host validation as `not_run`; a missing artifact is reported as `blocked`.
 The current phased delivery plan, including host-routed source selection and
 the remaining evidence gates, is in
 [provenance/beadsy-plan-20261019.md](provenance/beadsy-plan-20261019.md).
+
+Panel artwork is provenance-gated. Normal builds use Beadsy's independent
+scaffold; a private visual comparison may explicitly opt in with
+`-DBEADSY_USE_REVIEWED_PANEL_ARTWORK=ON` after the artwork review is recorded.
