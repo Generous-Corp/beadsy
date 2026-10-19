@@ -102,8 +102,10 @@ The reusable route capability is now at Pulp PR
 `https://github.com/Generous-Corp/pulp/pull/10575`, head
 `f284bd13efed75119910e33392a433c29974836c`. Its fast-tier validation is green;
 the merge-group suite is still required before treating the SDK as landed.
-The route worktree's focused `AudioRoute`/`SignalGraph` selection and lifecycle
-run is also green: 229/229 selected CTest cases pass at that exact head.
+The route worktree's current focused route/graph run is green: 279/279
+selected CTest cases pass at that exact head, including the DSPX product binding,
+processor-provider forwarding, sidechain graph, lifecycle, importer, and UI
+routing cases.
 The route contract remains deliberately host-owned: a plug-in receives the
 selected bus buffers and stable route metadata, while Logic/REAPER own the
 project-track, bus, instrument, and physical-interface menus. The Pulp-host
