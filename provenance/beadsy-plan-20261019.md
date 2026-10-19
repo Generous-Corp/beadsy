@@ -32,6 +32,9 @@ end-to-end audio routing feature.
 
 - Keep Beadsy as a MIDI instrument with optional host-routed stereo input for
   live granular processing, plus the companion effect for ordinary insert use.
+- Ship AUv2 as the compatibility instrument and AUv3 as the sidechain-capable
+  instrument path; validate that Logic exposes the AUv3 host-owned source menu
+  and that the selected bus reaches Beadsy before calling this phase complete.
 - Preserve sample-offset MIDI retriggers, seed modes, freeze behavior, and the
   direct DSP parity fixtures before changing audio semantics.
 - Keep the faceplate straight-on and procedural until artwork rights are
