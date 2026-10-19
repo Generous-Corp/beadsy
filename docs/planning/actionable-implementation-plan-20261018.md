@@ -1,6 +1,6 @@
 # Beadsy actionable implementation plan
 
-**Planning snapshot:** integrated Beadsy head `73163d1` (`73163d15d43a42cf6b0b8059f38de3713f68132f`; branch `feature/beadsy-v1-scope-integrated-20261018`).
+**Planning snapshot:** integrated Beadsy head `47036b5` (`47036b52719cb3bbef8af46ea027a724c388d31c`; branch `integration/grainfield-current-integration-20261018`).
 **Product scope:** independently branded, MIT-licensed Beadsy; v1 is the 48 kHz, global/mono MIDI synth path. Live input/effect, freeze-buffer serialization, polyphony, MPE, AudioSuite, and AAX remain deferred or blocked unless their own evidence closes them.
 
 This plan is intentionally evidence-led. A receipt from an older source head is historical until regenerated at the exact integrated head. No artwork, adapted DSP, `stmlib`, or `waves.bin` is distributable until its rights and notice decision is closed.

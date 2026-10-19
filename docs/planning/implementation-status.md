@@ -1,7 +1,7 @@
 # Beadsy implementation status
 
 Updated 2026-10-18 against the integrated source head
-`bb3d8529363b2dd38d071d9822c982201744556d`; receipt updates are recorded in
+`47036b52719cb3bbef8af46ea027a724c388d31c`; receipt updates are recorded in
 `provenance/current-integration-validation-20261018.json`.
 
 ## Current executable slice
