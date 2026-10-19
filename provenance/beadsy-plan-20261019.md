@@ -127,3 +127,14 @@ state round-trip (5 assertions), so the earlier missing `Pulp::standalone`
 configuration gap is closed for this build. The separate FX test also passes
 (131 assertions). Real external-host routing, pluginval VST3 coverage, and
 installed-package evidence remain independent gates.
+
+The route-enabled SDK consumer was then rebuilt from the current Beadsy HEAD
+`00d6466745f5ed6b2799055fe772b3e51cda6b59` against route SDK head
+`f284bd13efed75119910e33392a433c29974836c` in a Release arm64 build. The
+exact receipt is
+`provenance/beadsy-route-sdk-validation-20261019.json`: the editor suite is
+16/16 green, the Beadsy DSP/behavior suite is 27/27 cases and 2,811 assertions
+green, and VST3, CLAP, AU, LV2, and standalone artifacts are present and
+verified as arm64. This closes the current-head SDK-consumer build gate; it
+does not promote host routing, AUv3 discovery, pluginval, AAX, or artwork
+rights to pass.
