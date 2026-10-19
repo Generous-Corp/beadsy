@@ -5,6 +5,25 @@
   "sdk_path": "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/e829add4f0d29d49ee78198572b195983d268738/afd4ba98429d",
   "skia_tls": "SSL_CERT_FILE=/etc/ssl/cert.pem",
   "skia_sha256": "0ebfe03a209ceefe47edfeae70c3cc6c499583b74f35a26140ea55bad7f1e5a9",
+  "signing": {
+    "identity": "Developer ID Application: Daniel Raffel (95CX6P84C4)",
+    "team_id": "95CX6P84C4",
+    "artifacts": ["VST3/Beadsy.vst3", "CLAP/Beadsy.clap", "AU/Beadsy.component", "Beadsy.app", "AUv3/Beadsy.app"],
+    "codesign_verify_deep_strict": "pass",
+    "note": "pulp ship --allow-tracing was required because the helper CLI carried its own tracing sentinel; the Beadsy artifacts were separately rebuilt without tracing"
+  },
+  "notarization": {
+    "status": "notarized 5/5 ZIP submissions",
+    "stapling": "failed for ZIP containers; package-level stapling remains open",
+    "bundles": [
+      {"name":"Beadsy-vst3.zip","uuid":"324b893f-cd7a-42e6-ba64-bcba71541563"},
+      {"name":"Beadsy-clap.zip","uuid":"5ec933dc-402f-4e0c-b2ba-2a8176576903"},
+      {"name":"Beadsy-au.zip","uuid":"c0963fff-363f-4df0-843d-dd51dfcf92b3"},
+      {"name":"Beadsy-standalone.zip","uuid":"3adce145-f203-4905-9e7f-d03a1fdf92b3"},
+      {"name":"Beadsy-auv3.zip","uuid":"bde5622d-a27f-464b-90fd-68cb719dd848"}
+    ],
+    "receipt_dir": "provenance/notarization-20261019"
+  },
   "beadsy_build": "build-panel-beadsy-current",
   "artwork": "provenance/generated/beads-panel-beadsy.svg",
   "results": {
