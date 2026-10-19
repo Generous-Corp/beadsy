@@ -159,3 +159,11 @@ FX bus, and standalone state contracts. It does not replace the remaining
 real Logic/REAPER project receipt: host-selected tracks, buses, instruments,
 and physical inputs must still be shown delivering audio through a declared
 plug-in bus before end-to-end routing is marked pass.
+
+After the documentation update, the same exact-head VST3 artifact was rerun
+through Tracktion pluginval 1.0.4 at strictness level 5. It returned
+`SUCCESS` at source head `bf5808788ae70b521e9622ff6b004f29df9aef50`; the
+current artifact hash, arm64 identity, command, coverage, and log are recorded
+in `provenance/beadsy-pluginval-vst3-20261019-current.json` and
+`provenance/beadsy-pluginval-vst3-20261019-current.log`. The receipt supersedes
+the earlier historical pluginval source-head record.

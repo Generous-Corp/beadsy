@@ -1,0 +1,18 @@
+
+    AU Validation Tool
+    Version: 1.10.0 
+    Copyright 2003-2019, Apple Inc. All Rights Reserved.
+    Specify -h (-help) for command options
+
+--------------------------------------------------
+VALIDATING AUDIO UNIT: 'aumu' - 'Bead' - 'Inde'
+--------------------------------------------------
+Manufacturer String: Independent Audio
+AudioUnit Name: Beadsy
+Component Version: 1.0.0 (0x10000)
+
+* * PASS
+--------------------------------------------------
+TESTING OPEN TIMES:
+COLD:
+FATAL ERROR: OpenAComponent: result: -1,0xFFFFFFFF

@@ -1,0 +1,126 @@
+{
+  "schema": "beadsy.format-status.v1",
+  "generated_at": "2026-10-19T14:11:35.964496Z",
+  "project": "Beadsy",
+  "source": {
+    "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018",
+    "git_head": "7175eaeafbd37b93a59d8a8c083a9ae504cbd7ea"
+  },
+  "build": {
+    "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-route-exact-20261019",
+    "cmake_cache_present": true,
+    "build_ninja_present": true,
+    "pulp_dir": "/Users/danielraffel/Code/agent-worktrees/audio-route-capability-20261018/build/sdk-stage-test/lib/cmake/Pulp"
+  },
+  "host_validation": "not_run",
+  "formats": [
+    {
+      "format": "VST3",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
+      "evidence": {
+        "artifact": {
+          "path": "VST3/Beadsy.vst3/Contents/MacOS/Beadsy",
+          "exists": true,
+          "is_file": true,
+          "bytes": 44769160,
+          "sha256": "a78d0b299d38fa8972f6c97c91eaa9df130f1f042b58bb65a5a648f0de5b0a1f"
+        },
+        "pulp_target_present": true,
+        "host_validation": "not_run"
+      }
+    },
+    {
+      "format": "CLAP",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
+      "evidence": {
+        "artifact": {
+          "path": "CLAP/Beadsy.clap/Contents/MacOS/Beadsy",
+          "exists": true,
+          "is_file": true,
+          "bytes": 44534584,
+          "sha256": "2fae81e03eab639720b321c6bce2e645f35f4d1f32c81f34239ec28ac61552f5"
+        },
+        "pulp_target_present": true,
+        "host_validation": "not_run"
+      }
+    },
+    {
+      "format": "LV2",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
+      "evidence": {
+        "artifact": {
+          "path": "LV2/Beadsy.lv2/Beadsy.so",
+          "exists": true,
+          "is_file": true,
+          "bytes": 35097032,
+          "sha256": "2bd38021922941a1faa704a9c88ed67517e72feba001df2fa7d3dd7fbc43c8f0"
+        },
+        "pulp_target_present": true,
+        "host_validation": "not_run"
+      }
+    },
+    {
+      "format": "AU",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
+      "evidence": {
+        "artifact": {
+          "path": "AU/Beadsy.component/Contents/MacOS/Beadsy",
+          "exists": true,
+          "is_file": true,
+          "bytes": 44593912,
+          "sha256": "ab894303b4f44df3d2df8266b28b7244882b6e7a78095309161f3c5b3a5be073"
+        },
+        "pulp_target_present": true,
+        "host_validation": "not_run"
+      }
+    },
+    {
+      "format": "AUv3",
+      "status": "blocked",
+      "reason": "declared target produced no artifact in the inspected build tree",
+      "evidence": {
+        "artifact": {
+          "path": "AUv3/Beadsy.appex/Contents/MacOS/Beadsy",
+          "exists": false,
+          "is_file": false
+        },
+        "pulp_target_present": true,
+        "host_validation": "not_run"
+      }
+    },
+    {
+      "format": "AAX",
+      "status": "blocked",
+      "reason": "AAX SDK, entry point, and validator/host evidence are unavailable",
+      "evidence": {
+        "artifact": {
+          "path": "AAX/Beadsy.aaxplugin/Contents/MacOS/Beadsy",
+          "exists": false,
+          "is_file": false
+        },
+        "pulp_target_present": false,
+        "host_validation": "not_run"
+      }
+    },
+    {
+      "format": "Standalone",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
+      "evidence": {
+        "artifact": {
+          "path": "Beadsy.app/Contents/MacOS/Beadsy",
+          "exists": true,
+          "is_file": true,
+          "bytes": 46444520,
+          "sha256": "eae0092b8e7342b971c6f20bf7a1ad01f80b0928368d718f939d6244869f74cc"
+        },
+        "pulp_target_present": true,
+        "host_validation": "not_run"
+      }
+    }
+  ]
+}
