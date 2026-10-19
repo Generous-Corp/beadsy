@@ -3,7 +3,7 @@
   "schema": "beadsy.adversarial-review.v1",
   "reviewed_at": "2026-10-19",
   "exact_heads": {
-    "beadsy": "7f55d10",
+    "beadsy": "90f6dae",
     "plan_receipt": "2d4f61c",
     "route_capability": "126264ee334f9fd664a8e0120dba559995cf8eaa"
   },
@@ -21,12 +21,12 @@
     {
       "area": "route-enabled editor",
       "status": "pass",
-      "evidence": "Route SDK consumer Beadsy-editor-test: 158 assertions, 15 cases; host catalog selection, source-mode gating, refresh, and route picker behavior covered."
+      "evidence": "Governed route SDK consumer build; Beadsy-editor-test: 162 assertions, 16 cases including selection, refresh, attach rebinding, and dropped-route identity clearing."
     },
     {
       "area": "route state persistence",
       "status": "pass",
-      "evidence": "Beadsy GFMD v2 state round-trip persists bounded main and sidechain stable route IDs while accepting legacy payloads."
+      "evidence": "Beadsy GFMD v2 state round-trip persists bounded main and sidechain stable route IDs while accepting legacy payloads; editor refresh clears an identity whose host connection disappears."
     },
     {
       "area": "host graph and DAW routing",
