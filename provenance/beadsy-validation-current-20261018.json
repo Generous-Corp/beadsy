@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beadsy.validation.current.v1",
-  "reviewed_at": "2026-10-18",
-  "beadsy_head": "cb1b41f5f934860349b89b525c93ce2f165ecb3b",
-  "route_capability_head": "c480968f06fa22503a1233321a8f27cd76a138ca",
+  "reviewed_at": "2026-10-19",
+  "beadsy_head": "49fb7c13acf26d2233d0cfade149fbd11feb9ac1",
+  "route_capability_head": "0ea899aa21fda9be00fa54c633450824edac8205",
   "checks": [
     {
       "command": "pulp build --target Beadsy-editor-test",
@@ -25,7 +25,7 @@
       "command": "./build/test/pulp-test-audio-route-catalog",
       "worktree": "audio-route-capability-20261018",
       "status": "pass",
-      "evidence": "18 assertions, 2 test cases"
+      "evidence": "18 assertions, 2 test cases at route capability head 0ea899aa21fda9be00fa54c633450824edac8205"
     },
     {
       "command": "pulp test --all",
@@ -36,15 +36,16 @@
     {
       "command": "tools/scripts/gates.sh origin/main",
       "worktree": "audio-route-capability-20261018",
-      "status": "not_checked_environmental",
-      "evidence": "dev-overflow host refuses gate-profile build/source-selftest and compiled script-input checks"
+      "status": "partial_environmental",
+      "evidence": "M1 gate-profile run completed diff-scoped checks; known pre-existing gpu-dpr-v2-evidence-selftest fails on origin/main; compiled script-input verification requires a freshly configured gate-profile build after JSX runtime dependencies."
     }
   ],
   "release_verdict": "open",
   "open_gates": [
     "host graph/buffer binding for selected route IDs",
     "route state persistence and unavailable/hot-plug lifecycle",
-    "real Logic or REAPER route receipt",
+    "standalone/Forge catalog injection",
+    "real Logic or REAPER route receipt for project tracks, buses, instruments, and physical inputs",
     "rights-cleared visual comparison and package/signing gates"
   ]
 }
