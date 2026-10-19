@@ -13,7 +13,7 @@ files, and internal sources. It is populated and changed on the control thread;
 the audio callback consumes already-routed buffers. A plug-in cannot enumerate
 arbitrary Logic or REAPER tracks by itself, so real DAW menus remain a host
 acceptance gate. The route branch is currently at
-`fe8e7b079b98b8e8a36e29a5ade842c556f47350`; its focused route and processor
+`60777ebf29ed19f77690ce89a40907ac8db872f6`; its focused route and processor
 provider tests pass. The reusable format seam is now an allocation-free,
 pre-bound `AudioInputBusProvider`: `ProcessorNode` materializes declared
 auxiliary/sidechain buses from host-borrowed buffers and the rich
