@@ -272,7 +272,7 @@ TEST_CASE("Beadsy editor exposes a right-click modulation target seam") {
     REQUIRE_FALSE(native->modulation_context_target().has_value());
 }
 
-TEST_CASE("Beadsy binds source-backed auxiliary controls and labels ports") {
+TEST_CASE("Beadsy binds source-backed auxiliary controls without decorative ports") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
     processor.set_state_store(&store);
