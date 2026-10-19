@@ -242,7 +242,13 @@ TEST_CASE("Beadsy binds source-backed auxiliary controls and labels ports") {
     REQUIRE(native != nullptr);
     // The visible source selector replaces the legacy secondary bus toggle;
     // the compatibility parameter remains state/automation-only.
-    REQUIRE(native->child_count() == 26);
+    REQUIRE(native->child_count() ==
+#if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
+            27
+#else
+            26
+#endif
+    );
 
     // Five primary controls plus seven PCB-net-backed auxiliary pots are
     // automatable. Ten remaining regions are input/control ports; output jacks
