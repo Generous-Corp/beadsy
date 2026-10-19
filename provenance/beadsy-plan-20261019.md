@@ -14,10 +14,10 @@ the audio callback consumes already-routed buffers. A plug-in cannot enumerate
 arbitrary Logic or REAPER tracks by itself, so real DAW menus remain a host
 acceptance gate. The route branch is currently at
 `e368fe7845c556b53724d8053d45f10251fbb67f`; its focused route tests pass.
-The M1 gate-profile run reaches all diff-scoped source, workflow, CTest, safety,
-and contract checks; its remaining environmental gap is the repository build
-configuration and the known pre-existing `gpu-dpr-v2-evidence-selftest`
-failure on `origin/main`. This phase is currently **partial**: the catalog now
+The M1 gate-profile run is green across the diff-scoped source, workflow, CTest,
+safety, and contract checks. It records one known pre-existing
+`gpu-dpr-v2-evidence-selftest` failure on `origin/main`; the route branch itself
+has no failing selected gate. This phase is currently **partial**: the catalog now
 exposes stable route entries, refresh behavior, bus roles, and an injected
 control-thread connection callback, but no Beadsy standalone/Forge host yet
 installs a graph/buffer provider. A host integration still has to bind a
