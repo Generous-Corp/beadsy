@@ -11,8 +11,14 @@
 #include <pulp/view/parameter_binding.hpp>
 #include <pulp/view/view.hpp>
 #include <pulp/view/widgets.hpp>
+#if __has_include(<pulp/host/audio_route_catalog.hpp>)
+#include <pulp/host/audio_route_catalog.hpp>
+#include <pulp/view/ui_components.hpp>
+#define BEADSY_HAS_AUDIO_ROUTE_CATALOG 1
+#endif
 
 #include <algorithm>
+#include <atomic>
 #include <cmath>
 #include <functional>
 #include <memory>
@@ -400,6 +406,153 @@ private:
     std::function<void()> on_press_;
 };
 
+#if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
+
+/// Control-thread picker for sources supplied by a Pulp host.
+///
+/// The catalog is deliberately injected by the host.  Beadsy never asks an
+/// AU/VST3/CLAP adapter to enumerate a DAW project, and an external DAW can
+/// leave the picker unattached while retaining ownership of its routing menu.
+/// Catalog callbacks only mark the view dirty; the host/editor control thread
+/// calls refresh_routes() (or refresh_if_needed()) to touch view state.
+class AudioRoutePicker final : public pulp::view::ComboBox {
+public:
+    explicit AudioRoutePicker(std::size_t bus_index = 0) : bus_index_(bus_index) {
+        set_id("beadsy-audio-route");
+        set_access_label("Audio route: host-owned routing menu");
+        set_access_disabled("true");
+        set_items({"Host-owned routing menu"});
+        set_selected_silent(0);
+        on_change = [this](int index) { on_change_route(index); };
+    }
+
+    ~AudioRoutePicker() override { detach_catalog(); }
+
+    /// Attach a host catalog.  The catalog contract has one callback slot;
+    /// therefore observation is opt-in and is safe only when this picker owns
+    /// a per-editor catalog instance.  Shared catalogs should pass false and
+    /// call refresh_routes() from their host control-thread fan-out instead.
+    void set_catalog(pulp::host::AudioRouteCatalog* catalog,
+                     bool observe_changes = false) {
+        detach_catalog();
+        catalog_ = catalog;
+        if (!catalog_) {
+            set_items({"Host-owned routing menu"});
+            set_selected_silent(0);
+            update_enabled_state();
+            return;
+        }
+        if (observe_changes) {
+            observing_changes_ = true;
+            catalog_->set_change_callback([this] {
+                // AudioRouteCatalog is a control-thread seam.  Do not
+                // enumerate or mutate a View from a notification; the next
+                // control-thread refresh consumes this flag.
+                refresh_pending_.store(true, std::memory_order_release);
+            });
+        }
+        refresh_routes();
+    }
+
+    pulp::host::AudioRouteCatalog* catalog() const { return catalog_; }
+
+    void set_bus_index(std::size_t bus_index) {
+        if (bus_index_ == bus_index) return;
+        bus_index_ = bus_index;
+        if (catalog_) refresh_routes();
+    }
+    std::size_t bus_index() const { return bus_index_; }
+
+    /// Re-enumerate on the host/editor control thread and preserve the
+    /// catalog's connected stable ID when it is still present.
+    void refresh_routes() {
+        refresh_pending_.store(false, std::memory_order_release);
+        if (!catalog_) {
+            update_enabled_state();
+            return;
+        }
+
+        const auto routes = catalog_->enumerate();
+        const auto connected = catalog_->connected_route(bus_index_);
+        route_ids_.clear();
+        std::vector<std::string> labels;
+        labels.emplace_back("Select host route…");
+        int selected = 0;
+        for (const auto& route : routes) {
+            route_ids_.push_back(route.stable_id);
+            std::string label = route.display_name.empty() ? route.stable_id
+                                                             : route.display_name;
+            if (route.channels > 0)
+                label += " (" + std::to_string(route.channels) + " ch)";
+            if (!route.available) label += " — unavailable";
+            labels.push_back(std::move(label));
+            if (!connected.empty() && route.stable_id == connected)
+                selected = static_cast<int>(route_ids_.size());
+        }
+        set_items(std::move(labels));
+        set_selected_silent(selected);
+        update_enabled_state();
+        if (selected > 0)
+            set_access_label("Audio route: " + selected_text() + " (host-owned)");
+    }
+
+    void refresh_if_needed() {
+        if (refresh_pending_.load(std::memory_order_acquire)) refresh_routes();
+    }
+
+    bool has_routes() const { return !route_ids_.empty(); }
+
+private:
+    void detach_catalog() {
+        if (catalog_ && observing_changes_) catalog_->set_change_callback({});
+        catalog_ = nullptr;
+        observing_changes_ = false;
+        route_ids_.clear();
+        refresh_pending_.store(false, std::memory_order_release);
+    }
+
+    void update_enabled_state() {
+        const bool enabled = catalog_ != nullptr && source_mode_ != 0 && has_routes();
+        set_enabled(enabled);
+        set_access_disabled(enabled ? "false" : "true");
+        if (!catalog_) {
+            set_access_label("Audio route: host-owned routing menu");
+        } else if (source_mode_ == 0) {
+            set_access_label("Audio route: MIDI synth selected; host input routing unavailable");
+        } else if (!has_routes()) {
+            set_access_label("Audio route: no host sources available");
+        }
+    }
+
+    std::size_t bus_index_ = 0;
+    pulp::host::AudioRouteCatalog* catalog_ = nullptr;
+    bool observing_changes_ = false;
+    std::vector<std::string> route_ids_;
+    std::atomic_bool refresh_pending_{false};
+    int source_mode_ = 0;
+
+public:
+    /// Keep the picker visible but inert while MIDI synth mode is selected.
+    void set_source_mode(int mode) {
+        source_mode_ = std::clamp(mode, 0, 2);
+        set_bus_index(source_mode_ == 2 ? 1u : 0u);
+        update_enabled_state();
+    }
+
+    void on_change_route(int index) {
+        if (!catalog_ || index <= 0 || index > static_cast<int>(route_ids_.size())) return;
+        const auto& route_id = route_ids_[static_cast<std::size_t>(index - 1)];
+        if (!catalog_->connect(route_id, bus_index_)) {
+            refresh_routes();
+            set_access_label("Audio route unavailable; use the host routing menu");
+            return;
+        }
+        set_access_label("Audio route: " + selected_text() + " (host-owned)");
+    }
+};
+
+#endif
+
 class InputBusControl final : public pulp::view::View {
 public:
     InputBusControl() {
@@ -527,6 +680,9 @@ public:
     void on_resized() override { layout_controls(); }
     void layout_children() override {
         pulp::view::View::layout_children();
+#if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
+        if (route_picker_) route_picker_->refresh_if_needed();
+#endif
         layout_controls();
     }
 
@@ -552,6 +708,13 @@ public:
     void open_modulation_context(pulp::state::ParamID id) { context_target_ = id; }
     void clear_modulation_context() { context_target_.reset(); }
     ModeControl* source_mode_control() const { return source_mode_; }
+#if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
+    AudioRoutePicker* audio_route_picker() const { return route_picker_; }
+    void set_audio_route_catalog(pulp::host::AudioRouteCatalog* catalog,
+                                 bool observe_changes = false) {
+        if (route_picker_) route_picker_->set_catalog(catalog, observe_changes);
+    }
+#endif
 
     /// Show the same menu used by a knob's real secondary-click handler.
     /// This is public so host/editor characterization tests can exercise the
@@ -771,6 +934,9 @@ private:
             const int next = (source_mode_->mode() + 1) % (kAvailableSourceModeMax + 1);
             store_.set_value(kMode, static_cast<float>(next));
             store_.end_gesture(kMode);
+#if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
+            if (route_picker_) route_picker_->set_source_mode(next);
+#endif
             // Keep the legacy bus parameter coherent for old hosts/states;
             // the visible source control is now the single semantic choice.
             if (next >= 1) {
@@ -781,11 +947,23 @@ private:
         });
         source_mode_binding_ = store_.add_listener(
             [this](pulp::state::ParamID changed, float value) {
-                if (changed == kMode && source_mode_)
+                if (changed == kMode && source_mode_) {
                     source_mode_->set_mode(static_cast<int>(std::lround(value)));
+#if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
+                    if (route_picker_)
+                        route_picker_->set_source_mode(static_cast<int>(std::lround(value)));
+#endif
+                }
             }, pulp::state::ListenerThread::Main,
             pulp::state::ListenerRestoreBehavior::Reconcile);
         add_child(std::move(mode));
+
+#if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
+        auto route_picker = std::make_unique<AudioRoutePicker>();
+        route_picker_ = route_picker.get();
+        route_picker_->set_source_mode(static_cast<int>(std::lround(store_.get_value(kMode))));
+        add_child(std::move(route_picker));
+#endif
 
         auto grip = std::make_unique<ResizeGrip>(processor_);
         resize_grip_ = grip.get();
@@ -838,6 +1016,17 @@ private:
             source_mode_->set_position(pulp::view::View::Position::absolute);
             source_mode_->set_bounds({x, y, mode_width, mode_height});
         }
+#if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
+        if (route_picker_) {
+            const float unit = std::min(sx, sy);
+            const float route_width = 26.0f * unit;
+            const float route_height = 5.5f * unit;
+            const float x = 35.4f * sx - route_width * 0.5f;
+            const float y = (128.5f - 121.0f) * sy - route_height * 0.5f;
+            route_picker_->set_position(pulp::view::View::Position::absolute);
+            route_picker_->set_bounds({x, y, route_width, route_height});
+        }
+#endif
         if (resize_grip_) {
             const float grip = std::max(8.0f, 7.0f * std::min(sx, sy));
             resize_grip_->set_position(pulp::view::View::Position::absolute);
@@ -858,6 +1047,9 @@ private:
     FreezeControl* freeze_mode_ = nullptr;
     pulp::state::ListenerToken freeze_mode_binding_;
     ModeControl* source_mode_ = nullptr;
+#if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
+    AudioRoutePicker* route_picker_ = nullptr;
+#endif
     ResizeGrip* resize_grip_ = nullptr;
     pulp::state::ListenerToken source_mode_binding_;
     std::optional<pulp::state::ParamID> context_target_;

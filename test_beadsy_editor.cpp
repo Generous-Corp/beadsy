@@ -12,6 +12,10 @@
 #include <vector>
 #include <string_view>
 
+#if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
+#include <array>
+#endif
+
 TEST_CASE("Beadsy clean-room panel scaffold names the product and bound controls") {
     const std::string_view status(kBeadsyPanelSourceStatus);
     const std::string_view panel(kBeadsyPanelSvg);
@@ -66,6 +70,55 @@ TEST_CASE("Beadsy source control exposes synth and host-routed input modes") {
     REQUIRE(native->source_mode_control()->mode() == 0);
     REQUIRE(store.get_value(beadsy::kMode) == 0.0f);
 }
+
+#if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
+namespace {
+class EditorRouteCatalog final : public pulp::host::AudioRouteCatalog {
+public:
+    std::vector<pulp::host::AudioRouteInfo> enumerate() const override { return routes; }
+    void set_change_callback(ChangeCallback callback) override { callback_ = std::move(callback); }
+    bool connect(std::string_view stable_id, std::size_t bus_index) override {
+        if (bus_index > 1 || stable_id != "track:piano") return false;
+        selected_[bus_index] = std::string(stable_id);
+        return true;
+    }
+    std::string connected_route(std::size_t bus_index) const override {
+        return bus_index < selected_.size() ? selected_[bus_index] : std::string{};
+    }
+    void notify() { if (callback_) callback_(); }
+    std::vector<pulp::host::AudioRouteInfo> routes{
+        {"input:mic", "Mic", pulp::host::AudioRouteKind::PhysicalInput, 1, true},
+        {"track:piano", "Piano", pulp::host::AudioRouteKind::Track, 2, true},
+        {"bus:offline", "Offline Bus", pulp::host::AudioRouteKind::Bus, 2, false},
+    };
+private:
+    ChangeCallback callback_;
+    std::array<std::string, 2> selected_{};
+};
+}
+
+TEST_CASE("Beadsy route picker consumes host catalog on the control thread") {
+    EditorRouteCatalog catalog;
+    beadsy::AudioRoutePicker picker;
+    picker.set_catalog(&catalog, true);
+    REQUIRE(picker.catalog() == &catalog);
+    REQUIRE(picker.items().size() == 4);
+    REQUIRE(picker.items()[1] == "Mic (1 ch)");
+    REQUIRE(picker.items()[3].find("unavailable") != std::string::npos);
+    REQUIRE(picker.enabled() == false); // MIDI synth mode does not use host input.
+
+    picker.set_source_mode(1);
+    REQUIRE(picker.enabled());
+    picker.set_selected(2);
+    REQUIRE(catalog.connected_route(0) == "track:piano");
+
+    catalog.routes[1].display_name = "Piano Updated";
+    catalog.notify();
+    REQUIRE(picker.items()[2] == "Piano (2 ch)");
+    picker.refresh_if_needed();
+    REQUIRE(picker.items()[2] == "Piano Updated (2 ch)");
+}
+#endif
 
 TEST_CASE("Beadsy knob skin keeps measured cap and pointer proportions") {
     // Ratios are taken from the local straight-on material reference and are
