@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "beadsy.auval.v1",
+  "validated_at": "2026-10-19",
+  "head": "efb0a8cc23f63259e8f60f45428d03754726902e",
+  "bundle": "build-route-exact-20261019/AU/Beadsy.component",
+  "component": "aumu Bead Inde",
+  "result": "pass",
+  "command": "timeout 30s auval -v aumu Bead Inde",
+  "scope": [
+    "open times",
+    "scope formats",
+    "custom UI",
+    "class info",
+    "host callbacks",
+    "parameter publication and reset",
+    "MIDI",
+    "render tests across sample rates and block sizes"
+  ],
+  "caveat": "AUv2 instrument exposes no input bus; host-routed external audio remains the AUv3 sidechain gate."
+}
