@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beadsy.ui-port-removal.v1",
   "project": "Beadsy",
-  "source_head": "7bf099c4c0cca25ee41be3bd99d8f44d48334f66",
+  "source_head": "4b4f024d82f3f87e6836549102d42e2e038f7341",
   "change": "Removed decorative hardware jack regions from the native editor; host audio selection remains in the injected AudioRouteCatalog picker.",
   "build": {
     "directory": "build-ui-remove",
@@ -10,8 +10,16 @@
     "sdk": "/Users/danielraffel/Code/agent-worktrees/audio-route-capability-20261018/build/sdk-stage-test"
   },
   "tests": {
-    "Beadsy-test": {"assertions": 2818, "cases": 29, "status": "pass"},
-    "Beadsy-editor-test": {"assertions": 148, "cases": 17, "status": "pass"}
+    "Beadsy-test": {
+      "assertions": 2818,
+      "cases": 29,
+      "status": "pass"
+    },
+    "Beadsy-editor-test": {
+      "assertions": 148,
+      "cases": 17,
+      "status": "pass"
+    }
   },
   "capture": {
     "path": "artifacts-beadsy-no-jacks.png",
