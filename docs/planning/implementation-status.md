@@ -55,9 +55,14 @@ the current Beadsy integration branch; receipt updates are recorded in
   partial or unavailable statuses in the packaging reconciliation; this is not
   a release claim.
 
+- MIDI overlap: explicit sample-offset gate edges are now preserved through
+  the adapted trigger merger, so overlapping note-ons retrigger at their
+  declared offsets. The current processor suite passes 2,808 assertions in 26
+  cases; broader channel-pressure and host-format MIDI evidence remains open.
+
 ## Work in flight
 
-1. Add the remaining source-vs-port audio comparison and MIDI overlap receipts; expose allocation counts, capture a backtrace on recurrence, and rerun 64/256/1024 across supported toolchains.
+1. Add the remaining source-vs-port adapter comparison receipts; expose allocation counts, capture a backtrace on recurrence, and rerun 64/256/1024 across supported toolchains. The direct 144-fixture parity and overlapping-note retrigger gates now pass at the current head.
 2. **Host-route seam is implemented and focused-tested:** Pulp commits `573ef3a6b5`, `0356f60bd2`, and `1375ce43db4a801bc43aacfb57a5d91d7b066db3` add static `BusRole` metadata plus the mutable, host-owned `AudioRouteCatalog`; its exact-head test passes 13 assertions. Beadsy commit `4b12ebe` adds a guarded `ComboBox` route picker with stable IDs, unavailable diagnostics, Main/Sidechain bus selection, control-thread refresh, and an opt-in change observer for catalogs owned by one editor. Against the current Pulp SDK plus the exact core route header, the picker-enabled editor build passes 154 assertions in 14 cases. The ordinary installed-SDK build still passes 145 assertions in 13 cases because that SDK predates the exported header. A complete staged SDK install is currently blocked by unrelated optional probe binaries absent from the Pulp build; the core install script itself contains the host target/header rules. Catalog-capable Pulp/standalone hosts can provide stable, checkmarked physical-input, track, instrument, bus, file, and internal-source entries; external DAWs remain responsible for their own project/input menus. Remaining work is publishing the refreshed SDK artifact, plus real AU/VST3/CLAP host receipts. A plug-in still cannot enumerate arbitrary Logic/REAPER project tracks through standard format APIs.
 3. Calibrate the native panel capture against a rights-cleared straight-on
    reference, including ornate knob faces, pointer angles, labels, and pixel
