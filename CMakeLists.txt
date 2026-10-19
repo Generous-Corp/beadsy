@@ -6,6 +6,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Pulp CONFIG REQUIRED)
 
+option(BEADSY_USE_REVIEWED_PANEL_ARTWORK
+       "Embed the locally reviewed Beads panel asset for private visual comparison"
+       OFF)
+
 # The converted panel is an authoring-time, rights-gated vector asset. Embed it
 # into the editor so installed plugins never read a developer checkout. A clean
 # checkout may not contain the probe asset while its rights review is pending;
@@ -13,10 +17,10 @@ find_package(Pulp CONFIG REQUIRED)
 # not depend on an ignored developer artifact.
 set(BEADSY_PANEL_ASSET "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel.svg")
 set(BEADSY_PANEL_PNG "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel.png")
-if(EXISTS "${BEADSY_PANEL_ASSET}")
+if(BEADSY_USE_REVIEWED_PANEL_ARTWORK AND EXISTS "${BEADSY_PANEL_ASSET}")
     file(READ "${BEADSY_PANEL_ASSET}" BEADSY_PANEL_SVG)
     set(BEADSY_PANEL_SOURCE_STATUS "authorized Beads panel artwork")
-elseif(EXISTS "${BEADSY_PANEL_PNG}")
+elseif(BEADSY_USE_REVIEWED_PANEL_ARTWORK AND EXISTS "${BEADSY_PANEL_PNG}")
     # The authorized Illustrator panel is rasterized at build time because the
     # checked-in source is .ai and Skia's SVG loader cannot consume Illustrator
     # directly. Keep the original aspect ratio and let native controls sit on
@@ -30,7 +34,7 @@ elseif(EXISTS "${BEADSY_PANEL_PNG}")
   <image href="data:image/png;base64,@BEADSY_PANEL_PNG_B64@" x="0" y="0" width="200.693" height="364.252" preserveAspectRatio="none"/>
 </svg>]=])
     string(CONFIGURE "${BEADSY_PANEL_SVG}" BEADSY_PANEL_SVG @ONLY)
-    set(BEADSY_PANEL_SOURCE_STATUS "authorized Beads panel artwork")
+    set(BEADSY_PANEL_SOURCE_STATUS "reviewed Beads panel artwork (private opt-in)")
 else()
     # Keep the product useful when the rights-gated authoring probe is absent.
     # This is an original, deliberately sparse panel scaffold: its labels and
@@ -78,7 +82,7 @@ else()
   <text x="100.3465" y="344" text-anchor="middle" font-family="sans-serif" font-size="3" letter-spacing="0.85" fill="#334b55">48 KHZ  •  MONO VOICE  •  MIDI</text>
   <text x="100.3465" y="353" text-anchor="middle" font-family="sans-serif" font-size="2.5" letter-spacing="0.5" fill="#657078">INDEPENDENT PRODUCT SCAFFOLD</text>
 </svg>]=])
-    set(BEADSY_PANEL_SOURCE_STATUS "independent scaffold; authorized artwork unavailable")
+    set(BEADSY_PANEL_SOURCE_STATUS "independent scaffold; panel artwork opt-in disabled or unavailable")
     message(STATUS "Beadsy panel probe unavailable; using independent panel scaffold")
 endif()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/beadsy_panel_svg.hpp.in

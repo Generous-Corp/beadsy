@@ -19,8 +19,8 @@
 TEST_CASE("Beadsy clean-room panel scaffold names the product and bound controls") {
     const std::string_view status(kBeadsyPanelSourceStatus);
     const std::string_view panel(kBeadsyPanelSvg);
-    REQUIRE((status == "independent scaffold; authorized artwork unavailable" ||
-             status == "authorized Beads panel artwork"));
+    REQUIRE((status == "independent scaffold; panel artwork opt-in disabled or unavailable" ||
+             status == "reviewed Beads panel artwork (private opt-in)"));
     if (status == "authorized Beads panel artwork") {
         // A rights-cleared authoring probe is intentionally passed through
         // unchanged; the scaffold assertions apply only to clean checkouts.
