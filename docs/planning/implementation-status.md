@@ -56,7 +56,7 @@ the current Beadsy integration branch; receipt updates are recorded in
 ## Work in flight
 
 1. Add the remaining source-vs-port audio comparison and MIDI overlap receipts; expose allocation counts, capture a backtrace on recurrence, and rerun 64/256/1024 across supported toolchains.
-2. **Host-route seam is implemented and focused-tested:** Pulp commits `573ef3a6b5` and `0356f60bd2` add static `BusRole` metadata plus host-owned `AudioRouteCatalog`; Beadsy now exposes stable MIDI Synth/Main Input/Sidechain modes and a distinct main-vs-sidechain impulse test passes. The catalog may enumerate Pulp-host sources; external DAWs remain responsible for their own project/input menus. Remaining work is SDK integration and real AU/VST3/CLAP host receipts.
+2. **Host-route seam is implemented and focused-tested:** Pulp commits `573ef3a6b5`, `0356f60bd2`, and `1375ce43db4a801bc43aacfb57a5d91d7b066db3` add static `BusRole` metadata plus the mutable, host-owned `AudioRouteCatalog`; its exact-head test passes 13 assertions. Beadsy now exposes stable MIDI Synth/Main Input/Sidechain modes and a distinct main-vs-sidechain impulse test passes. Catalog-capable Pulp/standalone hosts can provide stable, checkmarked physical-input, track, instrument, bus, file, and internal-source entries; external DAWs remain responsible for their own project/input menus. The remaining work is binding that catalog to the Beadsy picker in catalog-capable hosts, plus real AU/VST3/CLAP host receipts. A plug-in still cannot enumerate arbitrary Logic/REAPER project tracks through standard format APIs.
 3. Calibrate the native panel capture against a rights-cleared straight-on
    reference, including ornate knob faces, pointer angles, labels, and pixel
    residuals.
