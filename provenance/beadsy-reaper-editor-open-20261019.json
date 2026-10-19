@@ -11,5 +11,12 @@
   "cleanup": "passed; no development plugins left behind",
   "interpretation": "The harness documents this REAPER version/path-redirection limitation; this is not a host editor pass and is not promoted to PASS.",
   "beadsy_head": "00424b9a82928cf8eeb5e89b058cebcf3b9f8b97",
-  "next": "Use a host-native installed scan or fix the temporary scan-path publication before claiming an editor-open proof."
+  "next": "Investigate REAPER plugin-cache identity/scan publication or use manual host UI validation; do not promote this to PASS.",
+  "native_scan_attempt": {
+    "staged_exact_bundle": true,
+    "existing_bundle_preserved": true,
+    "result": "inconclusive",
+    "observed": "REAPER still did not find/insert Beadsy after staging the exact bundle in the standard user VST3 directory",
+    "cleanup": "exact staged bundle removed; pre-existing bundle restored"
+  }
 }
