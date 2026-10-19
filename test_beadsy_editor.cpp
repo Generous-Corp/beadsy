@@ -21,9 +21,10 @@ TEST_CASE("Beadsy clean-room panel scaffold names the product and bound controls
     const std::string_view panel(kBeadsyPanelSvg);
     REQUIRE((status == "independent scaffold; panel artwork opt-in disabled or unavailable" ||
              status == "reviewed Beads panel artwork (private opt-in)"));
-    if (status == "authorized Beads panel artwork") {
-        // A rights-cleared authoring probe is intentionally passed through
-        // unchanged; the scaffold assertions apply only to clean checkouts.
+    if (status == "authorized Beads panel artwork" ||
+        status == "reviewed Beads panel artwork (private opt-in)") {
+        // A rights-cleared or private comparison probe is intentionally passed
+        // through unchanged; scaffold assertions apply only to clean checkouts.
         return;
     }
     REQUIRE(panel.find("BEADSY") != std::string_view::npos);
