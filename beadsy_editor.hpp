@@ -241,7 +241,10 @@ public:
   }
 
   void set_mode(int mode) {
-    mode_ = std::clamp(mode, 0, kAvailableSourceModeMax);
+    // Seed Mode is a product control with three states (OFF, ON, LOCKED).
+    // It is independent of the host audio-bus topology: AU-no-input and LV2
+    // variants still expose the same seed-button semantics.
+    mode_ = std::clamp(mode, 0, 2);
     const char *state = mode_ == 0 ? "off" : mode_ == 1 ? "on" : "locked";
     set_access_label(std::string("Seed Mode (") + state + "); click to cycle");
     request_repaint();

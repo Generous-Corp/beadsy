@@ -340,6 +340,17 @@ TEST_CASE("Beadsy Seed Mode button cycles the source-backed LED states") {
     REQUIRE(seed->mode() == 0);
 }
 
+TEST_CASE("Beadsy Seed Mode keeps its three states independent of input buses") {
+    beadsy::SeedModeControl seed;
+    seed.set_mode(2);
+    REQUIRE(seed.mode() == 2);
+    REQUIRE(seed.access_label().find("locked") != std::string::npos);
+    seed.set_mode(99);
+    REQUIRE(seed.mode() == 2);
+    seed.set_mode(-1);
+    REQUIRE(seed.mode() == 0);
+}
+
 TEST_CASE("Beadsy top Freeze control is source-backed and laid out beside Seed") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
