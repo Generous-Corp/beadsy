@@ -140,6 +140,12 @@ else()
 endif()
 catch_discover_tests(Beadsy-test)
 
+add_executable(BeadsyFX-test test_beadsy_fx.cpp)
+target_link_libraries(BeadsyFX-test PRIVATE
+    Pulp::format Catch2::Catch2WithMain beadsy_beads_dsp)
+target_include_directories(BeadsyFX-test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+catch_discover_tests(BeadsyFX-test)
+
 # Small, authorized offline harness for standalone-adjacent audio/state proof.
 # It uses Pulp's HeadlessHost seam rather than claiming that the GUI app itself
 # exposes a state or audio measurement bridge.
@@ -180,6 +186,34 @@ foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AAX Standalone)
             target_link_libraries(Beadsy_${_fmt} PRIVATE Pulp::view)
             target_include_directories(Beadsy_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
             target_compile_definitions(Beadsy_${_fmt} PRIVATE BEADSY_NATIVE_EDITOR=1)
+        endif()
+    endif()
+endforeach()
+
+# Audio-input companion.  The primary Beadsy artifact is an AU instrument
+# (aumu) for MIDI workflows; this companion is an AU MusicEffect (aumf) so a
+# DAW can feed the track/bus audio into the same Beads processor.  Host project
+# source menus remain host-owned; this target simply exposes a real input bus.
+pulp_add_plugin(BeadsyFX
+    FORMATS         VST3 CLAP AU Standalone
+    PLUGIN_NAME     "Beadsy FX"
+    BUNDLE_ID       "com.independent-audio.beadsy-fx"
+    MANUFACTURER    "Independent Audio"
+    VERSION         "1.0.0"
+    CATEGORY        Effect
+    ACCEPTS_MIDI
+    PLUGIN_CODE     "BdFX"
+    MANUFACTURER_CODE "Inde"
+)
+
+foreach(_fmt IN ITEMS VST3 CLAP AU Standalone)
+    if(TARGET BeadsyFX_${_fmt})
+        target_compile_definitions(BeadsyFX_${_fmt} PRIVATE BEADSY_EFFECT_VARIANT=1)
+        target_link_libraries(BeadsyFX_${_fmt} PRIVATE beadsy_beads_dsp)
+        if(TARGET Pulp::view)
+            target_link_libraries(BeadsyFX_${_fmt} PRIVATE Pulp::view)
+            target_include_directories(BeadsyFX_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+            target_compile_definitions(BeadsyFX_${_fmt} PRIVATE BEADSY_NATIVE_EDITOR=1)
         endif()
     endif()
 endforeach()

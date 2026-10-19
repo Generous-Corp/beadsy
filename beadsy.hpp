@@ -92,11 +92,26 @@ struct LfoModulation {
 
 inline pulp::format::PluginDescriptor make_descriptor() {
     return {
-        .name = "Beadsy",
+        .name =
+#if defined(BEADSY_EFFECT_VARIANT)
+            "Beadsy FX",
+#else
+            "Beadsy",
+#endif
         .manufacturer = "Independent Audio",
-        .bundle_id = "com.independent_audio.beadsy",
+        .bundle_id =
+#if defined(BEADSY_EFFECT_VARIANT)
+            "com.independent_audio.beadsy-fx",
+#else
+            "com.independent_audio.beadsy",
+#endif
         .version = "1.0.0",
-        .category = pulp::format::PluginCategory::Instrument,
+        .category =
+#if defined(BEADSY_EFFECT_VARIANT)
+            pulp::format::PluginCategory::Effect,
+#else
+            pulp::format::PluginCategory::Instrument,
+#endif
         .input_buses = {{"Main In", 2, true}, {"Sidechain", 2, true}},
         .output_buses = {{"Main Out", 2, false}},
         .accepts_midi = true,
@@ -152,7 +167,14 @@ public:
         store.add_parameter({.id = kFreeze, .name = "Freeze", .unit = "toggle",
                              .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
         store.add_parameter({.id = kMode, .name = "Source", .unit = "mode",
-                             .range = pulp::state::ParamRange::linear(0.0f, 2.0f, 0.0f, 1.0f)});
+                             .range = pulp::state::ParamRange::linear(
+                                 0.0f, 2.0f,
+#if defined(BEADSY_EFFECT_VARIANT)
+                                 1.0f,
+#else
+                                 0.0f,
+#endif
+                                 1.0f)});
         store.add_parameter({.id = kInputSource, .name = "Audio Source", .unit = "mode",
                              .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
         store.add_parameter({.id = kSeedMode, .name = "Seed Mode", .unit = "mode",
