@@ -13,9 +13,9 @@
     },
     {
       "command": "./Beadsy-editor-test",
-      "worktree": "grainfield-current-integration-20261018/build-route-sdk-consumer",
+      "worktree": "grainfield-current-integration-20261018/build-route-exact-20261019",
       "status": "pass",
-      "evidence": "162 assertions, 16 test cases including host route picker selection, refresh, attach rebinding, and dropped-route identity clearing"
+      "evidence": "governed exact-header build with current route branch header f3ce279872e4f3be6f41f8b6ddeac5cd291df627e7930e7a2430b04bb0e7b35c; 162 assertions, 16 test cases including selection, refresh, attach rebinding, and dropped-route identity clearing"
     },
     {
       "command": "pulp build --all",
@@ -54,5 +54,6 @@
     "standalone/Forge catalog injection",
     "real Logic or REAPER route receipt for project tracks, buses, instruments, and physical inputs",
     "rights-cleared visual comparison and package/signing gates"
-  ]
+  ],
+  "route_header_sha256": "f3ce279872e4f3be6f41f8b6ddeac5cd291df627e7930e7a2430b04bb0e7b35c"
 }

@@ -21,7 +21,7 @@
     {
       "area": "route-enabled editor",
       "status": "pass",
-      "evidence": "Governed route SDK consumer build; Beadsy-editor-test: 162 assertions, 16 cases including selection, refresh, attach rebinding, and dropped-route identity clearing."
+      "evidence": "Governed exact-header build using current route branch header SHA f3ce279872e4f3be6f41f8b6ddeac5cd291df627e7930e7a2430b04bb0e7b35c; Beadsy-editor-test: 162 assertions, 16 cases."
     },
     {
       "area": "route state persistence",
@@ -45,5 +45,6 @@
     }
   ],
   "verdict": "partial_with_explicit_open_gates",
-  "goal_status": "active"
+  "goal_status": "active",
+  "route_header_sha256": "f3ce279872e4f3be6f41f8b6ddeac5cd291df627e7930e7a2430b04bb0e7b35c"
 }
