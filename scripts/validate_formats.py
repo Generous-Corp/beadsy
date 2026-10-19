@@ -20,6 +20,7 @@ FORMAT_ARTIFACTS = {
     "CLAP": "CLAP/Beadsy.clap/Contents/MacOS/Beadsy",
     "LV2": "LV2/Beadsy.lv2/Beadsy.so",
     "AU": "AU/Beadsy.component/Contents/MacOS/Beadsy",
+    "AUv3": "AUv3/Beadsy.appex/Contents/MacOS/Beadsy",
     "AAX": "AAX/Beadsy.aaxplugin/Contents/MacOS/Beadsy",
     "Standalone": "Beadsy.app/Contents/MacOS/Beadsy",
 }

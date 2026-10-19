@@ -169,7 +169,7 @@ if(TARGET Pulp::view)
 endif()
 
 pulp_add_plugin(Beadsy
-    FORMATS         VST3 CLAP LV2 AU AAX Standalone
+    FORMATS         VST3 CLAP LV2 AU AUv3 AAX Standalone
     PLUGIN_NAME     "Beadsy"
     BUNDLE_ID       "com.independent-audio.beadsy"
     MANUFACTURER    "Independent Audio"
@@ -182,7 +182,7 @@ pulp_add_plugin(Beadsy
     AAX_NATIVE_CODE "Bead"
 )
 
-foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AAX Standalone)
+foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AUv3 AAX Standalone)
     if(TARGET Beadsy_${_fmt})
         target_link_libraries(Beadsy_${_fmt} PRIVATE beadsy_beads_dsp)
         if(TARGET Pulp::view)
@@ -199,6 +199,10 @@ foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AAX Standalone)
             target_compile_definitions(Beadsy_${_fmt} PRIVATE BEADSY_LV2=1)
         endif()
         if(_fmt STREQUAL "AU")
+            # AUv2 instruments use the historical no-input adapter. AUv3 is
+            # the sidechain-capable instrument path and keeps the declared
+            # main/sidechain buses so Logic can offer its host-owned source
+            # picker.
             target_compile_definitions(Beadsy_${_fmt} PRIVATE BEADSY_AU_NO_INPUT=1)
         endif()
     endif()
@@ -209,7 +213,7 @@ endforeach()
 # DAW can feed the track/bus audio into the same Beads processor.  Host project
 # source menus remain host-owned; this target simply exposes a real input bus.
 pulp_add_plugin(BeadsyFX
-    FORMATS         VST3 CLAP AU Standalone
+    FORMATS         VST3 CLAP AU AUv3 Standalone
     PLUGIN_NAME     "Beadsy FX"
     BUNDLE_ID       "com.independent-audio.beadsy-fx"
     MANUFACTURER    "Independent Audio"
@@ -220,7 +224,7 @@ pulp_add_plugin(BeadsyFX
     MANUFACTURER_CODE "Inde"
 )
 
-foreach(_fmt IN ITEMS VST3 CLAP AU Standalone)
+foreach(_fmt IN ITEMS VST3 CLAP AU AUv3 Standalone)
     if(TARGET BeadsyFX_${_fmt})
         target_compile_definitions(BeadsyFX_${_fmt} PRIVATE BEADSY_EFFECT_VARIANT=1)
         target_link_libraries(BeadsyFX_${_fmt} PRIVATE beadsy_beads_dsp)
