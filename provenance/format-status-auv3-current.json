@@ -1,0 +1,128 @@
+{
+  "schema": "beadsy.format-status.v1",
+  "generated_at": "2026-10-19T08:45:38.724087Z",
+  "project": "Beadsy",
+  "source": {
+    "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018",
+    "git_head": "5e2b0d39b3204651c04e5b92b5006597a3a87f46"
+  },
+  "build": {
+    "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build",
+    "cmake_cache_present": true,
+    "build_ninja_present": true,
+    "pulp_dir": "/Users/danielraffel/Code/agent-worktrees/pulp-lv2-sdk-prefix-20261018/lib/cmake/Pulp"
+  },
+  "host_validation": "not_run",
+  "formats": [
+    {
+      "format": "VST3",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
+      "evidence": {
+        "artifact": {
+          "path": "VST3/Beadsy.vst3/Contents/MacOS/Beadsy",
+          "exists": true,
+          "is_file": true,
+          "bytes": 45987112,
+          "sha256": "63810f8141615cb54a2e8b0ecd43479c006a69f15a47a46bc2f2d13a52ec44b7"
+        },
+        "pulp_target_present": true,
+        "host_validation": "not_run"
+      }
+    },
+    {
+      "format": "CLAP",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
+      "evidence": {
+        "artifact": {
+          "path": "CLAP/Beadsy.clap/Contents/MacOS/Beadsy",
+          "exists": true,
+          "is_file": true,
+          "bytes": 45769064,
+          "sha256": "7db88241ff2ce2a5158c44dcfa04b662313a823b2e173195e7baa932ce909d2f"
+        },
+        "pulp_target_present": true,
+        "host_validation": "not_run"
+      }
+    },
+    {
+      "format": "LV2",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
+      "evidence": {
+        "artifact": {
+          "path": "LV2/Beadsy.lv2/Beadsy.so",
+          "exists": true,
+          "is_file": true,
+          "bytes": 36314472,
+          "sha256": "afe29274152d1b17aed0fa99eb2e6f570b8d42599d2740178558a35d174e9703"
+        },
+        "pulp_target_present": true,
+        "host_validation": "not_run"
+      }
+    },
+    {
+      "format": "AU",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
+      "evidence": {
+        "artifact": {
+          "path": "AU/Beadsy.component/Contents/MacOS/Beadsy",
+          "exists": true,
+          "is_file": true,
+          "bytes": 45828216,
+          "sha256": "84b3d85914e2e8c3a2f283255d4f1c5339ffff8e2e112fdfe62f66e8f5bfbf1f"
+        },
+        "pulp_target_present": true,
+        "host_validation": "not_run"
+      }
+    },
+    {
+      "format": "AUv3",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
+      "evidence": {
+        "artifact": {
+          "path": "AUv3/Beadsy.appex/Contents/MacOS/Beadsy",
+          "exists": true,
+          "is_file": true,
+          "bytes": 66632,
+          "sha256": "4c3b2e38bf4611b1f241ab4bb18f960c6aba9ffa70fd1d07099c9db130a302df"
+        },
+        "pulp_target_present": true,
+        "host_validation": "not_run"
+      }
+    },
+    {
+      "format": "AAX",
+      "status": "blocked",
+      "reason": "AAX SDK, entry point, and validator/host evidence are unavailable",
+      "evidence": {
+        "artifact": {
+          "path": "AAX/Beadsy.aaxplugin/Contents/MacOS/Beadsy",
+          "exists": false,
+          "is_file": false
+        },
+        "pulp_target_present": false,
+        "host_validation": "not_run"
+      }
+    },
+    {
+      "format": "Standalone",
+      "status": "supported",
+      "reason": "declared target produced an artifact in the inspected build tree",
+      "evidence": {
+        "artifact": {
+          "path": "Beadsy.app/Contents/MacOS/Beadsy",
+          "exists": true,
+          "is_file": true,
+          "bytes": 47662472,
+          "sha256": "fa743f9be2b9d5bc4afd8d11c1305f75f8c3d9e6e0a81fdc5a894601b54b085e"
+        },
+        "pulp_target_present": true,
+        "host_validation": "not_run"
+      }
+    }
+  ]
+}
