@@ -3,7 +3,7 @@
   "schema": "beadsy.validation.current.v1",
   "reviewed_at": "2026-10-19",
   "beadsy_head": "49fb7c13acf26d2233d0cfade149fbd11feb9ac1",
-  "route_capability_head": "0ea899aa21fda9be00fa54c633450824edac8205",
+  "route_capability_head": "e368fe7845c556b53724d8053d45f10251fbb67f",
   "checks": [
     {
       "command": "pulp build --target Beadsy-editor-test",
@@ -25,7 +25,7 @@
       "command": "./build/test/pulp-test-audio-route-catalog",
       "worktree": "audio-route-capability-20261018",
       "status": "pass",
-      "evidence": "18 assertions, 2 test cases at route capability head 0ea899aa21fda9be00fa54c633450824edac8205"
+      "evidence": "18 assertions, 2 test cases at route capability head e368fe7845c556b53724d8053d45f10251fbb67f (local cherry-pick of M1 validation commit db1b37e5ca518b9365e63939807f5ae9b5c82f4e)"
     },
     {
       "command": "pulp test --all",
@@ -36,8 +36,8 @@
     {
       "command": "tools/scripts/gates.sh origin/main",
       "worktree": "audio-route-capability-20261018",
-      "status": "partial_environmental",
-      "evidence": "M1 gate-profile run completed diff-scoped checks; known pre-existing gpu-dpr-v2-evidence-selftest fails on origin/main; compiled script-input verification requires a freshly configured gate-profile build after JSX runtime dependencies."
+      "status": "pass_with_preexisting_base_failure",
+      "evidence": "M1 exact-head gate: 100/100 pr-fast passed; 11/12 selected source selftests passed with gpu-dpr-v2-evidence-selftest explicitly pre-existing on origin/main; 13/15 selected Python contracts passed and 2 skipped; all remaining gates passed."
     }
   ],
   "release_verdict": "open",

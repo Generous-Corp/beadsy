@@ -13,7 +13,7 @@ files, and internal sources. It is populated and changed on the control thread;
 the audio callback consumes already-routed buffers. A plug-in cannot enumerate
 arbitrary Logic or REAPER tracks by itself, so real DAW menus remain a host
 acceptance gate. The route branch is currently at
-`0ea899aa21fda9be00fa54c633450824edac8205`; its focused route tests pass.
+`e368fe7845c556b53724d8053d45f10251fbb67f`; its focused route tests pass.
 The M1 gate-profile run reaches all diff-scoped source, workflow, CTest, safety,
 and contract checks; its remaining environmental gap is the repository build
 configuration and the known pre-existing `gpu-dpr-v2-evidence-selftest`
