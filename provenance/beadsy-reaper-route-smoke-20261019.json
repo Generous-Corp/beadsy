@@ -1,8 +1,8 @@
 {
   "schema": "beadsy.reaper-route-smoke.v1",
-  "captured_at": "2026-10-19T14:23:34.439768+00:00",
+  "captured_at": "2026-10-19T14:45:20.391093+00:00",
   "status": "inconclusive",
-  "source_head": "05699d8ec063c26d3c7ab50f84cedc431dcb100d",
+  "source_head": "c6895df0e2e93526ced0d5f8113f844c2458a887",
   "host": {
     "name": "REAPER",
     "path": "/Applications/REAPER.app/Contents/MacOS/REAPER",
@@ -16,6 +16,6 @@
     "bytes": 44769160
   },
   "command": "python3 /Users/danielraffel/Code/pulp/tools/testing/daw-smoke/reaper_smoke.py --mode editor-open --plugin-name Beadsy --format vst3 --plugin-path build-route-exact-20261019/VST3/Beadsy.vst3 --timeout 45 --reaper-bin /Applications/REAPER.app/Contents/MacOS/REAPER",
-  "result": "REAPER could not find or insert the VST3 FX in its isolated scan path; cleanup completed. No editor, audio, or route-selection claim is promoted.",
-  "next_action": "Verify REAPER scan cache contains this exact VST3 bundle, then rerun with a disposable portable config."
+  "result": "REAPER discovered and reported the Beadsy VST3 FX as shown, but the harness could not measure a floating editor window in this session. Cleanup completed. No editor, audio, or route-selection claim is promoted.",
+  "next_action": "Repeat on a local GUI session with Screen Recording/Accessibility access, then add an audio-render and selected-route delivery assertion."
 }

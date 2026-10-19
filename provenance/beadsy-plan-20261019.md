@@ -169,9 +169,10 @@ in `provenance/beadsy-pluginval-vst3-20261019-current.json` and
 the earlier historical pluginval source-head record.
 
 A real REAPER `editor-open` attempt was made against the exact arm64 VST3
-bundle with the disposable smoke harness. REAPER did not publish the bundle in
-its isolated scan cache before the timeout, so the result is recorded as
-`inconclusive` in `provenance/beadsy-reaper-route-smoke-20261019.json`.
-Cleanup completed and no editor, audio, or route-selection claim was promoted;
-the next host step is to verify the exact bundle in REAPER's scan cache and
-rerun with a portable configuration.
+bundle with the disposable smoke harness. REAPER discovered and reported the
+Beadsy FX, but this session could not measure a floating editor window, so the
+result remains `inconclusive` in
+`provenance/beadsy-reaper-route-smoke-20261019.json`. Cleanup completed and no
+editor, audio, or route-selection claim was promoted. The next host step is a
+local GUI run with Screen Recording/Accessibility access, followed by an audio
+render that asserts selected-route delivery.
