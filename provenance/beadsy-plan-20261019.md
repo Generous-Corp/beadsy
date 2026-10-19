@@ -214,3 +214,13 @@ catalog test (23 assertions in 3 cases) at Pulp commit
 [PR 10575](https://github.com/Generous-Corp/pulp/pull/10575), whose required
 review/merge gates remain open; Beadsy must continue to consume the staged or
 landed SDK and must not claim the capability is on `main` until that PR lands.
+
+## 2026-10-19 route-picker clarity
+
+The native picker now prefixes each host-provided entry with its catalog kind
+(`Input`, `Track`, `Instrument`, `Bus`, `File`, or `Internal`) before the host
+label and channel count. This keeps similarly named project sources
+unambiguous without attempting to browse a DAW from the plug-in. The exact
+route-enabled editor build passes 148 assertions in 17 cases after this change
+at Beadsy commit `8422287`. The picker remains disabled when no catalog is
+injected or when MIDI synth mode is selected.
