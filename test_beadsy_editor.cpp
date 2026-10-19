@@ -121,7 +121,7 @@ TEST_CASE("Beadsy route picker consumes host catalog on the control thread") {
     picker.set_catalog(&catalog, true);
     REQUIRE(picker.catalog() == &catalog);
     REQUIRE(picker.items().size() == 4);
-    REQUIRE(picker.items()[1] == "Mic (1 ch)");
+    REQUIRE(picker.items()[1] == "Input: Mic (1 ch)");
     REQUIRE(picker.items()[3].find("unavailable") != std::string::npos);
     REQUIRE(picker.enabled() == false); // MIDI synth mode does not use host input.
 
@@ -132,9 +132,9 @@ TEST_CASE("Beadsy route picker consumes host catalog on the control thread") {
 
     catalog.routes[1].display_name = "Piano Updated";
     catalog.notify();
-    REQUIRE(picker.items()[2] == "Piano (2 ch)");
+    REQUIRE(picker.items()[2] == "Track: Piano (2 ch)");
     picker.refresh_if_needed();
-    REQUIRE(picker.items()[2] == "Piano Updated (2 ch)");
+    REQUIRE(picker.items()[2] == "Track: Piano Updated (2 ch)");
 }
 
 TEST_CASE("Beadsy clears a dropped route identity after catalog refresh") {

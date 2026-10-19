@@ -461,6 +461,27 @@ public:
       route_ids_.push_back(route.stable_id);
       std::string label =
           route.display_name.empty() ? route.stable_id : route.display_name;
+      const char *kind = "Internal";
+      switch (route.kind) {
+      case pulp::host::AudioRouteKind::PhysicalInput:
+        kind = "Input";
+        break;
+      case pulp::host::AudioRouteKind::Track:
+        kind = "Track";
+        break;
+      case pulp::host::AudioRouteKind::Instrument:
+        kind = "Instrument";
+        break;
+      case pulp::host::AudioRouteKind::Bus:
+        kind = "Bus";
+        break;
+      case pulp::host::AudioRouteKind::File:
+        kind = "File";
+        break;
+      case pulp::host::AudioRouteKind::Internal:
+        break;
+      }
+      label = std::string(kind) + ": " + label;
       if (route.channels > 0)
         label += " (" + std::to_string(route.channels) + " ch)";
       if (!route.available)
