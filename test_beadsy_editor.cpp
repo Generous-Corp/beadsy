@@ -284,30 +284,20 @@ TEST_CASE("Beadsy binds source-backed auxiliary controls and labels ports") {
     // the compatibility parameter remains state/automation-only.
     REQUIRE(native->child_count() ==
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
-            27
+            17
 #else
-            26
+            16
 #endif
     );
 
     // Five primary controls plus seven PCB-net-backed auxiliary pots are
-    // automatable. Ten remaining regions are input/control ports; output jacks
-    // are intentionally omitted because host outputs are not patchable UI.
+    // automatable. Hardware jack regions are intentionally omitted: host
+    // audio routing is selected through the injected route picker.
     for (std::size_t i = 0; i < 12; ++i) {
         auto* knob = dynamic_cast<beadsy::detail::PanelKnob*>(native->child_at(i));
         REQUIRE(knob != nullptr);
         REQUIRE(knob->enabled());
         REQUIRE(knob->access_disabled().empty());
-    }
-    const char* ports[] = {"TIME CV (J1)", "SIZE CV (J2)", "SHAPE CV (J3)",
-                           "PITCH CV (J4)", "ASSIGN CV (J5)", "DENSITY CV (J6)",
-                           "AUDIO IN L (J7)", "AUDIO IN R (J8)",
-                           "FREEZE GATE (J9)", "SEED GATE (J10)"};
-    for (std::size_t i = 0; i < 10; ++i) {
-        auto* port = dynamic_cast<beadsy::PortRegion*>(native->child_at(i + 12));
-        REQUIRE(port != nullptr);
-        REQUIRE(port->access_label().find(ports[i]) != std::string::npos);
-        REQUIRE(port->access_label().find("non-automatable") != std::string::npos);
     }
 }
 

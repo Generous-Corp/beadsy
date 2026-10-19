@@ -183,49 +183,6 @@ private:
 
 } // namespace detail
 
-class PortRegion final : public pulp::view::View {
-public:
-  explicit PortRegion(std::string label) : label_(std::move(label)) {
-    set_id("beadsy-port-" + label_);
-    set_access_label(label_ + " (I/O port; non-automatable)");
-    set_access_disabled("false");
-  }
-  void paint(pulp::canvas::Canvas &canvas) override {
-    const auto b = local_bounds();
-    const float cx = b.width * 0.5f;
-    const float cy = b.height * 0.5f;
-    const float r = std::min(b.width, b.height) * 0.38f;
-
-    // Procedural straight-on jack treatment. It follows the measured
-    // geometry of the reference panel while keeping all upstream photos
-    // and artwork outside the product bundle.
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(9, 9, 10));
-    canvas.fill_circle(cx + r * 0.06f, cy + r * 0.10f, r * 1.08f);
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(184, 157, 136));
-    canvas.fill_circle(cx, cy, r * 1.02f);
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(239, 222, 202));
-    canvas.fill_circle(cx - r * 0.04f, cy - r * 0.05f, r * 0.88f);
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(32, 31, 31));
-    canvas.fill_circle(cx, cy, r * 0.69f);
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(7, 7, 8));
-    canvas.fill_circle(cx + r * 0.02f, cy + r * 0.03f, r * 0.53f);
-
-    // A short highlight and lower shadow give the metal collar depth at
-    // small sizes without introducing a bitmap skin.
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(255, 245, 227));
-    canvas.set_line_width(std::max(1.0f, r * 0.08f));
-    canvas.set_line_cap(pulp::canvas::LineCap::round);
-    canvas.stroke_arc(cx, cy, r * 0.91f, -2.65f, -0.35f);
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(105, 81, 70));
-    canvas.set_line_width(std::max(1.0f, r * 0.07f));
-    canvas.stroke_arc(cx, cy, r * 0.94f, 0.45f, 2.55f);
-  }
-  const std::string &label() const { return label_; }
-
-private:
-  std::string label_;
-};
-
 /// The hardware SEED control is a button with a latched mode indication.  In
 /// Beadsy the source-backed three-state Seed Mode parameter is the semantic
 /// authority, so the straight-on control cycles OFF → ON → LOCKED on click.
@@ -911,19 +868,6 @@ private:
     label("MIX / MOTION", 100.3465f, 217.0f, 3.2f, accent,
           pulp::canvas::TextAlign::center, 700);
     label("PARAMETER CONTROLS", 100.3465f, 245.0f, 3.0f, muted);
-    label("CV / GATE", 100.3465f, 264.0f, 2.8f, muted,
-          pulp::canvas::TextAlign::center, 700);
-    // The native editor is intentionally narrow. Use the panel's compact
-    // abbreviations so every jack label remains legible and hit regions do
-    // not visually merge at the 201x364 reference size.
-    label("IN L", 11.9f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center,
-          700);
-    label("IN R", 23.4f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center,
-          700);
-    label("FRZ", 34.9f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center,
-          700);
-    label("SEED", 46.3f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center,
-          700);
     label("48 KHZ  •  MONO VOICE  •  MIDI", 100.3465f, 344.0f, 3.0f, accent);
     label("INDEPENDENT PRODUCT SCAFFOLD", 100.3465f, 353.0f, 2.5f, muted);
   }
@@ -942,27 +886,9 @@ private:
         {kSizeAmount, "Size CV Amount", 30.015f, 47.9f, 3.0f},
         {kShapeAmount, "Shape CV Amount", 41.465f, 47.9f, 3.0f},
         {kPitchAmount, "Pitch CV Amount", 52.915f, 47.9f, 3.0f},
-        {0, "TIME CV (J1)", 7.115f, 32.0f, 4.4f},
-        {0, "SIZE CV (J2)", 18.565f, 32.0f, 4.4f},
-        {0, "SHAPE CV (J3)", 30.015f, 32.0f, 4.4f},
-        {0, "PITCH CV (J4)", 41.465f, 32.0f, 4.4f},
-        {0, "ASSIGN CV (J5)", 52.915f, 32.0f, 4.4f},
-        {0, "DENSITY CV (J6)", 64.365f, 32.0f, 4.4f},
-        {0, "AUDIO IN L (J7)", 7.115f, 17.4f, 4.4f},
-        {0, "AUDIO IN R (J8)", 18.565f, 17.4f, 4.4f},
-        {0, "FREEZE GATE (J9)", 30.015f, 17.4f, 4.4f},
-        {0, "SEED GATE (J10)", 41.465f, 17.4f, 4.4f},
     };
     for (const auto &p : placements) {
       const float diameter = p.r * 2.0f;
-      const bool is_port = p.r == 4.4f;
-      if (is_port) {
-        auto port = std::make_unique<PortRegion>(p.name);
-        auto *raw_port = port.get();
-        add_child(std::move(port));
-        ports_.push_back({raw_port, p.x, p.y, p.r});
-        continue;
-      }
       auto knob = std::make_unique<detail::PanelKnob>(p.name, diameter);
       auto *raw = knob.get();
       if (std::string_view(p.name) == "Feedback")
@@ -1104,13 +1030,6 @@ private:
       c.knob->flex().preferred_width = diameter;
       c.knob->flex().preferred_height = diameter * 1.25f;
     }
-    for (const auto &p : ports_) {
-      const float diameter = p.radius * 2.0f * std::min(sx, sy);
-      const float x = p.x * sx - diameter * 0.5f;
-      const float y = (128.5f - p.y) * sy - diameter * 0.5f;
-      p.view->set_position(pulp::view::View::Position::absolute);
-      p.view->set_bounds({x, y, diameter, diameter});
-    }
     if (seed_mode_) {
       const float width = 10.0f * std::min(sx, sy);
       const float height = 8.5f * std::min(sx, sy);
@@ -1160,17 +1079,10 @@ private:
     float y;
     float radius;
   };
-  struct Port {
-    PortRegion *view;
-    float x;
-    float y;
-    float radius;
-  };
   Beadsy &processor_;
   pulp::state::StateStore &store_;
   pulp::canvas::SvgImage panel_;
   std::vector<Control> controls_;
-  std::vector<Port> ports_;
   std::vector<pulp::view::ParameterBinding> bindings_;
   SeedModeControl *seed_mode_ = nullptr;
   pulp::state::ListenerToken seed_mode_binding_;
