@@ -53,6 +53,14 @@ enum class SourceMode : int {
     Sidechain = 2,
 };
 
+#if defined(BEADSY_AU_NO_INPUT)
+inline constexpr int kAvailableSourceModeMax = 0;
+#elif defined(BEADSY_AU_MAIN_INPUT_ONLY)
+inline constexpr int kAvailableSourceModeMax = 1;
+#else
+inline constexpr int kAvailableSourceModeMax = 2;
+#endif
+
 // This mapping mirrors the published Beads TriggerGenerator contract.  The
 // hardware UI exposes OFF, ON (the seed button held), and LOCKED (the seed
 // input is used as a clock/divider source).  Hosts can automate arbitrary
@@ -112,7 +120,14 @@ inline pulp::format::PluginDescriptor make_descriptor() {
 #else
             pulp::format::PluginCategory::Instrument,
 #endif
-        .input_buses = {{"Main In", 2, true}, {"Sidechain", 2, true}},
+        .input_buses =
+#if defined(BEADSY_AU_NO_INPUT)
+            {},
+#elif defined(BEADSY_AU_MAIN_INPUT_ONLY)
+            {{"Main In", 2, true}},
+#else
+            {{"Main In", 2, true}, {"Sidechain", 2, true}},
+#endif
         .output_buses = {{"Main Out", 2, false}},
         .accepts_midi = true,
     };
@@ -168,7 +183,7 @@ public:
                              .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
         store.add_parameter({.id = kMode, .name = "Source", .unit = "mode",
                              .range = pulp::state::ParamRange::linear(
-                                 0.0f, 2.0f,
+                                 0.0f, static_cast<float>(kAvailableSourceModeMax),
 #if defined(BEADSY_EFFECT_VARIANT)
                                  1.0f,
 #else
@@ -310,7 +325,7 @@ public:
         const auto* input = audio.main_input();
         const auto* sidechain = audio.sidechain_input();
         const int mode = std::clamp(static_cast<int>(std::lround(
-            state().get_modulated(kMode))), 0, 2);
+            state().get_modulated(kMode))), 0, kAvailableSourceModeMax);
         // kInputSource remains a migration path for older states that used
         // kMode=1 plus a separate Main/Sidechain selector.
         const bool use_sidechain = mode == static_cast<int>(SourceMode::Sidechain) ||

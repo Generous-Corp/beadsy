@@ -35,13 +35,24 @@ std::optional<StateCommand> parse_state_command(int argc, char** argv) {
 int main(int argc, char** argv) {
     const auto command = parse_state_command(argc, argv);
     if (!command) {
-        std::cerr << "usage: Beadsy [--load-state FILE] [--save-state FILE]\n";
+        std::cerr << "usage: "
+#if defined(BEADSY_EFFECT_VARIANT)
+                  << "Beadsy FX"
+#else
+                  << "Beadsy"
+#endif
+                  << " [--load-state FILE] [--save-state FILE]\n";
         return 2;
     }
 
     pulp::format::StandaloneApp app(beadsy::create_beadsy);
     pulp::format::StandaloneConfig config;
-    config.input_channels = 0;
+    config.input_channels =
+#if defined(BEADSY_EFFECT_VARIANT)
+        2;
+#else
+        0;
+#endif
     config.output_channels = 2;
 
     // A state command is a bounded control-thread operation. Use the existing

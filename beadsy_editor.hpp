@@ -234,7 +234,7 @@ public:
     }
 
     void set_mode(int mode) {
-        mode_ = std::clamp(mode, 0, 2);
+        mode_ = std::clamp(mode, 0, kAvailableSourceModeMax);
         const char* state = mode_ == 0 ? "off" : mode_ == 1 ? "on" : "locked";
         set_access_label(std::string("Seed Mode (") + state + "); click to cycle");
         request_repaint();
@@ -768,7 +768,7 @@ private:
         source_mode_->set_mode(static_cast<int>(std::lround(store_.get_value(kMode))));
         source_mode_->set_on_press([this] {
             store_.begin_gesture(kMode);
-            const int next = (source_mode_->mode() + 1) % 3;
+            const int next = (source_mode_->mode() + 1) % (kAvailableSourceModeMax + 1);
             store_.set_value(kMode, static_cast<float>(next));
             store_.end_gesture(kMode);
             // Keep the legacy bus parameter coherent for old hosts/states;

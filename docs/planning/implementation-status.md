@@ -69,9 +69,12 @@ the current Beadsy integration branch; receipt updates are recorded in
    explicitly reports zero input buses, so its Sidechain/Main Input selector is
    not yet reachable through AU host routing. The VST3 artifact builds; no local
    Steinberg validator is installed, so VST3 bus activation remains unverified.
-   The new Beadsy FX companion builds as AU `aumf`, CLAP, and VST3; its focused
-   processor test passes 131 assertions, AU `auval` reports two input buses and
-   succeeds, and CLAP validation passes 17/20 tests. A real DAW project-route
+   The new Beadsy FX companion builds as AU `aumf`, CLAP, VST3, and Standalone;
+   its focused processor test passes 131 assertions, AU `auval` reports one
+   functional Main In bus and succeeds, and CLAP validation passes 17/20 tests.
+   The primary AU instrument now exposes zero input buses and cannot present
+   unavailable live-input modes. Beadsy FX has a distinct VST3 FUID and its
+   standalone target configures two input channels. A real DAW project-route
    receipt is still open.
 5. Resolve panel artwork permission and trademark clearance; complete legal/source redistribution review and external converter diagnostics (currently inconclusive) after the classified portability adaptations are accepted. Keep the Pulp importer fail-closed and validation-only boundary from commit `f9752e4`.
 
