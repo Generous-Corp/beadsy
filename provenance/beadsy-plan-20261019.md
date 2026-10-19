@@ -13,7 +13,7 @@ files, and internal sources. It is populated and changed on the control thread;
 the audio callback consumes already-routed buffers. A plug-in cannot enumerate
 arbitrary Logic or REAPER tracks by itself, so real DAW menus remain a host
 acceptance gate. The route branch is currently at
-`784370daa7be59804483085a22a18343b9c20871`; its focused route tests pass, while
+`252fa886f59aa3eacfb0f3814b09d087f6c5fa64`; its focused route tests pass, while
 the source-selftest/build-gate lane is unavailable on the current
 `TARTCI_ROLE=dev-overflow` machine and must run on a gate-profile host or CI.
 This phase is currently **partial**: the catalog and picker are a stable
