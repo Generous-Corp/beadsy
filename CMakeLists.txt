@@ -193,6 +193,11 @@ foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AAX Standalone)
             target_include_directories(Beadsy_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
             target_compile_definitions(Beadsy_${_fmt} PRIVATE BEADSY_NATIVE_EDITOR=1)
         endif()
+        if(_fmt STREQUAL "LV2")
+            # LV2's Pulp adapter exposes one aggregated input bus. Keep the
+            # source selector honest until a second LV2 input port is wired.
+            target_compile_definitions(Beadsy_${_fmt} PRIVATE BEADSY_LV2=1)
+        endif()
         if(_fmt STREQUAL "AU")
             target_compile_definitions(Beadsy_${_fmt} PRIVATE BEADSY_AU_NO_INPUT=1)
         endif()

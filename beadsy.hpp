@@ -53,13 +53,22 @@ enum class SourceMode : int {
     Sidechain = 2,
 };
 
-#if defined(BEADSY_AU_NO_INPUT)
+#if defined(BEADSY_AU_NO_INPUT) || defined(BEADSY_LV2)
 inline constexpr int kAvailableSourceModeMax = 0;
 #elif defined(BEADSY_AU_MAIN_INPUT_ONLY)
 inline constexpr int kAvailableSourceModeMax = 1;
 #else
 inline constexpr int kAvailableSourceModeMax = 2;
 #endif
+
+template <typename Bus>
+void mark_sidechain_role_if_supported(Bus& bus) {
+    // Keep Beadsy source-compatible with older installed Pulp SDKs. Newer
+    // SDKs expose BusInfo::role; the numeric value is intentionally the
+    // appended Sidechain enum member (Main=0, Aux=1, Sidechain=2).
+    if constexpr (requires(Bus& candidate) { candidate.role; })
+        bus.role = static_cast<decltype(bus.role)>(2);
+}
 
 // This mapping mirrors the published Beads TriggerGenerator contract.  The
 // hardware UI exposes OFF, ON (the seed button held), and LOCKED (the seed
@@ -99,7 +108,7 @@ struct LfoModulation {
 };
 
 inline pulp::format::PluginDescriptor make_descriptor() {
-    return {
+    auto descriptor = pulp::format::PluginDescriptor{
         .name =
 #if defined(BEADSY_EFFECT_VARIANT)
             "Beadsy FX",
@@ -121,7 +130,7 @@ inline pulp::format::PluginDescriptor make_descriptor() {
             pulp::format::PluginCategory::Instrument,
 #endif
         .input_buses =
-#if defined(BEADSY_AU_NO_INPUT)
+#if defined(BEADSY_AU_NO_INPUT) || defined(BEADSY_LV2)
             {},
 #elif defined(BEADSY_AU_MAIN_INPUT_ONLY)
             {{"Main In", 2, true}},
@@ -131,6 +140,9 @@ inline pulp::format::PluginDescriptor make_descriptor() {
         .output_buses = {{"Main Out", 2, false}},
         .accepts_midi = true,
     };
+    if (descriptor.input_buses.size() > 1)
+        mark_sidechain_role_if_supported(descriptor.input_buses[1]);
+    return descriptor;
 }
 
 class Beadsy : public pulp::format::Processor {
