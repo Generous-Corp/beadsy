@@ -182,3 +182,12 @@ An independent manual portable-config probe also confirmed that REAPER's
 `Beadsy (Independent Audio)!!!VSTi`; that discovery-only pass is recorded in
 `provenance/beadsy-reaper-scan-discovery-20261019.json`. The editor, audio, and
 route-delivery gates remain separate and open.
+
+The current AUv2 instrument was temporarily installed under the user Audio
+Unit directory, validated with `auval -v aumu Bead Inde`, and then the prior
+component was restored. `auval` returned `AU VALIDATION SUCCEEDED` at the
+current source head; the arm64 artifact, registration procedure, covered sample
+rates, and log are recorded in
+`provenance/beadsy-auval-current-20261019.json`. This closes AUv2 component
+validation while preserving the intentional zero-input-bus limitation and the
+separate AUv3/host-route gates.
