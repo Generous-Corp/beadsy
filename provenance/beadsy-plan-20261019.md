@@ -95,3 +95,24 @@ heads, current receipts, host-route behavior, DSP null/parity results, straight-
 visual comparison, and package provenance. The Beadsy goal remains active until
 every required gate is `pass` or an explicitly recorded, intentional scope
 decision exists.
+
+## 2026-10-19 execution update
+
+The reusable route capability is now at Pulp PR
+`https://github.com/Generous-Corp/pulp/pull/10575`, head
+`f284bd13efed75119910e33392a433c29974836c`. Its fast-tier validation is green;
+the merge-group suite is still required before treating the SDK as landed.
+The route contract remains deliberately host-owned: a plug-in receives the
+selected bus buffers and stable route metadata, while Logic/REAPER own the
+project-track, bus, instrument, and physical-interface menus. The Pulp-host
+path may additionally render a checked `AudioRouteCatalog` picker. No code
+may enumerate DAW tracks from the real-time callback or mutate bus topology
+after preparation.
+
+The private panel comparison editor was rebuilt at Beadsy commit `11138cd`.
+Its reviewed-artwork test now passes alongside the clean-room scaffold test;
+the shipping test path continues to assert the independent scaffold. The
+straight-on comparison capture remains a private, rights-gated artifact and
+does not close the release provenance gate. The next integration step is to
+rebuild Beadsy against the landed route SDK, then capture a real Logic/REAPER
+route receipt before claiming end-to-end source selection.
