@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beadsy.validation.current.v1",
   "reviewed_at": "2026-10-19",
-  "beadsy_head": "bebd7b5",
+  "beadsy_head": "7f55d10",
   "route_capability_head": "126264ee334f9fd664a8e0120dba559995cf8eaa",
   "checks": [
     {
