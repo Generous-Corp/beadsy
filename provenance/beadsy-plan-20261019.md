@@ -13,7 +13,7 @@ files, and internal sources. It is populated and changed on the control thread;
 the audio callback consumes already-routed buffers. A plug-in cannot enumerate
 arbitrary Logic or REAPER tracks by itself, so real DAW menus remain a host
 acceptance gate. The route branch is currently at
-`00c8c0a5f4cef8d67845d06476a9c99b28ca97b3`; its focused route and processor
+`fe8e7b079b98b8e8a36e29a5ade842c556f47350`; its focused route and processor
 provider tests pass. The reusable format seam is now an allocation-free,
 pre-bound `AudioInputBusProvider`: `ProcessorNode` materializes declared
 auxiliary/sidechain buses from host-borrowed buffers and the rich
@@ -22,7 +22,8 @@ processors remain source-compatible. The current branch has passed the focused
 format suites and manifest checks; the overflow host refused the local
 configure/source-selftest lanes, so those remain CI evidence. This phase is
 still **partial**: the catalog has stable route entries, refresh behavior, bus
-roles, selection snapshot/restore, and a provider seam, but no Beadsy
+roles, selection snapshot/restore, a generic `SignalGraph` provider setter, and
+a provider seam, but no Beadsy
 standalone/Forge host yet binds selected stable IDs to actual graph buffers.
 That binding and unavailable/hot-plug behavior are required before this is an
 end-to-end audio routing feature.
