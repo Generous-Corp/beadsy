@@ -42,6 +42,8 @@ end-to-end audio routing feature.
   The native editor now omits all non-functional hardware jack regions; audio
   input selection is represented only by the host-owned route picker, so the
   UI cannot imply that a cable can be patched into an unconnected plug-in port.
+  The exact-head local proof is recorded in
+  `provenance/beadsy-ui-port-removal-20261019.json`.
 - Keep resizing, automation gestures, keyboard/context-menu behavior, and LFO
   controls aligned with the shared Pulp/Spectr interaction contract.
 - Add a visible source selector whose choices come from the host route catalog;
