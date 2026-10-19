@@ -3,7 +3,7 @@
   "schema": "beadsy.validation.current.v1",
   "reviewed_at": "2026-10-18",
   "beadsy_head": "cb1b41f5f934860349b89b525c93ce2f165ecb3b",
-  "route_capability_head": "252fa886f59aa3eacfb0f3814b09d087f6c5fa64",
+  "route_capability_head": "c480968f06fa22503a1233321a8f27cd76a138ca",
   "checks": [
     {
       "command": "pulp build --target Beadsy-editor-test",
@@ -25,7 +25,7 @@
       "command": "./build/test/pulp-test-audio-route-catalog",
       "worktree": "audio-route-capability-20261018",
       "status": "pass",
-      "evidence": "15 assertions, 2 test cases"
+      "evidence": "18 assertions, 2 test cases"
     },
     {
       "command": "pulp test --all",

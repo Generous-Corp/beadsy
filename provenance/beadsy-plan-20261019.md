@@ -13,14 +13,15 @@ files, and internal sources. It is populated and changed on the control thread;
 the audio callback consumes already-routed buffers. A plug-in cannot enumerate
 arbitrary Logic or REAPER tracks by itself, so real DAW menus remain a host
 acceptance gate. The route branch is currently at
-`252fa886f59aa3eacfb0f3814b09d087f6c5fa64`; its focused route tests pass, while
+`c480968f06fa22503a1233321a8f27cd76a138ca`; its focused route tests pass, while
 the source-selftest/build-gate lane is unavailable on the current
 `TARTCI_ROLE=dev-overflow` machine and must run on a gate-profile host or CI.
-This phase is currently **partial**: the catalog and picker are a stable
-selection model, not yet a graph/buffer provider. A host integration still has
-to bind a selected stable ID to an input bus, persist it with plug-in state,
-and define unavailable/hot-plug behavior before this can be called an audio
-routing feature.
+This phase is currently **partial**: the catalog now exposes an injected
+control-thread connection callback, but no Beadsy standalone/Forge host yet
+installs a graph/buffer provider. A host integration still has to bind a
+selected stable ID to an input bus, persist it with plug-in state, and define
+unavailable/hot-plug behavior before this can be called an audio routing
+feature.
 
 ## Phase 2 — Beadsy behavior and UI
 
