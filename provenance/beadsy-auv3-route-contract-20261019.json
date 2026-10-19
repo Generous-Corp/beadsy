@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "beadsy.auv3-route-contract.v1",
+  "validated_at": "2026-10-19",
+  "head": "1665fd93afc256b5511156ea0748afdb18f00b3d",
+  "extension": "build-route-exact-20261019/AUv3/Beadsy.appex",
+  "host": "build-route-exact-20261019/AUv3/Beadsy.app",
+  "static_checks": {
+    "extension_audio_component": {
+      "type": "aumu",
+      "subtype": "Bead",
+      "manufacturer": "Inde",
+      "name": "Independent Audio: Beadsy",
+      "tags": [
+        "Synthesizer"
+      ]
+    },
+    "processor_descriptor_inputs": [
+      "Main In (2 ch)",
+      "Sidechain (2 ch)"
+    ],
+    "processor_selection": "Source Mode selects main or sidechain buffer in ProcessBuffers"
+  },
+  "result": "static_contract_pass_host_delivery_open",
+  "open": "No Logic project with a selected track/bus/physical input has yet been captured delivering audio into the AUv3 input bus."
+}
