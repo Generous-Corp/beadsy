@@ -40,8 +40,10 @@ the current Beadsy integration branch; receipt updates are recorded in
   Skia/Dawn editor with procedural segmented knobs, off-white caps, broad
   pointers, DXF-derived placement, five primary controls, seven source-mapped
   auxiliary controls, labeled non-automatable jack regions, host automation
-  gestures, and contextual LFO enable/rate/depth/reset actions. Current-head
-  editor tests pass 132 assertions in 9 cases, and min/mid/max knob captures
+  gestures, and contextual LFO enable/rate/depth/reset actions. Source-mode
+  values are clamped to the declared input topology, and LFO edits invalidate
+  the editor immediately. Current-head editor tests pass 149 assertions in 14
+  cases (154/14 with the route-enabled SDK), and min/mid/max knob captures
   are hash-recorded in the integrated validation receipt. The captures prove
   native rendering and interaction coverage; exact visual fidelity remains
   open because the straight-on reference and panel artwork are rights-gated.
