@@ -1,0 +1,27 @@
+{
+  "schema": "beadsy.importer-main-integration.v1",
+  "audited_at": "2026-10-19T05:27:00Z",
+  "pulp_main": "6f30b893ae77abe74e57dd3426ac6724e2e4b8f2",
+  "origin_pr": {
+    "url": "https://github.com/Generous-Corp/pulp/pull/10533",
+    "status": "merged",
+    "merge_commit": "be8d73f760721bf678eb8758625c14587a6dd9ff"
+  },
+  "follow_up_pr": {
+    "url": "https://github.com/Generous-Corp/pulp/pull/10552",
+    "status": "merged",
+    "merge_commit": "a9574df832a46be12d44b016cdd0514b557213b9",
+    "scope": "preconverted SVG sidecar validation contract"
+  },
+  "contract": {
+    "mode": "static-only",
+    "accepted_inputs": ["SVG", "SVG plus control-map sidecar"],
+    "illustrator_runtime_conversion": "not provided; fail-closed",
+    "sdk_min": "v0.991.3"
+  },
+  "validation": {
+    "source_contract_tests": "pass: 29/29",
+    "ci": "required build, macOS, Linux, Windows, ASan, and UBSan checks passed on the merged lane"
+  },
+  "limitation": "This closes the reusable validation-only importer lane; it does not authorize redistribution of Beads artwork or implement Illustrator runtime conversion."
+}
