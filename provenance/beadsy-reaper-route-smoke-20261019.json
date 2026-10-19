@@ -1,0 +1,21 @@
+{
+  "schema": "beadsy.reaper-route-smoke.v1",
+  "captured_at": "2026-10-19T14:23:34.439768+00:00",
+  "status": "inconclusive",
+  "source_head": "05699d8ec063c26d3c7ab50f84cedc431dcb100d",
+  "host": {
+    "name": "REAPER",
+    "path": "/Applications/REAPER.app/Contents/MacOS/REAPER",
+    "architecture": "arm64"
+  },
+  "format": "VST3",
+  "plugin": "Beadsy",
+  "artifact": {
+    "path": "build-route-exact-20261019/VST3/Beadsy.vst3/Contents/MacOS/Beadsy",
+    "sha256": "a78d0b299d38fa8972f6c97c91eaa9df130f1f042b58bb65a5a648f0de5b0a1f",
+    "bytes": 44769160
+  },
+  "command": "python3 /Users/danielraffel/Code/pulp/tools/testing/daw-smoke/reaper_smoke.py --mode editor-open --plugin-name Beadsy --format vst3 --plugin-path build-route-exact-20261019/VST3/Beadsy.vst3 --timeout 45 --reaper-bin /Applications/REAPER.app/Contents/MacOS/REAPER",
+  "result": "REAPER could not find or insert the VST3 FX in its isolated scan path; cleanup completed. No editor, audio, or route-selection claim is promoted.",
+  "next_action": "Verify REAPER scan cache contains this exact VST3 bundle, then rerun with a disposable portable config."
+}

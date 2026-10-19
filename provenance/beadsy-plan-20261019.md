@@ -167,3 +167,11 @@ current artifact hash, arm64 identity, command, coverage, and log are recorded
 in `provenance/beadsy-pluginval-vst3-20261019-current.json` and
 `provenance/beadsy-pluginval-vst3-20261019-current.log`. The receipt supersedes
 the earlier historical pluginval source-head record.
+
+A real REAPER `editor-open` attempt was made against the exact arm64 VST3
+bundle with the disposable smoke harness. REAPER did not publish the bundle in
+its isolated scan cache before the timeout, so the result is recorded as
+`inconclusive` in `provenance/beadsy-reaper-route-smoke-20261019.json`.
+Cleanup completed and no editor, audio, or route-selection claim was promoted;
+the next host step is to verify the exact bundle in REAPER's scan cache and
+rerun with a portable configuration.
