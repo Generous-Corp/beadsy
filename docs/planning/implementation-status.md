@@ -65,13 +65,13 @@ the current Beadsy integration branch; receipt updates are recorded in
    VST3 moduleinfo/Steinberg validator, and AAX. AUv2 `aumu` live input remains
    unavailable unless a separate `aumf` identity is added.
    Current exact-head format checks: Beadsy CLAP builds and passes clap-validator
-   (17 passed, 3 skipped, 0 failed); AU `aumu` builds and passes `auval`, but
+   (18 passed, 3 skipped, 0 failed); AU `aumu` builds and passes `auval`, but
    explicitly reports zero input buses, so its Sidechain/Main Input selector is
    not yet reachable through AU host routing. The VST3 artifact builds; no local
    Steinberg validator is installed, so VST3 bus activation remains unverified.
    The new Beadsy FX companion builds as AU `aumf`, CLAP, VST3, and Standalone;
    its focused processor test passes 131 assertions, AU `auval` reports one
-   functional Main In bus and succeeds, and CLAP validation passes 17/20 tests.
+   functional Main In bus and succeeds, and CLAP validation passes 18/21 tests.
    The primary AU instrument now exposes zero input buses and cannot present
    unavailable live-input modes. Beadsy FX has a distinct VST3 FUID and its
    standalone target configures two input channels. A real DAW project-route
