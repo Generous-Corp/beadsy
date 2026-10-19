@@ -1,0 +1,25 @@
+{
+  "schema": "beadsy.reaper-scan-discovery.v1",
+  "captured_at": "2026-10-19T14:49:47.275210+00:00",
+  "status": "pass",
+  "source_head": "81a519066b4f7edcf18fb075905da872bb952330",
+  "host": {
+    "name": "REAPER",
+    "path": "/Applications/REAPER.app/Contents/MacOS/REAPER",
+    "architecture": "arm64",
+    "isolated_config": "temporary portable config (removed after probe)"
+  },
+  "format": "VST3",
+  "artifact": {
+    "path": "build-route-exact-20261019/VST3/Beadsy.vst3/Contents/MacOS/Beadsy",
+    "sha256": "a78d0b299d38fa8972f6c97c91eaa9df130f1f042b58bb65a5a648f0de5b0a1f",
+    "bytes": 44769160
+  },
+  "evidence": {
+    "cache": "reaper-vstplugins_arm64.ini",
+    "entry": "Beadsy.vst3=... ,Beadsy (Independent Audio)!!!VSTi",
+    "result": "REAPER published the exact bundle in its isolated VST3 cache; no user REAPER configuration was modified.",
+    "cleanup": "Temporary REAPER config, copied bundle, and scan cache were removed after capture."
+  },
+  "scope": "Discovery only. This does not prove editor visibility, audio rendering, or host project-route delivery."
+}

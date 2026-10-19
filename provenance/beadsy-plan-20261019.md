@@ -176,3 +176,9 @@ result remains `inconclusive` in
 editor, audio, or route-selection claim was promoted. The next host step is a
 local GUI run with Screen Recording/Accessibility access, followed by an audio
 render that asserts selected-route delivery.
+
+An independent manual portable-config probe also confirmed that REAPER's
+`reaper-vstplugins_arm64.ini` published the exact `Beadsy.vst3` bundle as
+`Beadsy (Independent Audio)!!!VSTi`; that discovery-only pass is recorded in
+`provenance/beadsy-reaper-scan-discovery-20261019.json`. The editor, audio, and
+route-delivery gates remain separate and open.
