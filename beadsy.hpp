@@ -245,6 +245,7 @@ public:
         current_note_ = 60;
         velocity_gain_ = 1.0f;
         pitch_bend_semitones_ = 0.0f;
+        has_note_activity_ = false;
         resources_ok_ = check_prepare_resource_limits(ctx) ==
             pulp::format::PrepareResourceLimit::None;
         if (!supported_rate_ || !resources_ok_) return;
@@ -299,6 +300,7 @@ public:
                 event.sample_offset < 0 ? 0 : static_cast<std::size_t>(event.sample_offset),
                 0, output.num_samples() == 0 ? 0 : output.num_samples() - 1);
             if (event.is_note_on() && event.velocity() > 0) {
+                has_note_activity_ = true;
                 active_notes_[event.note()] = true;
                 sustained_notes_[event.note()] = false;
                 note_velocity_gain_[event.note()] = static_cast<float>(event.velocity()) / 127.0f;
@@ -417,6 +419,11 @@ public:
                             input_frames_.data(), frames_.data(), n,
                             effect_scratch_);
         } else {
+        // A software instrument should be quiet when it is first opened. The
+        // adapted Beads wavetable path remains available as soon as the host
+        // sends a MIDI note, while avoiding an unsolicited tone during editor
+        // and DAW instantiation.
+        if (!has_note_activity_) return;
         const auto quality_index = std::clamp(
             static_cast<int>(std::lround(state().get_modulated(kQuality))), 0, 3);
         const auto quality = static_cast<beads::Synth::Resolution>(quality_index);
@@ -497,6 +504,7 @@ private:
     std::array<bool, 128> sustained_notes_{};
     std::array<float, 128> note_velocity_gain_{};
     bool sustain_down_ = false;
+    bool has_note_activity_ = false;
     float velocity_gain_ = 1.0f;
     float pitch_bend_semitones_ = 0.0f;
     std::size_t last_gate_size_ = 0;

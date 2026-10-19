@@ -340,6 +340,128 @@ private:
     std::function<void()> on_press_;
 };
 
+/// Selects the software source path. Hardware Beads uses physical input
+/// jacks; the plugin exposes the same choice explicitly for a stereo Main In
+/// bus while retaining the internal wavetable fallback.
+class ModeControl final : public pulp::view::View {
+public:
+    ModeControl() {
+        set_id("beadsy-source-mode");
+        set_access_role(pulp::view::View::AccessRole::button);
+        set_access_label("Source: Synth (MIDI)");
+        set_focusable(true);
+    }
+
+    void set_mode(int mode) {
+        mode_ = mode >= 1 ? 1 : 0;
+        set_access_label(std::string("Source: ") +
+                         (mode_ == 0 ? "Synth (MIDI)" : "Main In (host routed)"));
+        request_repaint();
+    }
+    int mode() const { return mode_; }
+    void set_on_press(std::function<void()> callback) { on_press_ = std::move(callback); }
+
+    void paint(pulp::canvas::Canvas& canvas) override {
+        const auto b = local_bounds();
+        const auto body = mode_ == 0 ? pulp::canvas::Color::rgba8(38, 40, 43)
+                                     : pulp::canvas::Color::rgba8(28, 93, 101);
+        canvas.set_fill_color(body);
+        canvas.fill_rounded_rect(0.5f, 0.5f, std::max(1.0f, b.width - 1.0f),
+                                 std::max(1.0f, b.height - 1.0f), std::max(2.0f, b.height * 0.18f));
+        canvas.set_stroke_color(pulp::canvas::Color::rgba8(210, 207, 193));
+        canvas.set_line_width(0.8f);
+        canvas.stroke_rounded_rect(0.5f, 0.5f, std::max(1.0f, b.width - 1.0f),
+                                   std::max(1.0f, b.height - 1.0f), std::max(2.0f, b.height * 0.18f));
+        canvas.set_font_full("Roboto Mono", std::max(3.0f, b.height * 0.30f),
+                            700, 0, 0.35f);
+        canvas.set_text_align(pulp::canvas::TextAlign::center);
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(241, 239, 229));
+        canvas.fill_text(mode_ == 0 ? "SOURCE  MIDI SYNTH" : "SOURCE  MAIN IN",
+                         b.width * 0.5f, b.height * 0.63f);
+    }
+
+    void on_mouse_down(pulp::view::Point) override { if (on_press_) on_press_(); }
+    bool on_key_event(const pulp::view::KeyEvent& event) override {
+        if (!event.is_down) return false;
+        if (event.key == pulp::view::KeyCode::enter || event.key == pulp::view::KeyCode::space) {
+            if (on_press_) on_press_();
+            return true;
+        }
+        return false;
+    }
+    bool wants_mouse_input() const override { return true; }
+
+private:
+    int mode_ = 0;
+    std::function<void()> on_press_;
+};
+
+/// Small editor-owned resize affordance. Hosts still decide whether the
+/// resize request is accepted; the grip makes that capability discoverable in
+/// standalone windows and hosts that expose the Pulp resize callback.
+class ResizeGrip final : public pulp::view::View {
+public:
+    explicit ResizeGrip(Beadsy& processor) : processor_(processor) {
+        set_id("beadsy-resize-grip");
+        set_access_role(pulp::view::View::AccessRole::button);
+        set_access_label("Resize editor");
+    }
+
+    void paint(pulp::canvas::Canvas& canvas) override {
+        const auto b = local_bounds();
+        canvas.set_stroke_color(pulp::canvas::Color::rgba8(86, 96, 102, 210));
+        canvas.set_line_width(std::max(1.0f, b.width * 0.08f));
+        for (int i = 1; i <= 3; ++i) {
+            const float inset = b.width * (0.18f + 0.20f * static_cast<float>(i - 1));
+            canvas.stroke_line(b.width - inset, b.height - 1.0f,
+                               b.width - 1.0f, b.height - inset);
+        }
+    }
+
+    void on_mouse_event(const pulp::view::MouseEvent& event) override {
+        const bool press = event.phase == pulp::view::MousePhase::press ||
+                           (event.phase == pulp::view::MousePhase::automatic && event.is_down && !dragging_);
+        const bool release = event.phase == pulp::view::MousePhase::release ||
+                             (event.phase == pulp::view::MousePhase::automatic && event.is_down && dragging_);
+        if (press) {
+            dragging_ = true;
+            pointer_id_ = event.pointer_id;
+            start_pointer_ = event.window_position;
+            if (auto* root = detail::root_view(this)) {
+                start_width_ = root->bounds().width;
+                start_height_ = root->bounds().height;
+            }
+            set_pointer_capture(pointer_id_);
+            return;
+        }
+        if (dragging_ && (event.phase == pulp::view::MousePhase::drag || event.has_movement_delta)) {
+            const float dx = event.has_movement_delta ? event.movement_x
+                                                       : event.window_position.x - start_pointer_.x;
+            const float dy = event.has_movement_delta ? event.movement_y
+                                                       : event.window_position.y - start_pointer_.y;
+            const float delta = std::abs(dx) >= std::abs(dy) ? dx : dy;
+            const float width = std::clamp(start_width_ + delta, 201.0f, 401.0f);
+            const float height = width * 364.0f / 201.0f;
+            processor_.request_editor_resize(static_cast<uint32_t>(width),
+                                              static_cast<uint32_t>(height));
+            return;
+        }
+        if (dragging_ && release) {
+            release_pointer_capture(pointer_id_);
+            dragging_ = false;
+        }
+    }
+    bool wants_mouse_input() const override { return true; }
+
+private:
+    Beadsy& processor_;
+    bool dragging_ = false;
+    int pointer_id_ = 0;
+    pulp::view::Point start_pointer_{};
+    float start_width_ = 201.0f;
+    float start_height_ = 364.0f;
+};
+
 class BeadsyEditor final : public pulp::view::View {
 public:
     BeadsyEditor(Beadsy& processor, pulp::state::StateStore& store)
@@ -378,6 +500,7 @@ public:
     }
     void open_modulation_context(pulp::state::ParamID id) { context_target_ = id; }
     void clear_modulation_context() { context_target_.reset(); }
+    ModeControl* source_mode_control() const { return source_mode_; }
 
     /// Show the same menu used by a knob's real secondary-click handler.
     /// This is public so host/editor characterization tests can exercise the
@@ -404,9 +527,9 @@ public:
         return pulp::view::ContextMenu::show(
             root, detail::local_to_root(this, position),
             {{0, "LFO → " + target_name, false},
-             {1, current.enabled ? "Disable LFO" : "Enable LFO"},
-             {3, rate_label() + " −"}, {4, rate_label() + " +"},
-             {5, depth_label() + " −"}, {6, depth_label() + " +"},
+             {1, current.enabled ? "LFO Enabled" : "Enable LFO", true, current.enabled},
+             {3, rate_label() + " ↓"}, {4, rate_label() + " ↑"},
+             {5, depth_label() + " ↓"}, {6, depth_label() + " ↑"},
              {2, "Reset LFO"}},
             [alive, this, id](std::optional<int> command) {
                 if (alive.expired()) return;
@@ -482,8 +605,6 @@ private:
         label("IN R", 23.4f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center, 700);
         label("FRZ", 34.9f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center, 700);
         label("SEED", 46.3f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center, 700);
-        label("OUT L", 57.8f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center, 700);
-        label("OUT R", 69.3f, 294.0f, 2.6f, ink, pulp::canvas::TextAlign::center, 700);
         label("48 KHZ  •  MONO VOICE  •  MIDI", 100.3465f, 344.0f, 3.0f, accent);
         label("INDEPENDENT PRODUCT SCAFFOLD", 100.3465f, 353.0f, 2.5f, muted);
     }
@@ -512,8 +633,6 @@ private:
             {0, "AUDIO IN R (J8)", 18.565f, 17.4f, 4.4f},
             {0, "FREEZE GATE (J9)", 30.015f, 17.4f, 4.4f},
             {0, "SEED GATE (J10)", 41.465f, 17.4f, 4.4f},
-            {0, "AUDIO OUT L (J11)", 52.915f, 17.4f, 4.4f},
-            {0, "AUDIO OUT R (J12)", 64.365f, 17.4f, 4.4f},
         };
         for (const auto& p : placements) {
             const float diameter = p.r * 2.0f;
@@ -592,6 +711,26 @@ private:
             }, pulp::state::ListenerThread::Main,
             pulp::state::ListenerRestoreBehavior::Reconcile);
         add_child(std::move(freeze));
+
+        auto mode = std::make_unique<ModeControl>();
+        source_mode_ = mode.get();
+        source_mode_->set_mode(static_cast<int>(std::lround(store_.get_value(kMode))));
+        source_mode_->set_on_press([this] {
+            store_.begin_gesture(kMode);
+            store_.set_value(kMode, source_mode_->mode() == 0 ? 1.0f : 0.0f);
+            store_.end_gesture(kMode);
+        });
+        source_mode_binding_ = store_.add_listener(
+            [this](pulp::state::ParamID changed, float value) {
+                if (changed == kMode && source_mode_)
+                    source_mode_->set_mode(static_cast<int>(std::lround(value)));
+            }, pulp::state::ListenerThread::Main,
+            pulp::state::ListenerRestoreBehavior::Reconcile);
+        add_child(std::move(mode));
+
+        auto grip = std::make_unique<ResizeGrip>(processor_);
+        resize_grip_ = grip.get();
+        add_child(std::move(grip));
     }
 
     void layout_controls() {
@@ -631,6 +770,20 @@ private:
             freeze_mode_->set_position(pulp::view::View::Position::absolute);
             freeze_mode_->set_bounds({x, y, width, height});
         }
+        if (source_mode_) {
+            const float unit = std::min(sx, sy);
+            const float mode_width = 26.0f * unit;
+            const float mode_height = 5.5f * unit;
+            const float x = 35.4f * sx - mode_width * 0.5f;
+            const float y = (128.5f - 115.0f) * sy - mode_height * 0.5f;
+            source_mode_->set_position(pulp::view::View::Position::absolute);
+            source_mode_->set_bounds({x, y, mode_width, mode_height});
+        }
+        if (resize_grip_) {
+            const float grip = std::max(8.0f, 7.0f * std::min(sx, sy));
+            resize_grip_->set_position(pulp::view::View::Position::absolute);
+            resize_grip_->set_bounds({width - grip, height - grip, grip, grip});
+        }
     }
 
     struct Control { detail::PanelKnob* knob; float x; float y; float radius; };
@@ -645,6 +798,9 @@ private:
     pulp::state::ListenerToken seed_mode_binding_;
     FreezeControl* freeze_mode_ = nullptr;
     pulp::state::ListenerToken freeze_mode_binding_;
+    ModeControl* source_mode_ = nullptr;
+    ResizeGrip* resize_grip_ = nullptr;
+    pulp::state::ListenerToken source_mode_binding_;
     std::optional<pulp::state::ParamID> context_target_;
 };
 

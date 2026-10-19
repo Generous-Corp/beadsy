@@ -8,7 +8,13 @@ made it possible. Thank you, Emilie, for showing what instrument design and
 open hardware can be. Emilie and Mutable Instruments are not affiliated with
 or endorsing Beadsy; their names and marks remain their own.
 
-The project is being built in phases. The current phase is provenance and source-port preparation; no Beads artwork or firmware source is redistributed until each file has a recorded license and attribution decision.
+The current product supports two source paths: MIDI-driven internal wavetable
+synthesis and an optional stereo Main In bus for live granular processing.
+Host routing supplies the audio input; the editor exposes the source choice.
+The live-input path is still a prototype until independent AU, VST3, and CLAP
+host receipts are current. The project is being built in phases, and no Beads
+artwork or firmware source is redistributed until each file has a recorded
+license and attribution decision.
 
 ## License
 

@@ -46,6 +46,24 @@ TEST_CASE("Beadsy knob skin preserves mapped DXF diameter") {
     REQUIRE(std::abs(radius - std::min(mapped_diameter, layout_height * 0.78f) * 0.43f) < 0.01f);
 }
 
+TEST_CASE("Beadsy source control exposes synth and live input modes") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    REQUIRE(native->source_mode_control() != nullptr);
+    REQUIRE(native->source_mode_control()->mode() == 0);
+    native->source_mode_control()->on_mouse_down({});
+    REQUIRE(native->source_mode_control()->mode() == 1);
+    REQUIRE(store.get_value(beadsy::kMode) == 1.0f);
+    native->source_mode_control()->on_mouse_down({});
+    REQUIRE(native->source_mode_control()->mode() == 0);
+    REQUIRE(store.get_value(beadsy::kMode) == 0.0f);
+}
+
 TEST_CASE("Beadsy knob skin keeps measured cap and pointer proportions") {
     // Ratios are taken from the local straight-on material reference and are
     // checked as procedural geometry only; the reference image is never
@@ -169,7 +187,8 @@ TEST_CASE("Beadsy binds source-backed auxiliary controls and labels ports") {
     REQUIRE(native->child_count() == 26);
 
     // Five primary controls plus seven PCB-net-backed auxiliary pots are
-    // automatable. The twelve remaining regions are physical I/O ports.
+    // automatable. Ten remaining regions are input/control ports; output jacks
+    // are intentionally omitted because host outputs are not patchable UI.
     for (std::size_t i = 0; i < 12; ++i) {
         auto* knob = dynamic_cast<beadsy::detail::PanelKnob*>(native->child_at(i));
         REQUIRE(knob != nullptr);
@@ -179,9 +198,8 @@ TEST_CASE("Beadsy binds source-backed auxiliary controls and labels ports") {
     const char* ports[] = {"TIME CV (J1)", "SIZE CV (J2)", "SHAPE CV (J3)",
                            "PITCH CV (J4)", "ASSIGN CV (J5)", "DENSITY CV (J6)",
                            "AUDIO IN L (J7)", "AUDIO IN R (J8)",
-                           "FREEZE GATE (J9)", "SEED GATE (J10)",
-                           "AUDIO OUT L (J11)", "AUDIO OUT R (J12)"};
-    for (std::size_t i = 0; i < 12; ++i) {
+                           "FREEZE GATE (J9)", "SEED GATE (J10)"};
+    for (std::size_t i = 0; i < 10; ++i) {
         auto* port = dynamic_cast<beadsy::PortRegion*>(native->child_at(i + 12));
         REQUIRE(port != nullptr);
         REQUIRE(port->access_label().find(ports[i]) != std::string::npos);
@@ -278,7 +296,8 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
     menu = native->show_modulation_context_menu(
         beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
     REQUIRE(menu != nullptr);
-    REQUIRE(menu->items()[1].label == "Disable LFO");
+    REQUIRE(menu->items()[1].label == "LFO Enabled");
+    REQUIRE(menu->items()[1].checked);
     const auto initial_rate = processor.lfo(beadsy::kDensity).rate_hz;
     const auto initial_depth = processor.lfo(beadsy::kDensity).depth;
     menu->on_close(4);

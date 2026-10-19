@@ -21,11 +21,16 @@ delay and beat-slicing behavior when SIZE is set to an endless grain. FEEDBACK,
 DRY/WET, and REVERB form the stereo mix path. With no audio input, the module
 falls back after a delay to eight internal Plaits-derived wavetable banks.
 
-The current Beadsy product implements the documented internal wavetable
-synth branch only. Its explicit boundaries are global MIDI triggering, five
-bound panel parameters, a fixed 48 kHz engine, and no live audio-input path.
-The missing input/freeze/quality/attenurandomizer/delay-mode behavior remains a
-planned parity phase and must not be described as complete Beads emulation.
+The current Beadsy product implements the documented internal wavetable synth
+branch and a product-local stereo live-input prototype. Its explicit boundaries
+are global MIDI triggering, source selection between Synth and Live Input, the
+optional stereo Main In bus, five primary grain parameters, and a fixed 48 kHz
+engine. The live-input path is implemented and covered by a focused processor
+test, but it is not yet release-validated through AU/VST3/CLAP host routing.
+Automatic input gain, mono/stereo patch detection, complete quality/media
+modes, freeze-buffer persistence, hardware CV/attenurandomizers, full
+clock/gate behavior, and the complete delay-mode transition remain parity
+gates and must not be inferred from the prototype.
 
 ## Visual and control references
 

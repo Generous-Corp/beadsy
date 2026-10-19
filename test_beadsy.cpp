@@ -493,6 +493,28 @@ TEST_CASE("Beadsy produces audio from one global MIDI trigger") {
     REQUIRE(audible);
 }
 
+TEST_CASE("Beadsy is silent until synth MIDI or live input is selected") {
+    auto proc = beadsy::create_beadsy();
+    pulp::state::StateStore store;
+    proc->set_state_store(&store);
+    proc->define_parameters(store);
+    proc->prepare({.sample_rate = 48000.0,
+                   .max_buffer_size = 256,
+                   .input_channels = 0,
+                   .output_channels = 2});
+
+    pulp::audio::Buffer<float> output(2, 256);
+    pulp::midi::MidiBuffer midi_in;
+    pulp::midi::MidiBuffer midi_out;
+    pulp::audio::BufferView<const float> empty_input(nullptr, 0, 0);
+    pulp::format::ProcessContext context{.sample_rate = 48000.0, .num_samples = 256};
+    auto view = output.view();
+    proc->process(view, empty_input, midi_in, midi_out, context);
+    for (int channel = 0; channel < 2; ++channel)
+        for (float sample : output.channel(channel))
+            REQUIRE(sample == 0.0f);
+}
+
 TEST_CASE("Beadsy live-input mode processes stereo input") {
     auto proc = beadsy::create_beadsy();
     pulp::state::StateStore store;
