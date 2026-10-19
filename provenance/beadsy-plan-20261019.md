@@ -140,3 +140,11 @@ green, and VST3, CLAP, AU, LV2, and standalone artifacts are present and
 verified as arm64. This closes the current-head SDK-consumer build gate; it
 does not promote host routing, AUv3 discovery, pluginval, AAX, or artwork
 rights to pass.
+
+The current route-SDK VST3 artifact also passes Tracktion pluginval v1.0.4 at
+strictness level 5. The validator exercised cold/warm open, editor attach while
+processing, state, automation, parameter, audio-rate matrices at 44.1/48/96 kHz
+with 64/128/256/512/1024 blocks, and bus lifecycle checks; the exact log and
+artifact hash are recorded in
+`provenance/beadsy-pluginval-vst3-20261019.json` and
+`provenance/beadsy-pluginval-vst3-20261019.log`.
