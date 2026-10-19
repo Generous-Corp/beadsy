@@ -1,0 +1,41 @@
+{
+  "schema": "beadsy.current-head-format-validation.v1",
+  "captured_at": "2026-10-19T05:08:00Z",
+  "source_head": "9910afc24ca948f10ee04d85a83357ce87845118",
+  "host_architecture": "arm64",
+  "deployment_target": "13.4",
+  "artifacts": {
+    "clap": {
+      "path": "build/CLAP/Beadsy.clap/Contents/MacOS/Beadsy",
+      "architecture": "arm64",
+      "sha256": "7f28ce84f422b9925f65faaf9eefebe1b89754312cec5274bc2749bf99420136",
+      "validator": "clap-validator validate build/CLAP/Beadsy.clap",
+      "status": "pass_with_scan_time_warning",
+      "tests_run": 20,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 3,
+      "warnings": 1
+    },
+    "vst3": {
+      "path": "build/VST3/Beadsy.vst3/Contents/MacOS/Beadsy",
+      "architecture": "arm64",
+      "sha256": "b79e51ca2443d44141a9684da45a028933229a6ed672a3f5740a68b5e224a473",
+      "validator": "pluginval --validate ... --strictness-level 5 --timeout-ms 10000",
+      "status": "pass"
+    },
+    "au": {
+      "path": "build/AU/Beadsy.component/Contents/MacOS/Beadsy",
+      "architecture": "arm64",
+      "sha256": "8675f3efe9f6e036ab2e307eda5082de48422e1626430d0b0cbe6921a55d4bb3",
+      "validator": "run-auval-component.sh ... aumu Bead Inde",
+      "status": "pass",
+      "input_buses": 0,
+      "note": "AU instrument validation passes; external audio routing is unavailable on this instrument identity."
+    }
+  },
+  "not_claimed": [
+    "AAX is blocked without the proprietary SDK and validator.",
+    "This receipt does not prove a DAW project-route selection; host routing remains a separate gate."
+  ]
+}
