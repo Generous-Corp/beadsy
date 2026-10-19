@@ -1,10 +1,10 @@
 {
   "schema": "beadsy.format-status.v1",
-  "generated_at": "2026-10-19T08:54:00.903143Z",
+  "generated_at": "2026-10-19T08:57:36.017347Z",
   "project": "Beadsy",
   "source": {
     "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018",
-    "git_head": "c27f7e56e2680fe9a34015bd1103ac93a89d8547"
+    "git_head": "feac82ff349355ce54b997a8f852be50f65283cc"
   },
   "build": {
     "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build",
@@ -23,8 +23,8 @@
           "path": "VST3/Beadsy.vst3/Contents/MacOS/Beadsy",
           "exists": true,
           "is_file": true,
-          "bytes": 45987112,
-          "sha256": "63810f8141615cb54a2e8b0ecd43479c006a69f15a47a46bc2f2d13a52ec44b7"
+          "bytes": 44748712,
+          "sha256": "8f53d7c56092a7cd9a13352712ff9924c699f29bcf841710dc575e6cb284808d"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -39,8 +39,8 @@
           "path": "CLAP/Beadsy.clap/Contents/MacOS/Beadsy",
           "exists": true,
           "is_file": true,
-          "bytes": 45769064,
-          "sha256": "7db88241ff2ce2a5158c44dcfa04b662313a823b2e173195e7baa932ce909d2f"
+          "bytes": 44530664,
+          "sha256": "448c82488bda6da132d275df6c9a1f68cabf7285296247fb9ba2a17420818cdb"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -55,8 +55,8 @@
           "path": "LV2/Beadsy.lv2/Beadsy.so",
           "exists": true,
           "is_file": true,
-          "bytes": 36314472,
-          "sha256": "afe29274152d1b17aed0fa99eb2e6f570b8d42599d2740178558a35d174e9703"
+          "bytes": 35076072,
+          "sha256": "1d510690de59810be21107f1d6afa130a67d23b71649cb85e1f9f88de3bb4ea6"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -71,8 +71,8 @@
           "path": "AU/Beadsy.component/Contents/MacOS/Beadsy",
           "exists": true,
           "is_file": true,
-          "bytes": 45828216,
-          "sha256": "84b3d85914e2e8c3a2f283255d4f1c5339ffff8e2e112fdfe62f66e8f5bfbf1f"
+          "bytes": 44589816,
+          "sha256": "0859ecbf984046cf5145a54b8e173dfeaafcd22eccca01f6e41ba75350159afc"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
@@ -117,8 +117,8 @@
           "path": "Beadsy.app/Contents/MacOS/Beadsy",
           "exists": true,
           "is_file": true,
-          "bytes": 47662472,
-          "sha256": "fa743f9be2b9d5bc4afd8d11c1305f75f8c3d9e6e0a81fdc5a894601b54b085e"
+          "bytes": 46424072,
+          "sha256": "14f8d810188cfa8a8046c16173aeb460b33a79641817b76860fad8bd991a6854"
         },
         "pulp_target_present": true,
         "host_validation": "not_run"
