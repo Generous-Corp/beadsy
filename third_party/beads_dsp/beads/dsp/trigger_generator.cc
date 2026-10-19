@@ -258,11 +258,19 @@ void TriggerGenerator::Render(
     // Merge seed button and external gate input to get a single gate stream.
     for (size_t i = 0; i < size; ++i) {
       bool gate = seed_button_state != SEED_BUTTON_STATE_OFF;
+      GateFlags incoming = GATE_FLAG_LOW;
       if (external_input) {
-        gate |= *external_input++ & GATE_FLAG_HIGH;
+        // Preserve explicit edge annotations from the sample-accurate MIDI
+        // adapter. A level-only merge cannot represent a retrigger while the
+        // instrument gate is already high.
+        incoming = *external_input++;
+        gate |= incoming & GATE_FLAG_HIGH;
       }
-      merged_gate_flags[i] = previous_flags_ = \
-          ExtractGateFlags(previous_flags_, gate);
+      auto flags = ExtractGateFlags(previous_flags_, gate);
+      flags = static_cast<GateFlags>(flags |
+                                     (incoming & (GATE_FLAG_RISING |
+                                                  GATE_FLAG_FALLING)));
+      merged_gate_flags[i] = previous_flags_ = flags;
     }
     
     if (density < 0.48f) {

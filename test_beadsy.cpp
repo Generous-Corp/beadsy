@@ -393,6 +393,38 @@ TEST_CASE("Beadsy MIDI gate transitions occur at event sample offsets") {
     REQUIRE((flags[7] & stmlib::GATE_FLAG_HIGH) == 0);
 }
 
+TEST_CASE("Beadsy overlapping MIDI note-ons preserve retrigger edges") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    processor.prepare(pulp::format::PrepareContext{.sample_rate = 48000.0,
+                                                   .max_buffer_size = 8,
+                                                   .input_channels = 0,
+                                                   .output_channels = 2});
+
+    pulp::midi::MidiBuffer midi_in;
+    pulp::midi::MidiBuffer midi_out;
+    auto first = pulp::midi::MidiEvent::note_on(0, 60, 100);
+    first.sample_offset = 0;
+    auto retrigger = pulp::midi::MidiEvent::note_on(0, 64, 80);
+    retrigger.sample_offset = 4;
+    REQUIRE(midi_in.add(first));
+    REQUIRE(midi_in.add(retrigger));
+
+    pulp::audio::Buffer<float> output(2, 8);
+    pulp::audio::BufferView<const float> empty_input(nullptr, 0, 0);
+    auto output_view = output.view();
+    processor.process(output_view, empty_input, midi_in, midi_out,
+                      pulp::format::ProcessContext{.sample_rate = 48000.0,
+                                                   .num_samples = 8});
+    const auto flags = processor.debug_seed_gate_flags();
+    REQUIRE(flags.size() == 8);
+    REQUIRE((flags[0] & stmlib::GATE_FLAG_RISING) != 0);
+    REQUIRE((flags[4] & stmlib::GATE_FLAG_RISING) != 0);
+    REQUIRE((flags[4] & stmlib::GATE_FLAG_HIGH) != 0);
+}
+
 TEST_CASE("Beadsy MIDI velocity gain changes at a mid-block note-on") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
