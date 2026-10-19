@@ -13,7 +13,7 @@ files, and internal sources. It is populated and changed on the control thread;
 the audio callback consumes already-routed buffers. A plug-in cannot enumerate
 arbitrary Logic or REAPER tracks by itself, so real DAW menus remain a host
 acceptance gate. The route branch is currently at
-`f284bd13efed75119910e33392a433c29974836c`; its focused route and processor
+`9101252b58e85f26db16c3daae56044994422e8b`; its focused route and processor
 provider tests pass. The reusable format seam is now an allocation-free,
 pre-bound `AudioInputBusProvider`: `ProcessorNode` materializes declared
 auxiliary/sidechain buses from host-borrowed buffers and the rich
@@ -100,7 +100,7 @@ decision exists.
 
 The reusable route capability is now at Pulp PR
 `https://github.com/Generous-Corp/pulp/pull/10575`, head
-`f284bd13efed75119910e33392a433c29974836c`. Its fast-tier validation is green;
+`9101252b58e85f26db16c3daae56044994422e8b`. Its fast-tier validation is green;
 the merge-group suite is still required before treating the SDK as landed.
 The route worktree's current focused route/graph run is green: 279/279
 selected CTest cases pass at that exact head, including the DSPX product binding,
@@ -132,7 +132,7 @@ installed-package evidence remain independent gates.
 
 The route-enabled SDK consumer was then rebuilt from the current Beadsy HEAD
 `00d6466745f5ed6b2799055fe772b3e51cda6b59` against route SDK head
-`f284bd13efed75119910e33392a433c29974836c` in a Release arm64 build. The
+`9101252b58e85f26db16c3daae56044994422e8b` in a Release arm64 build. The
 exact receipt is
 `provenance/beadsy-route-sdk-validation-20261019.json`: the editor suite is
 16/16 green, the Beadsy DSP/behavior suite is 27/27 cases and 2,811 assertions
@@ -198,3 +198,19 @@ The previously missing AUv3 binaries were then built through
 Mach-O artifacts in `build-route-exact-20261019/AUv3`; the refreshed format
 receipt records AUv3 as an artifact-build pass. AUv3 installation/discovery in
 Logic and actual host-routed audio delivery remain unproven and stay open.
+
+
+## 2026-10-19 route identity hardening
+
+The shared Pulp route branch now retains a selected stable route identity across
+any catalog snapshot, including a temporarily unavailable or absent physical
+input, track, instrument, bus, file, or internal source. The catalog still
+rejects `connect()` for unavailable/absent routes, so retained identity is a
+state/UI affordance and never an assertion that audio is flowing. When the same
+stable ID returns, the picker can show the prior checkmark and the host can
+reconnect it on the control thread. The regression is covered by the route
+catalog test (23 assertions in 3 cases) at Pulp commit
+`9101252b58e85f26db16c3daae56044994422e8b`. The change is pushed to
+[PR 10575](https://github.com/Generous-Corp/pulp/pull/10575), whose required
+review/merge gates remain open; Beadsy must continue to consume the staged or
+landed SDK and must not claim the capability is on `main` until that PR lands.
