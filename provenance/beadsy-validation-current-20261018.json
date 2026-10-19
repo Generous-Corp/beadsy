@@ -2,18 +2,20 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "schema": "beadsy.validation.current.v1",
   "reviewed_at": "2026-10-19",
-  "beadsy_head": "49fb7c13acf26d2233d0cfade149fbd11feb9ac1",
+  "beadsy_head": "bebd7b5",
   "route_capability_head": "126264ee334f9fd664a8e0120dba559995cf8eaa",
   "checks": [
     {
       "command": "pulp build --target Beadsy-editor-test",
+      "worktree": "grainfield-current-integration-20261018/build-route-sdk-consumer",
       "status": "pass",
-      "evidence": "arm64 Release target linked"
+      "evidence": "route-enabled arm64 Release target linked against audio-route-capability SDK"
     },
     {
-      "command": "./build/Beadsy-editor-test",
+      "command": "./Beadsy-editor-test",
+      "worktree": "grainfield-current-integration-20261018/build-route-sdk-consumer",
       "status": "pass",
-      "evidence": "149 assertions, 14 test cases"
+      "evidence": "158 assertions, 15 test cases including host route picker selection and refresh"
     },
     {
       "command": "pulp build --all",
@@ -38,12 +40,17 @@
       "worktree": "audio-route-capability-20261018",
       "status": "pass_with_preexisting_base_failure",
       "evidence": "M1 exact-head gate: 100/100 pr-fast passed; 11/12 selected source selftests passed with gpu-dpr-v2-evidence-selftest explicitly pre-existing on origin/main; 13/15 selected Python contracts passed and 2 skipped; all remaining gates passed."
+    },
+    {
+      "command": "./build/Beadsy-test",
+      "worktree": "grainfield-current-integration-20261018",
+      "status": "pass",
+      "evidence": "2811 assertions, 27 test cases including route identity state round-trip"
     }
   ],
   "release_verdict": "open",
   "open_gates": [
     "host graph/buffer binding for selected route IDs",
-    "wire route snapshot/restore into Beadsy plug-in state and editor reopen",
     "standalone/Forge catalog injection",
     "real Logic or REAPER route receipt for project tracks, buses, instruments, and physical inputs",
     "rights-cleared visual comparison and package/signing gates"

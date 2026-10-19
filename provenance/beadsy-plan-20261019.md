@@ -20,10 +20,12 @@ safety, and contract checks. It records one known pre-existing
 has no failing selected gate. This phase is currently **partial**: the catalog now
 exposes stable route entries, refresh behavior, bus roles, an injected
 control-thread connection callback, and stable-ID selection snapshot/restore,
-but no Beadsy standalone/Forge host yet
-installs a graph/buffer provider. A host integration still has to bind a
-selected stable ID to an input bus, call the new snapshot/restore seam from
-plug-in state, and define unavailable/hot-plug behavior before this can be called an end-to-end audio
+but no Beadsy standalone/Forge host yet installs a graph/buffer provider. The
+Beadsy editor now persists two bounded stable route IDs in its plug-in state,
+rebinding them when an injected catalog is reopened, and the route-enabled
+editor test exercises selection and catalog refresh. A host integration still
+has to bind a selected stable ID to an actual input bus and define
+unavailable/hot-plug behavior before this can be called an end-to-end audio
 routing feature.
 
 ## Phase 2 — Beadsy behavior and UI
@@ -57,6 +59,8 @@ routing feature.
   bus, instrument, and physical input where the host supports each one.
 - Add a route identity/state receipt proving selected stable IDs survive a state
   round-trip, catalog refresh, unavailable source, and editor reopen.
+- Keep the route-enabled Beadsy editor build against the route-capability SDK
+  as a required check; the current receipt is 158 assertions in 15 cases.
 - Keep allocation, realtime, MIDI expressive, and state-restore probes as
   explicit receipts rather than inferring them from a successful scan.
 
