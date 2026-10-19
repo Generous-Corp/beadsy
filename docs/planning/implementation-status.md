@@ -75,7 +75,10 @@ the current Beadsy integration branch; receipt updates are recorded in
    The primary AU instrument now exposes zero input buses and cannot present
    unavailable live-input modes. Beadsy FX has a distinct VST3 FUID and its
    standalone target configures two input channels. A real DAW project-route
-   receipt is still open.
+   receipt is still open. The local REAPER AU `editor-open` smoke reached the
+   host but was explicitly `INCONCLUSIVE`: REAPER's prewarm scan did not publish
+   the component into its isolated cache before timeout, so no editor-window or
+   audio-route claim was promoted.
 5. Resolve panel artwork permission and trademark clearance; complete legal/source redistribution review and external converter diagnostics (currently inconclusive) after the classified portability adaptations are accepted. Keep the Pulp importer fail-closed and validation-only boundary from commit `f9752e4`.
 
 ## Release gates
