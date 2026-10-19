@@ -1,0 +1,752 @@
+Started validating: /Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-route-exact-20261019/VST3/Beadsy.vst3
+Random seed: 0x662cf78
+Validation started
+Strictness level: 5
+-----------------------------------------------------------------
+Starting tests in: pluginval / Scan for plugins located in: /Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-route-exact-20261019/VST3/Beadsy.vst3...
+[pulp:info]  VST3: IHostApplication present; publishing ARA factory under kVst3AraFactoryContextKey='com.celemony.ara/vst3-host-factory-v1'
+[pulp:info]  VST3: initialized 'Beadsy' with 19 parameters
+Num plugins found: 1
+
+Testing plugin: VST3-Beadsy-508fd63-6d88ba99
+Independent Audio: Beadsy v1.0.0
+Completed tests in pluginval / Scan for plugins located in: /Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-route-exact-20261019/VST3/Beadsy.vst3
+-----------------------------------------------------------------
+Starting tests in: pluginval / Open plugin (cold)...
+[pulp:info]  VST3: IHostApplication present; publishing ARA factory under kVst3AraFactoryContextKey='com.celemony.ara/vst3-host-factory-v1'
+[pulp:info]  VST3: initialized 'Beadsy' with 19 parameters
+Completed tests in pluginval / Open plugin (cold)
+-----------------------------------------------------------------
+Starting tests in: pluginval / Open plugin (warm)...
+[pulp:info]  VST3: IHostApplication present; publishing ARA factory under kVst3AraFactoryContextKey='com.celemony.ara/vst3-host-factory-v1'
+[pulp:info]  VST3: initialized 'Beadsy' with 19 parameters
+Running tests 1 times
+Completed tests in pluginval / Open plugin (warm)
+-----------------------------------------------------------------
+Starting tests in: pluginval / Plugin info...
+
+Plugin name: Beadsy
+Alternative names: Beadsy
+SupportsDoublePrecision: yes
+Reported latency: 0
+Reported taillength: 0
+Completed tests in pluginval / Plugin info
+-----------------------------------------------------------------
+Starting tests in: pluginval / Plugin programs...
+Num programs: 0
+All program names checked
+Completed tests in pluginval / Plugin programs
+-----------------------------------------------------------------
+Starting tests in: pluginval / Editor...
+[pulp:info]  [plugin-gpu-host] adapter mode=autoui use_gpu=false wants_gpu=false env_disabled=false scripted=false requires_gpu_host=false create_view_null=false build=release
+[pulp:info]  VST3 editor: attached (201x364, mode=autoui, gpu=false)
+[pulp:info]  VST3 editor: removed
+[pulp:info]  [plugin-gpu-host] adapter mode=autoui use_gpu=false wants_gpu=false env_disabled=false scripted=false requires_gpu_host=false create_view_null=false build=release
+[pulp:info]  VST3 editor: attached (201x364, mode=autoui, gpu=false)
+[pulp:info]  VST3 editor: removed
+Completed tests in pluginval / Editor
+-----------------------------------------------------------------
+Starting tests in: pluginval / Open editor whilst processing...
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  [plugin-gpu-host] adapter mode=autoui use_gpu=false wants_gpu=false env_disabled=false scripted=false requires_gpu_host=false create_view_null=false build=release
+[pulp:info]  VST3 editor: attached (201x364, mode=autoui, gpu=false)
+[pulp:info]  VST3 editor: removed
+Completed tests in pluginval / Open editor whilst processing
+-----------------------------------------------------------------
+Starting tests in: pluginval / Audio processing...
+Testing with sample rate [44100] and block size [64]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [44100] and block size [128]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [44100] and block size [256]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [44100] and block size [512]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [44100] and block size [1024]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [48000] and block size [64]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [48000] and block size [128]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [48000] and block size [256]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [48000] and block size [512]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [48000] and block size [1024]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [96000] and block size [64]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [96000] and block size [128]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [96000] and block size [256]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [96000] and block size [512]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [96000] and block size [1024]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Completed tests in pluginval / Audio processing
+-----------------------------------------------------------------
+Starting tests in: pluginval / Plugin state...
+Completed tests in pluginval / Plugin state
+-----------------------------------------------------------------
+Starting tests in: pluginval / Automation...
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [44100] and block size [64] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [44100] and block size [128] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [44100] and block size [256] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [44100] and block size [512] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [44100] and block size [1024] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [48000] and block size [64] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [48000] and block size [128] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [48000] and block size [256] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [48000] and block size [512] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [48000] and block size [1024] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [96000] and block size [64] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [96000] and block size [128] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [96000] and block size [256] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [96000] and block size [512] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Testing with sample rate [96000] and block size [1024] and sub-block size [32]
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Completed tests in pluginval / Automation
+-----------------------------------------------------------------
+Starting tests in: pluginval / Editor Automation...
+[pulp:info]  [plugin-gpu-host] adapter mode=autoui use_gpu=false wants_gpu=false env_disabled=false scripted=false requires_gpu_host=false create_view_null=false build=release
+[pulp:info]  VST3 editor: attached (201x364, mode=autoui, gpu=false)
+[pulp:info]  VST3 editor: removed
+Completed tests in pluginval / Editor Automation
+-----------------------------------------------------------------
+Starting tests in: pluginval / Automatable Parameters...
+Completed tests in pluginval / Automatable Parameters
+-----------------------------------------------------------------
+Starting tests in: pluginval / auval...
+Completed tests in pluginval / auval
+-----------------------------------------------------------------
+Starting tests in: pluginval / vst3 validator...
+INFO: Skipping vst3 validator as validator path hasn't been set
+Completed tests in pluginval / vst3 validator
+-----------------------------------------------------------------
+Starting tests in: pluginval / Basic bus...
+Completed tests in pluginval / Basic bus
+-----------------------------------------------------------------
+Starting tests in: pluginval / Listing available buses...
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Inputs:
+	Named layouts: Mono, Stereo, LCR, Quadraphonic, 5.0 Surround, 5.1 Surround, 7.0 Surround, 7.1 Surround, Mono, Stereo, LCR, Quadraphonic, 5.0 Surround, 5.1 Surround, 7.0 Surround, 7.1 Surround
+	Discrete layouts: Discrete #1, Discrete #1
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted UNSUPPORTED layout via silence accommodation (2 in / 1 out buses); extra channels silenced
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Outputs:
+	Named layouts: Mono, Stereo, LCR, Quadraphonic, 5.0 Surround, 5.1 Surround, 7.0 Surround, 7.1 Surround
+	Discrete layouts: Discrete #1
+Main bus num input channels: 0
+Main bus num output channels: 2
+Completed tests in pluginval / Listing available buses
+-----------------------------------------------------------------
+Starting tests in: pluginval / Enabling all buses...
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Completed tests in pluginval / Enabling all buses
+-----------------------------------------------------------------
+Starting tests in: pluginval / Disabling non-main busses...
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Completed tests in pluginval / Disabling non-main busses
+-----------------------------------------------------------------
+Starting tests in: pluginval / Restoring default layout...
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Main bus num input channels: 0
+Main bus num output channels: 2
+[pulp:info]  VST3 setBusArrangements: accepted 2 in / 1 out buses
+Completed tests in pluginval / Restoring default layout
+SUCCESS

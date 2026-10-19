@@ -1,0 +1,33 @@
+{
+  "schema": "beadsy.pluginval.vst3.v1",
+  "captured_at": "2026-10-19T13:30:31.849182Z",
+  "source_head": "6db067536ef7ca298d277e1a99e8fb20400e86df",
+  "route_sdk_head": "f284bd13efed75119910e33392a433c29974836c",
+  "host_architecture": "arm64",
+  "validator": {
+    "path": ".tools/pluginval/pluginval.app/Contents/MacOS/pluginval",
+    "version": "1.0.4",
+    "command": "pluginval --validate build-route-exact-20261019/VST3/Beadsy.vst3 --strictness-level 5 --timeout-ms 10000",
+    "exit_code": 0,
+    "result": "SUCCESS",
+    "log": "provenance/beadsy-pluginval-vst3-20261019.log"
+  },
+  "artifact": {
+    "path": "build-route-exact-20261019/VST3/Beadsy.vst3/Contents/MacOS/Beadsy",
+    "sha256": "a78d0b299d38fa8972f6c97c91eaa9df130f1f042b58bb65a5a648f0de5b0a1f",
+    "bytes": 44769160,
+    "architecture": "arm64"
+  },
+  "coverage": [
+    "cold and warm open",
+    "editor",
+    "open editor while processing",
+    "audio processing 44100/48000/96000 Hz with blocks 64/128/256/512/1024",
+    "plugin state",
+    "automation",
+    "editor automation",
+    "automatable parameters",
+    "bus listing/enabling/disabling",
+    "basic bus"
+  ]
+}
