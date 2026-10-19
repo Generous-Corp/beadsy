@@ -730,8 +730,14 @@ public:
   void layout_children() override {
     pulp::view::View::layout_children();
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
-    if (route_picker_)
+    if (route_picker_) {
       route_picker_->refresh_if_needed();
+      const auto bus = static_cast<std::size_t>(
+          source_mode_ && source_mode_->mode() == 2);
+      if (route_picker_->catalog())
+        processor_.set_route_identity(
+            bus, route_picker_->catalog()->connected_route(bus));
+    }
 #endif
     layout_controls();
   }

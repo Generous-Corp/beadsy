@@ -102,6 +102,7 @@ public:
         return bus_index < selected_.size() ? selected_[bus_index] : std::string{};
     }
     void notify() { if (callback_) callback_(); }
+    void clear_selection() { selected_.fill({}); }
     std::vector<pulp::host::AudioRouteInfo> routes{
         {"input:mic", "Mic", pulp::host::AudioRouteKind::PhysicalInput, 1, true},
         {"track:piano", "Piano", pulp::host::AudioRouteKind::Track, 2, true},
@@ -133,6 +134,29 @@ TEST_CASE("Beadsy route picker consumes host catalog on the control thread") {
     REQUIRE(picker.items()[2] == "Piano (2 ch)");
     picker.refresh_if_needed();
     REQUIRE(picker.items()[2] == "Piano Updated (2 ch)");
+}
+
+TEST_CASE("Beadsy clears a dropped route identity after catalog refresh") {
+    EditorRouteCatalog catalog;
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_audio_route_catalog(&catalog, true);
+    native->source_mode_control()->set_mode(1);
+    auto* picker = native->audio_route_picker();
+    REQUIRE(picker != nullptr);
+    picker->set_source_mode(1);
+    picker->set_selected(2);
+    REQUIRE(processor.route_identity(0) == "track:piano");
+
+    catalog.clear_selection();
+    catalog.notify();
+    native->layout_children();
+    REQUIRE(processor.route_identity(0).empty());
 }
 #endif
 
