@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "beadsy.daw-smoke.v1",
+  "host": "REAPER",
+  "format": "VST3",
+  "mode": "editor-open",
+  "plugin_path": "build-route-exact-20261019/VST3/Beadsy.vst3",
+  "reaper": "/Applications/REAPER.app/Contents/MacOS/REAPER",
+  "result": "inconclusive",
+  "observed": "REAPER could not find/insert the FX during the isolated temporary scan-path smoke",
+  "cleanup": "passed; no development plugins left behind",
+  "interpretation": "The harness documents this REAPER version/path-redirection limitation; this is not a host editor pass and is not promoted to PASS.",
+  "beadsy_head": "00424b9a82928cf8eeb5e89b058cebcf3b9f8b97",
+  "next": "Use a host-native installed scan or fix the temporary scan-path publication before claiming an editor-open proof."
+}
