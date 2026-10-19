@@ -31,8 +31,8 @@ hosts can provide the same list through `AudioRouteCatalog`.
 
 ## Phase 1: importer landing
 
-- Land PR [#10552](https://github.com/Generous-Corp/pulp/pull/10552) through the normal merge queue. Its exact head is `30265dd1f40399228ae1d906268b10e09f702bbc`; GitHub reports all required checks successful and `mergeStateStatus: CLEAN`.
-- After landing, refresh the receipt against the landed `origin/main` head.
+- PR [#10552](https://github.com/Generous-Corp/pulp/pull/10552) is landed. Its merge commit is `a9574df832a46be12d44b016cdd0514b557213b9` and the current protected `origin/main` is `e829add4f0d29d49ee78198572b195983d268738`.
+- Refresh the importer receipt against the current landed `origin/main` head before the next Beadsy release build.
 - Re-run `python3 tools/import-validation/test_source_contracts.py` (29/29 expected) and the Vellum expansion watch check.
 
 ## Phase 2: clean Apple Silicon build
@@ -68,6 +68,10 @@ hosts can provide the same list through `AudioRouteCatalog`.
 - Compare the straight-on faceplate against a rights-cleared reference at
   fixed dimensions. Validate knob diameter, cap, indicator, typography,
   spacing, resize handle, and removal of decorative output jacks.
+- The supplied Illustrator/PDF panel has now been converted to a hashed SVG
+  geometry reference; see `beadsy-panel-vector-extraction-20261019.json`.
+  Sanitize its original branding and decorative output-jack regions before
+  using it as Beadsy's native background.
 - Exercise Spectr-compatible contextual LFO controls: right-click/tap,
   toggles, arrow keys, Return, outside dismissal, automation, and state
   round-trip.

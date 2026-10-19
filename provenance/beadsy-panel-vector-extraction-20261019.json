@@ -1,0 +1,19 @@
+{
+  "schema": "beadsy.panel-vector-extraction.v1",
+  "source": {
+    "path": "/Users/danielraffel/Code/eurorack/beads/hardware_design/panel/beads.ai",
+    "format": "Adobe Illustrator PDF 1.5",
+    "sha256": "bdc4e394703fa99e6e7997683e1b4dee2bada5cc6eff95af36d40086f6f86c5e"
+  },
+  "derived": {
+    "path": "provenance/ai-preview/beads-panel.svg",
+    "format": "SVG",
+    "sha256": "24f895b0cb3744ea41d45b1e34494513d493090680a793104b8b7400836fb05d",
+    "viewBox": "0 0 200.693 364.252",
+    "width_pt": 200.693,
+    "height_pt": 364.252
+  },
+  "purpose": "geometry and visual reference for independently branded Beadsy editor",
+  "scope": "reference extraction only; no release redistribution decision",
+  "next_gate": "sanitize branding and decorative output jacks, then integrate as the native panel background with attribution"
+}

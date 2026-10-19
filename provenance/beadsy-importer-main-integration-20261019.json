@@ -1,7 +1,7 @@
 {
   "schema": "beadsy.importer-main-integration.v1",
   "audited_at": "2026-10-19T05:27:00Z",
-  "pulp_main": "6f30b893ae77abe74e57dd3426ac6724e2e4b8f2",
+  "pulp_main": "e829add4f0d29d49ee78198572b195983d268738",
   "origin_pr": {
     "url": "https://github.com/Generous-Corp/pulp/pull/10533",
     "status": "merged",

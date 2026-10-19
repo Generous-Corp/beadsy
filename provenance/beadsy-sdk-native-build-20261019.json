@@ -1,0 +1,30 @@
+{
+  "schema": "beadsy.sdk-native-build.v1",
+  "pulp_head": "e829add4f0d29d49ee78198572b195983d268738",
+  "sdk_profile": "forge-dev",
+  "sdk_path": "/Users/danielraffel/.pulp/sdk-dev/forge-v1/darwin-arm64/e829add4f0d29d49ee78198572b195983d268738/afd4ba98429d",
+  "skia_tls": "SSL_CERT_FILE=/etc/ssl/cert.pem",
+  "skia_sha256": "0ebfe03a209ceefe47edfeae70c3cc6c499583b74f35a26140ea55bad7f1e5a9",
+  "beadsy_build": "build-panel-beadsy-current",
+  "artwork": "provenance/generated/beads-panel-beadsy.svg",
+  "results": {
+    "Beadsy-test": "pass: 2811 assertions in 27 test cases",
+    "Beadsy-editor-test": "pass: 123 assertions in 15 test cases",
+    "formats": [
+      "Beadsy_CLAP",
+      "Beadsy_VST3",
+      "Beadsy_AU",
+      "Beadsy_AUv3Framework",
+      "Beadsy_AUv3",
+      "Beadsy_AUv3Host",
+      "Beadsy_Standalone",
+      "Beadsy_LV2"
+    ],
+    "LV2_manifest": "present and internally consistent: manifest.ttl -> Beadsy.so + Beadsy.ttl",
+    "LV2_architecture": "Mach-O arm64 bundle",
+    "AUv2_auval": "PASS: auval -v aumu Bead Inde",
+    "CLAP_validator": "pass: 17 success statuses",
+    "VST3_pluginval": "PASS: strictness 5, GUI skipped, sample rates 44.1/48/96 kHz, block sizes 64-1024"
+  },
+  "remaining": "Host-format and release acceptance remain open"
+}

@@ -15,7 +15,7 @@ option(BEADSY_USE_REVIEWED_PANEL_ARTWORK
 # checkout may not contain the probe asset while its rights review is pending;
 # use a deterministic neutral panel in that case so DSP and headless builds do
 # not depend on an ignored developer artifact.
-set(BEADSY_PANEL_ASSET "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel.svg")
+set(BEADSY_PANEL_ASSET "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel-beadsy.svg")
 set(BEADSY_PANEL_PNG "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel.png")
 if(BEADSY_USE_REVIEWED_PANEL_ARTWORK AND EXISTS "${BEADSY_PANEL_ASSET}")
     file(READ "${BEADSY_PANEL_ASSET}" BEADSY_PANEL_SVG)
