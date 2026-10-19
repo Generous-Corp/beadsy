@@ -55,6 +55,13 @@ the current Beadsy integration branch; receipt updates are recorded in
   partial or unavailable statuses in the packaging reconciliation; this is not
   a release claim.
 
+- Importer lane: Pulp PRs [#10533](https://github.com/Generous-Corp/pulp/pull/10533)
+  and [#10552](https://github.com/Generous-Corp/pulp/pull/10552) are merged on
+  current main. The reusable importer is now static-only and fail-closed for
+  Illustrator/PDF conversion, with SVG plus control-map sidecar validation;
+  29/29 source-contract tests pass. Beadsy's exact audit is recorded in
+  `provenance/beadsy-importer-main-integration-20261019.json`.
+
 - MIDI overlap: explicit sample-offset gate edges are now preserved through
   the adapted trigger merger, so overlapping note-ons retrigger at their
   declared offsets. The current processor suite passes 2,808 assertions in 26
