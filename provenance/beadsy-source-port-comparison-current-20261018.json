@@ -1,11 +1,11 @@
 {
   "schema": "beadsy.source-port-comparison.v3",
   "status": "pass_internal_reference_only",
-  "verified_at": "2026-10-19T04:58:00.704988+00:00",
+  "verified_at": "2026-10-19T05:01:47.750120+00:00",
   "project": "Beadsy",
   "port": {
     "repository": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018",
-    "head": "5ba5a973ae2e70c929192d23d8d1c36b2788ce90",
+    "head": "55fb6f931d890501b0b782ef0526513fbadac415",
     "tracked_changes": false,
     "dsp_root": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/third_party/beads_dsp"
   },
@@ -43,8 +43,8 @@
     "max_rmse": 0.0,
     "pairs": [
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q0-c0-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q0-c0-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q0-c0-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q0-c0-s0.bin",
         "source_sha256": "7d1763be3046b9f2b4dbca84850b563285c2218082428d833f077459ba0d1460",
         "port_sha256": "7d1763be3046b9f2b4dbca84850b563285c2218082428d833f077459ba0d1460",
         "byte_identical": true,
@@ -53,8 +53,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q0-c0-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q0-c0-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q0-c0-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q0-c0-s1.bin",
         "source_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "port_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "byte_identical": true,
@@ -63,8 +63,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q0-c0-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q0-c0-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q0-c0-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q0-c0-s2.bin",
         "source_sha256": "cea23a143c1abc127bd098c9e380db6c1c7452b6e4fe78274bf39d6032c04b6b",
         "port_sha256": "cea23a143c1abc127bd098c9e380db6c1c7452b6e4fe78274bf39d6032c04b6b",
         "byte_identical": true,
@@ -73,8 +73,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q0-c1-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q0-c1-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q0-c1-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q0-c1-s0.bin",
         "source_sha256": "5ea8edfc0a40969b9dca892705be5c38b0416aedac022cf12e328907045034e8",
         "port_sha256": "5ea8edfc0a40969b9dca892705be5c38b0416aedac022cf12e328907045034e8",
         "byte_identical": true,
@@ -83,8 +83,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q0-c1-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q0-c1-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q0-c1-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q0-c1-s1.bin",
         "source_sha256": "8961dd547ccc5e72d1d2fd5e6c52a65cbcf6665e532e05e36c8291711442e224",
         "port_sha256": "8961dd547ccc5e72d1d2fd5e6c52a65cbcf6665e532e05e36c8291711442e224",
         "byte_identical": true,
@@ -93,8 +93,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q0-c1-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q0-c1-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q0-c1-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q0-c1-s2.bin",
         "source_sha256": "0d8d7d64c1cd7ee8683d53ca8c644f8da70f8208d3689e486543ab63ce8d766b",
         "port_sha256": "0d8d7d64c1cd7ee8683d53ca8c644f8da70f8208d3689e486543ab63ce8d766b",
         "byte_identical": true,
@@ -103,8 +103,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q0-c2-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q0-c2-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q0-c2-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q0-c2-s0.bin",
         "source_sha256": "834726457e8c077fe3f4d6b77cac2a6b2751e772040f4816e733312ea49fce4e",
         "port_sha256": "834726457e8c077fe3f4d6b77cac2a6b2751e772040f4816e733312ea49fce4e",
         "byte_identical": true,
@@ -113,8 +113,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q0-c2-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q0-c2-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q0-c2-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q0-c2-s1.bin",
         "source_sha256": "eb40a0948387dc2c7283ed535602c114f383051da9d492256b8e441d8880a071",
         "port_sha256": "eb40a0948387dc2c7283ed535602c114f383051da9d492256b8e441d8880a071",
         "byte_identical": true,
@@ -123,8 +123,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q0-c2-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q0-c2-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q0-c2-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q0-c2-s2.bin",
         "source_sha256": "00913c07b9d7122b2193868828a2197edc389eee2a7fca3ecfbf3bef6a66e0cf",
         "port_sha256": "00913c07b9d7122b2193868828a2197edc389eee2a7fca3ecfbf3bef6a66e0cf",
         "byte_identical": true,
@@ -133,8 +133,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q0-c3-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q0-c3-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q0-c3-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q0-c3-s0.bin",
         "source_sha256": "e66f9272c628341d6b8e4157843997d208c58f6e5e45aa99336352c2505840ba",
         "port_sha256": "e66f9272c628341d6b8e4157843997d208c58f6e5e45aa99336352c2505840ba",
         "byte_identical": true,
@@ -143,8 +143,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q0-c3-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q0-c3-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q0-c3-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q0-c3-s1.bin",
         "source_sha256": "e66f9272c628341d6b8e4157843997d208c58f6e5e45aa99336352c2505840ba",
         "port_sha256": "e66f9272c628341d6b8e4157843997d208c58f6e5e45aa99336352c2505840ba",
         "byte_identical": true,
@@ -153,8 +153,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q0-c3-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q0-c3-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q0-c3-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q0-c3-s2.bin",
         "source_sha256": "e66f9272c628341d6b8e4157843997d208c58f6e5e45aa99336352c2505840ba",
         "port_sha256": "e66f9272c628341d6b8e4157843997d208c58f6e5e45aa99336352c2505840ba",
         "byte_identical": true,
@@ -163,8 +163,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q1-c0-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q1-c0-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q1-c0-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q1-c0-s0.bin",
         "source_sha256": "3c5bcfeaca31a33062ebfb7c3081705b8cc1101a9ef4ed0f82b1d51a93848c0c",
         "port_sha256": "3c5bcfeaca31a33062ebfb7c3081705b8cc1101a9ef4ed0f82b1d51a93848c0c",
         "byte_identical": true,
@@ -173,8 +173,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q1-c0-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q1-c0-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q1-c0-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q1-c0-s1.bin",
         "source_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "port_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "byte_identical": true,
@@ -183,8 +183,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q1-c0-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q1-c0-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q1-c0-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q1-c0-s2.bin",
         "source_sha256": "0d3b4b81bdb6004b88613a8e290896a3f82bde99264d53d6e7e68fd09b9af8d5",
         "port_sha256": "0d3b4b81bdb6004b88613a8e290896a3f82bde99264d53d6e7e68fd09b9af8d5",
         "byte_identical": true,
@@ -193,8 +193,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q1-c1-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q1-c1-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q1-c1-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q1-c1-s0.bin",
         "source_sha256": "04dbd0ee4e5bc2d2ae518be9d0e1ae354e5eec8c9ed0a17915524da008acfb79",
         "port_sha256": "04dbd0ee4e5bc2d2ae518be9d0e1ae354e5eec8c9ed0a17915524da008acfb79",
         "byte_identical": true,
@@ -203,8 +203,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q1-c1-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q1-c1-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q1-c1-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q1-c1-s1.bin",
         "source_sha256": "27555951ad83c8a8ee63866d0eef00f0bbfc65bbc2dd7903b13e76474a748076",
         "port_sha256": "27555951ad83c8a8ee63866d0eef00f0bbfc65bbc2dd7903b13e76474a748076",
         "byte_identical": true,
@@ -213,8 +213,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q1-c1-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q1-c1-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q1-c1-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q1-c1-s2.bin",
         "source_sha256": "50d0356f113cf43920c3a715daada71cd0215fce219f17b40aa2de949dbb247d",
         "port_sha256": "50d0356f113cf43920c3a715daada71cd0215fce219f17b40aa2de949dbb247d",
         "byte_identical": true,
@@ -223,8 +223,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q1-c2-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q1-c2-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q1-c2-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q1-c2-s0.bin",
         "source_sha256": "9811ad56e9e319716efe4f1afeb5368f87a10838482ee61457b821008746ec96",
         "port_sha256": "9811ad56e9e319716efe4f1afeb5368f87a10838482ee61457b821008746ec96",
         "byte_identical": true,
@@ -233,8 +233,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q1-c2-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q1-c2-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q1-c2-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q1-c2-s1.bin",
         "source_sha256": "5148a418a0061e65036d99eb79f4be59530dabbc3b59fdbad0b81c64e564b657",
         "port_sha256": "5148a418a0061e65036d99eb79f4be59530dabbc3b59fdbad0b81c64e564b657",
         "byte_identical": true,
@@ -243,8 +243,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q1-c2-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q1-c2-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q1-c2-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q1-c2-s2.bin",
         "source_sha256": "ed5cb378e4c361e1dc6a45afb2af43459a295e6bccd54c8f5fc53f560c99d79a",
         "port_sha256": "ed5cb378e4c361e1dc6a45afb2af43459a295e6bccd54c8f5fc53f560c99d79a",
         "byte_identical": true,
@@ -253,8 +253,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q1-c3-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q1-c3-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q1-c3-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q1-c3-s0.bin",
         "source_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
         "port_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
         "byte_identical": true,
@@ -263,8 +263,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q1-c3-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q1-c3-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q1-c3-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q1-c3-s1.bin",
         "source_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
         "port_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
         "byte_identical": true,
@@ -273,8 +273,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q1-c3-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q1-c3-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q1-c3-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q1-c3-s2.bin",
         "source_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
         "port_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
         "byte_identical": true,
@@ -283,8 +283,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q2-c0-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q2-c0-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q2-c0-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q2-c0-s0.bin",
         "source_sha256": "292ed3f1e7a65fc904b8eacb799a944f789b888345ff54ceabc5d366c2ed7fda",
         "port_sha256": "292ed3f1e7a65fc904b8eacb799a944f789b888345ff54ceabc5d366c2ed7fda",
         "byte_identical": true,
@@ -293,8 +293,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q2-c0-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q2-c0-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q2-c0-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q2-c0-s1.bin",
         "source_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "port_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "byte_identical": true,
@@ -303,8 +303,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q2-c0-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q2-c0-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q2-c0-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q2-c0-s2.bin",
         "source_sha256": "de94f0b5c58b8c91ca5ca39ed7a32eaaa723d7466fe29a373a23d85cdbbf499e",
         "port_sha256": "de94f0b5c58b8c91ca5ca39ed7a32eaaa723d7466fe29a373a23d85cdbbf499e",
         "byte_identical": true,
@@ -313,8 +313,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q2-c1-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q2-c1-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q2-c1-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q2-c1-s0.bin",
         "source_sha256": "370df24836083d6a1d7a48686da57009dde0a6161e9627d5961f4f0ae03ab609",
         "port_sha256": "370df24836083d6a1d7a48686da57009dde0a6161e9627d5961f4f0ae03ab609",
         "byte_identical": true,
@@ -323,8 +323,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q2-c1-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q2-c1-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q2-c1-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q2-c1-s1.bin",
         "source_sha256": "420cbc136af794f1a0c9c21c0c77a272052f03568941e8557d9dca85f921a09b",
         "port_sha256": "420cbc136af794f1a0c9c21c0c77a272052f03568941e8557d9dca85f921a09b",
         "byte_identical": true,
@@ -333,8 +333,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q2-c1-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q2-c1-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q2-c1-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q2-c1-s2.bin",
         "source_sha256": "8cdf51ab10d93c1cb5cc6eac6596a8b78db125a014f36a5a5e5934d7d89b33d1",
         "port_sha256": "8cdf51ab10d93c1cb5cc6eac6596a8b78db125a014f36a5a5e5934d7d89b33d1",
         "byte_identical": true,
@@ -343,8 +343,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q2-c2-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q2-c2-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q2-c2-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q2-c2-s0.bin",
         "source_sha256": "e332b1847f186d541802c2195023b1079c5ded85c859a71841c735095e3ce2e7",
         "port_sha256": "e332b1847f186d541802c2195023b1079c5ded85c859a71841c735095e3ce2e7",
         "byte_identical": true,
@@ -353,8 +353,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q2-c2-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q2-c2-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q2-c2-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q2-c2-s1.bin",
         "source_sha256": "326002bfa6c6e1f729c9a0303c1d9ec1ff5a17c8d11a4716c3f19ecc9205b3e8",
         "port_sha256": "326002bfa6c6e1f729c9a0303c1d9ec1ff5a17c8d11a4716c3f19ecc9205b3e8",
         "byte_identical": true,
@@ -363,8 +363,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q2-c2-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q2-c2-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q2-c2-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q2-c2-s2.bin",
         "source_sha256": "ba77e450d6fbfc8f5a48098e376095f30682de95b418355036d32297318a262e",
         "port_sha256": "ba77e450d6fbfc8f5a48098e376095f30682de95b418355036d32297318a262e",
         "byte_identical": true,
@@ -373,8 +373,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q2-c3-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q2-c3-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q2-c3-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q2-c3-s0.bin",
         "source_sha256": "d04cf9c539d8bd1783bd5bde40f05bf52dd17fab8003e60b821f1ca3276976b5",
         "port_sha256": "d04cf9c539d8bd1783bd5bde40f05bf52dd17fab8003e60b821f1ca3276976b5",
         "byte_identical": true,
@@ -383,8 +383,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q2-c3-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q2-c3-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q2-c3-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q2-c3-s1.bin",
         "source_sha256": "d04cf9c539d8bd1783bd5bde40f05bf52dd17fab8003e60b821f1ca3276976b5",
         "port_sha256": "d04cf9c539d8bd1783bd5bde40f05bf52dd17fab8003e60b821f1ca3276976b5",
         "byte_identical": true,
@@ -393,8 +393,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q2-c3-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q2-c3-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q2-c3-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q2-c3-s2.bin",
         "source_sha256": "d04cf9c539d8bd1783bd5bde40f05bf52dd17fab8003e60b821f1ca3276976b5",
         "port_sha256": "d04cf9c539d8bd1783bd5bde40f05bf52dd17fab8003e60b821f1ca3276976b5",
         "byte_identical": true,
@@ -403,8 +403,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q3-c0-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q3-c0-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q3-c0-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q3-c0-s0.bin",
         "source_sha256": "bdaa9918aaf27ae4540c1be088a9cfbbefda9fd5b2445f1f078064d8a2a53661",
         "port_sha256": "bdaa9918aaf27ae4540c1be088a9cfbbefda9fd5b2445f1f078064d8a2a53661",
         "byte_identical": true,
@@ -413,8 +413,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q3-c0-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q3-c0-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q3-c0-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q3-c0-s1.bin",
         "source_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "port_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "byte_identical": true,
@@ -423,8 +423,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q3-c0-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q3-c0-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q3-c0-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q3-c0-s2.bin",
         "source_sha256": "a6bbc43a249ed07e86af01b5d1902207bc6b650fac2a7bc0206096a915c0542c",
         "port_sha256": "a6bbc43a249ed07e86af01b5d1902207bc6b650fac2a7bc0206096a915c0542c",
         "byte_identical": true,
@@ -433,8 +433,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q3-c1-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q3-c1-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q3-c1-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q3-c1-s0.bin",
         "source_sha256": "ad110f02b857e8329ed8cc6a7d026c72361ddc79fbfcd7a0e90161c6d9f9d008",
         "port_sha256": "ad110f02b857e8329ed8cc6a7d026c72361ddc79fbfcd7a0e90161c6d9f9d008",
         "byte_identical": true,
@@ -443,8 +443,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q3-c1-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q3-c1-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q3-c1-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q3-c1-s1.bin",
         "source_sha256": "27555951ad83c8a8ee63866d0eef00f0bbfc65bbc2dd7903b13e76474a748076",
         "port_sha256": "27555951ad83c8a8ee63866d0eef00f0bbfc65bbc2dd7903b13e76474a748076",
         "byte_identical": true,
@@ -453,8 +453,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q3-c1-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q3-c1-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q3-c1-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q3-c1-s2.bin",
         "source_sha256": "90ae005d635a6e426ba0646d500ea43a025398d0e54cbd3f9eb0bbd48ca312ec",
         "port_sha256": "90ae005d635a6e426ba0646d500ea43a025398d0e54cbd3f9eb0bbd48ca312ec",
         "byte_identical": true,
@@ -463,8 +463,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q3-c2-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q3-c2-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q3-c2-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q3-c2-s0.bin",
         "source_sha256": "7df02f6f13b8ae27dbca9a861cbef5d81d1cff0d888b396ce04c647819178c01",
         "port_sha256": "7df02f6f13b8ae27dbca9a861cbef5d81d1cff0d888b396ce04c647819178c01",
         "byte_identical": true,
@@ -473,8 +473,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q3-c2-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q3-c2-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q3-c2-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q3-c2-s1.bin",
         "source_sha256": "4590f70bbaa62dc46928557a64d55ba23a4d189b1a42ecefe6f026030874e732",
         "port_sha256": "4590f70bbaa62dc46928557a64d55ba23a4d189b1a42ecefe6f026030874e732",
         "byte_identical": true,
@@ -483,8 +483,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q3-c2-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q3-c2-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q3-c2-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q3-c2-s2.bin",
         "source_sha256": "561c278373f6f8667bd6f6954781537ea1bd23196860d8be6a29529a3a925702",
         "port_sha256": "561c278373f6f8667bd6f6954781537ea1bd23196860d8be6a29529a3a925702",
         "byte_identical": true,
@@ -493,8 +493,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q3-c3-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q3-c3-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q3-c3-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q3-c3-s0.bin",
         "source_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
         "port_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
         "byte_identical": true,
@@ -503,8 +503,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q3-c3-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q3-c3-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q3-c3-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q3-c3-s1.bin",
         "source_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
         "port_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
         "byte_identical": true,
@@ -513,8 +513,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b32-q3-c3-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b32-q3-c3-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b32-q3-c3-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b32-q3-c3-s2.bin",
         "source_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
         "port_sha256": "8c240513be10aaed41ce9fdb16c773c81f633d6478d29a55e4c40fa7734e28e4",
         "byte_identical": true,
@@ -523,8 +523,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q0-c0-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q0-c0-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q0-c0-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q0-c0-s0.bin",
         "source_sha256": "8bd2b3974535462be312a41c972c1aa73d15d5fbbdba9fd3eb8170ac96fbf5b4",
         "port_sha256": "8bd2b3974535462be312a41c972c1aa73d15d5fbbdba9fd3eb8170ac96fbf5b4",
         "byte_identical": true,
@@ -533,8 +533,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q0-c0-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q0-c0-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q0-c0-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q0-c0-s1.bin",
         "source_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "port_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "byte_identical": true,
@@ -543,8 +543,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q0-c0-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q0-c0-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q0-c0-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q0-c0-s2.bin",
         "source_sha256": "ab59c61fa6fe8f0052c8286d8f85153ad6739ff7c8225a286e74ec45772cfe14",
         "port_sha256": "ab59c61fa6fe8f0052c8286d8f85153ad6739ff7c8225a286e74ec45772cfe14",
         "byte_identical": true,
@@ -553,8 +553,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q0-c1-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q0-c1-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q0-c1-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q0-c1-s0.bin",
         "source_sha256": "c3eb35ddff7d57e75c0691b15aac6a2c294b876cd3c03a11a2156ee9bf93ff33",
         "port_sha256": "c3eb35ddff7d57e75c0691b15aac6a2c294b876cd3c03a11a2156ee9bf93ff33",
         "byte_identical": true,
@@ -563,8 +563,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q0-c1-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q0-c1-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q0-c1-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q0-c1-s1.bin",
         "source_sha256": "c0dcb56a6d7530f0dff3cafa3e71c1071559265f0c397e245c80ce4660700a98",
         "port_sha256": "c0dcb56a6d7530f0dff3cafa3e71c1071559265f0c397e245c80ce4660700a98",
         "byte_identical": true,
@@ -573,8 +573,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q0-c1-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q0-c1-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q0-c1-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q0-c1-s2.bin",
         "source_sha256": "b3522560efeada25b50d79ea3387ffecfc7ee135ee29678c2ed5e1329e298910",
         "port_sha256": "b3522560efeada25b50d79ea3387ffecfc7ee135ee29678c2ed5e1329e298910",
         "byte_identical": true,
@@ -583,8 +583,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q0-c2-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q0-c2-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q0-c2-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q0-c2-s0.bin",
         "source_sha256": "c9673abbe52ebf6ab834eb500077cbf9eff59b2cee759c2146b01b8f3f37397f",
         "port_sha256": "c9673abbe52ebf6ab834eb500077cbf9eff59b2cee759c2146b01b8f3f37397f",
         "byte_identical": true,
@@ -593,8 +593,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q0-c2-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q0-c2-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q0-c2-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q0-c2-s1.bin",
         "source_sha256": "bb355a6a74fe86ca4ce5172ac4e52c2bfedbcd1a02d628567816b07e343d1651",
         "port_sha256": "bb355a6a74fe86ca4ce5172ac4e52c2bfedbcd1a02d628567816b07e343d1651",
         "byte_identical": true,
@@ -603,8 +603,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q0-c2-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q0-c2-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q0-c2-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q0-c2-s2.bin",
         "source_sha256": "1e300d5a62c66f9c675ac61d9a20f3fd09b622f513431de44f8c08fbb89cc8b2",
         "port_sha256": "1e300d5a62c66f9c675ac61d9a20f3fd09b622f513431de44f8c08fbb89cc8b2",
         "byte_identical": true,
@@ -613,8 +613,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q0-c3-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q0-c3-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q0-c3-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q0-c3-s0.bin",
         "source_sha256": "d29a09e989888428f14d21ed4db0e98ea97d6b2a5cbcd4a7fd9c52ea2e2e062e",
         "port_sha256": "d29a09e989888428f14d21ed4db0e98ea97d6b2a5cbcd4a7fd9c52ea2e2e062e",
         "byte_identical": true,
@@ -623,8 +623,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q0-c3-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q0-c3-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q0-c3-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q0-c3-s1.bin",
         "source_sha256": "d29a09e989888428f14d21ed4db0e98ea97d6b2a5cbcd4a7fd9c52ea2e2e062e",
         "port_sha256": "d29a09e989888428f14d21ed4db0e98ea97d6b2a5cbcd4a7fd9c52ea2e2e062e",
         "byte_identical": true,
@@ -633,8 +633,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q0-c3-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q0-c3-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q0-c3-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q0-c3-s2.bin",
         "source_sha256": "d29a09e989888428f14d21ed4db0e98ea97d6b2a5cbcd4a7fd9c52ea2e2e062e",
         "port_sha256": "d29a09e989888428f14d21ed4db0e98ea97d6b2a5cbcd4a7fd9c52ea2e2e062e",
         "byte_identical": true,
@@ -643,8 +643,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q1-c0-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q1-c0-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q1-c0-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q1-c0-s0.bin",
         "source_sha256": "900f27961bd1fc0f6417bc060f8dc066c3bbfccdc3d6ebf393c07bde4fd415d3",
         "port_sha256": "900f27961bd1fc0f6417bc060f8dc066c3bbfccdc3d6ebf393c07bde4fd415d3",
         "byte_identical": true,
@@ -653,8 +653,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q1-c0-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q1-c0-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q1-c0-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q1-c0-s1.bin",
         "source_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "port_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "byte_identical": true,
@@ -663,8 +663,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q1-c0-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q1-c0-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q1-c0-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q1-c0-s2.bin",
         "source_sha256": "0f600d1a4b11399468d4d94db8a436df5267f0125960b01aea7895d91fa8c329",
         "port_sha256": "0f600d1a4b11399468d4d94db8a436df5267f0125960b01aea7895d91fa8c329",
         "byte_identical": true,
@@ -673,8 +673,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q1-c1-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q1-c1-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q1-c1-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q1-c1-s0.bin",
         "source_sha256": "893e882be34a0364208eafe0c07a1093f04bee2344af669eae9e5753dec50797",
         "port_sha256": "893e882be34a0364208eafe0c07a1093f04bee2344af669eae9e5753dec50797",
         "byte_identical": true,
@@ -683,8 +683,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q1-c1-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q1-c1-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q1-c1-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q1-c1-s1.bin",
         "source_sha256": "971345a20130dd7f981d597331d4ff547375753469c7e49ab8f165915be9c8fc",
         "port_sha256": "971345a20130dd7f981d597331d4ff547375753469c7e49ab8f165915be9c8fc",
         "byte_identical": true,
@@ -693,8 +693,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q1-c1-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q1-c1-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q1-c1-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q1-c1-s2.bin",
         "source_sha256": "18a9e7ef6b3b096334f0733a883462dc906f15b7410d0187286b1f9cda7b0f20",
         "port_sha256": "18a9e7ef6b3b096334f0733a883462dc906f15b7410d0187286b1f9cda7b0f20",
         "byte_identical": true,
@@ -703,8 +703,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q1-c2-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q1-c2-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q1-c2-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q1-c2-s0.bin",
         "source_sha256": "fb490d41ef38e019ada0226df4461ab076015844698726a2c083388bf3564b7f",
         "port_sha256": "fb490d41ef38e019ada0226df4461ab076015844698726a2c083388bf3564b7f",
         "byte_identical": true,
@@ -713,8 +713,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q1-c2-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q1-c2-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q1-c2-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q1-c2-s1.bin",
         "source_sha256": "0c0f94e11e66e3ba1e98ec8da4ed9feee43cd9cdb6266bda29428428a3e7919c",
         "port_sha256": "0c0f94e11e66e3ba1e98ec8da4ed9feee43cd9cdb6266bda29428428a3e7919c",
         "byte_identical": true,
@@ -723,8 +723,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q1-c2-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q1-c2-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q1-c2-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q1-c2-s2.bin",
         "source_sha256": "e931b35fd1d238ad6cc0c20a8dbd4d31eae86f93880a6afb491df82a356167c6",
         "port_sha256": "e931b35fd1d238ad6cc0c20a8dbd4d31eae86f93880a6afb491df82a356167c6",
         "byte_identical": true,
@@ -733,8 +733,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q1-c3-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q1-c3-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q1-c3-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q1-c3-s0.bin",
         "source_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
         "port_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
         "byte_identical": true,
@@ -743,8 +743,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q1-c3-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q1-c3-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q1-c3-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q1-c3-s1.bin",
         "source_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
         "port_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
         "byte_identical": true,
@@ -753,8 +753,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q1-c3-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q1-c3-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q1-c3-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q1-c3-s2.bin",
         "source_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
         "port_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
         "byte_identical": true,
@@ -763,8 +763,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q2-c0-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q2-c0-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q2-c0-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q2-c0-s0.bin",
         "source_sha256": "39eea5ae271b8a3b49b98beaf0ad6e7c2e2b8da77dbc43b0f205a794c4fc6a91",
         "port_sha256": "39eea5ae271b8a3b49b98beaf0ad6e7c2e2b8da77dbc43b0f205a794c4fc6a91",
         "byte_identical": true,
@@ -773,8 +773,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q2-c0-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q2-c0-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q2-c0-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q2-c0-s1.bin",
         "source_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "port_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "byte_identical": true,
@@ -783,8 +783,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q2-c0-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q2-c0-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q2-c0-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q2-c0-s2.bin",
         "source_sha256": "c3834c30ae703a2a316d0aceae64b1827b2168569cf3db85713994bbcbbc8f8f",
         "port_sha256": "c3834c30ae703a2a316d0aceae64b1827b2168569cf3db85713994bbcbbc8f8f",
         "byte_identical": true,
@@ -793,8 +793,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q2-c1-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q2-c1-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q2-c1-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q2-c1-s0.bin",
         "source_sha256": "8b5a3cb25d3aabdd27d720a881c44c6f0f483aa71f8608230c001b11eaae9f89",
         "port_sha256": "8b5a3cb25d3aabdd27d720a881c44c6f0f483aa71f8608230c001b11eaae9f89",
         "byte_identical": true,
@@ -803,8 +803,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q2-c1-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q2-c1-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q2-c1-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q2-c1-s1.bin",
         "source_sha256": "2ddef6da0521b7b4473cad9b694e3087f39845307c308d0510408a3dc97a567e",
         "port_sha256": "2ddef6da0521b7b4473cad9b694e3087f39845307c308d0510408a3dc97a567e",
         "byte_identical": true,
@@ -813,8 +813,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q2-c1-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q2-c1-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q2-c1-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q2-c1-s2.bin",
         "source_sha256": "d41de98161e661430806f9060a08e3635cdf5c4a86f361c67ef8f583c8e7dc90",
         "port_sha256": "d41de98161e661430806f9060a08e3635cdf5c4a86f361c67ef8f583c8e7dc90",
         "byte_identical": true,
@@ -823,8 +823,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q2-c2-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q2-c2-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q2-c2-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q2-c2-s0.bin",
         "source_sha256": "fe9ac068c00b9d5dd406d662e348a442db7d6f060309e75bd0adba99bfcc4ee3",
         "port_sha256": "fe9ac068c00b9d5dd406d662e348a442db7d6f060309e75bd0adba99bfcc4ee3",
         "byte_identical": true,
@@ -833,8 +833,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q2-c2-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q2-c2-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q2-c2-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q2-c2-s1.bin",
         "source_sha256": "14ae39050b0ecb3292ee4bd42dd0a99b9bd6892a6dcaab181b1433e8dbdb48c2",
         "port_sha256": "14ae39050b0ecb3292ee4bd42dd0a99b9bd6892a6dcaab181b1433e8dbdb48c2",
         "byte_identical": true,
@@ -843,8 +843,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q2-c2-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q2-c2-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q2-c2-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q2-c2-s2.bin",
         "source_sha256": "ebb6f116e94b8a1a45b7d51d29882c2977c0538d063dada38274b816aff050d7",
         "port_sha256": "ebb6f116e94b8a1a45b7d51d29882c2977c0538d063dada38274b816aff050d7",
         "byte_identical": true,
@@ -853,8 +853,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q2-c3-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q2-c3-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q2-c3-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q2-c3-s0.bin",
         "source_sha256": "13e7a452d78a802aebe80dc94d8b207999257a67e1362ca0c9b47e871aeec3c4",
         "port_sha256": "13e7a452d78a802aebe80dc94d8b207999257a67e1362ca0c9b47e871aeec3c4",
         "byte_identical": true,
@@ -863,8 +863,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q2-c3-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q2-c3-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q2-c3-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q2-c3-s1.bin",
         "source_sha256": "13e7a452d78a802aebe80dc94d8b207999257a67e1362ca0c9b47e871aeec3c4",
         "port_sha256": "13e7a452d78a802aebe80dc94d8b207999257a67e1362ca0c9b47e871aeec3c4",
         "byte_identical": true,
@@ -873,8 +873,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q2-c3-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q2-c3-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q2-c3-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q2-c3-s2.bin",
         "source_sha256": "13e7a452d78a802aebe80dc94d8b207999257a67e1362ca0c9b47e871aeec3c4",
         "port_sha256": "13e7a452d78a802aebe80dc94d8b207999257a67e1362ca0c9b47e871aeec3c4",
         "byte_identical": true,
@@ -883,8 +883,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q3-c0-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q3-c0-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q3-c0-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q3-c0-s0.bin",
         "source_sha256": "a9bba69c650668370b3324cd948475ece68e6e099e81912d0addb6d6380b0c96",
         "port_sha256": "a9bba69c650668370b3324cd948475ece68e6e099e81912d0addb6d6380b0c96",
         "byte_identical": true,
@@ -893,8 +893,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q3-c0-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q3-c0-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q3-c0-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q3-c0-s1.bin",
         "source_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "port_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "byte_identical": true,
@@ -903,8 +903,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q3-c0-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q3-c0-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q3-c0-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q3-c0-s2.bin",
         "source_sha256": "f0d40e2b5af9f6853b74aa5342b6c1d960fe32f880b2a534f689c544e4ac8315",
         "port_sha256": "f0d40e2b5af9f6853b74aa5342b6c1d960fe32f880b2a534f689c544e4ac8315",
         "byte_identical": true,
@@ -913,8 +913,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q3-c1-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q3-c1-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q3-c1-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q3-c1-s0.bin",
         "source_sha256": "619ea1bfbbb20433623f57fcc5e1bbcaad958b40c5d7232734fa2b4502c37d83",
         "port_sha256": "619ea1bfbbb20433623f57fcc5e1bbcaad958b40c5d7232734fa2b4502c37d83",
         "byte_identical": true,
@@ -923,8 +923,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q3-c1-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q3-c1-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q3-c1-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q3-c1-s1.bin",
         "source_sha256": "971345a20130dd7f981d597331d4ff547375753469c7e49ab8f165915be9c8fc",
         "port_sha256": "971345a20130dd7f981d597331d4ff547375753469c7e49ab8f165915be9c8fc",
         "byte_identical": true,
@@ -933,8 +933,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q3-c1-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q3-c1-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q3-c1-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q3-c1-s2.bin",
         "source_sha256": "af9569699249217f66a2cc68c101faa6669a232f778eef3174e82b41ba76e52c",
         "port_sha256": "af9569699249217f66a2cc68c101faa6669a232f778eef3174e82b41ba76e52c",
         "byte_identical": true,
@@ -943,8 +943,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q3-c2-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q3-c2-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q3-c2-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q3-c2-s0.bin",
         "source_sha256": "d1d00a8ac96159066598556d6e9fc5129a828a373ae1c3e4b2cfdd8fc694bcef",
         "port_sha256": "d1d00a8ac96159066598556d6e9fc5129a828a373ae1c3e4b2cfdd8fc694bcef",
         "byte_identical": true,
@@ -953,8 +953,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q3-c2-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q3-c2-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q3-c2-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q3-c2-s1.bin",
         "source_sha256": "ef4d39a9e03e3cf13610e460597dc264ecd97f1820c7cd50b6879a8bb2f41bd9",
         "port_sha256": "ef4d39a9e03e3cf13610e460597dc264ecd97f1820c7cd50b6879a8bb2f41bd9",
         "byte_identical": true,
@@ -963,8 +963,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q3-c2-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q3-c2-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q3-c2-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q3-c2-s2.bin",
         "source_sha256": "34fe5471788009e1cd29b19ac7cffe4eea3761447e0ee4298c6ceaeed824a40f",
         "port_sha256": "34fe5471788009e1cd29b19ac7cffe4eea3761447e0ee4298c6ceaeed824a40f",
         "byte_identical": true,
@@ -973,8 +973,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q3-c3-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q3-c3-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q3-c3-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q3-c3-s0.bin",
         "source_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
         "port_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
         "byte_identical": true,
@@ -983,8 +983,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q3-c3-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q3-c3-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q3-c3-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q3-c3-s1.bin",
         "source_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
         "port_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
         "byte_identical": true,
@@ -993,8 +993,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b64-q3-c3-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b64-q3-c3-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b64-q3-c3-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b64-q3-c3-s2.bin",
         "source_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
         "port_sha256": "2f9497f285b3ae9bbbea72056fe0da55a0da9ad1437823b4577a350cbff93476",
         "byte_identical": true,
@@ -1003,8 +1003,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q0-c0-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q0-c0-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q0-c0-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q0-c0-s0.bin",
         "source_sha256": "7a29b7be7082a9f69a8c98b88ffab2d1d0c289c39e7123da7b4aef55c21b63dc",
         "port_sha256": "7a29b7be7082a9f69a8c98b88ffab2d1d0c289c39e7123da7b4aef55c21b63dc",
         "byte_identical": true,
@@ -1013,8 +1013,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q0-c0-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q0-c0-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q0-c0-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q0-c0-s1.bin",
         "source_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "port_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "byte_identical": true,
@@ -1023,8 +1023,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q0-c0-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q0-c0-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q0-c0-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q0-c0-s2.bin",
         "source_sha256": "c654eb6670214f3ab3d3c47db7a654be7a80594cf9ca1e7630245a187848dee5",
         "port_sha256": "c654eb6670214f3ab3d3c47db7a654be7a80594cf9ca1e7630245a187848dee5",
         "byte_identical": true,
@@ -1033,8 +1033,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q0-c1-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q0-c1-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q0-c1-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q0-c1-s0.bin",
         "source_sha256": "7ed5dd23763617dcd3ac6c85c65f3202d8b2a2e376784cdd47747b8e534cd29a",
         "port_sha256": "7ed5dd23763617dcd3ac6c85c65f3202d8b2a2e376784cdd47747b8e534cd29a",
         "byte_identical": true,
@@ -1043,8 +1043,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q0-c1-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q0-c1-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q0-c1-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q0-c1-s1.bin",
         "source_sha256": "2b272f11b1e19f6cf348323b8936cf8d0c1eda0fd5594af93ad86364d1ea94a8",
         "port_sha256": "2b272f11b1e19f6cf348323b8936cf8d0c1eda0fd5594af93ad86364d1ea94a8",
         "byte_identical": true,
@@ -1053,8 +1053,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q0-c1-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q0-c1-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q0-c1-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q0-c1-s2.bin",
         "source_sha256": "840b0dc13c5495f5291d9ab790dc32146d83539240c349477970cf0f4cd45cee",
         "port_sha256": "840b0dc13c5495f5291d9ab790dc32146d83539240c349477970cf0f4cd45cee",
         "byte_identical": true,
@@ -1063,8 +1063,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q0-c2-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q0-c2-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q0-c2-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q0-c2-s0.bin",
         "source_sha256": "e7af1c997821a8a5d2a7ad2c36843c44c2bc92bec2075cfe9dd60b9d5ba1b9c8",
         "port_sha256": "e7af1c997821a8a5d2a7ad2c36843c44c2bc92bec2075cfe9dd60b9d5ba1b9c8",
         "byte_identical": true,
@@ -1073,8 +1073,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q0-c2-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q0-c2-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q0-c2-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q0-c2-s1.bin",
         "source_sha256": "b31a11e82a8f83b5df749901fe9ac349866d681bbed9f53a13414e2a50b48f72",
         "port_sha256": "b31a11e82a8f83b5df749901fe9ac349866d681bbed9f53a13414e2a50b48f72",
         "byte_identical": true,
@@ -1083,8 +1083,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q0-c2-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q0-c2-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q0-c2-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q0-c2-s2.bin",
         "source_sha256": "cf42e77fd2df68137a4e3e277ac44c9275f7477ef58b35ec003e88776c31ff75",
         "port_sha256": "cf42e77fd2df68137a4e3e277ac44c9275f7477ef58b35ec003e88776c31ff75",
         "byte_identical": true,
@@ -1093,8 +1093,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q0-c3-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q0-c3-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q0-c3-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q0-c3-s0.bin",
         "source_sha256": "67d8ee1d60575c4eee2bf1d4642323cae08da113fd3988627f2f25633ef8f3f2",
         "port_sha256": "67d8ee1d60575c4eee2bf1d4642323cae08da113fd3988627f2f25633ef8f3f2",
         "byte_identical": true,
@@ -1103,8 +1103,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q0-c3-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q0-c3-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q0-c3-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q0-c3-s1.bin",
         "source_sha256": "67d8ee1d60575c4eee2bf1d4642323cae08da113fd3988627f2f25633ef8f3f2",
         "port_sha256": "67d8ee1d60575c4eee2bf1d4642323cae08da113fd3988627f2f25633ef8f3f2",
         "byte_identical": true,
@@ -1113,8 +1113,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q0-c3-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q0-c3-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q0-c3-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q0-c3-s2.bin",
         "source_sha256": "67d8ee1d60575c4eee2bf1d4642323cae08da113fd3988627f2f25633ef8f3f2",
         "port_sha256": "67d8ee1d60575c4eee2bf1d4642323cae08da113fd3988627f2f25633ef8f3f2",
         "byte_identical": true,
@@ -1123,8 +1123,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q1-c0-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q1-c0-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q1-c0-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q1-c0-s0.bin",
         "source_sha256": "68bbff55e2da53214c30e04a727921a8405193d1796df53e5a315d66bbda5fec",
         "port_sha256": "68bbff55e2da53214c30e04a727921a8405193d1796df53e5a315d66bbda5fec",
         "byte_identical": true,
@@ -1133,8 +1133,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q1-c0-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q1-c0-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q1-c0-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q1-c0-s1.bin",
         "source_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "port_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "byte_identical": true,
@@ -1143,8 +1143,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q1-c0-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q1-c0-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q1-c0-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q1-c0-s2.bin",
         "source_sha256": "6384468872f49db11febe3e68979d2802492cc855054d3b6b36f0c2fef95b677",
         "port_sha256": "6384468872f49db11febe3e68979d2802492cc855054d3b6b36f0c2fef95b677",
         "byte_identical": true,
@@ -1153,8 +1153,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q1-c1-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q1-c1-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q1-c1-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q1-c1-s0.bin",
         "source_sha256": "771589833d8062c627f052c0eda9cee7ab170509c6f462f38690e41f2f1425c0",
         "port_sha256": "771589833d8062c627f052c0eda9cee7ab170509c6f462f38690e41f2f1425c0",
         "byte_identical": true,
@@ -1163,8 +1163,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q1-c1-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q1-c1-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q1-c1-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q1-c1-s1.bin",
         "source_sha256": "c6aadb181adc409162eec774828ab222e329690e40fe244d7f19b67fb2848934",
         "port_sha256": "c6aadb181adc409162eec774828ab222e329690e40fe244d7f19b67fb2848934",
         "byte_identical": true,
@@ -1173,8 +1173,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q1-c1-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q1-c1-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q1-c1-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q1-c1-s2.bin",
         "source_sha256": "812689ebb72b9f259281ea0e1eb4712c77eebdddc50cf876094ba94869ef8afc",
         "port_sha256": "812689ebb72b9f259281ea0e1eb4712c77eebdddc50cf876094ba94869ef8afc",
         "byte_identical": true,
@@ -1183,8 +1183,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q1-c2-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q1-c2-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q1-c2-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q1-c2-s0.bin",
         "source_sha256": "4181a86dc8b98d21240639359eb548ca366978998988e0052c92ca84f8cc975b",
         "port_sha256": "4181a86dc8b98d21240639359eb548ca366978998988e0052c92ca84f8cc975b",
         "byte_identical": true,
@@ -1193,8 +1193,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q1-c2-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q1-c2-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q1-c2-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q1-c2-s1.bin",
         "source_sha256": "fb4f479ea0f2e0409385555182e0004f7abed1492a339018d877fd48ff12ef3e",
         "port_sha256": "fb4f479ea0f2e0409385555182e0004f7abed1492a339018d877fd48ff12ef3e",
         "byte_identical": true,
@@ -1203,8 +1203,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q1-c2-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q1-c2-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q1-c2-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q1-c2-s2.bin",
         "source_sha256": "8f0cd34bfebeaab2fedc892dbb306faeac3d639a621e0b2b05e4f82cefc27167",
         "port_sha256": "8f0cd34bfebeaab2fedc892dbb306faeac3d639a621e0b2b05e4f82cefc27167",
         "byte_identical": true,
@@ -1213,8 +1213,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q1-c3-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q1-c3-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q1-c3-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q1-c3-s0.bin",
         "source_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
         "port_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
         "byte_identical": true,
@@ -1223,8 +1223,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q1-c3-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q1-c3-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q1-c3-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q1-c3-s1.bin",
         "source_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
         "port_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
         "byte_identical": true,
@@ -1233,8 +1233,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q1-c3-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q1-c3-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q1-c3-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q1-c3-s2.bin",
         "source_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
         "port_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
         "byte_identical": true,
@@ -1243,8 +1243,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q2-c0-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q2-c0-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q2-c0-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q2-c0-s0.bin",
         "source_sha256": "851214951ebc4f14934b860e1a53d0f0f52da0922ef5734ac0c40f4c7b6df8ba",
         "port_sha256": "851214951ebc4f14934b860e1a53d0f0f52da0922ef5734ac0c40f4c7b6df8ba",
         "byte_identical": true,
@@ -1253,8 +1253,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q2-c0-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q2-c0-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q2-c0-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q2-c0-s1.bin",
         "source_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "port_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "byte_identical": true,
@@ -1263,8 +1263,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q2-c0-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q2-c0-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q2-c0-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q2-c0-s2.bin",
         "source_sha256": "ab91bd41d4a11536b6d9229f4f8d3e15be645f0b342f80ab2bde0359e8cc2fe4",
         "port_sha256": "ab91bd41d4a11536b6d9229f4f8d3e15be645f0b342f80ab2bde0359e8cc2fe4",
         "byte_identical": true,
@@ -1273,8 +1273,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q2-c1-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q2-c1-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q2-c1-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q2-c1-s0.bin",
         "source_sha256": "3621665583cb1e057bdd4da0e1bf2511b62e7cfe4ae83ee65650ea97a00d7ce8",
         "port_sha256": "3621665583cb1e057bdd4da0e1bf2511b62e7cfe4ae83ee65650ea97a00d7ce8",
         "byte_identical": true,
@@ -1283,8 +1283,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q2-c1-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q2-c1-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q2-c1-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q2-c1-s1.bin",
         "source_sha256": "d4fc0a20dfe0dd5da64527718ce172429715cc0ce9322a0804dc851e98dbf34e",
         "port_sha256": "d4fc0a20dfe0dd5da64527718ce172429715cc0ce9322a0804dc851e98dbf34e",
         "byte_identical": true,
@@ -1293,8 +1293,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q2-c1-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q2-c1-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q2-c1-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q2-c1-s2.bin",
         "source_sha256": "1bb385d5126d533d0d1b9eea7144f568792df66a70abcc5c96d2b3788200f163",
         "port_sha256": "1bb385d5126d533d0d1b9eea7144f568792df66a70abcc5c96d2b3788200f163",
         "byte_identical": true,
@@ -1303,8 +1303,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q2-c2-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q2-c2-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q2-c2-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q2-c2-s0.bin",
         "source_sha256": "3749b564ed8b499042e29448c7c112600a2745cfac76d133bd2e600577e72d24",
         "port_sha256": "3749b564ed8b499042e29448c7c112600a2745cfac76d133bd2e600577e72d24",
         "byte_identical": true,
@@ -1313,8 +1313,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q2-c2-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q2-c2-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q2-c2-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q2-c2-s1.bin",
         "source_sha256": "b10d5382d38e54b566dfae930136503bd09a9c23b3731a971b164ecccdd213f1",
         "port_sha256": "b10d5382d38e54b566dfae930136503bd09a9c23b3731a971b164ecccdd213f1",
         "byte_identical": true,
@@ -1323,8 +1323,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q2-c2-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q2-c2-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q2-c2-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q2-c2-s2.bin",
         "source_sha256": "a6b868ae27ca513eb403dd6a0be0ecc32e77a46f06840605ce545bd8ada7823b",
         "port_sha256": "a6b868ae27ca513eb403dd6a0be0ecc32e77a46f06840605ce545bd8ada7823b",
         "byte_identical": true,
@@ -1333,8 +1333,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q2-c3-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q2-c3-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q2-c3-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q2-c3-s0.bin",
         "source_sha256": "7843aa00d405b8f98624705c201c2f92f4ded3f873b2ae497f91525fefbe7a0e",
         "port_sha256": "7843aa00d405b8f98624705c201c2f92f4ded3f873b2ae497f91525fefbe7a0e",
         "byte_identical": true,
@@ -1343,8 +1343,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q2-c3-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q2-c3-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q2-c3-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q2-c3-s1.bin",
         "source_sha256": "7843aa00d405b8f98624705c201c2f92f4ded3f873b2ae497f91525fefbe7a0e",
         "port_sha256": "7843aa00d405b8f98624705c201c2f92f4ded3f873b2ae497f91525fefbe7a0e",
         "byte_identical": true,
@@ -1353,8 +1353,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q2-c3-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q2-c3-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q2-c3-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q2-c3-s2.bin",
         "source_sha256": "7843aa00d405b8f98624705c201c2f92f4ded3f873b2ae497f91525fefbe7a0e",
         "port_sha256": "7843aa00d405b8f98624705c201c2f92f4ded3f873b2ae497f91525fefbe7a0e",
         "byte_identical": true,
@@ -1363,8 +1363,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q3-c0-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q3-c0-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q3-c0-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q3-c0-s0.bin",
         "source_sha256": "471f3fe18b6952a22ed416c779de35b3080e27cc5290d9e79ab7615cabe7e2a6",
         "port_sha256": "471f3fe18b6952a22ed416c779de35b3080e27cc5290d9e79ab7615cabe7e2a6",
         "byte_identical": true,
@@ -1373,8 +1373,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q3-c0-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q3-c0-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q3-c0-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q3-c0-s1.bin",
         "source_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "port_sha256": "c35020473aed1b4642cd726cad727b63fff2824ad68cedd7ffb73c7cbd890479",
         "byte_identical": true,
@@ -1383,8 +1383,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q3-c0-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q3-c0-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q3-c0-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q3-c0-s2.bin",
         "source_sha256": "2af06325240bef5a38c2881782d00aa0612b19d6561a7dffc0df8bad0bc2a03e",
         "port_sha256": "2af06325240bef5a38c2881782d00aa0612b19d6561a7dffc0df8bad0bc2a03e",
         "byte_identical": true,
@@ -1393,8 +1393,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q3-c1-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q3-c1-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q3-c1-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q3-c1-s0.bin",
         "source_sha256": "d91de633f2da2f1f84f0c0122f38ae932074d488fe0483a8c468a1af03aaadba",
         "port_sha256": "d91de633f2da2f1f84f0c0122f38ae932074d488fe0483a8c468a1af03aaadba",
         "byte_identical": true,
@@ -1403,8 +1403,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q3-c1-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q3-c1-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q3-c1-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q3-c1-s1.bin",
         "source_sha256": "c6aadb181adc409162eec774828ab222e329690e40fe244d7f19b67fb2848934",
         "port_sha256": "c6aadb181adc409162eec774828ab222e329690e40fe244d7f19b67fb2848934",
         "byte_identical": true,
@@ -1413,8 +1413,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q3-c1-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q3-c1-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q3-c1-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q3-c1-s2.bin",
         "source_sha256": "b53477f242b6a298cee20b15a225e685427fca8cb8f76c68446fb89a3199e30b",
         "port_sha256": "b53477f242b6a298cee20b15a225e685427fca8cb8f76c68446fb89a3199e30b",
         "byte_identical": true,
@@ -1423,8 +1423,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q3-c2-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q3-c2-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q3-c2-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q3-c2-s0.bin",
         "source_sha256": "313c6eed2e48e335da1394015357d26b8291cd396d44a0b34c65b5b079e2373b",
         "port_sha256": "313c6eed2e48e335da1394015357d26b8291cd396d44a0b34c65b5b079e2373b",
         "byte_identical": true,
@@ -1433,8 +1433,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q3-c2-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q3-c2-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q3-c2-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q3-c2-s1.bin",
         "source_sha256": "60775f635017693caf05b23b85f09f71f0c2c3767104c59199a9852ca70db6af",
         "port_sha256": "60775f635017693caf05b23b85f09f71f0c2c3767104c59199a9852ca70db6af",
         "byte_identical": true,
@@ -1443,8 +1443,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q3-c2-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q3-c2-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q3-c2-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q3-c2-s2.bin",
         "source_sha256": "9851539965188fa63445607874cacbb27eb0e60e4fcd37dce1c6c742570d3022",
         "port_sha256": "9851539965188fa63445607874cacbb27eb0e60e4fcd37dce1c6c742570d3022",
         "byte_identical": true,
@@ -1453,8 +1453,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q3-c3-s0.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q3-c3-s0.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q3-c3-s0.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q3-c3-s0.bin",
         "source_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
         "port_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
         "byte_identical": true,
@@ -1463,8 +1463,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q3-c3-s1.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q3-c3-s1.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q3-c3-s1.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q3-c3-s1.bin",
         "source_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
         "port_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
         "byte_identical": true,
@@ -1473,8 +1473,8 @@
         "rmse": 0.0
       },
       {
-        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/source-matrix-b128-q3-c3-s2.bin",
-        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018/port-matrix-b128-q3-c3-s2.bin",
+        "source": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/source-matrix-b128-q3-c3-s2.bin",
+        "port": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018/port-matrix-b128-q3-c3-s2.bin",
         "source_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
         "port_sha256": "059af13dba563f0d04342f21313455ff54e60749e4e6d2b37b5b5a7f1cce13c7",
         "byte_identical": true,
@@ -1485,7 +1485,7 @@
     ]
   },
   "fixtures": {
-    "directory": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-next-20261018",
+    "directory": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-beadsy-parity-final-20261018",
     "distribution": "private generated evidence; fixtures are not committed"
   },
   "limitations": [
