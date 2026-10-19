@@ -1,10 +1,10 @@
 {
   "schema": "beadsy.format-status.v1",
-  "generated_at": "2026-10-19T16:40:11.396990Z",
+  "generated_at": "2026-10-19T16:48:28.536657Z",
   "project": "Beadsy",
   "source": {
     "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018",
-    "git_head": "bb1204841ae65e0349825548fb3811702eb361d2"
+    "git_head": "17f001ef3f2b011da0e502968aa369b3a6d971eb"
   },
   "build": {
     "path": "/Users/danielraffel/Code/agent-worktrees/grainfield-current-integration-20261018/build-route-exact-20261019",
