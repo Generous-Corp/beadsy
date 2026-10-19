@@ -359,7 +359,10 @@ public:
     }
 
     void set_mode(int mode) {
-        mode_ = std::clamp(mode, 0, 2);
+        // Keep restored/host-written values inside the descriptor's declared
+        // topology. AU instrument builds intentionally expose no input bus,
+        // while the AU effect variant exposes Main In only.
+        mode_ = std::clamp(mode, 0, kAvailableSourceModeMax);
         set_access_label(std::string("Source: ") +
                          (mode_ == 0 ? "Synth (MIDI)" :
                           mode_ == 1 ? "Main In (host routed)" :
@@ -534,7 +537,7 @@ private:
 public:
     /// Keep the picker visible but inert while MIDI synth mode is selected.
     void set_source_mode(int mode) {
-        source_mode_ = std::clamp(mode, 0, 2);
+        source_mode_ = std::clamp(mode, 0, kAvailableSourceModeMax);
         set_bus_index(source_mode_ == 2 ? 1u : 0u);
         update_enabled_state();
     }
@@ -764,6 +767,10 @@ public:
                     } else if (*command == 2) {
                         processor_.clear_lfo(id);
                     }
+                    // LFO state is product-local rather than StateStore-backed;
+                    // invalidate the native tree so the knob's modulation arc
+                    // reflects attach/detach and rate/depth edits immediately.
+                    request_repaint();
                 }
                 clear_modulation_context();
             });
