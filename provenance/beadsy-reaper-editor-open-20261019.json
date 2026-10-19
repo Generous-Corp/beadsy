@@ -18,5 +18,11 @@
     "result": "inconclusive",
     "observed": "REAPER still did not find/insert Beadsy after staging the exact bundle in the standard user VST3 directory",
     "cleanup": "exact staged bundle removed; pre-existing bundle restored"
+  },
+  "cache_investigation": {
+    "vst3_cache": "/Users/danielraffel/Library/Application Support/REAPER/reaper-vstplugins_arm64.ini",
+    "beadsy_entry_found": false,
+    "installed_bundle": "pre-existing bundle was different from exact artifact and failed strict resource verification",
+    "exact_bundle": "pluginval-valid development artifact; host scan publication remains unresolved"
   }
 }
