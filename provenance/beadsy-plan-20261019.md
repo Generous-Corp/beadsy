@@ -116,3 +116,12 @@ straight-on comparison capture remains a private, rights-gated artifact and
 does not close the release provenance gate. The next integration step is to
 rebuild Beadsy against the landed route SDK, then capture a real Logic/REAPER
 route receipt before claiming end-to-end source selection.
+
+At the current route-SDK build, the complete available Beadsy suite is green:
+47/47 CTest cases pass, including the FX audio-input companion, route picker,
+state identity migration, native editor, procedural knob, contextual LFO, and
+automation cases. The two CTest entries marked `NOT_BUILT` are the standalone
+state bridge and the duplicate FX discovery entry from an SDK configuration
+without `Pulp::standalone`; the FX test itself was built and passed separately
+(131 assertions). Those entries remain explicit format-capability gaps rather
+than being counted as passing standalone evidence.
