@@ -5,7 +5,7 @@
   "exact_heads": {
     "beadsy": "90f6dae",
     "plan_receipt": "2d4f61c",
-    "route_capability": "126264ee334f9fd664a8e0120dba559995cf8eaa"
+    "route_capability": "60777ebf29ed19f77690ce89a40907ac8db872f6"
   },
   "checks": [
     {
@@ -46,5 +46,5 @@
   ],
   "verdict": "partial_with_explicit_open_gates",
   "goal_status": "active",
-  "route_header_sha256": "f3ce279872e4f3be6f41f8b6ddeac5cd291df627e7930e7a2430b04bb0e7b35c"
+  "route_header_sha256": "bb3de5ba6e2a0cf86dd91158b69bc8654b6d45ea47fe29c45f8594792a74b766"
 }

@@ -3,7 +3,7 @@
   "schema": "beadsy.validation.current.v1",
   "reviewed_at": "2026-10-19",
   "beadsy_head": "90f6dae",
-  "route_capability_head": "126264ee334f9fd664a8e0120dba559995cf8eaa",
+  "route_capability_head": "60777ebf29ed19f77690ce89a40907ac8db872f6",
   "checks": [
     {
       "command": "pulp build --target Beadsy-editor-test",
@@ -55,5 +55,5 @@
     "real Logic or REAPER route receipt for project tracks, buses, instruments, and physical inputs",
     "rights-cleared visual comparison and package/signing gates"
   ],
-  "route_header_sha256": "f3ce279872e4f3be6f41f8b6ddeac5cd291df627e7930e7a2430b04bb0e7b35c"
+  "route_header_sha256": "bb3de5ba6e2a0cf86dd91158b69bc8654b6d45ea47fe29c45f8594792a74b766"
 }
