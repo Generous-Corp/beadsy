@@ -64,6 +64,11 @@ Updated 2026-10-18 against the integrated source head
    or blocked, retaining explicit negative evidence for AU/LV2/Standalone gaps,
    VST3 moduleinfo/Steinberg validator, and AAX. AUv2 `aumu` live input remains
    unavailable unless a separate `aumf` identity is added.
+   Current exact-head format checks: Beadsy CLAP builds and passes clap-validator
+   (17 passed, 3 skipped, 0 failed); AU `aumu` builds and passes `auval`, but
+   explicitly reports zero input buses, so its Sidechain/Main Input selector is
+   not yet reachable through AU host routing. The VST3 artifact builds; no local
+   Steinberg validator is installed, so VST3 bus activation remains unverified.
 5. Resolve panel artwork permission and trademark clearance; complete legal/source redistribution review and external converter diagnostics (currently inconclusive) after the classified portability adaptations are accepted. Keep the Pulp importer fail-closed and validation-only boundary from commit `f9752e4`.
 
 ## Release gates
