@@ -1,6 +1,6 @@
 # Beadsy implementation status
 
-Updated 2026-10-18 against the integrated source head
+Updated 2026-10-19 against the integrated source head
 the current Beadsy integration branch; receipt updates are recorded in
 `provenance/current-integration-validation-20261018.json`.
 
@@ -66,6 +66,14 @@ the current Beadsy integration branch; receipt updates are recorded in
   the adapted trigger merger, so overlapping note-ons retrigger at their
   declared offsets. The current processor suite passes 2,808 assertions in 26
   cases; broader channel-pressure and host-format MIDI evidence remains open.
+
+- Route-enabled exact-head validation: the rebuilt `build-route-exact-20261019`
+  tree now runs all 45 registered Beadsy checks, including the FX companion,
+  standalone state bridge, dynamic route-picker refresh, stable route identity
+  persistence, host-sidechain processing, and UI interaction coverage. The
+  result is 45/45 passing. This closes the local build/test omission that had
+  left the two auxiliary targets represented as `NOT_BUILT`; it does not turn
+  host-owned Logic/REAPER project routing into a plug-in-owned capability.
 
 ## Work in flight
 

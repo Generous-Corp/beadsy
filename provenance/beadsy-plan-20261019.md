@@ -148,3 +148,14 @@ with 64/128/256/512/1024 blocks, and bus lifecycle checks; the exact log and
 artifact hash are recorded in
 `provenance/beadsy-pluginval-vst3-20261019.json` and
 `provenance/beadsy-pluginval-vst3-20261019.log`.
+
+The exact route-enabled build was subsequently completed for the two auxiliary
+targets that had previously been registered as `NOT_BUILT` in CTest. The
+`build-route-exact-20261019` tree now runs all 45 registered entries with
+45/45 passing, including the BeadsyFX audio-input companion and standalone
+state bridge. This is local component-level evidence for the route picker,
+stable-ID refresh/restore, sidechain processing, DSP/MIDI, UI automation/LFO,
+FX bus, and standalone state contracts. It does not replace the remaining
+real Logic/REAPER project receipt: host-selected tracks, buses, instruments,
+and physical inputs must still be shown delivering audio through a declared
+plug-in bus before end-to-end routing is marked pass.
