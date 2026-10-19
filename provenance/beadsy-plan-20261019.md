@@ -16,6 +16,11 @@ acceptance gate. The route branch is currently at
 `784370daa7be59804483085a22a18343b9c20871`; its focused route tests pass, while
 the source-selftest/build-gate lane is unavailable on the current
 `TARTCI_ROLE=dev-overflow` machine and must run on a gate-profile host or CI.
+This phase is currently **partial**: the catalog and picker are a stable
+selection model, not yet a graph/buffer provider. A host integration still has
+to bind a selected stable ID to an input bus, persist it with plug-in state,
+and define unavailable/hot-plug behavior before this can be called an audio
+routing feature.
 
 ## Phase 2 — Beadsy behavior and UI
 
@@ -30,6 +35,8 @@ the source-selftest/build-gate lane is unavailable on the current
 - Add a visible source selector whose choices come from the host route catalog;
   selecting a project track, bus, instrument, file, or physical input must
   change the host connection rather than synthesize a private track browser.
+- Keep the picker visibly disabled when no host catalog is injected; do not
+  imply that an AU/VST3/CLAP/LV2 plug-in can enumerate the DAW project itself.
 
 ## Phase 3 — evidence
 
@@ -40,6 +47,8 @@ the source-selftest/build-gate lane is unavailable on the current
 - Capture independent AU, VST3, CLAP, and LV2 host receipts. A real Logic or
   REAPER project must prove that the host-populated source menu selects a track,
   bus, instrument, and physical input where the host supports each one.
+- Add a route identity/state receipt proving selected stable IDs survive a state
+  round-trip, catalog refresh, unavailable source, and editor reopen.
 - Keep allocation, realtime, MIDI expressive, and state-restore probes as
   explicit receipts rather than inferring them from a successful scan.
 
