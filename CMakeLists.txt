@@ -12,9 +12,25 @@ find_package(Pulp CONFIG REQUIRED)
 # use a deterministic neutral panel in that case so DSP and headless builds do
 # not depend on an ignored developer artifact.
 set(BEADSY_PANEL_ASSET "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel.svg")
+set(BEADSY_PANEL_PNG "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel.png")
 if(EXISTS "${BEADSY_PANEL_ASSET}")
     file(READ "${BEADSY_PANEL_ASSET}" BEADSY_PANEL_SVG)
-    set(BEADSY_PANEL_SOURCE_STATUS "rights-gated authoring probe")
+    set(BEADSY_PANEL_SOURCE_STATUS "authorized Beads panel artwork")
+elseif(EXISTS "${BEADSY_PANEL_PNG}")
+    # The authorized Illustrator panel is rasterized at build time because the
+    # checked-in source is .ai and Skia's SVG loader cannot consume Illustrator
+    # directly. Keep the original aspect ratio and let native controls sit on
+    # top of the straight-on panel image.
+    execute_process(COMMAND base64 -i "${BEADSY_PANEL_PNG}"
+                    OUTPUT_VARIABLE BEADSY_PANEL_PNG_B64
+                    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    string(REPLACE "\n" "" BEADSY_PANEL_PNG_B64 "${BEADSY_PANEL_PNG_B64}")
+    set(BEADSY_PANEL_SVG [=[
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.693 364.252">
+  <image href="data:image/png;base64,@BEADSY_PANEL_PNG_B64@" x="0" y="0" width="200.693" height="364.252" preserveAspectRatio="none"/>
+</svg>]=])
+    string(CONFIGURE "${BEADSY_PANEL_SVG}" BEADSY_PANEL_SVG @ONLY)
+    set(BEADSY_PANEL_SOURCE_STATUS "authorized Beads panel artwork")
 else()
     # Keep the product useful when the rights-gated authoring probe is absent.
     # This is an original, deliberately sparse panel scaffold: its labels and
@@ -62,7 +78,7 @@ else()
   <text x="100.3465" y="344" text-anchor="middle" font-family="sans-serif" font-size="3" letter-spacing="0.85" fill="#334b55">48 KHZ  •  MONO VOICE  •  MIDI</text>
   <text x="100.3465" y="353" text-anchor="middle" font-family="sans-serif" font-size="2.5" letter-spacing="0.5" fill="#657078">INDEPENDENT PRODUCT SCAFFOLD</text>
 </svg>]=])
-    set(BEADSY_PANEL_SOURCE_STATUS "independent scaffold; rights-gated artwork probe unavailable")
+    set(BEADSY_PANEL_SOURCE_STATUS "independent scaffold; authorized artwork unavailable")
     message(STATUS "Beadsy panel probe unavailable; using independent panel scaffold")
 endif()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/beadsy_panel_svg.hpp.in
@@ -150,6 +166,7 @@ pulp_add_plugin(Beadsy
     MANUFACTURER    "Independent Audio"
     VERSION         "1.0.0"
     CATEGORY        Instrument
+    ACCEPTS_MIDI
     PLUGIN_CODE     "Bead"
     MANUFACTURER_CODE "Inde"
     AAX_PRODUCT_CODE "GraP"

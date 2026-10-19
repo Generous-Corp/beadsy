@@ -22,9 +22,12 @@ TEST_CASE("Beadsy descriptor is an instrument") {
     REQUIRE(desc.manufacturer == "Independent Audio");
     REQUIRE(desc.category == pulp::format::PluginCategory::Instrument);
     REQUIRE(desc.accepts_midi);
-    REQUIRE(desc.input_buses.size() == 1);
+    REQUIRE(desc.input_buses.size() == 2);
     REQUIRE(desc.input_buses[0].default_channels == 2);
     REQUIRE(desc.input_buses[0].optional);
+    REQUIRE(desc.input_buses[1].name == "Sidechain");
+    REQUIRE(desc.input_buses[1].default_channels == 2);
+    REQUIRE(desc.input_buses[1].optional);
     REQUIRE(desc.output_buses.size() == 1);
 }
 
@@ -552,6 +555,57 @@ TEST_CASE("Beadsy live-input mode processes stereo input") {
                    std::abs(output.channel(1)[i]) > 0.0001f;
     }
     REQUIRE(audible);
+}
+
+TEST_CASE("Beadsy source mode selects the host sidechain bus") {
+    const auto render = [](bool impulse_on_sidechain) {
+        auto proc = beadsy::create_beadsy();
+        pulp::state::StateStore store;
+        proc->set_state_store(&store);
+        proc->define_parameters(store);
+        store.set_value(beadsy::kMode, 2.0f);
+        proc->prepare({.sample_rate = 48000.0, .max_buffer_size = 128,
+                       .input_channels = 2, .output_channels = 2});
+        pulp::audio::Buffer<float> main_input(2, 128);
+        pulp::audio::Buffer<float> sidechain(2, 128);
+        if (impulse_on_sidechain) {
+            sidechain.channel(0)[0] = 1.0f;
+            sidechain.channel(1)[0] = -1.0f;
+        } else {
+            main_input.channel(0)[0] = 1.0f;
+            main_input.channel(1)[0] = -1.0f;
+        }
+        pulp::audio::Buffer<float> output(2, 128);
+        const auto main_view = static_cast<const pulp::audio::Buffer<float>&>(main_input).view();
+        const auto side_view = static_cast<const pulp::audio::Buffer<float>&>(sidechain).view();
+        std::array<pulp::format::ProcessBusBufferView<const float>, 2> inputs{{
+            {.info = {"Main In", 0, pulp::format::BusDirection::Input,
+                      pulp::format::BusRole::Main, 2, true, true}, .buffer = main_view},
+            {.info = {"Sidechain", 1, pulp::format::BusDirection::Input,
+                      pulp::format::BusRole::Sidechain, 2, true, true}, .buffer = side_view},
+        }};
+        auto output_view = output.view();
+        std::array<pulp::format::ProcessBusBufferView<float>, 1> outputs{{
+            {.info = {"Main Out", 0, pulp::format::BusDirection::Output,
+                      pulp::format::BusRole::Main, 2, false, true}, .buffer = output_view},
+        }};
+        pulp::format::ProcessBuffers buffers{
+            .inputs = pulp::format::ProcessBusBufferSet<const float>(inputs),
+            .outputs = pulp::format::ProcessBusBufferSet<float>(outputs),
+        };
+        pulp::midi::MidiBuffer midi_in;
+        pulp::midi::MidiBuffer midi_out;
+        pulp::format::ProcessContext context{.sample_rate = 48000.0, .num_samples = 128};
+        proc->process(buffers, midi_in, midi_out, context);
+        float energy = 0.0f;
+        for (auto sample : output.channel(0)) {
+            REQUIRE(std::isfinite(sample));
+            energy += std::abs(sample);
+        }
+        return energy;
+    };
+    REQUIRE(render(true) > 0.0f);
+    REQUIRE(render(false) == 0.0f);
 }
 
 TEST_CASE("Beadsy state round trips") {

@@ -15,9 +15,9 @@
 TEST_CASE("Beadsy clean-room panel scaffold names the product and bound controls") {
     const std::string_view status(kBeadsyPanelSourceStatus);
     const std::string_view panel(kBeadsyPanelSvg);
-    REQUIRE((status == "independent scaffold; rights-gated artwork probe unavailable" ||
-             status == "rights-gated authoring probe"));
-    if (status == "rights-gated authoring probe") {
+    REQUIRE((status == "independent scaffold; authorized artwork unavailable" ||
+             status == "authorized Beads panel artwork"));
+    if (status == "authorized Beads panel artwork") {
         // A rights-cleared authoring probe is intentionally passed through
         // unchanged; the scaffold assertions apply only to clean checkouts.
         return;
@@ -46,7 +46,7 @@ TEST_CASE("Beadsy knob skin preserves mapped DXF diameter") {
     REQUIRE(std::abs(radius - std::min(mapped_diameter, layout_height * 0.78f) * 0.43f) < 0.01f);
 }
 
-TEST_CASE("Beadsy source control exposes synth and live input modes") {
+TEST_CASE("Beadsy source control exposes synth and host-routed input modes") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
     processor.set_state_store(&store);
@@ -59,6 +59,9 @@ TEST_CASE("Beadsy source control exposes synth and live input modes") {
     native->source_mode_control()->on_mouse_down({});
     REQUIRE(native->source_mode_control()->mode() == 1);
     REQUIRE(store.get_value(beadsy::kMode) == 1.0f);
+    native->source_mode_control()->on_mouse_down({});
+    REQUIRE(native->source_mode_control()->mode() == 2);
+    REQUIRE(store.get_value(beadsy::kMode) == 2.0f);
     native->source_mode_control()->on_mouse_down({});
     REQUIRE(native->source_mode_control()->mode() == 0);
     REQUIRE(store.get_value(beadsy::kMode) == 0.0f);
@@ -184,6 +187,8 @@ TEST_CASE("Beadsy binds source-backed auxiliary controls and labels ports") {
     auto editor = processor.create_view();
     auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
     REQUIRE(native != nullptr);
+    // The visible source selector replaces the legacy secondary bus toggle;
+    // the compatibility parameter remains state/automation-only.
     REQUIRE(native->child_count() == 26);
 
     // Five primary controls plus seven PCB-net-backed auxiliary pots are

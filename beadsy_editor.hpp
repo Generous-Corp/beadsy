@@ -353,9 +353,11 @@ public:
     }
 
     void set_mode(int mode) {
-        mode_ = mode >= 1 ? 1 : 0;
+        mode_ = std::clamp(mode, 0, 2);
         set_access_label(std::string("Source: ") +
-                         (mode_ == 0 ? "Synth (MIDI)" : "Main In (host routed)"));
+                         (mode_ == 0 ? "Synth (MIDI)" :
+                          mode_ == 1 ? "Main In (host routed)" :
+                                       "Sidechain (host routed)"));
         request_repaint();
     }
     int mode() const { return mode_; }
@@ -364,7 +366,8 @@ public:
     void paint(pulp::canvas::Canvas& canvas) override {
         const auto b = local_bounds();
         const auto body = mode_ == 0 ? pulp::canvas::Color::rgba8(38, 40, 43)
-                                     : pulp::canvas::Color::rgba8(28, 93, 101);
+                                     : mode_ == 1 ? pulp::canvas::Color::rgba8(28, 93, 101)
+                                                  : pulp::canvas::Color::rgba8(74, 71, 103);
         canvas.set_fill_color(body);
         canvas.fill_rounded_rect(0.5f, 0.5f, std::max(1.0f, b.width - 1.0f),
                                  std::max(1.0f, b.height - 1.0f), std::max(2.0f, b.height * 0.18f));
@@ -376,7 +379,8 @@ public:
                             700, 0, 0.35f);
         canvas.set_text_align(pulp::canvas::TextAlign::center);
         canvas.set_fill_color(pulp::canvas::Color::rgba8(241, 239, 229));
-        canvas.fill_text(mode_ == 0 ? "SOURCE  MIDI SYNTH" : "SOURCE  MAIN IN",
+        canvas.fill_text(mode_ == 0 ? "SOURCE  MIDI SYNTH" :
+                         mode_ == 1 ? "SOURCE  MAIN IN" : "SOURCE  SIDECHAIN",
                          b.width * 0.5f, b.height * 0.63f);
     }
 
@@ -393,6 +397,53 @@ public:
 
 private:
     int mode_ = 0;
+    std::function<void()> on_press_;
+};
+
+class InputBusControl final : public pulp::view::View {
+public:
+    InputBusControl() {
+        set_id("beadsy-input-bus");
+        set_access_role(pulp::view::View::AccessRole::button);
+        set_focusable(true);
+        set_source(0);
+    }
+    void set_source(int source) {
+        source_ = source >= 1 ? 1 : 0;
+        set_access_label(std::string("Audio bus: ") +
+                         (source_ == 0 ? "Main In" : "Sidechain"));
+        request_repaint();
+    }
+    int source() const { return source_; }
+    void set_on_press(std::function<void()> callback) { on_press_ = std::move(callback); }
+    void paint(pulp::canvas::Canvas& canvas) override {
+        const auto b = local_bounds();
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(31, 35, 39));
+        canvas.fill_rounded_rect(0.5f, 0.5f, std::max(1.0f, b.width - 1.0f),
+                                 std::max(1.0f, b.height - 1.0f), b.height * 0.18f);
+        canvas.set_stroke_color(pulp::canvas::Color::rgba8(112, 124, 130));
+        canvas.set_line_width(0.8f);
+        canvas.stroke_rounded_rect(0.5f, 0.5f, std::max(1.0f, b.width - 1.0f),
+                                   std::max(1.0f, b.height - 1.0f), b.height * 0.18f);
+        canvas.set_fill_color(pulp::canvas::Color::rgba8(232, 236, 229));
+        canvas.set_font_full("Roboto Mono", std::max(3.0f, b.height * 0.28f),
+                             700, 0, 0.25f);
+        canvas.set_text_align(pulp::canvas::TextAlign::center);
+        canvas.fill_text(source_ == 0 ? "BUS  MAIN IN" : "BUS  SIDECHAIN",
+                         b.width * 0.5f, b.height * 0.63f);
+    }
+    void on_mouse_down(pulp::view::Point) override { if (on_press_) on_press_(); }
+    bool on_key_event(const pulp::view::KeyEvent& event) override {
+        if (!event.is_down) return false;
+        if (event.key == pulp::view::KeyCode::enter || event.key == pulp::view::KeyCode::space) {
+            if (on_press_) on_press_();
+            return true;
+        }
+        return false;
+    }
+    bool wants_mouse_input() const override { return true; }
+private:
+    int source_ = 0;
     std::function<void()> on_press_;
 };
 
@@ -488,7 +539,7 @@ public:
             canvas.fill_rect(0, 0, b.width, b.height);
         }
         if (std::string_view(kBeadsyPanelSourceStatus) ==
-            "independent scaffold; rights-gated artwork probe unavailable") {
+            "independent scaffold; authorized artwork unavailable") {
             paint_scaffold_labels(canvas, b.width, b.height);
         }
     }
@@ -717,8 +768,16 @@ private:
         source_mode_->set_mode(static_cast<int>(std::lround(store_.get_value(kMode))));
         source_mode_->set_on_press([this] {
             store_.begin_gesture(kMode);
-            store_.set_value(kMode, source_mode_->mode() == 0 ? 1.0f : 0.0f);
+            const int next = (source_mode_->mode() + 1) % 3;
+            store_.set_value(kMode, static_cast<float>(next));
             store_.end_gesture(kMode);
+            // Keep the legacy bus parameter coherent for old hosts/states;
+            // the visible source control is now the single semantic choice.
+            if (next >= 1) {
+                store_.begin_gesture(kInputSource);
+                store_.set_value(kInputSource, next == 2 ? 1.0f : 0.0f);
+                store_.end_gesture(kInputSource);
+            }
         });
         source_mode_binding_ = store_.add_listener(
             [this](pulp::state::ParamID changed, float value) {

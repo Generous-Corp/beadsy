@@ -33,6 +33,7 @@ enum ParamIDs : pulp::state::ParamID {
     kQuality,
     kFreeze,
     kMode,
+    kInputSource,
     kTimeAmount,
     kSizeAmount,
     kShapeAmount,
@@ -41,6 +42,15 @@ enum ParamIDs : pulp::state::ParamID {
     // Keep it after the existing IDs so current automation and state payloads
     // retain their meanings when this source-backed mode is introduced.
     kSeedMode,
+};
+
+/// Stable product-level source identity. The legacy kInputSource parameter is
+/// retained for state/automation compatibility; new UI code should write this
+/// one discrete selector and leave the descriptor bus topology unchanged.
+enum class SourceMode : int {
+    MidiSynth = 0,
+    MainInput = 1,
+    Sidechain = 2,
 };
 
 // This mapping mirrors the published Beads TriggerGenerator contract.  The
@@ -87,7 +97,7 @@ inline pulp::format::PluginDescriptor make_descriptor() {
         .bundle_id = "com.independent_audio.beadsy",
         .version = "1.0.0",
         .category = pulp::format::PluginCategory::Instrument,
-        .input_buses = {{"Main In", 2, true}},
+        .input_buses = {{"Main In", 2, true}, {"Sidechain", 2, true}},
         .output_buses = {{"Main Out", 2, false}},
         .accepts_midi = true,
     };
@@ -141,7 +151,9 @@ public:
                              .range = pulp::state::ParamRange::linear(0.0f, 3.0f, 3.0f, 1.0f)});
         store.add_parameter({.id = kFreeze, .name = "Freeze", .unit = "toggle",
                              .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
-        store.add_parameter({.id = kMode, .name = "Mode", .unit = "mode",
+        store.add_parameter({.id = kMode, .name = "Source", .unit = "mode",
+                             .range = pulp::state::ParamRange::linear(0.0f, 2.0f, 0.0f, 1.0f)});
+        store.add_parameter({.id = kInputSource, .name = "Audio Source", .unit = "mode",
                              .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
         store.add_parameter({.id = kSeedMode, .name = "Seed Mode", .unit = "mode",
                              .range = pulp::state::ParamRange::linear(0.0f, 2.0f, 0.0f, 1.0f)});
@@ -265,6 +277,28 @@ public:
         velocity_gain_stream_.resize(max_block_size_);
         freeze_.reset(new bool[max_block_size_]);
         std::fill_n(freeze_.get(), max_block_size_, false);
+    }
+
+    void process(pulp::format::ProcessBuffers& audio,
+                 pulp::midi::MidiBuffer& midi_in,
+                 pulp::midi::MidiBuffer& midi_out,
+                 const pulp::format::ProcessContext& context) override {
+        auto* output = audio.main_output();
+        if (!output) return;
+        const auto* input = audio.main_input();
+        const auto* sidechain = audio.sidechain_input();
+        const int mode = std::clamp(static_cast<int>(std::lround(
+            state().get_modulated(kMode))), 0, 2);
+        // kInputSource remains a migration path for older states that used
+        // kMode=1 plus a separate Main/Sidechain selector.
+        const bool use_sidechain = mode == static_cast<int>(SourceMode::Sidechain) ||
+            (mode == static_cast<int>(SourceMode::MainInput) &&
+             state().get_modulated(kInputSource) >= 0.5f);
+        const auto* source = mode == static_cast<int>(SourceMode::MidiSynth)
+                                 ? nullptr
+                                 : (use_sidechain ? sidechain : input);
+        pulp::audio::BufferView<const float> empty_input;
+        process(*output, source ? *source : empty_input, midi_in, midi_out, context);
     }
 
     void process(pulp::audio::BufferView<float>& output,

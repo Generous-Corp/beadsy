@@ -56,13 +56,15 @@ Updated 2026-10-18 against the integrated source head
 ## Work in flight
 
 1. Add the remaining source-vs-port audio comparison and MIDI overlap receipts; expose allocation counts, capture a backtrace on recurrence, and rerun 64/256/1024 across supported toolchains.
-2. Calibrate the native panel capture against a rights-cleared straight-on
+2. **Host-route seam is implemented and focused-tested:** Pulp commits `573ef3a6b5` and `0356f60bd2` add static `BusRole` metadata plus host-owned `AudioRouteCatalog`; Beadsy now exposes stable MIDI Synth/Main Input/Sidechain modes and a distinct main-vs-sidechain impulse test passes. The catalog may enumerate Pulp-host sources; external DAWs remain responsible for their own project/input menus. Remaining work is SDK integration and real AU/VST3/CLAP host receipts.
+3. Calibrate the native panel capture against a rights-cleared straight-on
    reference, including ornate knob faces, pointer angles, labels, and pixel
    residuals.
-3. Complete host editor/audio/state receipts where the current matrix is partial
+4. Complete host editor/audio/state receipts where the current matrix is partial
    or blocked, retaining explicit negative evidence for AU/LV2/Standalone gaps,
-   VST3 moduleinfo/Steinberg validator, and AAX.
-4. Resolve panel artwork permission and trademark clearance; complete legal/source redistribution review and external converter diagnostics (currently inconclusive) after the classified portability adaptations are accepted. Keep the Pulp importer fail-closed and validation-only boundary from commit `f9752e4`.
+   VST3 moduleinfo/Steinberg validator, and AAX. AUv2 `aumu` live input remains
+   unavailable unless a separate `aumf` identity is added.
+5. Resolve panel artwork permission and trademark clearance; complete legal/source redistribution review and external converter diagnostics (currently inconclusive) after the classified portability adaptations are accepted. Keep the Pulp importer fail-closed and validation-only boundary from commit `f9752e4`.
 
 ## Release gates
 
