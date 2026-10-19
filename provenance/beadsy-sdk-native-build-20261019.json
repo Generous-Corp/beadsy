@@ -22,7 +22,15 @@
       {"name":"Beadsy-standalone.zip","uuid":"3adce145-f203-4905-9e7f-d03a1fdf92b3"},
       {"name":"Beadsy-auv3.zip","uuid":"bde5622d-a27f-464b-90fd-68cb719dd848"}
     ],
-    "receipt_dir": "provenance/notarization-20261019"
+    "receipt_dir": "provenance/notarization-20261019",
+    "dmg": {
+      "path": "provenance/Beadsy-1.0.0.dmg",
+      "uuid": "9bb63a30-744e-423b-ba8a-f60a7b73bd79",
+      "sha256": "505f0bf1cfdd571560cafd9e811285341c3cbf69667c7669608e297a0c670766",
+      "stapler_validate": "pass",
+      "codesign_verify_strict": "pass",
+      "spctl_assess": "pass"
+    }
   },
   "beadsy_build": "build-panel-beadsy-current",
   "artwork": "provenance/generated/beads-panel-beadsy.svg",
