@@ -769,8 +769,14 @@ public:
     const auto bus =
         static_cast<std::size_t>(source_mode_ && source_mode_->mode() == 2);
     const auto saved = processor_.route_identity(bus);
-    if (catalog && !saved.empty() && catalog->connected_route(bus).empty())
-      (void)catalog->connect(saved, bus);
+    if (catalog) {
+      const auto connected = catalog->connected_route(bus);
+      if (!saved.empty() && connected.empty())
+        (void)catalog->connect(saved, bus);
+      const auto rebound = catalog->connected_route(bus);
+      if (!rebound.empty())
+        processor_.set_route_identity(bus, rebound);
+    }
     route_picker_->set_catalog(catalog, observe_changes);
   }
 #endif
