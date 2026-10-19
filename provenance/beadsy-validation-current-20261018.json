@@ -3,7 +3,7 @@
   "schema": "beadsy.validation.current.v1",
   "reviewed_at": "2026-10-19",
   "beadsy_head": "49fb7c13acf26d2233d0cfade149fbd11feb9ac1",
-  "route_capability_head": "e368fe7845c556b53724d8053d45f10251fbb67f",
+  "route_capability_head": "126264ee334f9fd664a8e0120dba559995cf8eaa",
   "checks": [
     {
       "command": "pulp build --target Beadsy-editor-test",
@@ -25,7 +25,7 @@
       "command": "./build/test/pulp-test-audio-route-catalog",
       "worktree": "audio-route-capability-20261018",
       "status": "pass",
-      "evidence": "18 assertions, 2 test cases at route capability head e368fe7845c556b53724d8053d45f10251fbb67f (local cherry-pick of M1 validation commit db1b37e5ca518b9365e63939807f5ae9b5c82f4e)"
+      "evidence": "21 assertions, 3 test cases at route capability head 126264ee334f9fd664a8e0120dba559995cf8eaa"
     },
     {
       "command": "pulp test --all",
@@ -43,7 +43,7 @@
   "release_verdict": "open",
   "open_gates": [
     "host graph/buffer binding for selected route IDs",
-    "route state persistence and unavailable/hot-plug lifecycle",
+    "wire route snapshot/restore into Beadsy plug-in state and editor reopen",
     "standalone/Forge catalog injection",
     "real Logic or REAPER route receipt for project tracks, buses, instruments, and physical inputs",
     "rights-cleared visual comparison and package/signing gates"
