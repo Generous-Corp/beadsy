@@ -13,20 +13,19 @@ files, and internal sources. It is populated and changed on the control thread;
 the audio callback consumes already-routed buffers. A plug-in cannot enumerate
 arbitrary Logic or REAPER tracks by itself, so real DAW menus remain a host
 acceptance gate. The route branch is currently at
-`126264ee334f9fd664a8e0120dba559995cf8eaa`; its focused route tests pass.
-The M1 gate-profile run is green across the diff-scoped source, workflow, CTest,
-safety, and contract checks. It records one known pre-existing
-`gpu-dpr-v2-evidence-selftest` failure on `origin/main`; the route branch itself
-has no failing selected gate. This phase is currently **partial**: the catalog now
-exposes stable route entries, refresh behavior, bus roles, an injected
-control-thread connection callback, and stable-ID selection snapshot/restore,
-but no Beadsy standalone/Forge host yet installs a graph/buffer provider. The
-Beadsy editor now persists two bounded stable route IDs in its plug-in state,
-rebinding them when an injected catalog is reopened, and the route-enabled
-editor test exercises selection and catalog refresh. A host integration still
-has to bind a selected stable ID to an actual input bus and define
-unavailable/hot-plug behavior before this can be called an end-to-end audio
-routing feature.
+`00c8c0a5f4cef8d67845d06476a9c99b28ca97b3`; its focused route and processor
+provider tests pass. The reusable format seam is now an allocation-free,
+pre-bound `AudioInputBusProvider`: `ProcessorNode` materializes declared
+auxiliary/sidechain buses from host-borrowed buffers and the rich
+`Processor::process(ProcessBuffers&, ...)` path receives every bus while legacy
+processors remain source-compatible. The current branch has passed the focused
+format suites and manifest checks; the overflow host refused the local
+configure/source-selftest lanes, so those remain CI evidence. This phase is
+still **partial**: the catalog has stable route entries, refresh behavior, bus
+roles, selection snapshot/restore, and a provider seam, but no Beadsy
+standalone/Forge host yet binds selected stable IDs to actual graph buffers.
+That binding and unavailable/hot-plug behavior are required before this is an
+end-to-end audio routing feature.
 
 ## Phase 2 — Beadsy behavior and UI
 
@@ -45,6 +44,10 @@ routing feature.
   catalog refreshes, and call the host binding callback on selection.
   selecting a project track, bus, instrument, file, or physical input must
   change the host connection rather than synthesize a private track browser.
+- Install the provider before `ProcessorNode::prepare()` and update its
+  host-owned snapshot atomically when the selected route or catalog refreshes;
+  the audio callback must never enumerate routes, allocate, lock, or resolve
+  stable IDs.
 - Keep the picker visibly disabled when no host catalog is injected; do not
   imply that an AU/VST3/CLAP/LV2 plug-in can enumerate the DAW project itself.
 
