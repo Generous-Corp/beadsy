@@ -71,6 +71,22 @@ TEST_CASE("Beadsy source control exposes synth and host-routed input modes") {
     REQUIRE(store.get_value(beadsy::kMode) == 0.0f);
 }
 
+TEST_CASE("Beadsy source control clamps values to the declared bus topology") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    REQUIRE(native->source_mode_control() != nullptr);
+
+    native->source_mode_control()->set_mode(99);
+    REQUIRE(native->source_mode_control()->mode() == beadsy::kAvailableSourceModeMax);
+    native->source_mode_control()->set_mode(-99);
+    REQUIRE(native->source_mode_control()->mode() == 0);
+}
+
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
 namespace {
 class EditorRouteCatalog final : public pulp::host::AudioRouteCatalog {
