@@ -1,7 +1,7 @@
 {
   "schema": "beadsy.context-menu-integration.v1",
   "product": "Beadsy",
-  "beadsy_commit": "acdbe32914bc7a2649b9f165d575373b5b979e81",
+  "beadsy_commit": "4ae8c30449c49647d3d860903b596e98a7e8ca36",
   "sdk_capability": "PULP_CONTEXT_MENU_INLINE_CONTROLS",
   "sdk_commit": "1884f0797c03b6093491060e2cb8fb2122eadd5a",
   "behavior": {
@@ -13,8 +13,9 @@
   "validation": {
     "sdk_controls": "pass: 37 assertions / 3 cases",
     "sdk_context_menu": "pass: 164 assertions / 29 cases",
-    "beadsy_editor": "blocked-before-menu-validation",
-    "blocker": "installed /Users/danielraffel/pulp-sdk headers are older than the Beadsy editor and lack AccessRole::button and wants_mouse_input"
+    "beadsy_editor": "pass: 132 assertions / 15 cases",
+    "build": "Pulp SDK export built from sdk_commit with examples/tests disabled",
+    "blocker": "none for the inline menu slice; full release validation remains open"
   },
   "next_gate": "build Beadsy against an SDK export containing sdk_commit, then run Beadsy-editor-test and interaction assertions"
 }
