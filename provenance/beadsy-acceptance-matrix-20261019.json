@@ -5,12 +5,12 @@
   "overall": "incomplete",
   "gates": [
     {"id":"dsp-unit","status":"pass","evidence":"Beadsy-test: 2811 assertions / 27 cases; BeadsyFX-test: 131 assertions / 1 case"},
-    {"id":"editor-headless","status":"pass","evidence":"Beadsy-editor-test: 124 assertions / 15 cases"},
+    {"id":"editor-headless","status":"pass","evidence":"Beadsy-editor-test: 132 assertions / 15 cases; matching SDK export in build-editor-inline"},
     {"id":"visual-fidelity","status":"fail","evidence":"provenance/visual-analysis-20261019d/receipt.json","blockers":["knob/button skin mismatch","route presentation mismatch","rights-cleared artwork provenance"]},
     {"id":"audio-route-host","status":"inconclusive","evidence":"provenance/beadsy-reaper-route-smoke-20261019.json","blockers":["no measurable editor/audio delivery","no selected track/bus/physical-input assertion"]},
     {"id":"format-build","status":"partial","evidence":"provenance/beadsy-format-status-exact-20261019.json","blockers":["AAX unavailable","host validation not run","LV2 discovery incomplete"]},
     {"id":"installer","status":"pass-scoped","evidence":"provenance/installer-20261019-final/receipt.json","scope":"AUv2, VST3, CLAP, standalone only"},
-    {"id":"lfo-context","status":"partial","evidence":"beadsy_editor.hpp::show_modulation_context_menu","blockers":["stepped commands exist; inline rate/depth/range controls not yet shared in Pulp core"]},
+    {"id":"lfo-context","status":"pass-scoped","evidence":"beadsy_editor.hpp::show_modulation_context_menu; Beadsy-editor-test: 132 assertions / 15 cases; ContextMenu controls: 37 assertions / 3 cases","scope":"matching SDK export only","blockers":["SDK capability is not yet landed in the released Pulp SDK"]},
     {"id":"design-import","status":"partial","evidence":"provenance/generated/beads-panel-guides.json; provenance/generated/beads-control-map.json","blockers":["Illustrator runtime conversion and rights-cleared redistribution remain open"]},
     {"id":"vellum-adoption","status":"planned","evidence":"provenance/beadsy-plan-20261019.md; provenance/vellum-beadsy-import-handoff-20261019.json","blockers":["end-to-end Vellum DesignIR importer/render validation not landed","Vellum currently rejects audio-widget bindings and has no Beadsy control-map renderer"]},
     {"id":"dsp-ab","status":"partial","evidence":"Beadsy-test internal contracts","blockers":["reference-versus-candidate host render receipt not complete"]}
