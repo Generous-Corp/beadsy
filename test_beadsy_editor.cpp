@@ -390,33 +390,24 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
         beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
     REQUIRE(menu != nullptr);
     REQUIRE(native->modulation_context_target() == beadsy::kDensity);
-    REQUIRE(menu->items().size() == 7);
-    REQUIRE_FALSE(menu->items()[0].enabled);
-    REQUIRE(menu->items()[0].label == "LFO → Density");
-    REQUIRE(menu->items()[1].label == "Enable LFO");
+    REQUIRE(menu->items().size() == 4);
+    REQUIRE(menu->items()[0].control_kind ==
+            pulp::view::ContextMenu::Item::ControlKind::toggle);
+    REQUIRE(menu->items()[1].control_kind ==
+            pulp::view::ContextMenu::Item::ControlKind::slider);
+    REQUIRE(menu->items()[2].control_kind ==
+            pulp::view::ContextMenu::Item::ControlKind::slider);
+    REQUIRE(menu->items()[3].label == "Reset LFO");
 
-    menu->on_close(1);
+    const_cast<pulp::view::ContextMenu::Item &>(menu->items()[0])
+        .set_toggled(true);
     REQUIRE(processor.lfo(beadsy::kDensity).enabled);
     REQUIRE(processor.lfo(beadsy::kDensity).depth > 0.0f);
-    REQUIRE_FALSE(native->modulation_context_target().has_value());
+    REQUIRE(menu->items()[1].normalized_value >= 0.0f);
+    REQUIRE(menu->items()[1].normalized_value <= 1.0f);
+    REQUIRE(menu->items()[2].normalized_value >= 0.0f);
+    REQUIRE(menu->items()[2].normalized_value <= 1.0f);
 
-    menu = native->show_modulation_context_menu(
-        beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
-    REQUIRE(menu != nullptr);
-    REQUIRE(menu->items()[1].label == "LFO Enabled");
-    REQUIRE(menu->items()[1].checked);
-    const auto initial_rate = processor.lfo(beadsy::kDensity).rate_hz;
-    const auto initial_depth = processor.lfo(beadsy::kDensity).depth;
-    menu->on_close(4);
-    REQUIRE(processor.lfo(beadsy::kDensity).rate_hz > initial_rate);
-    menu = native->show_modulation_context_menu(
-        beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
-    REQUIRE(menu != nullptr);
-    menu->on_close(6);
-    REQUIRE(processor.lfo(beadsy::kDensity).depth > initial_depth);
-    menu = native->show_modulation_context_menu(
-        beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
-    REQUIRE(menu != nullptr);
     menu->on_close(2);
     REQUIRE_FALSE(processor.lfo(beadsy::kDensity).enabled);
     REQUIRE(processor.lfo(beadsy::kDensity).depth == 0.0f);

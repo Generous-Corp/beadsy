@@ -824,6 +824,7 @@ public:
             return;
           processor_.clear_lfo(id);
           request_repaint();
+          clear_modulation_context();
         });
 #else
     return pulp::view::ContextMenu::show(
