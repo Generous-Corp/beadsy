@@ -101,11 +101,10 @@ public:
     // mapped knob sizes so small utility pots remain compact.
     if (radius > 12.0f) {
       canvas.set_fill_color(pulp::canvas::Color::rgba8(112, 115, 124, 74));
-      canvas.fill_circle(cx + radius * 0.09f, cy + radius * 0.12f,
-                         radius * 1.27f);
+      canvas.fill_circle(cx + radius * 0.02f, cy + radius * 0.03f,
+                         radius * 1.23f);
       canvas.set_fill_color(pulp::canvas::Color::rgba8(202, 204, 210, 170));
-      canvas.fill_circle(cx - radius * 0.02f, cy - radius * 0.02f,
-                         radius * 1.21f);
+      canvas.fill_circle(cx, cy, radius * 1.18f);
     }
 
     // The straight-on reference shows a black, physically segmented
@@ -215,30 +214,22 @@ public:
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
     const float cx = b.width * 0.5f;
-    const float button_h = std::max(8.0f, b.height * 0.58f);
-    const float button_y = b.height - button_h;
-    const auto off = pulp::canvas::Color::rgba8(30, 32, 34);
-    const auto on = pulp::canvas::Color::rgba8(66, 72, 73);
+    const float radius = std::max(3.0f, std::min(b.width, b.height) * 0.32f);
+    const float cy = b.height * 0.62f;
+    const auto off = pulp::canvas::Color::rgba8(226, 225, 217);
+    const auto on = pulp::canvas::Color::rgba8(246, 245, 235);
     canvas.set_fill_color(mode_ == 0 ? off : on);
-    canvas.fill_rounded_rect(0.5f, button_y, std::max(1.0f, b.width - 1.0f),
-                             button_h, button_h * 0.25f);
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(72, 77, 79));
+    canvas.fill_circle(cx, cy, radius);
+    canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
     canvas.set_line_width(0.8f);
-    canvas.stroke_rounded_rect(0.5f, button_y, std::max(1.0f, b.width - 1.0f),
-                               button_h, button_h * 0.25f);
+    canvas.stroke_circle(cx, cy, radius);
 
     const auto led = mode_ == 0   ? pulp::canvas::Color::rgba8(44, 43, 38)
                      : mode_ == 1 ? pulp::canvas::Color::rgba8(211, 164, 74)
                                   : pulp::canvas::Color::rgba8(103, 151, 168);
     canvas.set_fill_color(led);
-    canvas.fill_circle(cx, std::max(2.0f, button_y * 0.48f),
+    canvas.fill_circle(cx, std::max(2.0f, cy - radius * 1.65f),
                        std::max(1.2f, std::min(b.width, b.height) * 0.10f));
-    canvas.set_font_full("Roboto Mono", std::max(3.0f, b.width * 0.13f), 700, 0,
-                         0.45f);
-    canvas.set_text_align(pulp::canvas::TextAlign::center);
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(236, 234, 224));
-    canvas.fill_text(mode_ == 2 ? "LOCK" : "SEED", cx,
-                     button_y + button_h * 0.63f);
   }
 
   void on_mouse_down(pulp::view::Point) override {
@@ -280,22 +271,15 @@ public:
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
     const float cx = b.width * 0.5f;
-    const float button_h = std::max(8.0f, b.height * 0.67f);
-    const float y = b.height - button_h;
-    const auto body = pressed_ ? pulp::canvas::Color::rgba8(20, 150, 161)
-                               : pulp::canvas::Color::rgba8(28, 166, 177);
+    const float radius = std::max(3.0f, std::min(b.width, b.height) * 0.34f);
+    const float cy = b.height * 0.62f;
+    const auto body = pressed_ ? pulp::canvas::Color::rgba8(196, 197, 187)
+                               : pulp::canvas::Color::rgba8(239, 238, 228);
     canvas.set_fill_color(body);
-    canvas.fill_rounded_rect(0.5f, y, std::max(1.0f, b.width - 1.0f), button_h,
-                             button_h * 0.38f);
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(7, 104, 112));
+    canvas.fill_circle(cx, cy, radius);
+    canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
     canvas.set_line_width(0.8f);
-    canvas.stroke_rounded_rect(0.5f, y, std::max(1.0f, b.width - 1.0f),
-                               button_h, button_h * 0.38f);
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(238, 250, 244));
-    canvas.set_font_full("Roboto Mono", std::max(3.0f, b.width * 0.13f), 700, 0,
-                         0.45f);
-    canvas.set_text_align(pulp::canvas::TextAlign::center);
-    canvas.fill_text("FREEZE", cx, y + button_h * 0.62f);
+    canvas.stroke_circle(cx, cy, radius);
   }
 
   void on_mouse_down(pulp::view::Point) override {
@@ -725,6 +709,13 @@ public:
 
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
+    // The Illustrator/SVG panel is an opaque white faceplate in the physical
+    // module, but the exported scene intentionally carries transparent paper
+    // so its vector flourishes remain composable. Paint the substrate before
+    // rendering the retained scene; otherwise the source artwork is shown
+    // over the editor's dark fallback background and its fine ink disappears.
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(248, 248, 246, 255));
+    canvas.fill_rect(0.0f, 0.0f, b.width, b.height);
     if (panel_.is_valid()) {
       panel_.render(canvas, 0.0f, 0.0f, b.width, b.height);
     } else {
@@ -792,6 +783,49 @@ public:
       return text.str();
     };
     auto alive = import_binding_lifetime_token();
+#if defined(PULP_CONTEXT_MENU_INLINE_CONTROLS)
+    auto set_lfo_if_alive = [alive, this, id](auto update) {
+      if (alive.expired())
+        return;
+      auto modulation = processor_.lfo(id);
+      update(modulation);
+      processor_.set_lfo(id, modulation);
+      request_repaint();
+    };
+    auto items = std::vector<pulp::view::ContextMenu::Item>{
+        pulp::view::ContextMenu::Item::make_toggle(
+            1, "LFO Enabled", current.enabled,
+            [set_lfo_if_alive](const auto &item) {
+              set_lfo_if_alive([&](auto &modulation) {
+                modulation.enabled = item.checked;
+                if (modulation.enabled && modulation.depth == 0.0f)
+                  modulation.depth = 0.1f;
+              });
+            }),
+        pulp::view::ContextMenu::Item::make_slider(
+            3, "Rate", (current.rate_hz - 0.01f) / 19.99f, 0.01f,
+            [set_lfo_if_alive](const auto &item) {
+              set_lfo_if_alive([&](auto &modulation) {
+                modulation.rate_hz = 0.01f + item.normalized_value * 19.99f;
+              });
+            }),
+        pulp::view::ContextMenu::Item::make_slider(
+            4, "Depth", current.depth, 0.01f,
+            [set_lfo_if_alive](const auto &item) {
+              set_lfo_if_alive([&](auto &modulation) {
+                modulation.depth = item.normalized_value;
+              });
+            }),
+        {2, "Reset LFO"}};
+    return pulp::view::ContextMenu::show(
+        root, detail::local_to_root(this, position), std::move(items),
+        [alive, this, id](std::optional<int> command) {
+          if (alive.expired() || !command || *command != 2)
+            return;
+          processor_.clear_lfo(id);
+          request_repaint();
+        });
+#else
     return pulp::view::ContextMenu::show(
         root, detail::local_to_root(this, position),
         {{0, "LFO → " + target_name, false},
@@ -830,6 +864,7 @@ public:
           }
           clear_modulation_context();
         });
+#endif
   }
 
 private:
@@ -1071,8 +1106,10 @@ private:
       const float unit = std::min(sx, sy);
       const float mode_width = 26.0f * unit;
       const float mode_height = 5.5f * unit;
+      // Software source selection occupies the reclaimed lower jack area;
+      // keep the original printed header unobstructed.
       const float x = 35.4f * sx - mode_width * 0.5f;
-      const float y = (128.5f - 115.0f) * sy - mode_height * 0.5f;
+      const float y = (128.5f - 8.0f) * sy - mode_height * 0.5f;
       source_mode_->set_position(pulp::view::View::Position::absolute);
       source_mode_->set_bounds({x, y, mode_width, mode_height});
     }
@@ -1081,8 +1118,8 @@ private:
       const float unit = std::min(sx, sy);
       const float route_width = 26.0f * unit;
       const float route_height = 5.5f * unit;
-      const float x = 35.4f * sx - route_width * 0.5f;
-      const float y = (128.5f - 121.0f) * sy - route_height * 0.5f;
+      const float x = 64.0f * sx - route_width * 0.5f;
+      const float y = (128.5f - 8.0f) * sy - route_height * 0.5f;
       route_picker_->set_position(pulp::view::View::Position::absolute);
       route_picker_->set_bounds({x, y, route_width, route_height});
     }
