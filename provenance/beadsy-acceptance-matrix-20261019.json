@@ -13,6 +13,6 @@
     {"id":"lfo-context","status":"pass-scoped","evidence":"beadsy_editor.hpp::show_modulation_context_menu; Beadsy-editor-test: 132 assertions / 15 cases; ContextMenu controls: 37 assertions / 3 cases","scope":"matching SDK export only","blockers":["SDK capability is not yet landed in the released Pulp SDK"]},
     {"id":"design-import","status":"partial","evidence":"provenance/generated/beads-panel-guides.json; provenance/generated/beads-control-map.json","blockers":["Illustrator runtime conversion and rights-cleared redistribution remain open"]},
     {"id":"vellum-adoption","status":"planned","evidence":"provenance/beadsy-plan-20261019.md; provenance/vellum-beadsy-import-handoff-20261019.json","blockers":["end-to-end Vellum DesignIR importer/render validation not landed","Vellum currently rejects audio-widget bindings and has no Beadsy control-map renderer"]},
-    {"id":"dsp-ab","status":"partial","evidence":"Beadsy-test internal contracts","blockers":["reference-versus-candidate host render receipt not complete"]}
+    {"id":"dsp-ab","status":"partial","evidence":"Beadsy-test internal contracts; provenance/beadsy-adversarial-review-current-20261018.md records 48 baseline and 144 seed/gate fixtures with max absolute error 0 and RMSE 0","blockers":["reference-versus-candidate host render receipt not complete"]}
   ]
 }
