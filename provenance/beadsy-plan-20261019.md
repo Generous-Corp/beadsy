@@ -1,9 +1,52 @@
 # Beadsy delivery plan
 
+Current UI integration evidence: the software source selector is positioned in
+the reclaimed lower jack area, with the original Illustrator header left clear.
+The corresponding capture and visual receipt remain a failing fidelity gate
+until native control skins and route presentation are calibrated.
+
 This is the actionable plan for the independently branded, MIT-licensed Beadsy
 instrument. The plan keeps the original Beads behavior as the compatibility
 reference while treating host routing, artwork provenance, and format packaging
 as separate acceptance gates.
+
+## Phase 0 — reusable Illustrator/SVG design import
+
+Treat Illustrator and SVG import as a shared Pulp/Vellum capability, with
+Beadsy as the reference fixture. PDF-compatible Illustrator `.ai` files may be
+converted to SVG by a pinned, license-reviewed toolchain; the conversion
+receipt records the source hash, converter version, tool license, output hash,
+and unsupported-feature report. The importer retains the SVG scene graph
+(groups, transforms, paths, clips, strokes, fills, opacity, text, and ordering)
+instead of rasterizing the panel or reducing it to a hand-authored scaffold.
+
+The import result contains the retained SVG, semantic guide and anchor metadata,
+a source-to-control map, and before/after visual fixtures. Guide circles and
+component footprints are classified separately from visible artwork so a
+product can replace only selected physical elements (such as jacks or screws)
+while preserving every flourish, label, dotted path, symbol, and texture
+detail. Skia renders the retained artwork in the native editor; interactive
+controls are transparent overlays bound to imported anchors.
+
+The current Beadsy fixture records the classified physical placement guides in
+`provenance/generated/beads-panel-guides.json` while omitting those red authoring
+marks from the rendered SVG. This keeps the source geometry available to the
+semantic mapper without exposing Illustrator construction marks in the product.
+The first repository-neutral semantic map is recorded in
+`provenance/generated/beads-control-map.json`; Vellum can consume the same
+coordinate-space and control-kind contract without depending on Beadsy C++.
+The coordinated handoff is recorded in
+`provenance/vellum-beadsy-import-handoff-20261019.json`; it names the Vellum
+consumer requirements and keeps artwork redistribution explicitly fail-closed
+until rights are cleared.
+
+Every imported design produces a same-size render, alignment overlay,
+pixel/edge difference image, landmark score, and machine-readable provenance
+receipt. The visual gate fails when artwork is missing, controls drift, or an
+unsupported SVG feature is silently discarded. The importer contract and
+receipts are repository-neutral so Vellum can adopt them when rendering and
+import authority transfers; no Pulp-only implementation detail becomes the
+public design-import contract.
 
 ## Phase 1 — shared Pulp capability
 
@@ -38,8 +81,11 @@ full merge-group matrix remains an external acceptance gate.
   and that the selected bus reaches Beadsy before calling this phase complete.
 - Preserve sample-offset MIDI retriggers, seed modes, freeze behavior, and the
   direct DSP parity fixtures before changing audio semantics.
-- Keep the faceplate straight-on and procedural until artwork rights are
-  cleared; retain the measured knob geometry and remove decorative output jacks.
+- Use the retained Illustrator/SVG artwork as the straight-on faceplate. Keep
+  the measured knob geometry and remove only explicitly classified decorative
+  input/output jacks and their terminating line segments. The source artwork,
+  buttons, LEDs, flourishes, dotted paths, symbols, and typography remain the
+  visual authority.
   The native editor now omits all non-functional hardware jack regions; audio
   input selection is represented only by the host-owned route picker, so the
   UI cannot imply that a cable can be patched into an unconnected plug-in port.
