@@ -1,0 +1,16 @@
+{
+  "schema": "beadsy.route-audit.v1",
+  "beadsy_head": "e4e8dc614e4a7d0f1a55fd8e19bb68aed67b99f7",
+  "route_capability_head": "9101252b58e85f26db16c3daae56044994422e8b",
+  "route_pr": "https://github.com/Generous-Corp/pulp/pull/10575",
+  "core_catalog": "pass: stable IDs, refresh, availability, and realtime topology boundaries",
+  "editor_picker": "pass-scoped: physical input, project track, and project bus labels",
+  "host_delivery": "inconclusive",
+  "host_evidence": {
+    "logic_auv3": "not_run",
+    "reaper_vst3": "discovered but no measurable editor/audio route delivery",
+    "standalone_injected_catalog": "not_run"
+  },
+  "verdict": "core route contract is validated; host selection and selected-audio delivery remain unproven",
+  "next_gate": "run GUI-capable Logic and REAPER sessions with rendered audio assertions bound to the selected route"
+}
