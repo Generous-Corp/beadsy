@@ -1,0 +1,20 @@
+{
+  "schema": "beadsy.context-menu-integration.v1",
+  "product": "Beadsy",
+  "beadsy_commit": "acdbe32914bc7a2649b9f165d575373b5b979e81",
+  "sdk_capability": "PULP_CONTEXT_MENU_INLINE_CONTROLS",
+  "sdk_commit": "1884f0797c03b6093491060e2cb8fb2122eadd5a",
+  "behavior": {
+    "toggle": "LFO enabled state",
+    "slider": ["LFO rate 0.01..20 Hz", "LFO depth 0..1"],
+    "reset": true,
+    "legacy_sdk_fallback": "stepped rate/depth rows"
+  },
+  "validation": {
+    "sdk_controls": "pass: 37 assertions / 3 cases",
+    "sdk_context_menu": "pass: 164 assertions / 29 cases",
+    "beadsy_editor": "blocked-before-menu-validation",
+    "blocker": "installed /Users/danielraffel/pulp-sdk headers are older than the Beadsy editor and lack AccessRole::button and wants_mouse_input"
+  },
+  "next_gate": "build Beadsy against an SDK export containing sdk_commit, then run Beadsy-editor-test and interaction assertions"
+}
