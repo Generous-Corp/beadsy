@@ -4,6 +4,10 @@
 
 #include "beadsy.hpp"
 #include "beadsy_panel_svg.hpp"
+#if __has_include("beadsy_panel_png.hpp")
+#include "beadsy_panel_png.hpp"
+#define BEADSY_HAS_PANEL_PNG 1
+#endif
 
 #include <pulp/canvas/canvas.hpp>
 #include <pulp/canvas/svg.hpp>
@@ -64,6 +68,13 @@ public:
     return std::min(width, height * 0.78f) * 0.43f;
   }
 
+  // Utility pots are identified in source panel units, rather than by their
+  // rendered pixel radius.  That keeps the black-cap treatment stable when
+  // the editor is resized or captured at a different scale.
+  static constexpr bool is_utility_diameter(float diameter) {
+    return diameter <= 6.0f;
+  }
+
   PanelKnob(std::string caption, float diameter)
       : caption_(std::move(caption)), diameter_(diameter) {
     set_show_label(false);
@@ -86,26 +97,39 @@ public:
     const float angle =
         pulp::view::Knob::start_angle +
         (pulp::view::Knob::end_angle - pulp::view::Knob::start_angle) * value();
+    // `radius` is in rendered pixels and therefore changes with editor scale.
+    // The source-mapped diameter is the stable distinction between the seven
+    // utility pots and the four larger Beads controls.
+    const bool utility_knob = is_utility_diameter(diameter_);
 
-    // A few auxiliary controls use a colored side strip in the reference
-    // panel.  Paint that accent behind the procedural ring so the native
-    // knob still owns hit testing and automation.
-    if (accent_) {
+    // Auxiliary controls use a colored side strip only when the control is a
+    // full-size indicator. The seven small utility pots in the reference are
+    // entirely black with a single white pointer; allowing an accent behind
+    // those caps makes color bleed above or beside the hardware silhouette.
+    if (accent_ && !utility_knob) {
       canvas.set_fill_color(*accent_);
-      canvas.fill_rounded_rect(cx - radius * 0.66f, cy - radius * 2.40f,
-                               radius * 1.32f, radius * 4.80f, radius * 0.58f);
+      const float top = cy + radius * 0.28f;
+      const float bottom = b.height - radius * 0.18f;
+      canvas.fill_rounded_rect(cx - radius * 0.66f, top, radius * 1.32f,
+                               std::max(1.0f, bottom - top), radius * 0.58f);
     }
 
-    // The major and medium reference knobs carry a soft gray cast shadow
-    // outside the black body. Keep it procedural and limit it to the
-    // mapped knob sizes so small utility pots remain compact.
-    if (radius > 12.0f) {
-      canvas.set_fill_color(pulp::canvas::Color::rgba8(112, 115, 124, 74));
-      canvas.fill_circle(cx + radius * 0.02f, cy + radius * 0.03f,
-                         radius * 1.23f);
-      canvas.set_fill_color(pulp::canvas::Color::rgba8(202, 204, 210, 170));
-      canvas.fill_circle(cx, cy, radius * 1.18f);
+    // The seven utility controls are plain black pots with a white pointer.
+    // They do not inherit the large Beads pot's pale cap, grooves, or halo.
+    if (utility_knob) {
+      canvas.set_fill_color(pulp::canvas::Color::rgba8(14, 14, 14));
+      canvas.fill_circle(cx, cy, radius * 1.04f);
+      canvas.set_fill_color(pulp::canvas::Color::rgba8(242, 240, 227));
+      canvas.fill_rounded_rect(cx - radius * 0.13f, cy - radius * 0.88f,
+                               radius * 0.26f, radius * 0.62f, radius * 0.08f);
+      return;
     }
+
+    // Large reference pots have no cast shadow. Their pale outer surround is
+    // part of the printed/physical design and is kept as a clean, centered
+    // ring so it does not read as a drop shadow.
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(202, 204, 210, 170));
+    canvas.fill_circle(cx, cy, radius * 1.18f);
 
     // The straight-on reference shows a black, physically segmented
     // annulus around a pale inset cap.  Keep this entirely procedural:
@@ -224,12 +248,8 @@ public:
     canvas.set_line_width(0.8f);
     canvas.stroke_circle(cx, cy, radius);
 
-    const auto led = mode_ == 0   ? pulp::canvas::Color::rgba8(44, 43, 38)
-                     : mode_ == 1 ? pulp::canvas::Color::rgba8(211, 164, 74)
-                                  : pulp::canvas::Color::rgba8(103, 151, 168);
-    canvas.set_fill_color(led);
-    canvas.fill_circle(cx, std::max(2.0f, cy - radius * 1.65f),
-                       std::max(1.2f, std::min(b.width, b.height) * 0.10f));
+    // The original SEED control is a plain white push button. The black
+    // mounting dot above it belongs to the faceplate and is not an LED.
   }
 
   void on_mouse_down(pulp::view::Point) override {
@@ -291,6 +311,60 @@ public:
 private:
   bool pressed_ = false;
   std::function<void()> on_press_;
+};
+
+/// The physical lower-left control is a momentary black push button, not a
+/// seventh miniature pot. Keep it separate from PanelKnob so it has no
+/// parameter pointer, grooves, pale cap, or automation gesture.
+class PushButtonControl final : public pulp::view::View {
+public:
+  PushButtonControl() {
+    set_id("beadsy-push-button");
+    set_access_role(pulp::view::View::AccessRole::button);
+    set_access_label("Push button");
+    set_focusable(true);
+  }
+  void set_on_press(std::function<void()> callback) {
+    on_press_ = std::move(callback);
+  }
+  void paint(pulp::canvas::Canvas &canvas) override {
+    const auto b = local_bounds();
+    const float r = std::max(2.0f, std::min(b.width, b.height) * 0.40f);
+    const float cx = b.width * 0.5f;
+    const float cy = b.height * 0.48f;
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(15, 15, 15));
+    canvas.fill_circle(cx, cy, r);
+  }
+  void on_mouse_down(pulp::view::Point) override {
+    if (on_press_)
+      on_press_();
+  }
+  bool wants_mouse_input() const override { return true; }
+
+private:
+  std::function<void()> on_press_;
+};
+
+/// Two small center indicators present below DENSITY: a pale LED and a black
+/// round button. They are visual hardware affordances with no guessed DSP
+/// semantics, so they remain non-parameterized until documentation maps them.
+class CenterIndicators final : public pulp::view::View {
+public:
+  CenterIndicators() {
+    set_id("beadsy-center-indicators");
+    set_access_role(pulp::view::View::AccessRole::image);
+    set_access_label("Status indicators");
+  }
+  void paint(pulp::canvas::Canvas &canvas) override {
+    const auto b = local_bounds();
+    const float r = std::max(1.0f, std::min(b.width, b.height) * 0.22f);
+    const float y = b.height * 0.5f;
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(195, 179, 159));
+    canvas.fill_circle(b.width * 0.28f, y, r);
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(19, 20, 22));
+    canvas.fill_circle(b.width * 0.60f, y, r * 1.18f);
+  }
+  bool wants_mouse_input() const override { return false; }
 };
 
 /// Selects the software source path. Hardware Beads uses physical input
@@ -378,7 +452,9 @@ private:
 /// calls refresh_routes() (or refresh_if_needed()) to touch view state.
 class AudioRoutePicker final : public pulp::view::ComboBox {
 public:
-  explicit AudioRoutePicker(std::size_t bus_index = 0) : bus_index_(bus_index) {
+  explicit AudioRoutePicker(std::size_t bus_index = 0,
+                            std::size_t channel_index = 0)
+      : bus_index_(bus_index), channel_index_(channel_index) {
     set_id("beadsy-audio-route");
     set_access_label("Audio route: host-owned routing menu");
     set_access_disabled("true");
@@ -436,7 +512,16 @@ public:
     }
 
     const auto routes = catalog_->enumerate();
-    const auto connected = catalog_->connected_route(bus_index_);
+    const auto connected = [&] {
+      if constexpr (requires {
+                      catalog_->connected_route_channel(bus_index_,
+                                                        channel_index_);
+                    }) {
+        return catalog_->connected_route_channel(bus_index_, channel_index_);
+      } else {
+        return catalog_->connected_route(bus_index_);
+      }
+    }();
     route_ids_.clear();
     std::vector<std::string> labels;
     labels.emplace_back("Select host route…");
@@ -493,6 +578,11 @@ public:
     on_route_connected_ = std::move(callback);
   }
 
+  void set_on_channel_route_connected(
+      std::function<void(std::size_t, std::size_t, std::string_view)> callback) {
+    on_channel_route_connected_ = std::move(callback);
+  }
+
 private:
   void detach_catalog() {
     if (catalog_ && observing_changes_)
@@ -519,12 +609,15 @@ private:
   }
 
   std::size_t bus_index_ = 0;
+  std::size_t channel_index_ = 0;
   pulp::host::AudioRouteCatalog *catalog_ = nullptr;
   bool observing_changes_ = false;
   std::vector<std::string> route_ids_;
   std::atomic_bool refresh_pending_{false};
   int source_mode_ = 0;
   std::function<void(std::size_t, std::string_view)> on_route_connected_;
+  std::function<void(std::size_t, std::size_t, std::string_view)>
+      on_channel_route_connected_;
 
 public:
   /// Keep the picker visible but inert while MIDI synth mode is selected.
@@ -538,13 +631,25 @@ public:
     if (!catalog_ || index <= 0 || index > static_cast<int>(route_ids_.size()))
       return;
     const auto &route_id = route_ids_[static_cast<std::size_t>(index - 1)];
-    if (!catalog_->connect(route_id, bus_index_)) {
+    const bool connected = [&] {
+      if constexpr (requires {
+                      catalog_->connect_channel(route_id, bus_index_,
+                                                channel_index_);
+                    }) {
+        return catalog_->connect_channel(route_id, bus_index_, channel_index_);
+      } else {
+        return catalog_->connect(route_id, bus_index_);
+      }
+    }();
+    if (!connected) {
       refresh_routes();
       set_access_label("Audio route unavailable; use the host routing menu");
       return;
     }
     if (on_route_connected_)
       on_route_connected_(bus_index_, route_id);
+    if (on_channel_route_connected_)
+      on_channel_route_connected_(bus_index_, channel_index_, route_id);
     set_access_label("Audio route: " + selected_text() + " (host-owned)");
   }
 };
@@ -695,13 +800,19 @@ public:
   void layout_children() override {
     pulp::view::View::layout_children();
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
-    if (route_picker_) {
-      route_picker_->refresh_if_needed();
+    if (route_picker_left_ || route_picker_right_) {
+      if (route_picker_left_)
+        route_picker_left_->refresh_if_needed();
+      if (route_picker_right_)
+        route_picker_right_->refresh_if_needed();
       const auto bus = static_cast<std::size_t>(
           source_mode_ && source_mode_->mode() == 2);
-      if (route_picker_->catalog())
+      if (route_picker_left_ && route_picker_left_->catalog())
         processor_.set_route_identity(
-            bus, route_picker_->catalog()->connected_route(bus));
+            0, route_picker_left_->catalog()->connected_route(0));
+      if (route_picker_right_ && route_picker_right_->catalog())
+        processor_.set_route_identity(
+            1, route_picker_right_->catalog()->connected_route(1));
     }
 #endif
     layout_controls();
@@ -716,12 +827,46 @@ public:
     // over the editor's dark fallback background and its fine ink disappears.
     canvas.set_fill_color(pulp::canvas::Color::rgba8(248, 248, 246, 255));
     canvas.fill_rect(0.0f, 0.0f, b.width, b.height);
-    if (panel_.is_valid()) {
+    bool drew_panel = false;
+#if defined(BEADSY_HAS_PANEL_PNG)
+    if (canvas.supports_image_draw()) {
+      drew_panel = canvas.draw_image_from_static_data_rect(
+          panel_asset::kPng, panel_asset::kPngSize, 0.0f, 0.0f, 2203.0f,
+          4000.0f, 0.0f, 0.0f, b.width, b.height);
+    }
+#endif
+    if (!drew_panel && panel_.is_valid()) {
       panel_.render(canvas, 0.0f, 0.0f, b.width, b.height);
-    } else {
+      drew_panel = true;
+    }
+    if (!drew_panel) {
       canvas.set_fill_color(pulp::canvas::Color::rgba8(22, 21, 19));
       canvas.fill_rect(0, 0, b.width, b.height);
     }
+    // The reviewed faceplate raster contains colored hardware tails beneath
+    // three physical utility pots. In software those seven utility controls
+    // are deliberately plain black caps with white pointers; retain the
+    // surrounding printed guides but clear the colored tails before native
+    // controls are laid out. This also prevents color from peeking above a
+    // cap at a fractional editor scale.
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(255, 255, 255, 255));
+    const float sx = b.width / 70.8f;
+    const float sy = b.height / 128.5f;
+    const auto clear_utility_tail = [&](float center_x, float top_y,
+                                        float width, float height) {
+      canvas.fill_rect((center_x - width * 0.5f) * sx,
+                       (128.5f - (top_y + height)) * sy, width * sx,
+                       height * sy);
+    };
+    clear_utility_tail(7.115f, 53.0f, 12.0f, 15.0f);
+    clear_utility_tail(64.365f, 54.5f, 8.5f, 11.5f);
+    clear_utility_tail(64.365f, 38.0f, 8.5f, 11.5f);
+    // The lower jack field is a host-routing surface in software.  Clear the
+    // physical jack artwork before placing the three software selectors so
+    // printed IN L/IN R/FREEZE/SEED legends and output sockets cannot be
+    // mistaken for live ports.
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(255, 255, 255, 255));
+    canvas.fill_rect(0.0f, b.height * 0.72f, b.width, b.height * 0.28f);
     if (std::string_view(kBeadsyPanelSourceStatus) ==
         "independent scaffold; authorized artwork unavailable") {
       paint_scaffold_labels(canvas, b.width, b.height);
@@ -739,23 +884,53 @@ public:
   void clear_modulation_context() { context_target_.reset(); }
   ModeControl *source_mode_control() const { return source_mode_; }
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
-  AudioRoutePicker *audio_route_picker() const { return route_picker_; }
+  AudioRoutePicker *audio_route_picker() const { return route_picker_left_; }
+  AudioRoutePicker *audio_route_picker_right() const { return route_picker_right_; }
   void set_audio_route_catalog(pulp::host::AudioRouteCatalog *catalog,
                                bool observe_changes = false) {
-    if (!route_picker_)
+    if (!route_picker_left_ && !route_picker_right_)
       return;
-    const auto bus =
-        static_cast<std::size_t>(source_mode_ && source_mode_->mode() == 2);
-    const auto saved = processor_.route_identity(bus);
     if (catalog) {
-      const auto connected = catalog->connected_route(bus);
-      if (!saved.empty() && connected.empty())
-        (void)catalog->connect(saved, bus);
-      const auto rebound = catalog->connected_route(bus);
-      if (!rebound.empty())
-        processor_.set_route_identity(bus, rebound);
+      const auto bus = static_cast<std::size_t>(
+          source_mode_ && source_mode_->mode() == 2);
+      for (std::size_t channel = 0; channel < 2; ++channel) {
+        const auto saved = processor_.route_identity(channel);
+        const auto connected = [&] {
+          if constexpr (requires {
+                          catalog->connected_route_channel(bus, channel);
+                        }) {
+            return catalog->connected_route_channel(bus, channel);
+          } else {
+            return catalog->connected_route(bus);
+          }
+        }();
+        if (!saved.empty() && connected.empty())
+          [&] {
+            if constexpr (requires {
+                            catalog->connect_channel(saved, bus, channel);
+                          }) {
+              (void)catalog->connect_channel(saved, bus, channel);
+            } else {
+              (void)catalog->connect(saved, bus);
+            }
+          }();
+        const auto rebound = [&] {
+          if constexpr (requires {
+                          catalog->connected_route_channel(bus, channel);
+                        }) {
+            return catalog->connected_route_channel(bus, channel);
+          } else {
+            return catalog->connected_route(bus);
+          }
+        }();
+        if (!rebound.empty())
+          processor_.set_route_identity(channel, rebound);
+      }
     }
-    route_picker_->set_catalog(catalog, observe_changes);
+    if (route_picker_left_)
+      route_picker_left_->set_catalog(catalog, observe_changes);
+    if (route_picker_right_)
+      route_picker_right_->set_catalog(catalog, false);
   }
 #endif
 
@@ -1017,6 +1192,15 @@ private:
         pulp::state::ListenerRestoreBehavior::Reconcile);
     add_child(std::move(freeze));
 
+    auto push = std::make_unique<PushButtonControl>();
+    push_button_ = push.get();
+    push_button_->set_on_press([this] { request_repaint(); });
+    add_child(std::move(push));
+
+    auto indicators = std::make_unique<CenterIndicators>();
+    center_indicators_ = indicators.get();
+    add_child(std::move(indicators));
+
     auto mode = std::make_unique<ModeControl>();
     source_mode_ = mode.get();
     source_mode_->set_mode(
@@ -1028,8 +1212,10 @@ private:
       store_.set_value(kMode, static_cast<float>(next));
       store_.end_gesture(kMode);
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
-      if (route_picker_)
-        route_picker_->set_source_mode(next);
+      if (route_picker_left_)
+        route_picker_left_->set_source_mode(next);
+      if (route_picker_right_)
+        route_picker_right_->set_source_mode(next);
 #endif
       // Keep the legacy bus parameter coherent for old hosts/states;
       // the visible source control is now the single semantic choice.
@@ -1044,8 +1230,11 @@ private:
           if (changed == kMode && source_mode_) {
             source_mode_->set_mode(static_cast<int>(std::lround(value)));
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
-            if (route_picker_)
-              route_picker_->set_source_mode(
+            if (route_picker_left_)
+              route_picker_left_->set_source_mode(
+                  static_cast<int>(std::lround(value)));
+            if (route_picker_right_)
+              route_picker_right_->set_source_mode(
                   static_cast<int>(std::lround(value)));
 #endif
           }
@@ -1055,15 +1244,44 @@ private:
     add_child(std::move(mode));
 
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
-    auto route_picker = std::make_unique<AudioRoutePicker>();
-    route_picker_ = route_picker.get();
-    route_picker_->set_on_route_connected(
-        [this](std::size_t bus, std::string_view stable_id) {
-          processor_.set_route_identity(bus, stable_id);
+    auto route_picker_left = std::make_unique<AudioRoutePicker>(0, 0);
+    route_picker_left_ = route_picker_left.get();
+    route_picker_left_->set_access_label("Input L: host-owned routing menu");
+    route_picker_left_->set_on_channel_route_connected(
+        [this](std::size_t, std::size_t channel, std::string_view stable_id) {
+          processor_.set_route_identity(channel, stable_id);
         });
-    route_picker_->set_source_mode(
+    route_picker_left_->set_source_mode(
         static_cast<int>(std::lround(store_.get_value(kMode))));
-    add_child(std::move(route_picker));
+    add_child(std::move(route_picker_left));
+    auto route_picker_right = std::make_unique<AudioRoutePicker>(0, 1);
+    route_picker_right_ = route_picker_right.get();
+    route_picker_right_->set_access_label("Input R: host-owned routing menu");
+    route_picker_right_->set_on_channel_route_connected(
+        [this](std::size_t, std::size_t channel, std::string_view stable_id) {
+          processor_.set_route_identity(channel, stable_id);
+        });
+    route_picker_right_->set_source_mode(
+        static_cast<int>(std::lround(store_.get_value(kMode))));
+    add_child(std::move(route_picker_right));
+#else
+    // Older SDKs can still show the complete stereo routing UX while the
+    // host catalog capability is being adopted. These selectors are upgraded
+    // in-place by the catalog-backed implementation when available.
+    auto route_left = std::make_unique<pulp::view::ComboBox>();
+    route_picker_left_fallback_ = route_left.get();
+    route_picker_left_fallback_->set_id("beadsy-audio-route-left");
+    route_picker_left_fallback_->set_access_label("Input L: host routing menu");
+    route_picker_left_fallback_->set_items({"L IN"});
+    route_picker_left_fallback_->set_selected_silent(0);
+    add_child(std::move(route_left));
+    auto route_right = std::make_unique<pulp::view::ComboBox>();
+    route_picker_right_fallback_ = route_right.get();
+    route_picker_right_fallback_->set_id("beadsy-audio-route-right");
+    route_picker_right_fallback_->set_access_label("Input R: host routing menu");
+    route_picker_right_fallback_->set_items({"R IN"});
+    route_picker_right_fallback_->set_selected_silent(0);
+    add_child(std::move(route_right));
 #endif
 
     auto grip = std::make_unique<ResizeGrip>(processor_);
@@ -1103,9 +1321,26 @@ private:
       freeze_mode_->set_position(pulp::view::View::Position::absolute);
       freeze_mode_->set_bounds({x, y, width, height});
     }
+    if (push_button_) {
+      const float unit = std::min(sx, sy);
+      const float diameter = 7.0f * unit;
+      const float x = 8.7f * sx - diameter * 0.5f;
+      const float y = (128.5f - 51.7f) * sy - diameter * 0.5f;
+      push_button_->set_position(pulp::view::View::Position::absolute);
+      push_button_->set_bounds({x, y, diameter, diameter});
+    }
+    if (center_indicators_) {
+      const float unit = std::min(sx, sy);
+      const float w = 12.0f * unit;
+      const float h = 5.0f * unit;
+      const float x = 35.4f * sx - w * 0.5f;
+      const float y = (128.5f - 77.0f) * sy - h * 0.5f;
+      center_indicators_->set_position(pulp::view::View::Position::absolute);
+      center_indicators_->set_bounds({x, y, w, h});
+    }
     if (source_mode_) {
       const float unit = std::min(sx, sy);
-      const float mode_width = 26.0f * unit;
+      const float mode_width = 20.0f * unit;
       const float mode_height = 5.5f * unit;
       // Software source selection occupies the reclaimed lower jack area;
       // keep the original printed header unobstructed.
@@ -1115,14 +1350,34 @@ private:
       source_mode_->set_bounds({x, y, mode_width, mode_height});
     }
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
-    if (route_picker_) {
+    if (route_picker_left_ || route_picker_right_) {
       const float unit = std::min(sx, sy);
-      const float route_width = 26.0f * unit;
+      const float route_width = 20.0f * unit;
       const float route_height = 5.5f * unit;
-      const float x = 64.0f * sx - route_width * 0.5f;
       const float y = (128.5f - 8.0f) * sy - route_height * 0.5f;
-      route_picker_->set_position(pulp::view::View::Position::absolute);
-      route_picker_->set_bounds({x, y, route_width, route_height});
+      if (route_picker_left_) {
+        route_picker_left_->set_position(pulp::view::View::Position::absolute);
+        route_picker_left_->set_bounds({12.0f * sx - route_width * 0.5f, y, route_width, route_height});
+      }
+      if (route_picker_right_) {
+        route_picker_right_->set_position(pulp::view::View::Position::absolute);
+        route_picker_right_->set_bounds({58.8f * sx - route_width * 0.5f, y, route_width, route_height});
+      }
+    }
+#else
+    if (route_picker_left_fallback_ || route_picker_right_fallback_) {
+      const float unit = std::min(sx, sy);
+      const float route_width = 20.0f * unit;
+      const float route_height = 5.5f * unit;
+      const float y = (128.5f - 8.0f) * sy - route_height * 0.5f;
+      if (route_picker_left_fallback_) {
+        route_picker_left_fallback_->set_position(pulp::view::View::Position::absolute);
+        route_picker_left_fallback_->set_bounds({12.0f * sx - route_width * 0.5f, y, route_width, route_height});
+      }
+      if (route_picker_right_fallback_) {
+        route_picker_right_fallback_->set_position(pulp::view::View::Position::absolute);
+        route_picker_right_fallback_->set_bounds({58.8f * sx - route_width * 0.5f, y, route_width, route_height});
+      }
     }
 #endif
     if (resize_grip_) {
@@ -1147,9 +1402,15 @@ private:
   pulp::state::ListenerToken seed_mode_binding_;
   FreezeControl *freeze_mode_ = nullptr;
   pulp::state::ListenerToken freeze_mode_binding_;
+  PushButtonControl *push_button_ = nullptr;
+  CenterIndicators *center_indicators_ = nullptr;
   ModeControl *source_mode_ = nullptr;
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
-  AudioRoutePicker *route_picker_ = nullptr;
+  AudioRoutePicker *route_picker_left_ = nullptr;
+  AudioRoutePicker *route_picker_right_ = nullptr;
+#else
+  pulp::view::ComboBox *route_picker_left_fallback_ = nullptr;
+  pulp::view::ComboBox *route_picker_right_fallback_ = nullptr;
 #endif
   ResizeGrip *resize_grip_ = nullptr;
   pulp::state::ListenerToken source_mode_binding_;
