@@ -456,7 +456,7 @@ public:
                             std::size_t channel_index = 0)
       : bus_index_(bus_index), channel_index_(channel_index) {
     set_id("beadsy-audio-route");
-    set_access_label("Audio route: host-owned routing menu");
+    set_access_label(channel_label() + ": host-owned routing menu");
     set_access_disabled("true");
     set_items({"Host-owned routing menu"});
     set_selected_silent(0);
@@ -524,7 +524,7 @@ public:
     }();
     route_ids_.clear();
     std::vector<std::string> labels;
-    labels.emplace_back("Select host route…");
+    labels.emplace_back(channel_label());
     int selected = 0;
     for (const auto &route : routes) {
       route_ids_.push_back(route.stable_id);
@@ -563,7 +563,8 @@ public:
     set_selected_silent(selected);
     update_enabled_state();
     if (selected > 0)
-      set_access_label("Audio route: " + selected_text() + " (host-owned)");
+      set_access_label(channel_label() + ": " + selected_text() +
+                       " (host-owned)");
   }
 
   void refresh_if_needed() {
@@ -599,13 +600,18 @@ private:
     set_enabled(enabled);
     set_access_disabled(enabled ? "false" : "true");
     if (!catalog_) {
-      set_access_label("Audio route: host-owned routing menu");
+      set_access_label(channel_label() + ": host-owned routing menu");
     } else if (source_mode_ == 0) {
       set_access_label(
-          "Audio route: MIDI synth selected; host input routing unavailable");
+          channel_label() +
+          ": MIDI synth selected; host input routing unavailable");
     } else if (!has_routes()) {
-      set_access_label("Audio route: no host sources available");
+      set_access_label(channel_label() + ": no host sources available");
     }
+  }
+
+  std::string channel_label() const {
+    return channel_index_ == 0 ? "Input L" : "Input R";
   }
 
   std::size_t bus_index_ = 0;
@@ -643,14 +649,16 @@ public:
     }();
     if (!connected) {
       refresh_routes();
-      set_access_label("Audio route unavailable; use the host routing menu");
+      set_access_label(channel_label() +
+                       ": route unavailable; use the host routing menu");
       return;
     }
     if (on_route_connected_)
       on_route_connected_(bus_index_, route_id);
     if (on_channel_route_connected_)
       on_channel_route_connected_(bus_index_, channel_index_, route_id);
-    set_access_label("Audio route: " + selected_text() + " (host-owned)");
+    set_access_label(channel_label() + ": " + selected_text() +
+                     " (host-owned)");
   }
 };
 

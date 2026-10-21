@@ -21,8 +21,10 @@ TEST_CASE("Beadsy clean-room panel scaffold names the product and bound controls
     const std::string_view panel(kBeadsyPanelSvg);
   REQUIRE((status == "independent scaffold; panel artwork opt-in disabled or unavailable" ||
            status == "reviewed Beads panel artwork (private opt-in)" ||
-           status == "authorized Beads panel artwork"));
+           status == "authorized Beads panel artwork" ||
+           status == "authorized Beads panel artwork (rasterized Illustrator import)"));
     if (status == "authorized Beads panel artwork" ||
+        status == "authorized Beads panel artwork (rasterized Illustrator import)" ||
         status == "reviewed Beads panel artwork (private opt-in)") {
         // A rights-cleared or private comparison probe is intentionally passed
         // through unchanged; scaffold assertions apply only to clean checkouts.
@@ -96,15 +98,31 @@ public:
     std::vector<pulp::host::AudioRouteInfo> enumerate() const override { return routes; }
     void set_change_callback(ChangeCallback callback) override { callback_ = std::move(callback); }
     bool connect(std::string_view stable_id, std::size_t bus_index) override {
-        if (bus_index > 1 || stable_id != "track:piano") return false;
+        return connect_channel(stable_id, bus_index, 0);
+    }
+    bool connect_channel(std::string_view stable_id, std::size_t bus_index,
+                         std::size_t channel) override {
+        if (bus_index > 1 || channel > 1 || stable_id != "track:piano")
+            return false;
         selected_[bus_index] = std::string(stable_id);
+        selected_channels_[bus_index][channel] = std::string(stable_id);
         return true;
     }
     std::string connected_route(std::size_t bus_index) const override {
         return bus_index < selected_.size() ? selected_[bus_index] : std::string{};
     }
+    std::string connected_route_channel(std::size_t bus_index,
+                                        std::size_t channel) const override {
+        return bus_index < selected_channels_.size() && channel < 2
+                   ? selected_channels_[bus_index][channel]
+                   : std::string{};
+    }
     void notify() { if (callback_) callback_(); }
-    void clear_selection() { selected_.fill({}); }
+    void clear_selection() {
+        selected_.fill({});
+        for (auto& channels : selected_channels_)
+            channels.fill({});
+    }
     std::vector<pulp::host::AudioRouteInfo> routes{
         {"input:mic", "Mic", pulp::host::AudioRouteKind::PhysicalInput, 1, true},
         {"track:piano", "Piano", pulp::host::AudioRouteKind::Track, 2, true},
@@ -113,6 +131,7 @@ public:
 private:
     ChangeCallback callback_;
     std::array<std::string, 2> selected_{};
+    std::array<std::array<std::string, 2>, 2> selected_channels_{};
 };
 }
 
@@ -160,6 +179,32 @@ TEST_CASE("Beadsy clears a dropped route identity after catalog refresh") {
     native->layout_children();
     REQUIRE(processor.route_identity(0).empty());
 }
+
+TEST_CASE("Beadsy exposes independent stereo host route pickers") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    REQUIRE(native->audio_route_picker() != nullptr);
+    REQUIRE(native->audio_route_picker_right() != nullptr);
+    REQUIRE(native->audio_route_picker()->bus_index() == 0);
+    REQUIRE(native->audio_route_picker_right()->bus_index() == 0);
+    REQUIRE(native->audio_route_picker()->access_label().find("Input L") != std::string::npos);
+    REQUIRE(native->audio_route_picker_right()->access_label().find("Input R") != std::string::npos);
+
+    EditorRouteCatalog catalog;
+    native->set_audio_route_catalog(&catalog, true);
+    native->source_mode_control()->set_mode(1);
+    native->audio_route_picker()->set_source_mode(1);
+    native->audio_route_picker_right()->set_source_mode(1);
+    native->audio_route_picker()->set_selected(2);
+    native->audio_route_picker_right()->set_selected(2);
+    REQUIRE(catalog.connected_route_channel(0, 0) == "track:piano");
+    REQUIRE(catalog.connected_route_channel(0, 1) == "track:piano");
+}
 #endif
 
 TEST_CASE("Beadsy knob skin keeps measured cap and pointer proportions") {
@@ -177,6 +222,13 @@ TEST_CASE("Beadsy knob skin keeps measured cap and pointer proportions") {
     REQUIRE(pointer_inner_to_outer <= 0.10f);
     REQUIRE(beadsy::detail::PanelKnob::kPointerOuterHalfWidthFraction <
             beadsy::detail::PanelKnob::kPointerInnerHalfWidthFraction);
+}
+
+TEST_CASE("Beadsy utility pots stay black across editor scale") {
+    REQUIRE(beadsy::detail::PanelKnob::is_utility_diameter(3.0f));
+    REQUIRE(beadsy::detail::PanelKnob::is_utility_diameter(6.0f));
+    REQUIRE_FALSE(beadsy::detail::PanelKnob::is_utility_diameter(7.2f));
+    REQUIRE_FALSE(beadsy::detail::PanelKnob::is_utility_diameter(18.5f));
 }
 
 TEST_CASE("Beadsy native editor captures a non-empty faithful panel frame") {
@@ -285,11 +337,7 @@ TEST_CASE("Beadsy binds source-backed auxiliary controls without decorative port
     // The visible source selector replaces the legacy secondary bus toggle;
     // the compatibility parameter remains state/automation-only.
     REQUIRE(native->child_count() ==
-#if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
-            17
-#else
-            16
-#endif
+            20
     );
 
     // Five primary controls plus seven PCB-net-backed auxiliary pots are
@@ -451,4 +499,58 @@ TEST_CASE("Beadsy bound editor knob emits a host automation gesture") {
     REQUIRE(begins == std::vector<pulp::state::ParamID>{beadsy::kDensity});
     REQUIRE(ends == std::vector<pulp::state::ParamID>{beadsy::kDensity});
     REQUIRE(store.get_value(beadsy::kDensity) > before);
+}
+
+TEST_CASE("Beadsy resize grip forwards an accepted host resize request") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+
+    uint32_t requested_width = 0;
+    uint32_t requested_height = 0;
+    processor.set_editor_resize_handler(
+        [&](uint32_t width, uint32_t height) {
+            requested_width = width;
+            requested_height = height;
+            return true;
+        });
+
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+
+    beadsy::ResizeGrip* grip = nullptr;
+    for (std::size_t i = 0; i < native->child_count(); ++i) {
+        if (!grip)
+            grip = dynamic_cast<beadsy::ResizeGrip*>(native->child_at(i));
+    }
+    REQUIRE(grip != nullptr);
+
+    pulp::view::MouseEvent press;
+    press.phase = pulp::view::MousePhase::press;
+    press.is_down = true;
+    press.pointer_id = 1;
+    press.window_position = {195.0f, 358.0f};
+    grip->on_mouse_event(press);
+
+    pulp::view::MouseEvent drag;
+    drag.phase = pulp::view::MousePhase::drag;
+    drag.is_down = true;
+    drag.pointer_id = 1;
+    drag.has_movement_delta = true;
+    drag.movement_x = 40.0f;
+    drag.movement_y = 4.0f;
+    drag.window_position = {235.0f, 362.0f};
+    grip->on_mouse_event(drag);
+    REQUIRE(requested_width == 241);
+    REQUIRE(requested_height == 436);
+
+    pulp::view::MouseEvent release;
+    release.phase = pulp::view::MousePhase::release;
+    release.pointer_id = 1;
+    grip->on_mouse_event(release);
+    processor.set_editor_resize_handler({});
 }
