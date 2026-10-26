@@ -154,6 +154,58 @@ private:
     std::array<std::string, 2> selected_{};
     std::array<std::array<std::string, 2>, 2> selected_channels_{};
 };
+
+class DistinctBusRouteCatalog final : public pulp::host::AudioRouteCatalog {
+public:
+    std::vector<pulp::host::AudioRouteInfo> enumerate() const override {
+        return routes;
+    }
+    void set_change_callback(ChangeCallback callback) override {
+        callback_ = std::move(callback);
+    }
+    bool connect(std::string_view stable_id, std::size_t bus_index) override {
+        return connect_channel(stable_id, bus_index, 0);
+    }
+    bool connect_channel(std::string_view stable_id, std::size_t bus_index,
+                         std::size_t channel) override {
+        bool known_route = false;
+        for (const auto &route : routes)
+            known_route = known_route || route.stable_id == stable_id;
+        if (bus_index > 1 || channel > 1 || !known_route)
+            return false;
+        selected_[bus_index] = std::string(stable_id);
+        selected_channels_[bus_index][channel] = std::string(stable_id);
+        return true;
+    }
+    std::string connected_route(std::size_t bus_index) const override {
+        return bus_index < selected_.size() ? selected_[bus_index]
+                                            : std::string{};
+    }
+    std::string connected_route_channel(std::size_t bus_index,
+                                        std::size_t channel) const override {
+        return bus_index < selected_channels_.size() && channel < 2
+                   ? selected_channels_[bus_index][channel]
+                   : std::string{};
+    }
+    void notify() {
+        if (callback_)
+            callback_();
+    }
+    std::vector<pulp::host::AudioRouteInfo> routes{
+        {"main:left", "Main Left", pulp::host::AudioRouteKind::Track, 1,
+         true},
+        {"main:right", "Main Right", pulp::host::AudioRouteKind::Track, 1,
+         true},
+        {"side:left", "Side Left", pulp::host::AudioRouteKind::Bus, 1, true},
+        {"side:right", "Side Right", pulp::host::AudioRouteKind::Bus, 1,
+         true},
+    };
+
+private:
+    ChangeCallback callback_;
+    std::array<std::string, 2> selected_{};
+    std::array<std::array<std::string, 2>, 2> selected_channels_{};
+};
 }
 
 TEST_CASE("Beadsy route picker consumes host catalog on the control thread") {
@@ -225,6 +277,41 @@ TEST_CASE("Beadsy exposes independent stereo host route pickers") {
     native->audio_route_picker_right()->set_selected(2);
     REQUIRE(catalog.connected_route_channel(0, 0) == "track:piano");
     REQUIRE(catalog.connected_route_channel(0, 1) == "track:piano");
+}
+
+TEST_CASE("Beadsy refreshes distinct sidechain channel identities") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
+    REQUIRE(native != nullptr);
+
+    DistinctBusRouteCatalog catalog;
+    native->set_audio_route_catalog(&catalog, true);
+    native->source_mode_control()->set_mode(1);
+    auto *left = native->audio_route_picker();
+    auto *right = native->audio_route_picker_right();
+    REQUIRE(left != nullptr);
+    REQUIRE(right != nullptr);
+    left->set_source_mode(1);
+    right->set_source_mode(1);
+    left->set_selected(1);
+    right->set_selected(2);
+    native->layout_children();
+    REQUIRE(processor.route_identity(0) == "main:left");
+    REQUIRE(processor.route_identity(1) == "main:right");
+
+    native->source_mode_control()->set_mode(2);
+    left->set_selected(3);
+    right->set_selected(4);
+    catalog.notify();
+    native->layout_children();
+    REQUIRE(left->bus_index() == 1);
+    REQUIRE(right->bus_index() == 1);
+    REQUIRE(processor.route_identity(0) == "side:left");
+    REQUIRE(processor.route_identity(1) == "side:right");
 }
 #endif
 

@@ -830,12 +830,27 @@ public:
         route_picker_right_->refresh_if_needed();
       const auto bus = static_cast<std::size_t>(
           source_mode_ && source_mode_->mode() == 2);
-      if (route_picker_left_ && route_picker_left_->catalog())
-        processor_.set_route_identity(
-            0, route_picker_left_->catalog()->connected_route(0));
-      if (route_picker_right_ && route_picker_right_->catalog())
-        processor_.set_route_identity(
-            1, route_picker_right_->catalog()->connected_route(1));
+      // Pickers are channel-indexed, while the catalog's legacy
+      // connected_route() accessor is bus-indexed. Prefer the channel-aware
+      // accessor so independent L/R selections survive refreshes and so a
+      // sidechain refresh cannot overwrite the main-bus identity. The
+      // fallback keeps this compatible with older host catalog SDKs.
+      for (std::size_t channel = 0; channel < 2; ++channel) {
+        auto *picker = channel == 0 ? route_picker_left_ : route_picker_right_;
+        if (!picker || !picker->catalog())
+          continue;
+        const auto identity = [&] {
+          if constexpr (requires {
+                          picker->catalog()->connected_route_channel(bus,
+                                                                     channel);
+                        }) {
+            return picker->catalog()->connected_route_channel(bus, channel);
+          } else {
+            return picker->catalog()->connected_route(bus);
+          }
+        }();
+        processor_.set_route_identity(channel, identity);
+      }
     }
 #endif
     layout_controls();
