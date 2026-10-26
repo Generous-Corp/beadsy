@@ -75,6 +75,27 @@ TEST_CASE("Beadsy source control exposes synth and host-routed input modes") {
     REQUIRE(store.get_value(beadsy::kMode) == 0.0f);
 }
 
+TEST_CASE("Beadsy quality button cycles and follows restored state") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    REQUIRE(native->quality_control() != nullptr);
+    REQUIRE(native->quality_control()->quality() == 3);
+
+    native->quality_control()->on_mouse_down({});
+    REQUIRE(store.get_value(beadsy::kQuality) == 0.0f);
+    REQUIRE(native->quality_control()->quality() == 0);
+
+    store.set_value(beadsy::kQuality, 2.0f);
+    REQUIRE(native->quality_control()->quality() == 2);
+    REQUIRE(native->quality_control()->access_label().find("7-bit") !=
+            std::string::npos);
+}
+
 TEST_CASE("Beadsy source control clamps values to the declared bus topology") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;

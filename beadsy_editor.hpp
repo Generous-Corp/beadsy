@@ -321,8 +321,16 @@ public:
   PushButtonControl() {
     set_id("beadsy-push-button");
     set_access_role(pulp::view::View::AccessRole::button);
-    set_access_label("Push button");
+    set_access_label("Quality: 16-bit; click to cycle");
     set_focusable(true);
+  }
+  void set_quality(int quality) {
+    quality_ = std::clamp(quality, 0, 3);
+    static constexpr const char *names[] = {"4-bit", "12-bit", "7-bit", "16-bit"};
+    set_access_label(std::string("Quality: ") + names[quality_] + "; click to cycle");
+    request_repaint();
+  }
+  int quality() const { return quality_; }
   }
   void set_on_press(std::function<void()> callback) {
     on_press_ = std::move(callback);
@@ -332,7 +340,13 @@ public:
     const float r = std::max(2.0f, std::min(b.width, b.height) * 0.40f);
     const float cx = b.width * 0.5f;
     const float cy = b.height * 0.48f;
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(15, 15, 15));
+    static constexpr pulp::canvas::Color colors[] = {
+        pulp::canvas::Color::rgba8(44, 50, 55),
+        pulp::canvas::Color::rgba8(57, 91, 96),
+        pulp::canvas::Color::rgba8(124, 91, 41),
+        pulp::canvas::Color::rgba8(15, 15, 15),
+    };
+    canvas.set_fill_color(colors[quality_]);
     canvas.fill_circle(cx, cy, r);
   }
   void on_mouse_down(pulp::view::Point) override {
@@ -342,6 +356,7 @@ public:
   bool wants_mouse_input() const override { return true; }
 
 private:
+  int quality_ = 3;
   std::function<void()> on_press_;
 };
 
@@ -891,6 +906,7 @@ public:
   }
   void clear_modulation_context() { context_target_.reset(); }
   ModeControl *source_mode_control() const { return source_mode_; }
+  PushButtonControl *quality_control() const { return push_button_; }
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
   AudioRoutePicker *audio_route_picker() const { return route_picker_left_; }
   AudioRoutePicker *audio_route_picker_right() const { return route_picker_right_; }
@@ -1202,7 +1218,20 @@ private:
 
     auto push = std::make_unique<PushButtonControl>();
     push_button_ = push.get();
-    push_button_->set_on_press([this] { request_repaint(); });
+    push_button_->set_quality(static_cast<int>(std::lround(store_.get_value(kQuality))));
+    push_button_->set_on_press([this] {
+      const int next = (push_button_->quality() + 1) % 4;
+      store_.begin_gesture(kQuality);
+      store_.set_value(kQuality, static_cast<float>(next));
+      store_.end_gesture(kQuality);
+    });
+    quality_binding_ = store_.add_listener(
+        [this](pulp::state::ParamID changed, float value) {
+          if (changed == kQuality && push_button_)
+            push_button_->set_quality(static_cast<int>(std::lround(value)));
+        },
+        pulp::state::ListenerThread::Main,
+        pulp::state::ListenerRestoreBehavior::Reconcile);
     add_child(std::move(push));
 
     auto indicators = std::make_unique<CenterIndicators>();
@@ -1411,6 +1440,7 @@ private:
   FreezeControl *freeze_mode_ = nullptr;
   pulp::state::ListenerToken freeze_mode_binding_;
   PushButtonControl *push_button_ = nullptr;
+  pulp::state::ListenerToken quality_binding_;
   CenterIndicators *center_indicators_ = nullptr;
   ModeControl *source_mode_ = nullptr;
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
