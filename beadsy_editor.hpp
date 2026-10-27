@@ -57,6 +57,14 @@ inline pulp::view::Point local_to_root(pulp::view::View *view,
 
 class PanelKnob final : public pulp::view::Knob {
 public:
+  // The converted panel artwork is consistently about 1.8 pt left of the
+  // DXF-to-view affine fit. Keep that calibration in the editor layout rather
+  // than nudging individual controls and losing the relationship between the
+  // source map and the native hit regions.
+  static constexpr float kSourceXCorrectionMm = 0.64f;
+  static constexpr float kSourceYCorrectionMm = 0.24f;
+  static constexpr float kUtilityPaintRadiusFraction = 0.50f;
+
   static constexpr float kCapRadiusFraction = 0.62f;
   static constexpr float kOuterRadiusFraction = 1.14f;
   static constexpr float kPointerInnerHalfWidthFraction = 0.10f;
@@ -67,6 +75,14 @@ public:
     // margin for the shadow and modulation arc while keeping the ring at
     // the mapped physical diameter.
     return std::min(width, height * 0.78f) * 0.43f;
+  }
+
+  static float utility_paint_radius_for_bounds(float width, float height) {
+    // Utility caps cover the source panel's outlined footprint.  Their view
+    // bounds remain a little taller so the colored strip and printed icon can
+    // continue below the cap without changing the hit target.
+    return std::min(width, height * 0.78f) *
+           kUtilityPaintRadiusFraction;
   }
 
   // Utility pots are identified in source panel units, rather than by their
@@ -99,7 +115,9 @@ public:
     // below it; using the tall bounds' centre here made the strip peek above
     // the black cap at fractional editor scales.
     const float cy = utility_knob ? b.width * 0.5f : b.height * 0.43f;
-    const float radius = paint_radius_for_bounds(b.width, b.height);
+    const float radius = utility_knob
+                             ? utility_paint_radius_for_bounds(b.width, b.height)
+                             : paint_radius_for_bounds(b.width, b.height);
     const float angle =
         pulp::view::Knob::start_angle +
         (pulp::view::Knob::end_angle - pulp::view::Knob::start_angle) * value();
@@ -364,6 +382,11 @@ private:
 /// semantics, so they remain non-parameterized until documentation maps them.
 class CenterIndicators final : public pulp::view::View {
 public:
+  static constexpr float kLedXFraction = 0.23f;
+  static constexpr float kButtonXFraction = 0.77f;
+  static constexpr float kLedRadiusMm = 1.60f;
+  static constexpr float kButtonRadiusMm = 3.72f;
+
   CenterIndicators() {
     set_id("beadsy-center-indicators");
     set_access_role(pulp::view::View::AccessRole::image);
@@ -371,12 +394,20 @@ public:
   }
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
-    const float r = std::max(1.0f, std::min(b.width, b.height) * 0.22f);
+    const float unit = b.width / 12.0f;
     const float y = b.height * 0.5f;
+    const float led_radius = std::max(1.0f, kLedRadiusMm * unit);
+    const float button_radius = std::max(1.0f, kButtonRadiusMm * unit);
     canvas.set_fill_color(pulp::canvas::Color::rgba8(195, 179, 159));
-    canvas.fill_circle(b.width * 0.28f, y, r);
+    canvas.fill_circle(b.width * kLedXFraction, y, led_radius);
+    canvas.set_stroke_color(pulp::canvas::Color::rgba8(137, 131, 123));
+    canvas.set_line_width(std::max(0.8f, unit * 0.18f));
+    canvas.stroke_circle(b.width * kLedXFraction, y, led_radius);
     canvas.set_fill_color(pulp::canvas::Color::rgba8(19, 20, 22));
-    canvas.fill_circle(b.width * 0.60f, y, r * 1.18f);
+    canvas.fill_circle(b.width * kButtonXFraction, y, button_radius * 0.90f);
+    canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
+    canvas.set_line_width(std::max(0.8f, unit * 0.18f));
+    canvas.stroke_circle(b.width * kButtonXFraction, y, button_radius);
   }
   bool wants_mouse_input() const override { return false; }
 };
@@ -1203,6 +1234,10 @@ private:
       const float diameter = p.r * 2.0f;
       auto knob = std::make_unique<detail::PanelKnob>(p.name, diameter);
       auto *raw = knob.get();
+      // The rendered utility cap is intentionally slightly larger than its
+      // mapped DXF diameter. Give the native hit region the same small margin
+      // so a click on the cap edge still begins the normal Knob gesture.
+      raw->set_hit_slop(std::max(1.0f, diameter * 0.10f));
       if (std::string_view(p.name) == "Feedback")
         raw->set_accent(pulp::canvas::Color::rgba8(24, 165, 175));
       else if (std::string_view(p.name) == "Dry Wet")
@@ -1390,8 +1425,11 @@ private:
     const float sy = height / 128.5f;
     for (const auto &c : controls_) {
       const float diameter = c.radius * 2.0f * std::min(sx, sy);
-      const float x = c.x * sx - diameter * 0.5f;
-      const float y = (128.5f - c.y) * sy - diameter * 0.5f;
+      const float x = (c.x - detail::PanelKnob::kSourceXCorrectionMm) * sx -
+                      diameter * 0.5f;
+      const float y =
+          (128.5f - (c.y - detail::PanelKnob::kSourceYCorrectionMm)) * sy -
+          diameter * 0.5f;
       c.knob->set_position(pulp::view::View::Position::absolute);
       const float control_height = detail::PanelKnob::is_utility_diameter(diameter)
                                        ? diameter * 2.35f
@@ -1426,10 +1464,14 @@ private:
     }
     if (center_indicators_) {
       const float unit = std::min(sx, sy);
+      // These two source markers are independent controls: a small LED at
+      // roughly 81 pt and a larger outlined button at roughly 100 pt. Keep
+      // their centers and vertical station tied to the panel artwork instead
+      // of centering two equal dots in a generic box.
       const float w = 12.0f * unit;
-      const float h = 5.0f * unit;
-      const float x = 35.4f * sx - w * 0.5f;
-      const float y = (128.5f - 77.0f) * sy - h * 0.5f;
+      const float h = 8.0f * unit;
+      const float x = 31.92f * sx - w * 0.5f;
+      const float y = (128.5f - 83.24f) * sy - h * 0.5f;
       center_indicators_->set_position(pulp::view::View::Position::absolute);
       center_indicators_->set_bounds({x, y, w, h});
     }

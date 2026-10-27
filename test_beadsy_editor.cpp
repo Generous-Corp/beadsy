@@ -428,6 +428,66 @@ TEST_CASE("Beadsy utility pots stay black across editor scale") {
     REQUIRE(beadsy::detail::PanelKnob::is_utility_diameter(6.0f));
     REQUIRE_FALSE(beadsy::detail::PanelKnob::is_utility_diameter(7.2f));
     REQUIRE_FALSE(beadsy::detail::PanelKnob::is_utility_diameter(18.5f));
+    constexpr float diameter = 17.0f;
+    REQUIRE(beadsy::detail::PanelKnob::utility_paint_radius_for_bounds(
+                diameter, diameter * 2.35f) >
+            beadsy::detail::PanelKnob::paint_radius_for_bounds(
+                diameter, diameter * 2.35f));
+}
+
+TEST_CASE("Beadsy auxiliary knobs are interactive at their painted centers") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+
+    constexpr std::array<beadsy::ParamIDs, 7> auxiliary_ids = {
+        beadsy::kFeedback, beadsy::kDryWet, beadsy::kReverb,
+        beadsy::kTimeAmount, beadsy::kSizeAmount, beadsy::kShapeAmount,
+        beadsy::kPitchAmount};
+    for (std::size_t i = 0; i < auxiliary_ids.size(); ++i) {
+        INFO("auxiliary index " << i);
+        auto *knob = dynamic_cast<beadsy::detail::PanelKnob *>(
+            native->child_at(i + 5));
+        REQUIRE(knob != nullptr);
+        REQUIRE(knob->enabled());
+        REQUIRE_FALSE(knob->hit_slop().empty());
+        const auto before = store.get_value(auxiliary_ids[i]);
+        const auto b = knob->bounds();
+        const pulp::view::Point center{b.x + b.width * 0.5f,
+                                       b.y + b.height * 0.5f};
+        native->simulate_drag(center, {center.x, center.y - 35.0f}, 3);
+        REQUIRE(store.get_value(auxiliary_ids[i]) > before);
+    }
+}
+
+TEST_CASE("Beadsy density indicators use separated source-sized LED and button") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+
+    beadsy::CenterIndicators *indicators = nullptr;
+    for (std::size_t i = 0; i < native->child_count(); ++i) {
+        if ((indicators = dynamic_cast<beadsy::CenterIndicators *>(
+                 native->child_at(i))))
+            break;
+    }
+    REQUIRE(indicators != nullptr);
+    const auto b = indicators->bounds();
+    REQUIRE(b.height > 20.0f);
+    REQUIRE(b.y > 115.0f);
+    REQUIRE(b.y < 130.0f);
 }
 
 TEST_CASE("Beadsy native editor captures a non-empty faithful panel frame") {
