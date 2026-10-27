@@ -1,6 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <pulp/state/store.hpp>
 #include <pulp/view/screenshot.hpp>
+#include <pulp/view/pointer_dispatch.hpp>
 #include "beadsy.hpp"
 #include "beadsy_editor.hpp"
 
@@ -64,14 +65,34 @@ TEST_CASE("Beadsy source control exposes synth and host-routed input modes") {
     REQUIRE(native != nullptr);
     REQUIRE(native->source_mode_control() != nullptr);
     REQUIRE(native->source_mode_control()->mode() == 0);
-    native->source_mode_control()->on_mouse_down({});
-    REQUIRE(native->source_mode_control()->mode() == 1);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+    auto *source = native->source_mode_control();
+    const auto b = source->bounds();
+    native->simulate_click({b.x + b.width * 0.5f,
+                             b.y + b.height * 0.5f});
+    REQUIRE(source->is_open());
+    pulp::view::KeyEvent down{.key = pulp::view::KeyCode::down};
+    REQUIRE(source->on_key_event(down));
+    pulp::view::KeyEvent enter{.key = pulp::view::KeyCode::enter};
+    REQUIRE(source->on_key_event(enter));
+    REQUIRE(source->mode() == 1);
     REQUIRE(store.get_value(beadsy::kMode) == 1.0f);
-    native->source_mode_control()->on_mouse_down({});
-    REQUIRE(native->source_mode_control()->mode() == 2);
+    native->simulate_click({b.x + b.width * 0.5f,
+                             b.y + b.height * 0.5f});
+    REQUIRE(source->is_open());
+    REQUIRE(source->on_key_event(down));
+    REQUIRE(source->on_key_event(enter));
+    REQUIRE(source->mode() == 2);
     REQUIRE(store.get_value(beadsy::kMode) == 2.0f);
-    native->source_mode_control()->on_mouse_down({});
-    REQUIRE(native->source_mode_control()->mode() == 0);
+    native->simulate_click({b.x + b.width * 0.5f,
+                             b.y + b.height * 0.5f});
+    REQUIRE(source->is_open());
+    pulp::view::KeyEvent up{.key = pulp::view::KeyCode::up};
+    REQUIRE(source->on_key_event(up));
+    REQUIRE(source->on_key_event(up));
+    REQUIRE(source->on_key_event(enter));
+    REQUIRE(source->mode() == 0);
     REQUIRE(store.get_value(beadsy::kMode) == 0.0f);
 }
 
@@ -110,6 +131,74 @@ TEST_CASE("Beadsy source control clamps values to the declared bus topology") {
     REQUIRE(native->source_mode_control()->mode() == beadsy::kAvailableSourceModeMax);
     native->source_mode_control()->set_mode(-99);
     REQUIRE(native->source_mode_control()->mode() == 0);
+}
+
+TEST_CASE("Beadsy source control is a real dropdown with keyboard dismissal") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    auto* source = native->source_mode_control();
+    REQUIRE(source != nullptr);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+    REQUIRE(source->items().size() == 3);
+    REQUIRE_FALSE(source->is_open());
+
+    pulp::view::MouseEvent press;
+    press.phase = pulp::view::MousePhase::press;
+    press.is_down = true;
+    press.position = {source->bounds().width * 0.5f,
+                      source->bounds().height * 0.5f};
+    source->on_mouse_event(press);
+    REQUIRE(source->is_open());
+
+    pulp::view::KeyEvent down{.key = pulp::view::KeyCode::down};
+    REQUIRE(source->on_key_event(down));
+    pulp::view::KeyEvent enter{.key = pulp::view::KeyCode::enter};
+    REQUIRE(source->on_key_event(enter));
+    REQUIRE_FALSE(source->is_open());
+    REQUIRE(source->mode() == 1);
+    REQUIRE(store.get_value(beadsy::kMode) == 1.0f);
+
+    source->set_mode(0);
+    store.set_value(beadsy::kMode, 0.0f);
+    source->on_mouse_event(press);
+    REQUIRE(source->is_open());
+    pulp::view::KeyEvent escape{.key = pulp::view::KeyCode::escape};
+    REQUIRE(source->on_key_event(escape));
+    REQUIRE_FALSE(source->is_open());
+    REQUIRE(source->mode() == 0);
+    REQUIRE(store.get_value(beadsy::kMode) == 0.0f);
+}
+
+TEST_CASE("Beadsy source dropdown is reachable through root pointer dispatch") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+    auto* source = native->source_mode_control();
+    REQUIRE(source != nullptr);
+    REQUIRE_FALSE(source->is_open());
+    const auto b = source->bounds();
+    native->simulate_click({b.x + b.width * 0.5f,
+                             b.y + b.height * 0.5f});
+    REQUIRE(source->is_open());
+    pulp::view::KeyEvent down{.key = pulp::view::KeyCode::down};
+    REQUIRE(source->on_key_event(down));
+    pulp::view::KeyEvent enter{.key = pulp::view::KeyCode::enter};
+    REQUIRE(source->on_key_event(enter));
+    REQUIRE_FALSE(source->is_open());
+    REQUIRE(source->mode() == 1);
+    REQUIRE(store.get_value(beadsy::kMode) == 1.0f);
 }
 
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
@@ -304,6 +393,8 @@ TEST_CASE("Beadsy refreshes distinct sidechain channel identities") {
     REQUIRE(processor.route_identity(1) == "main:right");
 
     native->source_mode_control()->set_mode(2);
+    left->set_source_mode(2);
+    right->set_source_mode(2);
     left->set_selected(3);
     right->set_selected(4);
     catalog.notify();
@@ -434,6 +525,33 @@ TEST_CASE("Beadsy editor exposes a right-click modulation target seam") {
     REQUIRE_FALSE(native->modulation_context_target().has_value());
 }
 
+TEST_CASE("Beadsy knob opens modulation menu through root right-click dispatch") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+
+    auto* density = dynamic_cast<beadsy::detail::PanelKnob*>(native->child_at(0));
+    REQUIRE(density != nullptr);
+    const auto b = density->bounds();
+    REQUIRE(pulp::view::dispatch_context_menu(
+        *native, {b.x + b.width * 0.5f, b.y + b.height * 0.5f}));
+
+    REQUIRE(native->modulation_context_target() == beadsy::kDensity);
+    REQUIRE(native->child_count() > 20);
+    auto* menu = dynamic_cast<pulp::view::ContextMenu*>(native->child_at(native->child_count() - 1));
+    REQUIRE(menu != nullptr);
+    REQUIRE(menu->items().size() == 4);
+
+    // The shared menu owns keyboard navigation and dismissal; its keyboard
+    // contract is covered by the focused ContextMenu tests below.
+}
+
 TEST_CASE("Beadsy binds source-backed auxiliary controls without decorative ports") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
@@ -547,16 +665,18 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
     REQUIRE(menu != nullptr);
     REQUIRE(native->modulation_context_target() == beadsy::kDensity);
     REQUIRE(menu->items().size() == 4);
-    REQUIRE(menu->items()[0].control_kind ==
+    REQUIRE(menu->items()[0].control ==
             pulp::view::ContextMenu::Item::ControlKind::toggle);
-    REQUIRE(menu->items()[1].control_kind ==
+    REQUIRE(menu->items()[1].control ==
             pulp::view::ContextMenu::Item::ControlKind::slider);
-    REQUIRE(menu->items()[2].control_kind ==
+    REQUIRE(menu->items()[2].control ==
             pulp::view::ContextMenu::Item::ControlKind::slider);
     REQUIRE(menu->items()[3].label == "Reset LFO");
 
-    const_cast<pulp::view::ContextMenu::Item &>(menu->items()[0])
-        .set_toggled(true);
+    REQUIRE(menu->items()[0].on_change);
+    auto toggle = menu->items()[0];
+    toggle.checked = true;
+    menu->items()[0].on_change(toggle);
     REQUIRE(processor.lfo(beadsy::kDensity).enabled);
     REQUIRE(processor.lfo(beadsy::kDensity).depth > 0.0f);
     REQUIRE(menu->items()[1].normalized_value >= 0.0f);

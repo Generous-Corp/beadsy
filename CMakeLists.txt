@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(Beadsy VERSION 1.0.0 LANGUAGES CXX)
+project(Beadsy VERSION 1.0.2 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Pulp CONFIG REQUIRED)
 
 option(BEADSY_USE_REVIEWED_PANEL_ARTWORK
-       "Embed the locally reviewed Beads panel asset for private visual comparison"
-       OFF)
+       "Embed the reviewed Beadsy panel vector asset"
+       ON)
 
 # The converted panel is an authoring-time, rights-gated vector asset. Embed it
 # into the editor so installed plugins never read a developer checkout. A clean
@@ -17,7 +17,27 @@ option(BEADSY_USE_REVIEWED_PANEL_ARTWORK
 # not depend on an ignored developer artifact.
 set(BEADSY_PANEL_ASSET "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel-beadsy.svg")
 set(BEADSY_PANEL_PNG "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel.png")
-if(BEADSY_USE_REVIEWED_PANEL_ARTWORK AND EXISTS "${BEADSY_PANEL_ASSET}")
+# The Illustrator export uses clip paths and compound paths that are not
+# rendered consistently by every Skia SVG backend.  Prefer the authoring-time
+# rasterization after removing its red construction circles; retain the SVG
+# path below as the import/design source and fallback for clean checkouts.
+set(BEADSY_PANEL_CLEAN_PNG "${CMAKE_CURRENT_SOURCE_DIR}/provenance/generated/beads-panel-clean.png")
+if(BEADSY_USE_REVIEWED_PANEL_ARTWORK AND EXISTS "${BEADSY_PANEL_CLEAN_PNG}")
+    file(READ "${BEADSY_PANEL_CLEAN_PNG}" BEADSY_PANEL_PNG_HEX HEX)
+    string(REGEX REPLACE "([0-9A-Fa-f][0-9A-Fa-f])" "0x\\1," BEADSY_PANEL_PNG_BYTES "${BEADSY_PANEL_PNG_HEX}")
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/beadsy_panel_png.hpp.in
+                   ${CMAKE_CURRENT_BINARY_DIR}/beadsy_panel_png.hpp @ONLY)
+    execute_process(COMMAND base64 -i "${BEADSY_PANEL_CLEAN_PNG}"
+                    OUTPUT_VARIABLE BEADSY_PANEL_PNG_B64
+                    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    string(REPLACE "\n" "" BEADSY_PANEL_PNG_B64 "${BEADSY_PANEL_PNG_B64}")
+    set(BEADSY_PANEL_SVG [=[
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.693 364.252">
+  <image href="data:image/png;base64,@BEADSY_PANEL_PNG_B64@" x="0" y="0" width="200.693" height="364.252" preserveAspectRatio="none"/>
+</svg>]=])
+    string(CONFIGURE "${BEADSY_PANEL_SVG}" BEADSY_PANEL_SVG @ONLY)
+    set(BEADSY_PANEL_SOURCE_STATUS "authorized Beads panel artwork (rasterized Illustrator import)")
+elseif(BEADSY_USE_REVIEWED_PANEL_ARTWORK AND EXISTS "${BEADSY_PANEL_ASSET}")
     file(READ "${BEADSY_PANEL_ASSET}" BEADSY_PANEL_SVG)
     set(BEADSY_PANEL_SOURCE_STATUS "authorized Beads panel artwork")
 elseif(BEADSY_USE_REVIEWED_PANEL_ARTWORK AND EXISTS "${BEADSY_PANEL_PNG}")
@@ -168,7 +188,8 @@ if(TARGET Pulp::view)
     endif()
     target_include_directories(Beadsy-editor-test PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-    target_compile_definitions(Beadsy-editor-test PRIVATE BEADSY_NATIVE_EDITOR=1)
+    target_compile_definitions(Beadsy-editor-test PRIVATE
+        BEADSY_NATIVE_EDITOR=1 PULP_CONTEXT_MENU_INLINE_CONTROLS=1)
     catch_discover_tests(Beadsy-editor-test)
 endif()
 
@@ -177,7 +198,7 @@ pulp_add_plugin(Beadsy
     PLUGIN_NAME     "Beadsy"
     BUNDLE_ID       "com.independent-audio.beadsy"
     MANUFACTURER    "Independent Audio"
-    VERSION         "1.0.0"
+    VERSION         "1.0.2"
     CATEGORY        Instrument
     ACCEPTS_MIDI
     PLUGIN_CODE     "Bead"
@@ -195,7 +216,8 @@ foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AUv3 AAX Standalone)
                 target_link_libraries(Beadsy_${_fmt} PRIVATE Pulp::host)
             endif()
             target_include_directories(Beadsy_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-            target_compile_definitions(Beadsy_${_fmt} PRIVATE BEADSY_NATIVE_EDITOR=1)
+            target_compile_definitions(Beadsy_${_fmt} PRIVATE
+                BEADSY_NATIVE_EDITOR=1 PULP_CONTEXT_MENU_INLINE_CONTROLS=1)
         endif()
         if(_fmt STREQUAL "LV2")
             # LV2's Pulp adapter exposes one aggregated input bus. Keep the
@@ -203,11 +225,10 @@ foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AUv3 AAX Standalone)
             target_compile_definitions(Beadsy_${_fmt} PRIVATE BEADSY_LV2=1)
         endif()
         if(_fmt STREQUAL "AU")
-            # AUv2 instruments use the historical no-input adapter. AUv3 is
-            # the sidechain-capable instrument path and keeps the declared
-            # main/sidechain buses so Logic can offer its host-owned source
-            # picker.
-            target_compile_definitions(Beadsy_${_fmt} PRIVATE BEADSY_AU_NO_INPUT=1)
+            # Keep the instrument's optional Main In + Sidechain buses visible
+            # to AUv2 hosts. Logic owns the project/track catalog and exposes
+            # its source picker when this descriptor is negotiated; the
+            # processor still defaults to MIDI Synth until a source is chosen.
         endif()
     endif()
 endforeach()
@@ -221,7 +242,7 @@ pulp_add_plugin(BeadsyFX
     PLUGIN_NAME     "Beadsy FX"
     BUNDLE_ID       "com.independent-audio.beadsy-fx"
     MANUFACTURER    "Independent Audio"
-    VERSION         "1.0.0"
+    VERSION         "1.0.2"
     CATEGORY        Effect
     ACCEPTS_MIDI
     PLUGIN_CODE     "BdFX"
@@ -238,7 +259,8 @@ foreach(_fmt IN ITEMS VST3 CLAP AU AUv3 Standalone)
                 target_link_libraries(BeadsyFX_${_fmt} PRIVATE Pulp::host)
             endif()
             target_include_directories(BeadsyFX_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-            target_compile_definitions(BeadsyFX_${_fmt} PRIVATE BEADSY_NATIVE_EDITOR=1)
+            target_compile_definitions(BeadsyFX_${_fmt} PRIVATE
+                BEADSY_NATIVE_EDITOR=1 PULP_CONTEXT_MENU_INLINE_CONTROLS=1)
         endif()
         if(_fmt STREQUAL "AU")
             target_compile_definitions(BeadsyFX_${_fmt} PRIVATE BEADSY_AU_MAIN_INPUT_ONLY=1)

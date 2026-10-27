@@ -13,6 +13,7 @@
 #include <pulp/canvas/svg.hpp>
 #include <pulp/view/context_menu.hpp>
 #include <pulp/view/parameter_binding.hpp>
+#include <pulp/view/ui_components.hpp>
 #include <pulp/view/view.hpp>
 #include <pulp/view/widgets.hpp>
 #if __has_include(<pulp/host/audio_route_catalog.hpp>)
@@ -92,7 +93,12 @@ public:
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
     const float cx = b.width * 0.5f;
-    const float cy = b.height * 0.43f;
+    const bool utility_knob = is_utility_diameter(diameter_);
+    // Utility pots sit at the top of a longer painted PCB strip. Keep their
+    // cap anchored to the mapped diameter while allowing the strip to extend
+    // below it; using the tall bounds' centre here made the strip peek above
+    // the black cap at fractional editor scales.
+    const float cy = utility_knob ? b.width * 0.5f : b.height * 0.43f;
     const float radius = paint_radius_for_bounds(b.width, b.height);
     const float angle =
         pulp::view::Knob::start_angle +
@@ -100,7 +106,6 @@ public:
     // `radius` is in rendered pixels and therefore changes with editor scale.
     // The source-mapped diameter is the stable distinction between the seven
     // utility pots and the four larger Beads controls.
-    const bool utility_knob = is_utility_diameter(diameter_);
 
     // Auxiliary controls use a colored side strip only when the control is a
     // full-size indicator. The seven small utility pots in the reference are
@@ -124,12 +129,6 @@ public:
                                radius * 0.26f, radius * 0.62f, radius * 0.08f);
       return;
     }
-
-    // Large reference pots have no cast shadow. Their pale outer surround is
-    // part of the printed/physical design and is kept as a clean, centered
-    // ring so it does not read as a drop shadow.
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(202, 204, 210, 170));
-    canvas.fill_circle(cx, cy, radius * 1.18f);
 
     // The straight-on reference shows a black, physically segmented
     // annulus around a pale inset cap.  Keep this entirely procedural:
@@ -327,11 +326,11 @@ public:
   void set_quality(int quality) {
     quality_ = std::clamp(quality, 0, 3);
     static constexpr const char *names[] = {"4-bit", "12-bit", "7-bit", "16-bit"};
-    set_access_label(std::string("Quality: ") + names[quality_] + "; click to cycle");
+    set_access_label(std::string("Quality: ") + names[quality_] +
+                     "; click to cycle");
     request_repaint();
   }
   int quality() const { return quality_; }
-  }
   void set_on_press(std::function<void()> callback) {
     on_press_ = std::move(callback);
   }
@@ -385,13 +384,24 @@ public:
 /// Selects the software source path. Hardware Beads uses physical input
 /// jacks; the plugin exposes the same choice explicitly for a stereo Main In
 /// bus while retaining the internal wavetable fallback.
-class ModeControl final : public pulp::view::View {
+class ModeControl final : public pulp::view::ComboBox {
 public:
   ModeControl() {
     set_id("beadsy-source-mode");
-    set_access_role(pulp::view::View::AccessRole::button);
+    std::vector<std::string> modes{"MIDI Synth"};
+    if (kAvailableSourceModeMax >= 1)
+      modes.emplace_back("Main In");
+    if (kAvailableSourceModeMax >= 2)
+      modes.emplace_back("Sidechain");
+    set_items(std::move(modes));
+    set_selected_silent(0);
     set_access_label("Source: Synth (MIDI)");
-    set_focusable(true);
+    on_change = [this](int index) {
+      mode_ = std::clamp(index, 0, kAvailableSourceModeMax);
+      update_access_label();
+      if (on_mode_change_)
+        on_mode_change_(mode_);
+    };
   }
 
   void set_mode(int mode) {
@@ -399,15 +409,12 @@ public:
     // topology. AU instrument builds intentionally expose no input bus,
     // while the AU effect variant exposes Main In only.
     mode_ = std::clamp(mode, 0, kAvailableSourceModeMax);
-    set_access_label(std::string("Source: ") +
-                     (mode_ == 0   ? "Synth (MIDI)"
-                      : mode_ == 1 ? "Main In (host routed)"
-                                   : "Sidechain (host routed)"));
-    request_repaint();
+    set_selected_silent(mode_);
+    update_access_label();
   }
   int mode() const { return mode_; }
-  void set_on_press(std::function<void()> callback) {
-    on_press_ = std::move(callback);
+  void set_on_mode_change(std::function<void(int)> callback) {
+    on_mode_change_ = std::move(callback);
   }
 
   void paint(pulp::canvas::Canvas &canvas) override {
@@ -428,32 +435,26 @@ public:
                          0, 0.35f);
     canvas.set_text_align(pulp::canvas::TextAlign::center);
     canvas.set_fill_color(pulp::canvas::Color::rgba8(241, 239, 229));
-    canvas.fill_text(mode_ == 0   ? "SOURCE  MIDI SYNTH"
-                     : mode_ == 1 ? "SOURCE  MAIN IN"
-                                  : "SOURCE  SIDECHAIN",
+    canvas.fill_text(mode_ == 0   ? "MIDI"
+                     : mode_ == 1 ? "MAIN IN"
+                                  : "SIDECHAIN",
                      b.width * 0.5f, b.height * 0.63f);
+    // ComboBox's inherited event path owns the dropdown. The compact painted
+    // field keeps the faceplate treatment while the popup itself gets the
+    // shared Pulp checkmark/hover/keyboard behavior.
   }
-
-  void on_mouse_down(pulp::view::Point) override {
-    if (on_press_)
-      on_press_();
-  }
-  bool on_key_event(const pulp::view::KeyEvent &event) override {
-    if (!event.is_down)
-      return false;
-    if (event.key == pulp::view::KeyCode::enter ||
-        event.key == pulp::view::KeyCode::space) {
-      if (on_press_)
-        on_press_();
-      return true;
-    }
-    return false;
-  }
-  bool wants_mouse_input() const override { return true; }
 
 private:
+  void update_access_label() {
+    set_access_label(std::string("Source: ") +
+                     (mode_ == 0   ? "Synth (MIDI)"
+                      : mode_ == 1 ? "Main In (host routed)"
+                                   : "Sidechain (host routed)"));
+    request_repaint();
+  }
+
   int mode_ = 0;
-  std::function<void()> on_press_;
+  std::function<void(int)> on_mode_change_;
 };
 
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
@@ -473,7 +474,11 @@ public:
     set_id("beadsy-audio-route");
     set_access_label(channel_label() + ": host-owned routing menu");
     set_access_disabled("true");
-    set_items({"Host-owned routing menu"});
+    // Keep the no-catalog state legible inside the compact lower bay.  The
+    // accessibility label carries the full host-routing explanation; the
+    // visible placeholder must fit without an ellipsis or implying a hidden
+    // hardware jack.
+    set_items({placeholder_label()});
     set_selected_silent(0);
     on_change = [this](int index) { on_change_route(index); };
   }
@@ -489,7 +494,7 @@ public:
     detach_catalog();
     catalog_ = catalog;
     if (!catalog_) {
-      set_items({"Host-owned routing menu"});
+      set_items({placeholder_label()});
       set_selected_silent(0);
       update_enabled_state();
       return;
@@ -627,6 +632,16 @@ private:
 
   std::string channel_label() const {
     return channel_index_ == 0 ? "Input L" : "Input R";
+  }
+
+  std::string placeholder_label() const {
+    // The printed IN L / IN R legends already identify the channel.  A short
+    // source token keeps the native ComboBox fully legible at the panel's
+    // reference width while the accessibility label remains descriptive.
+    // The printed IN L / IN R legends sit immediately above these fields.
+    // Keep the live value short enough to remain fully visible at the
+    // reference width while retaining an unmistakable channel distinction.
+    return channel_index_ == 0 ? "L IN" : "R IN";
   }
 
   std::size_t bus_index_ = 0;
@@ -831,9 +846,9 @@ public:
       const auto bus = static_cast<std::size_t>(
           source_mode_ && source_mode_->mode() == 2);
       // Pickers are channel-indexed, while the catalog's legacy
-      // connected_route() accessor is bus-indexed. Prefer the channel-aware
+      // connected_route() accessor is bus-indexed.  Prefer the channel-aware
       // accessor so independent L/R selections survive refreshes and so a
-      // sidechain refresh cannot overwrite the main-bus identity. The
+      // sidechain refresh cannot overwrite the main-bus identity.  The
       // fallback keeps this compatible with older host catalog SDKs.
       for (std::size_t channel = 0; channel < 2; ++channel) {
         auto *picker = channel == 0 ? route_picker_left_ : route_picker_right_;
@@ -881,30 +896,56 @@ public:
       canvas.set_fill_color(pulp::canvas::Color::rgba8(22, 21, 19));
       canvas.fill_rect(0, 0, b.width, b.height);
     }
-    // The reviewed faceplate raster contains colored hardware tails beneath
-    // three physical utility pots. In software those seven utility controls
-    // are deliberately plain black caps with white pointers; retain the
-    // surrounding printed guides but clear the colored tails before native
-    // controls are laid out. This also prevents color from peeking above a
-    // cap at a fractional editor scale.
+    // Keep the faceplate's cyan, orange, and magenta utility strips and their
+    // printed symbols. They are part of the reviewed straight-on artwork and
+    // sit below the three black utility pots; the native caps are painted on
+    // top of the actual control footprints, so no color can bleed above a
+    // knob. Earlier broad tail masks erased those details and made the panel
+    // visibly unlike the source.
+    // The lower jack field is a host-routing surface in software. Remove the
+    // physical socket and dotted-wire artwork while retaining the original
+    // printed IN L / IN R legends and the bottom border. A
+    // broad lower-panel wipe used here previously erased those legends and
+    // left a conspicuous blank block in the editor.
     canvas.set_fill_color(pulp::canvas::Color::rgba8(255, 255, 255, 255));
-    const float sx = b.width / 70.8f;
-    const float sy = b.height / 128.5f;
-    const auto clear_utility_tail = [&](float center_x, float top_y,
-                                        float width, float height) {
-      canvas.fill_rect((center_x - width * 0.5f) * sx,
-                       (128.5f - (top_y + height)) * sy, width * sx,
-                       height * sy);
+    const float panel_sx = b.width / 70.8f;
+    const float panel_sy = b.height / 128.5f;
+    const auto panel_rect = [&](float x, float y, float w, float h) {
+      canvas.fill_rect(x * panel_sx, (128.5f - (y + h)) * panel_sy,
+                       w * panel_sx, h * panel_sy);
     };
-    clear_utility_tail(7.115f, 53.0f, 12.0f, 15.0f);
-    clear_utility_tail(64.365f, 54.5f, 8.5f, 11.5f);
-    clear_utility_tail(64.365f, 38.0f, 8.5f, 11.5f);
-    // The lower jack field is a host-routing surface in software.  Clear the
-    // physical jack artwork before placing the three software selectors so
-    // printed IN L/IN R/FREEZE/SEED legends and output sockets cannot be
-    // mistaken for live ports.
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(255, 255, 255, 255));
-    canvas.fill_rect(0.0f, b.height * 0.72f, b.width, b.height * 0.28f);
+    // Leave the source artwork beneath the large TIME/PITCH pots intact. The
+    // printed rosettes and colored geometry run directly under the hardware
+    // caps in the reference panel; clearing circular regions here introduced
+    // the visible white padding ring and erased those details.
+    // Dotted runs from the small utility controls into the old jack sockets.
+    for (const float x : {7.115f, 18.565f, 30.015f, 41.465f, 52.915f})
+      // Stop just above the printed lower legends; the original vertical
+      // guides end at the socket row and must not cut through their glyphs.
+      panel_rect(x - 1.2f, 26.0f, 2.4f, 26.0f);
+    // The right-most utility guide shares the lower DENSITY legend's x-range.
+    // Its hardware continuation ends above that legend; masking through the
+    // label was the source of the visible DEN  ITY split in the editor.
+    panel_rect(64.365f - 1.2f, 26.0f, 2.4f, 8.0f);
+    // The physical socket row and the grey output-jack illustration are not
+    // functional in a software plug-in. Keep the printed labels above it.
+    // Four old hardware socket outlines sit below the printed labels. Clear
+    // their silhouettes with small circular masks so the label glyphs remain
+    // completely intact.
+    for (const float x : {6.5f, 18.0f, 33.4f, 46.0f}) {
+      canvas.fill_circle(x * panel_sx, (128.5f - 17.2f) * panel_sy,
+                        3.4f * std::min(panel_sx, panel_sy));
+    }
+    // The old output-jack illustration occupies the right-most lower bay;
+    // remove that bay while preserving the panel border and printed density
+    // label above it.
+    panel_rect(47.0f, 10.0f, 23.8f, 21.0f);
+    panel_rect(4.0f, 16.7f, 43.0f, 2.2f);
+    // FREEZE and SEED were labels for removed hardware jack controls. Keep
+    // the stereo IN L / IN R legends above the software route pickers, while
+    // removing only these two obsolete legends from the reclaimed row.
+    panel_rect(22.0f, 22.0f, 13.0f, 5.0f);
+    panel_rect(36.0f, 22.0f, 11.0f, 5.0f);
     if (std::string_view(kBeadsyPanelSourceStatus) ==
         "independent scaffold; authorized artwork unavailable") {
       paint_scaffold_labels(canvas, b.width, b.height);
@@ -1233,7 +1274,8 @@ private:
 
     auto push = std::make_unique<PushButtonControl>();
     push_button_ = push.get();
-    push_button_->set_quality(static_cast<int>(std::lround(store_.get_value(kQuality))));
+    push_button_->set_quality(static_cast<int>(std::lround(
+        store_.get_value(kQuality))));
     push_button_->set_on_press([this] {
       const int next = (push_button_->quality() + 1) % 4;
       store_.begin_gesture(kQuality);
@@ -1257,10 +1299,8 @@ private:
     source_mode_ = mode.get();
     source_mode_->set_mode(
         static_cast<int>(std::lround(store_.get_value(kMode))));
-    source_mode_->set_on_press([this] {
+    source_mode_->set_on_mode_change([this](int next) {
       store_.begin_gesture(kMode);
-      const int next =
-          (source_mode_->mode() + 1) % (kAvailableSourceModeMax + 1);
       store_.set_value(kMode, static_cast<float>(next));
       store_.end_gesture(kMode);
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
@@ -1353,9 +1393,12 @@ private:
       const float x = c.x * sx - diameter * 0.5f;
       const float y = (128.5f - c.y) * sy - diameter * 0.5f;
       c.knob->set_position(pulp::view::View::Position::absolute);
-      c.knob->set_bounds({x, y, diameter, diameter * 1.25f});
+      const float control_height = detail::PanelKnob::is_utility_diameter(diameter)
+                                       ? diameter * 2.35f
+                                       : diameter * 1.25f;
+      c.knob->set_bounds({x, y, diameter, control_height});
       c.knob->flex().preferred_width = diameter;
-      c.knob->flex().preferred_height = diameter * 1.25f;
+      c.knob->flex().preferred_height = control_height;
     }
     if (seed_mode_) {
       const float width = 10.0f * std::min(sx, sy);
@@ -1397,7 +1440,7 @@ private:
       // Software source selection occupies the reclaimed lower jack area;
       // keep the original printed header unobstructed.
       const float x = 35.4f * sx - mode_width * 0.5f;
-      const float y = (128.5f - 8.0f) * sy - mode_height * 0.5f;
+      const float y = (128.5f - 17.0f) * sy - mode_height * 0.5f;
       source_mode_->set_position(pulp::view::View::Position::absolute);
       source_mode_->set_bounds({x, y, mode_width, mode_height});
     }
@@ -1406,7 +1449,7 @@ private:
       const float unit = std::min(sx, sy);
       const float route_width = 20.0f * unit;
       const float route_height = 5.5f * unit;
-      const float y = (128.5f - 8.0f) * sy - route_height * 0.5f;
+      const float y = (128.5f - 17.0f) * sy - route_height * 0.5f;
       if (route_picker_left_) {
         route_picker_left_->set_position(pulp::view::View::Position::absolute);
         route_picker_left_->set_bounds({12.0f * sx - route_width * 0.5f, y, route_width, route_height});
@@ -1421,7 +1464,7 @@ private:
       const float unit = std::min(sx, sy);
       const float route_width = 20.0f * unit;
       const float route_height = 5.5f * unit;
-      const float y = (128.5f - 8.0f) * sy - route_height * 0.5f;
+      const float y = (128.5f - 17.0f) * sy - route_height * 0.5f;
       if (route_picker_left_fallback_) {
         route_picker_left_fallback_->set_position(pulp::view::View::Position::absolute);
         route_picker_left_fallback_->set_bounds({12.0f * sx - route_width * 0.5f, y, route_width, route_height});

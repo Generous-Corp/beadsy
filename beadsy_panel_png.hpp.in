@@ -1,0 +1,8 @@
+#pragma once
+#include <cstddef>
+#include <cstdint>
+
+namespace beadsy::panel_asset {
+inline constexpr std::uint8_t kPng[] = {@BEADSY_PANEL_PNG_BYTES@};
+inline constexpr std::size_t kPngSize = sizeof(kPng);
+} // namespace beadsy::panel_asset
