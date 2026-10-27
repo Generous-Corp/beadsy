@@ -8,7 +8,7 @@
   "sample_rate_contract": "48 kHz supported; unsupported rates fail closed",
   "tests": {
     "ctest": "54/54 passed",
-    "editor": "208 assertions / 25 cases passed"
+    "editor": "209 assertions / 25 cases passed (capture run)"
   },
   "format_validation": {
     "clap_instrument": {
