@@ -938,7 +938,10 @@ public:
     // printed IN L / IN R legends and the bottom border. A
     // broad lower-panel wipe used here previously erased those legends and
     // left a conspicuous blank block in the editor.
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(255, 255, 255, 255));
+    // The imported panel is composited over the same warm faceplate substrate
+    // painted above.  Using pure white here leaves visible rectangular seams
+    // wherever a removed construction line or jack is masked.
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(248, 248, 246, 255));
     const float panel_sx = b.width / 70.8f;
     const float panel_sy = b.height / 128.5f;
     const auto panel_rect = [&](float x, float y, float w, float h) {
