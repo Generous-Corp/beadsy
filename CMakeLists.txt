@@ -192,7 +192,7 @@ if(TARGET Pulp::view)
     target_include_directories(Beadsy-editor-test PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
     target_compile_definitions(Beadsy-editor-test PRIVATE
-        BEADSY_NATIVE_EDITOR=1 PULP_CONTEXT_MENU_INLINE_CONTROLS=1)
+        BEADSY_NATIVE_EDITOR=1)
     catch_discover_tests(Beadsy-editor-test)
 endif()
 
@@ -220,7 +220,7 @@ foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AUv3 AAX Standalone)
             endif()
             target_include_directories(Beadsy_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
             target_compile_definitions(Beadsy_${_fmt} PRIVATE
-                BEADSY_NATIVE_EDITOR=1 PULP_CONTEXT_MENU_INLINE_CONTROLS=1)
+                BEADSY_NATIVE_EDITOR=1)
         endif()
         if(_fmt STREQUAL "LV2")
             # LV2's Pulp adapter exposes one aggregated input bus. Keep the
@@ -263,7 +263,7 @@ foreach(_fmt IN ITEMS VST3 CLAP AU AUv3 Standalone)
             endif()
             target_include_directories(BeadsyFX_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
             target_compile_definitions(BeadsyFX_${_fmt} PRIVATE
-                BEADSY_NATIVE_EDITOR=1 PULP_CONTEXT_MENU_INLINE_CONTROLS=1)
+        BEADSY_NATIVE_EDITOR=1)
         endif()
         if(_fmt STREQUAL "AU")
             target_compile_definitions(BeadsyFX_${_fmt} PRIVATE BEADSY_AU_MAIN_INPUT_ONLY=1)
