@@ -761,6 +761,34 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
     REQUIRE_FALSE(native->modulation_context_target().has_value());
 }
 
+TEST_CASE("Beadsy modulation menu is reachable through root secondary dispatch") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+
+    auto* density = dynamic_cast<beadsy::detail::PanelKnob*>(native->child_at(0));
+    REQUIRE(density != nullptr);
+    const auto b = density->bounds();
+    const pulp::view::Point center{b.x + b.width * 0.5f,
+                                   b.y + b.height * 0.5f};
+    REQUIRE(pulp::view::dispatch_context_menu(*native, center));
+
+    // The root-dispatched path must reach the same canonical factory used by
+    // a host right-click, including both LFO lanes and the reset command.
+    auto* menu = native->child_at(native->child_count() - 1);
+    auto* context = dynamic_cast<pulp::view::ContextMenu*>(menu);
+    REQUIRE(context != nullptr);
+    REQUIRE(context->items().size() == 14);
+    REQUIRE(context->items()[2].label == "LFO 1");
+    REQUIRE(context->items()[8].label == "LFO 2");
+}
+
 TEST_CASE("Beadsy bound editor knob emits a host automation gesture") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
