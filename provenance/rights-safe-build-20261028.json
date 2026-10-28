@@ -1,0 +1,19 @@
+{
+  "schema": "beadsy.rights-safe-build/v1",
+  "commit": "640cf62ce7bc58c788b8198421f6bbbeadb38cdd",
+  "artwork_default": "original_clean_room_scaffold",
+  "reviewed_panel_artwork": "explicit_opt_in_only",
+  "build_attempt": {
+    "command": "pulp build",
+    "status": "blocked",
+    "failure_class": "sdk_api_skew",
+    "sdk": "1.29.0",
+    "missing_symbols": [
+      "pulp::host::AudioRouteCatalog::connected_route_channel",
+      "pulp::host::AudioRouteCatalog::connect_channel",
+      "pulp::view::ContextMenu::Item::make_toggle",
+      "pulp::view::ContextMenu::Item::make_slider"
+    ]
+  },
+  "follow_up": "Build and validate with a Pulp SDK generated from the exact source head that provides the route-catalog and context-menu APIs; do not claim distributable readiness from the 1.29.0 failure."
+}
