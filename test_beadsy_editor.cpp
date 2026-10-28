@@ -725,11 +725,11 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
     REQUIRE(menu != nullptr);
     REQUIRE(native->modulation_context_target() == beadsy::kDensity);
     REQUIRE(menu->items().size() == 4);
-    REQUIRE(menu->items()[0].control ==
+    REQUIRE(menu->items()[0].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::toggle);
-    REQUIRE(menu->items()[1].control ==
+    REQUIRE(menu->items()[1].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::slider);
-    REQUIRE(menu->items()[2].control ==
+    REQUIRE(menu->items()[2].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::slider);
     REQUIRE(menu->items()[3].label == "Reset LFO");
 
