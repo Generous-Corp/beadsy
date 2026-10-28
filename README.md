@@ -57,6 +57,7 @@ The current phased delivery plan, including host-routed source selection and
 the remaining evidence gates, is in
 [provenance/beadsy-plan-20261019.md](provenance/beadsy-plan-20261019.md).
 
-Panel artwork is provenance-gated. Normal builds use Beadsy's independent
-scaffold; a private visual comparison may explicitly opt in with
-`-DBEADSY_USE_REVIEWED_PANEL_ARTWORK=ON` after the artwork review is recorded.
+Panel artwork is provenance-gated and enabled in normal product builds so the
+editor uses the reviewed straight-on panel source. A clean-room build can
+explicitly opt out with `-DBEADSY_USE_REVIEWED_PANEL_ARTWORK=OFF`; the source
+manifest and attribution/share-alike review still govern redistribution.

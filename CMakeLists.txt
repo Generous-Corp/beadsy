@@ -6,12 +6,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Pulp CONFIG REQUIRED)
 
-# The upstream-derived panel is a private, rights-gated review input. Keep the
-# distributable default clean-room; a reviewer may opt in explicitly after the
-# file-level rights decision is recorded in provenance/source-manifest.json.
+# The checked-in panel conversion is the product's reviewed visual source. It
+# is enabled for normal local/product builds so a build cannot silently fall
+# back to the scaffold. Pass OFF for a clean-room or rights-gated build; the
+# source manifest still governs what may be redistributed in a release.
 option(BEADSY_USE_REVIEWED_PANEL_ARTWORK
-       "Embed the reviewed Beadsy panel vector asset (rights-cleared opt-in)"
-       OFF)
+       "Embed the reviewed Beadsy panel vector asset"
+       ON)
 
 # The converted panel is an authoring-time, rights-gated vector asset. Embed it
 # into the editor so installed plugins never read a developer checkout. A clean
