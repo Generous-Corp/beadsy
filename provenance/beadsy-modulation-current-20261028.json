@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "beadsy.modulation.v1",
+  "generated_at": "2026-10-28T20:38:01Z",
+  "status": "pass_local_exact_worktrees_host_receipts_open",
+  "product_head": "432f197b6587118203d87e73d34b9eefbb5da519",
+  "core_head": "c6c1d02bd9bf4eeaafb003aadb9d7e9ec41354ff",
+  "commits": {
+    "product": "76e31d6",
+    "core": "c6c1d02bd9"
+  },
+  "capability": {
+    "lanes": 2,
+    "controls": [
+      "enabled",
+      "shape",
+      "rate",
+      "depth"
+    ],
+    "shapes": [
+      "Sine",
+      "Triangle",
+      "Square",
+      "Saw"
+    ],
+    "state_version": 3,
+    "keyboard": {
+      "up_down": "select",
+      "left_right": "adjust",
+      "return": "activate",
+      "escape": "dismiss"
+    },
+    "outside_click_dismissal": true
+  },
+  "tests": [
+    {
+      "command": "build-lfo-sdk-48dd/Beadsy-test --reporter compact",
+      "result": "pass",
+      "assertions": 2819
+    },
+    {
+      "command": "build-lfo-sdk-48dd/Beadsy-editor-test --reporter compact",
+      "result": "pass",
+      "assertions": 247
+    },
+    {
+      "command": "build/test/pulp-test-group-design-import-widgets *modulation*",
+      "result": "pass",
+      "assertions": 24
+    },
+    {
+      "command": "build-lfo-sdk-48dd/Beadsy-headless-harness",
+      "result": "pass",
+      "finite": true,
+      "audible": true,
+      "state_restored": true
+    }
+  ],
+  "artifacts": {
+    "product_test": "build-lfo-sdk-48dd/Beadsy-test",
+    "editor_test": "build-lfo-sdk-48dd/Beadsy-editor-test",
+    "headless_harness": "build-lfo-sdk-48dd/Beadsy-headless-harness",
+    "vst3": {
+      "path": "build-lfo-sdk-48dd/VST3/Beadsy.vst3",
+      "binary_sha256": "cbb7da3332dddd7e3d5430e7211e158047358a22260a8eaba635288afff995d7",
+      "bundle_size_bytes": 23495526
+    },
+    "clap": {
+      "path": "build-lfo-sdk-48dd/CLAP/Beadsy.clap",
+      "binary_sha256": "c2ec4fdb1de9552e4bfd2ab60b3fc39dfa09c642fd02d158a2e47087840c3310",
+      "bundle_size_bytes": 23354550
+    },
+    "au": {
+      "path": "build-lfo-sdk-48dd/AU/Beadsy.component",
+      "binary_sha256": "5c4862d68cb4262f08008cfda45e793f374f5086fa7eb5870558dd654129a473",
+      "bundle_size_bytes": 23397304
+    }
+  },
+  "limitations": [
+    "local staged SDK only",
+    "full Pulp build has unrelated pre-existing Skia test_skia_surface API mismatch",
+    "no signed/notarized package from this head",
+    "no real DAW automation receipt yet"
+  ],
+  "host_validation": {
+    "clap_validator": {
+      "path": "provenance/clap-validator-beadsy-lfo-current.json",
+      "result": "pass",
+      "success": 18,
+      "skipped": 3,
+      "failed": 0
+    },
+    "auval": "not_run_against_installed_current_artifact",
+    "vst3": "pluginval_unavailable"
+  }
+}

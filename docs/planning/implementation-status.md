@@ -1,6 +1,6 @@
 # Beadsy implementation status
 
-Updated 2026-10-19 against the integrated source head
+Updated 2026-10-28 against the Beadsy modulation worktree
 the current Beadsy integration branch; receipt updates are recorded in
 `provenance/current-integration-validation-20261018.json`.
 
@@ -47,6 +47,14 @@ the current Beadsy integration branch; receipt updates are recorded in
   are hash-recorded in the integrated validation receipt. The captures prove
   native rendering and interaction coverage; exact visual fidelity remains
   open because the straight-on reference and panel artwork are rights-gated.
+- Modulation: the shared Pulp `ContextMenu::show_modulation` capability now
+  provides the Spectr-style two-lane interaction contract (LFO 1/LFO 2,
+  enabled toggles, waveform choice, rate/depth controls, keyboard navigation,
+  Return, Escape, outside-click dismissal, and reset). Beadsy stores both
+  lanes, applies both to DSP, persists them in version-3 product state, and
+  exposes Sine/Triangle/Square/Saw shapes. Exact local evidence is recorded in
+  `provenance/beadsy-modulation-current-20261028.json`; host automation and
+  signed-release evidence remain open.
 - Formats declared by the scaffold: VST3, CLAP, LV2, AU, standalone. The
   integrated LV2 bundle loads with 12 parameters and has an exact-head host
   audio render receipt (7,200 frames at 48 kHz; zero NaN, Inf, or clipped
