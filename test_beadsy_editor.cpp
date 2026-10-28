@@ -117,6 +117,33 @@ TEST_CASE("Beadsy quality button cycles and follows restored state") {
             std::string::npos);
 }
 
+TEST_CASE("Beadsy quality and CV-assign buttons occupy separate original stations") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+
+    auto* quality = native->quality_control();
+    auto* assign = native->assign_control();
+    REQUIRE(quality != nullptr);
+    REQUIRE(assign != nullptr);
+    // Quality [A] is beneath DENSITY; the CV destination [M] is left of the
+    // four lower utility pots. They must not share the old guessed station.
+    REQUIRE(quality->bounds().x > 70.0f);
+    REQUIRE(quality->bounds().y > 90.0f);
+    REQUIRE(assign->bounds().x < 30.0f);
+    REQUIRE(assign->bounds().y > 180.0f);
+    const auto before = assign->destination();
+    assign->on_mouse_down({});
+    REQUIRE(assign->destination() == (before + 1) % 3);
+    REQUIRE(assign->access_label().find("Dry/Wet") != std::string::npos);
+}
+
 TEST_CASE("Beadsy source control clamps values to the declared bus topology") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
@@ -623,7 +650,7 @@ TEST_CASE("Beadsy binds source-backed auxiliary controls without decorative port
     // The visible source selector replaces the legacy secondary bus toggle;
     // the compatibility parameter remains state/automation-only.
     REQUIRE(native->child_count() ==
-            20
+            21
     );
 
     // Five primary controls plus seven PCB-net-backed auxiliary pots are

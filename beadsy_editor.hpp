@@ -357,13 +357,11 @@ public:
     const float r = std::max(2.0f, std::min(b.width, b.height) * 0.40f);
     const float cx = b.width * 0.5f;
     const float cy = b.height * 0.48f;
-    static constexpr pulp::canvas::Color colors[] = {
-        pulp::canvas::Color::rgba8(44, 50, 55),
-        pulp::canvas::Color::rgba8(57, 91, 96),
-        pulp::canvas::Color::rgba8(124, 91, 41),
-        pulp::canvas::Color::rgba8(15, 15, 15),
-    };
-    canvas.set_fill_color(colors[quality_]);
+    // The quality selector is a black push button in the original panel;
+    // quality is communicated by the adjacent colored indicator artwork.
+    // Keeping the button silhouette invariant prevents the old colored-pot
+    // treatment from reading as a missing or inverted toggle at small scales.
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(15, 15, 15));
     canvas.fill_circle(cx, cy, r);
   }
   void on_mouse_down(pulp::view::Point) override {
@@ -375,6 +373,40 @@ public:
 private:
   int quality_ = 3;
   std::function<void()> on_press_;
+};
+
+/// The reclaimed lower-left M control selects the assignable modulation
+/// destination. It remains a real button even though the physical CV jack is
+/// absent in software; the state is exposed for automation/UI feedback while
+/// the DSP mapping remains deliberately product-local.
+class AssignButtonControl final : public pulp::view::View {
+public:
+  AssignButtonControl() {
+    set_id("beadsy-assign-button");
+    set_access_role(pulp::view::View::AccessRole::button);
+    set_access_label("CV Assign (Feedback); click to cycle");
+    set_focusable(true);
+  }
+  int destination() const { return destination_; }
+  void on_mouse_down(pulp::view::Point) override {
+    destination_ = (destination_ + 1) % 3;
+    static constexpr const char *names[] = {"Feedback", "Dry/Wet", "Reverb"};
+    set_access_label(std::string("CV Assign (") + names[destination_] +
+                     "); click to cycle");
+    request_repaint();
+  }
+  bool wants_mouse_input() const override { return true; }
+  void paint(pulp::canvas::Canvas &canvas) override {
+    const auto b = local_bounds();
+    const float r = std::max(2.0f, std::min(b.width, b.height) * 0.40f);
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(15, 15, 15));
+    canvas.fill_circle(b.width * 0.5f, b.height * 0.5f, r);
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(242, 240, 227));
+    canvas.fill_rect(b.width * 0.46f, b.height * 0.22f,
+                     std::max(1.0f, b.width * 0.08f), b.height * 0.28f);
+  }
+private:
+  int destination_ = 0;
 };
 
 /// Two small center indicators present below DENSITY: a pale LED and a black
@@ -397,17 +429,15 @@ public:
     const float unit = b.width / 12.0f;
     const float y = b.height * 0.5f;
     const float led_radius = std::max(1.0f, kLedRadiusMm * unit);
-    const float button_radius = std::max(1.0f, kButtonRadiusMm * unit);
+    // The quality push button is a separate native child positioned beside
+    // this LED. Keeping the LED in its own view prevents the button from
+    // disappearing behind the imported artwork or being clipped by a shared
+    // indicator box.
     canvas.set_fill_color(pulp::canvas::Color::rgba8(195, 179, 159));
     canvas.fill_circle(b.width * kLedXFraction, y, led_radius);
     canvas.set_stroke_color(pulp::canvas::Color::rgba8(137, 131, 123));
     canvas.set_line_width(std::max(0.8f, unit * 0.18f));
     canvas.stroke_circle(b.width * kLedXFraction, y, led_radius);
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(19, 20, 22));
-    canvas.fill_circle(b.width * kButtonXFraction, y, button_radius * 0.90f);
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
-    canvas.set_line_width(std::max(0.8f, unit * 0.18f));
-    canvas.stroke_circle(b.width * kButtonXFraction, y, button_radius);
   }
   bool wants_mouse_input() const override { return false; }
 };
@@ -1003,6 +1033,7 @@ public:
   void clear_modulation_context() { context_target_.reset(); }
   ModeControl *source_mode_control() const { return source_mode_; }
   PushButtonControl *quality_control() const { return push_button_; }
+  AssignButtonControl *assign_control() const { return assign_button_; }
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
   AudioRoutePicker *audio_route_picker() const { return route_picker_left_; }
   AudioRoutePicker *audio_route_picker_right() const { return route_picker_right_; }
@@ -1291,6 +1322,10 @@ private:
         pulp::state::ListenerRestoreBehavior::Reconcile);
     add_child(std::move(push));
 
+    auto assign = std::make_unique<AssignButtonControl>();
+    assign_button_ = assign.get();
+    add_child(std::move(assign));
+
     auto indicators = std::make_unique<CenterIndicators>();
     center_indicators_ = indicators.get();
     add_child(std::move(indicators));
@@ -1435,9 +1470,17 @@ private:
     if (push_button_) {
       const float unit = std::min(sx, sy);
       const float diameter = 7.0f * unit;
+      // Recording quality selector [A], directly under DENSITY.
+      const float x = 35.7f * sx - diameter * 0.5f;
+      const float y = (128.5f - 83.24f) * sy - diameter * 0.5f;
+      place_absolute(push_button_, x, y, diameter, diameter);
+    }
+    if (assign_button_) {
+      const float unit = std::min(sx, sy);
+      const float diameter = 7.0f * unit;
       const float x = 8.7f * sx - diameter * 0.5f;
       const float y = (128.5f - 51.7f) * sy - diameter * 0.5f;
-      place_absolute(push_button_, x, y, diameter, diameter);
+      place_absolute(assign_button_, x, y, diameter, diameter);
     }
     if (center_indicators_) {
       const float unit = std::min(sx, sy);
@@ -1518,6 +1561,7 @@ private:
   FreezeControl *freeze_mode_ = nullptr;
   pulp::state::ListenerToken freeze_mode_binding_;
   PushButtonControl *push_button_ = nullptr;
+  AssignButtonControl *assign_button_ = nullptr;
   pulp::state::ListenerToken quality_binding_;
   CenterIndicators *center_indicators_ = nullptr;
   ModeControl *source_mode_ = nullptr;
