@@ -1058,100 +1058,38 @@ public:
     const auto current = processor_.lfo(id);
     const auto *info = store_.info(id);
     const std::string target_name = info ? info->name : "Parameter";
-    const auto rate_label = [&current] {
-      std::ostringstream text;
-      text << "Rate: " << current.rate_hz << " Hz";
-      return text.str();
-    };
-    const auto depth_label = [&current] {
-      std::ostringstream text;
-      text << "Depth: " << current.depth;
-      return text.str();
-    };
     auto alive = import_binding_lifetime_token();
-#if defined(PULP_CONTEXT_MENU_INLINE_CONTROLS)
-    auto set_lfo_if_alive = [alive, this, id](auto update) {
+    pulp::view::ContextMenu::ModulationMenuSpec spec;
+    spec.target_label = target_name;
+    spec.lane_count = 1; // Beadsy currently has one DSP LFO lane.
+    spec.lanes[0].label = "LFO 1";
+    spec.lanes[0].enabled = current.enabled;
+    spec.lanes[0].rate_normalized =
+        std::clamp((current.rate_hz - 0.01f) / 19.99f, 0.0f, 1.0f);
+    spec.lanes[0].depth_normalized = std::clamp(current.depth, 0.0f, 1.0f);
+    spec.lanes[0].shapes = {"Sine"}; // The Beadsy DSP lane is sine-based today.
+    spec.lanes[0].on_change = [alive, this, id](const auto &lane) {
       if (alive.expired())
         return;
       auto modulation = processor_.lfo(id);
-      update(modulation);
+      modulation.enabled = lane.enabled;
+      modulation.rate_hz = 0.01f + lane.rate_normalized * 19.99f;
+      modulation.depth = lane.depth_normalized;
       processor_.set_lfo(id, modulation);
       request_repaint();
     };
-    auto items = std::vector<pulp::view::ContextMenu::Item>{
-        pulp::view::ContextMenu::Item::make_toggle(
-            1, "LFO Enabled", current.enabled,
-            [set_lfo_if_alive](const auto &item) {
-              set_lfo_if_alive([&](auto &modulation) {
-                modulation.enabled = item.checked;
-                if (modulation.enabled && modulation.depth == 0.0f)
-                  modulation.depth = 0.1f;
-              });
-            }),
-        pulp::view::ContextMenu::Item::make_slider(
-            3, "Rate", (current.rate_hz - 0.01f) / 19.99f, 0.01f,
-            [set_lfo_if_alive](const auto &item) {
-              set_lfo_if_alive([&](auto &modulation) {
-                modulation.rate_hz = 0.01f + item.normalized_value * 19.99f;
-              });
-            }),
-        pulp::view::ContextMenu::Item::make_slider(
-            4, "Depth", current.depth, 0.01f,
-            [set_lfo_if_alive](const auto &item) {
-              set_lfo_if_alive([&](auto &modulation) {
-                modulation.depth = item.normalized_value;
-              });
-            }),
-        {2, "Reset LFO"}};
-    return pulp::view::ContextMenu::show(
-        root, detail::local_to_root(this, position), std::move(items),
-        [alive, this, id](std::optional<int> command) {
-          if (alive.expired() || !command || *command != 2)
-            return;
-          processor_.clear_lfo(id);
-          request_repaint();
-          clear_modulation_context();
-        });
-#else
-    return pulp::view::ContextMenu::show(
-        root, detail::local_to_root(this, position),
-        {{0, "LFO → " + target_name, false},
-         {1, current.enabled ? "LFO Enabled" : "Enable LFO", true,
-          current.enabled},
-         {3, rate_label() + " ↓"},
-         {4, rate_label() + " ↑"},
-         {5, depth_label() + " ↓"},
-         {6, depth_label() + " ↑"},
-         {2, "Reset LFO"}},
-        [alive, this, id](std::optional<int> command) {
-          if (alive.expired())
-            return;
-          if (command) {
-            auto modulation = processor_.lfo(id);
-            if (*command == 1) {
-              modulation.enabled = !modulation.enabled;
-              if (modulation.depth == 0.0f)
-                modulation.depth = 0.1f;
-              processor_.set_lfo(id, modulation);
-            } else if (*command == 3 || *command == 4) {
-              modulation.rate_hz += *command == 3 ? -0.25f : 0.25f;
-              modulation.rate_hz = std::clamp(modulation.rate_hz, 0.01f, 20.0f);
-              processor_.set_lfo(id, modulation);
-            } else if (*command == 5 || *command == 6) {
-              modulation.depth += *command == 5 ? -0.05f : 0.05f;
-              modulation.depth = std::clamp(modulation.depth, 0.0f, 1.0f);
-              processor_.set_lfo(id, modulation);
-            } else if (*command == 2) {
-              processor_.clear_lfo(id);
-            }
-            // LFO state is product-local rather than StateStore-backed;
-            // invalidate the native tree so the knob's modulation arc
-            // reflects attach/detach and rate/depth edits immediately.
-            request_repaint();
-          }
-          clear_modulation_context();
-        });
-#endif
+    spec.on_reset = [alive, this, id] {
+      if (alive.expired())
+        return;
+      processor_.clear_lfo(id);
+      request_repaint();
+    };
+    spec.on_dismiss = [alive, this] {
+      if (!alive.expired())
+        clear_modulation_context();
+    };
+    return pulp::view::ContextMenu::show_modulation(
+        root, detail::local_to_root(this, position), std::move(spec));
   }
 
 private:
