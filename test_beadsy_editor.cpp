@@ -539,6 +539,38 @@ TEST_CASE("Beadsy native editor captures a non-empty faithful panel frame") {
     }
 }
 
+TEST_CASE("Beadsy preserves panel aspect ratio on host-provided resize") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+
+    auto editor = processor.create_view();
+    auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
+    REQUIRE(native != nullptr);
+
+    // Hosts can briefly provide a wide rectangle while restoring a window.
+    // The authored 200.693:364.252 faceplate must stay uniform and centered;
+    // otherwise the small colored symbols and their native hit regions drift.
+    native->set_bounds({0.0f, 0.0f, 320.0f, 364.0f});
+    native->layout_children();
+    const auto source = native->source_mode_control()->bounds();
+    REQUIRE(source.x > 50.0f);
+    REQUIRE(source.x + source.width < 270.0f);
+    REQUIRE(source.height > 14.0f);
+
+    const auto capture = pulp::view::capture_view(
+        *editor, 320, 364, 1.0f, pulp::view::ScreenshotBackend::auto_select);
+    REQUIRE(capture.ok);
+    REQUIRE(capture.png.size() > 1000);
+    if (const char *path = std::getenv("BEADSY_RESIZE_CAPTURE")) {
+        std::ofstream out(path, std::ios::binary);
+        out.write(reinterpret_cast<const char *>(capture.png.data()),
+                  static_cast<std::streamsize>(capture.png.size()));
+        REQUIRE(static_cast<bool>(out));
+    }
+}
+
 TEST_CASE("Beadsy explicit GPU capture reports its actual backend") {
     if (!std::getenv("BEADSY_GPU_CAPTURE_PROBE")) return;
 
