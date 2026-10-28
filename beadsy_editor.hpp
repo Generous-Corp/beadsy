@@ -1074,7 +1074,13 @@ public:
       auto modulation = processor_.lfo(id);
       modulation.enabled = lane.enabled;
       modulation.rate_hz = 0.01f + lane.rate_normalized * 19.99f;
-      modulation.depth = lane.depth_normalized;
+      // A newly enabled lane must be audible immediately. Beadsy's stored
+      // default is zero depth so a disabled lane is inert; when the user
+      // enables it from the contextual menu, choose a useful midpoint until
+      // they adjust the Depth slider themselves.
+      modulation.depth = lane.enabled && lane.depth_normalized <= 0.0f
+                             ? 0.5f
+                             : lane.depth_normalized;
       processor_.set_lfo(id, modulation);
       request_repaint();
     };

@@ -606,7 +606,7 @@ TEST_CASE("Beadsy knob opens modulation menu through root right-click dispatch")
     REQUIRE(native->child_count() > 20);
     auto* menu = dynamic_cast<pulp::view::ContextMenu*>(native->child_at(native->child_count() - 1));
     REQUIRE(menu != nullptr);
-    REQUIRE(menu->items().size() == 4);
+    REQUIRE(menu->items().size() == 8);
 
     // The shared menu owns keyboard navigation and dismissal; its keyboard
     // contract is covered by the focused ContextMenu tests below.
