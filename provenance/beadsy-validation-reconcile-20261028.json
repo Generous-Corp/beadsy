@@ -1,0 +1,101 @@
+{
+  "schema": "beadsy.validation-reconcile.v1",
+  "verified_at": "2026-10-28T07:35:00Z",
+  "product": "Beadsy",
+  "source_head": "5ddf39a30cc8798de5093c27a527f907e38a33e6",
+  "evidence": {
+    "build": {
+      "status": "pass",
+      "command": "pulp build",
+      "mode": "Release configured build tree"
+    },
+    "tests": {
+      "status": "pass",
+      "command": "pulp test",
+      "cases": 56,
+      "passed": 56,
+      "failed": 0
+    },
+    "headless_audio": {
+      "status": "pass",
+      "command": "build/Beadsy-headless-harness",
+      "sample_rate_hz": 48000,
+      "frames": 512,
+      "channels": 2,
+      "finite": true,
+      "audible": true,
+      "state_restored": true,
+      "peak": 0.0904571,
+      "rms": 0.0351001
+    },
+    "dsp_reference": {
+      "status": "pass_internal_reference_only",
+      "command": "scripts/compare_source_port_matrix.py",
+      "source_head": "f4cfa7697095a28d292bff758beb51deb49b5a86",
+      "fixtures": 144,
+      "byte_identical": 144,
+      "max_abs_error": 0.0,
+      "rmse": 0.0,
+      "evidence": "provenance/beadsy-dsp-ab-20261028.json"
+    },
+    "editor_capture": {
+      "status": "captured_but_not_fidelity_pass",
+      "path": "provenance/generated/beadsy-exact-head-editor.png",
+      "note": "Native capture is non-empty and correctly oriented; visual comparison still requires region-aware source-authority review."
+    },
+    "formats": {
+      "status": "partial",
+      "evidence": "provenance/format-status-reconcile-20261028.json",
+      "supported_artifacts": [
+        "AU",
+        "AUv3",
+        "VST3",
+        "CLAP",
+        "LV2",
+        "Standalone"
+      ],
+      "blocked": [
+        "AAX"
+      ],
+      "host_validation": "not_run"
+    }
+  },
+  "open_gates": [
+    {
+      "id": "visual-fidelity",
+      "status": "open",
+      "reason": "Current capture is not yet proven pixel/landmark faithful against the rights-cleared source; resize and source-mask behavior need a dedicated comparison receipt."
+    },
+    {
+      "id": "real-host-routing",
+      "status": "open",
+      "reason": "No current Logic/REAPER receipt proves independent L/R selection from a project track, bus, instrument, or physical input reaches the processor."
+    },
+    {
+      "id": "format-host-validation",
+      "status": "open",
+      "reason": "The format inventory proves artifact presence only; current receipt explicitly marks host validation not_run. AAX remains unavailable."
+    },
+    {
+      "id": "packaging",
+      "status": "open",
+      "reason": "No current exact-head signed, notarized, stapled combined installer receipt is present."
+    },
+    {
+      "id": "importer-and-vellum",
+      "status": "open",
+      "reason": "Illustrator/SVG conversion evidence exists locally, but first-class importer integration and Vellum adoption are not proven on current exact heads."
+    },
+    {
+      "id": "review",
+      "status": "open",
+      "reason": "No exact-head counted adversarial review/arm receipt exists for this product branch."
+    }
+  ],
+  "ownership_and_provenance": {
+    "branding": "Independent Beadsy name and non-affiliation language are present.",
+    "license": "MIT source license and attribution files are present; upstream source/artwork redistribution remains rights-gated.",
+    "pulp_route": "Generic transferred rendering/import framework changes require the Pulp/Vellum ownership protocol recorded in docs/status/beadsy-delivery-reconciliation-20261028.json."
+  },
+  "disposition": "incomplete; keep goal active; do not publish or claim release readiness"
+}
