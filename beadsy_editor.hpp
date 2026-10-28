@@ -952,15 +952,12 @@ public:
     // printed rosettes and colored geometry run directly under the hardware
     // caps in the reference panel; clearing circular regions here introduced
     // the visible white padding ring and erased those details.
-    // Dotted runs from the small utility controls into the old jack sockets.
-    for (const float x : {7.115f, 18.565f, 30.015f, 41.465f, 52.915f})
-      // Stop just above the printed lower legends; the original vertical
-      // guides end at the socket row and must not cut through their glyphs.
-      panel_rect(x - 1.2f, 26.0f, 2.4f, 26.0f);
-    // The right-most utility guide shares the lower DENSITY legend's x-range.
-    // Its hardware continuation ends above that legend; masking through the
-    // label was the source of the visible DEN  ITY split in the editor.
-    panel_rect(64.365f - 1.2f, 26.0f, 2.4f, 8.0f);
+    // Keep the original dotted runs.  They are printed artwork that visually
+    // explains the relationship between each utility control and its former
+    // hardware destination; removing the jacks does not remove those guides.
+    // A previous broad mask erased the guides and clipped the cyan/yellow/
+    // magenta source symbols below them.  The jack silhouettes are cleared by
+    // the small, local masks below instead.
     // The physical socket row and the grey output-jack illustration are not
     // functional in a software plug-in. Keep the printed labels above it.
     // Four old hardware socket outlines sit below the printed labels. Clear
@@ -1391,6 +1388,22 @@ private:
         local_bounds().height > 1.0f ? local_bounds().height : 364.0f;
     const float sx = width / 70.8f;
     const float sy = height / 128.5f;
+    // The native host uses Yoga for the final layout pass.  `set_bounds()`
+    // updates the cached rectangle, but Yoga positions an absolute child from
+    // its CSS edges (left/top), so a bounds-only placement is lost on the
+    // first attached frame.  Keep both representations in sync.  This is the
+    // root cause of the recurring host-only failure where the panel artwork is
+    // upright but native controls collapse at the origin (and then appear
+    // missing, flipped, or unresponsive after a resize).
+    const auto place_absolute = [](pulp::view::View *view, float x, float y,
+                                   float w, float h) {
+      if (!view)
+        return;
+      view->set_position(pulp::view::View::Position::absolute);
+      view->set_left(x);
+      view->set_top(y);
+      view->set_bounds({x, y, w, h});
+    };
     for (const auto &c : controls_) {
       const float diameter = c.radius * 2.0f * std::min(sx, sy);
       const float x = (c.x - detail::PanelKnob::kSourceXCorrectionMm) * sx -
@@ -1398,11 +1411,10 @@ private:
       const float y =
           (128.5f - (c.y - detail::PanelKnob::kSourceYCorrectionMm)) * sy -
           diameter * 0.5f;
-      c.knob->set_position(pulp::view::View::Position::absolute);
       const float control_height = detail::PanelKnob::is_utility_diameter(diameter)
                                        ? diameter * 2.35f
                                        : diameter * 1.25f;
-      c.knob->set_bounds({x, y, diameter, control_height});
+      place_absolute(c.knob, x, y, diameter, control_height);
       c.knob->flex().preferred_width = diameter;
       c.knob->flex().preferred_height = control_height;
     }
@@ -1411,24 +1423,21 @@ private:
       const float height = 8.5f * std::min(sx, sy);
       const float x = 62.0f * sx - width * 0.5f;
       const float y = (128.5f - 110.5f) * sy - height * 0.5f;
-      seed_mode_->set_position(pulp::view::View::Position::absolute);
-      seed_mode_->set_bounds({x, y, width, height});
+      place_absolute(seed_mode_, x, y, width, height);
     }
     if (freeze_mode_) {
       const float width = 10.0f * std::min(sx, sy);
       const float height = 8.5f * std::min(sx, sy);
       const float x = 8.7f * sx - width * 0.5f;
       const float y = (128.5f - 110.5f) * sy - height * 0.5f;
-      freeze_mode_->set_position(pulp::view::View::Position::absolute);
-      freeze_mode_->set_bounds({x, y, width, height});
+      place_absolute(freeze_mode_, x, y, width, height);
     }
     if (push_button_) {
       const float unit = std::min(sx, sy);
       const float diameter = 7.0f * unit;
       const float x = 8.7f * sx - diameter * 0.5f;
       const float y = (128.5f - 51.7f) * sy - diameter * 0.5f;
-      push_button_->set_position(pulp::view::View::Position::absolute);
-      push_button_->set_bounds({x, y, diameter, diameter});
+      place_absolute(push_button_, x, y, diameter, diameter);
     }
     if (center_indicators_) {
       const float unit = std::min(sx, sy);
@@ -1440,8 +1449,7 @@ private:
       const float h = 8.0f * unit;
       const float x = 31.92f * sx - w * 0.5f;
       const float y = (128.5f - 83.24f) * sy - h * 0.5f;
-      center_indicators_->set_position(pulp::view::View::Position::absolute);
-      center_indicators_->set_bounds({x, y, w, h});
+      place_absolute(center_indicators_, x, y, w, h);
     }
     if (source_mode_) {
       const float unit = std::min(sx, sy);
@@ -1451,8 +1459,7 @@ private:
       // keep the original printed header unobstructed.
       const float x = 35.4f * sx - mode_width * 0.5f;
       const float y = (128.5f - 17.0f) * sy - mode_height * 0.5f;
-      source_mode_->set_position(pulp::view::View::Position::absolute);
-      source_mode_->set_bounds({x, y, mode_width, mode_height});
+      place_absolute(source_mode_, x, y, mode_width, mode_height);
     }
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
     if (route_picker_left_ || route_picker_right_) {
@@ -1461,12 +1468,14 @@ private:
       const float route_height = 5.5f * unit;
       const float y = (128.5f - 17.0f) * sy - route_height * 0.5f;
       if (route_picker_left_) {
-        route_picker_left_->set_position(pulp::view::View::Position::absolute);
-        route_picker_left_->set_bounds({12.0f * sx - route_width * 0.5f, y, route_width, route_height});
+        place_absolute(route_picker_left_,
+                       12.0f * sx - route_width * 0.5f, y, route_width,
+                       route_height);
       }
       if (route_picker_right_) {
-        route_picker_right_->set_position(pulp::view::View::Position::absolute);
-        route_picker_right_->set_bounds({58.8f * sx - route_width * 0.5f, y, route_width, route_height});
+        place_absolute(route_picker_right_,
+                       58.8f * sx - route_width * 0.5f, y, route_width,
+                       route_height);
       }
     }
 #else
@@ -1476,19 +1485,20 @@ private:
       const float route_height = 5.5f * unit;
       const float y = (128.5f - 17.0f) * sy - route_height * 0.5f;
       if (route_picker_left_fallback_) {
-        route_picker_left_fallback_->set_position(pulp::view::View::Position::absolute);
-        route_picker_left_fallback_->set_bounds({12.0f * sx - route_width * 0.5f, y, route_width, route_height});
+        place_absolute(route_picker_left_fallback_,
+                       12.0f * sx - route_width * 0.5f, y, route_width,
+                       route_height);
       }
       if (route_picker_right_fallback_) {
-        route_picker_right_fallback_->set_position(pulp::view::View::Position::absolute);
-        route_picker_right_fallback_->set_bounds({58.8f * sx - route_width * 0.5f, y, route_width, route_height});
+        place_absolute(route_picker_right_fallback_,
+                       58.8f * sx - route_width * 0.5f, y, route_width,
+                       route_height);
       }
     }
 #endif
     if (resize_grip_) {
       const float grip = std::max(8.0f, 7.0f * std::min(sx, sy));
-      resize_grip_->set_position(pulp::view::View::Position::absolute);
-      resize_grip_->set_bounds({width - grip, height - grip, grip, grip});
+      place_absolute(resize_grip_, width - grip, height - grip, grip, grip);
     }
   }
 
