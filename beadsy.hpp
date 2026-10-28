@@ -105,10 +105,12 @@ inline constexpr std::size_t kModulatableParamCount = static_cast<std::size_t>(
 /// Product-local LFO modulation.  The base StateStore value remains the host
 /// automation value; the offset is applied through StateStore's modulation API.
 struct LfoModulation {
+  enum class Shape : std::uint8_t { Sine = 0, Triangle = 1, Square = 2, Saw = 3 };
   bool enabled = false;
   float rate_hz = 1.0f;
   float depth = 0.0f;
   float phase = 0.0f;
+  Shape shape = Shape::Sine;
 };
 
 inline pulp::format::PluginDescriptor make_descriptor() {
@@ -287,18 +289,23 @@ public:
                          .range = {-1.0f, 1.0f, 0.0f}});
   }
 
-  void set_lfo(pulp::state::ParamID id, LfoModulation lfo) {
-    if (is_modulatable(id))
-      lfo_[id] = lfo;
-  }
-  LfoModulation lfo(pulp::state::ParamID id) const {
-    return is_modulatable(id) ? lfo_[id] : LfoModulation{};
-  }
-  void clear_lfo(pulp::state::ParamID id) {
-    if (!is_modulatable(id))
+  void set_lfo(pulp::state::ParamID id, LfoModulation lfo,
+               std::size_t lane = 0) {
+    if (!is_modulatable(id) || lane >= lfo_lanes_.size())
       return;
-    lfo_[id] = {};
-    state().set_mod_offset(id, 0.0f);
+    lfo_lanes_[lane][id] = lfo;
+  }
+  LfoModulation lfo(pulp::state::ParamID id, std::size_t lane = 0) const {
+    return is_modulatable(id) && lane < lfo_lanes_.size()
+               ? lfo_lanes_[lane][id]
+               : LfoModulation{};
+  }
+  void clear_lfo(pulp::state::ParamID id, std::size_t lane = 0) {
+    if (!is_modulatable(id) || lane >= lfo_lanes_.size())
+      return;
+    lfo_lanes_[lane][id] = {};
+    if (lane == 0 || !lfo_lanes_[0][id].enabled)
+      state().set_mod_offset(id, 0.0f);
   }
 
   /// Host-owned route identity captured by the editor for state restore.
@@ -327,11 +334,15 @@ public:
 #endif
 
   std::vector<std::uint8_t> serialize_plugin_state() const override {
-    std::vector<std::uint8_t> out{'G', 'F', 'M', 'D', 2, 0};
-    for (pulp::state::ParamID id = kFirstModulatableParam;
-         id <= kLastModulatableParam; ++id) {
-      const auto &l = lfo_[id];
+    // Version 3 stores both standard modulation lanes. Version 2 stored only
+    // lane 1; the reader below retains compatibility with those presets.
+    std::vector<std::uint8_t> out{'G', 'F', 'M', 'D', 3, 0};
+    for (const auto &lane : lfo_lanes_)
+      for (pulp::state::ParamID id = kFirstModulatableParam;
+           id <= kLastModulatableParam; ++id) {
+      const auto &l = lane[id];
       out.push_back(static_cast<std::uint8_t>(l.enabled));
+      out.push_back(static_cast<std::uint8_t>(l.shape));
       const auto append_float = [&out](float value) {
         const auto *bytes = reinterpret_cast<const std::uint8_t *>(&value);
         out.insert(out.end(), bytes, bytes + sizeof(float));
@@ -339,7 +350,7 @@ public:
       append_float(l.rate_hz);
       append_float(l.depth);
       append_float(l.phase);
-    }
+      }
     for (const auto &route_id : route_ids_) {
       const auto length = std::min<std::size_t>(route_id.size(), 1024);
       out.push_back(static_cast<std::uint8_t>(length & 0xffu));
@@ -351,11 +362,13 @@ public:
 
   bool deserialize_plugin_state(std::span<const std::uint8_t> data) override {
     if (data.empty()) {
-      lfo_.fill({});
+      for (auto &lane : lfo_lanes_)
+        lane.fill({});
       route_ids_.fill({});
       return true;
     }
     constexpr std::size_t stride = 1 + sizeof(float) * 3;
+    constexpr std::size_t v3_stride = 2 + sizeof(float) * 3;
     constexpr std::size_t v1_size = 6 + stride * kModulatableParamCount;
     // GFMD v1 originally emitted ten slots (including unused slot zero).
     // Accept that payload so existing presets retain IDs 1..9 while the
@@ -367,27 +380,45 @@ public:
     const bool legacy =
         data.size() == legacy_size && (data[4] == 1 || data[4] == 2);
     const bool v2 = data.size() >= v1_size && data[4] == 2;
-    if ((!v1 && !legacy && !v2) || data[0] != 'G' || data[1] != 'F' ||
+    const std::size_t v3_min_size = 6 + v3_stride * kModulatableParamCount * 2 + 4;
+    const bool v3 = data.size() >= v3_min_size && data[4] == 3;
+    if ((!v1 && !legacy && !v2 && !v3) || data[0] != 'G' || data[1] != 'F' ||
         data[2] != 'M' || data[3] != 'D')
       return false;
     std::size_t offset = 6;
-    lfo_.fill({});
+    for (auto &lane : lfo_lanes_)
+      lane.fill({});
     route_ids_.fill({});
-    const auto slots = (v1 || v2) ? kModulatableParamCount : std::size_t{10};
-    for (std::size_t slot = 0; slot < slots; ++slot) {
-      auto &l = lfo_[(v1 || v2) ? slot + kFirstModulatableParam : slot];
-      l.enabled = data[offset++] != 0;
-      const auto read_float = [&data, &offset]() {
-        float value = 0.0f;
-        std::memcpy(&value, data.data() + offset, sizeof(float));
-        offset += sizeof(float);
-        return value;
-      };
-      l.rate_hz = read_float();
-      l.depth = read_float();
-      l.phase = read_float();
+    const auto read_float = [&data, &offset]() {
+      float value = 0.0f;
+      if (offset + sizeof(float) > data.size()) return value;
+      std::memcpy(&value, data.data() + offset, sizeof(float));
+      offset += sizeof(float);
+      return value;
+    };
+    if (v3) {
+      for (std::size_t lane_index = 0; lane_index < lfo_lanes_.size(); ++lane_index)
+        for (std::size_t slot = 0; slot < kModulatableParamCount; ++slot) {
+          auto &l = lfo_lanes_[lane_index][slot + kFirstModulatableParam];
+          if (offset + 2 > data.size()) return false;
+          l.enabled = data[offset++] != 0;
+          l.shape = static_cast<LfoModulation::Shape>(std::min<std::uint8_t>(data[offset++], 3));
+          l.rate_hz = read_float();
+          l.depth = read_float();
+          l.phase = read_float();
+        }
+    } else {
+      const auto slots = (v1 || v2) ? kModulatableParamCount : std::size_t{10};
+      for (std::size_t slot = 0; slot < slots; ++slot) {
+        auto &l = lfo_lanes_[0][(v1 || v2) ? slot + kFirstModulatableParam : slot];
+        if (offset >= data.size()) return false;
+        l.enabled = data[offset++] != 0;
+        l.rate_hz = read_float();
+        l.depth = read_float();
+        l.phase = read_float();
+      }
     }
-    if (v2) {
+    if (v2 || v3) {
       for (auto &route_id : route_ids_) {
         if (offset + 2 > data.size())
           return false;
@@ -659,17 +690,36 @@ private:
       return;
     for (pulp::state::ParamID id = kFirstModulatableParam;
          id <= kLastModulatableParam; ++id) {
-      auto &l = lfo_[id];
-      if (!l.enabled || l.depth == 0.0f) {
-        state().set_mod_offset(id, 0.0f);
-        continue;
+      float offset = 0.0f;
+      for (auto &lane : lfo_lanes_) {
+        auto &l = lane[id];
+        if (!l.enabled || l.depth == 0.0f)
+          continue;
+        const float phase = l.phase - std::floor(l.phase);
+        float value = 0.0f;
+        switch (l.shape) {
+        case LfoModulation::Shape::Triangle:
+          value = 1.0f - 4.0f * std::fabs(phase - 0.5f);
+          break;
+        case LfoModulation::Shape::Square:
+          value = phase < 0.5f ? 1.0f : -1.0f;
+          break;
+        case LfoModulation::Shape::Saw:
+          value = 2.0f * phase - 1.0f;
+          break;
+        case LfoModulation::Shape::Sine:
+        default:
+          value = std::sin(phase * 6.28318530718f);
+          break;
+        }
+        offset += value * l.depth;
+        l.phase = std::fmod(l.phase + l.rate_hz * static_cast<float>(samples) /
+                                          static_cast<float>(sample_rate_),
+                            1.0f);
+        if (l.phase < 0.0f)
+          l.phase += 1.0f;
       }
-      state().set_mod_offset(id, std::sin(l.phase * 6.28318530718f) * l.depth);
-      l.phase = std::fmod(l.phase + l.rate_hz * static_cast<float>(samples) /
-                                        static_cast<float>(sample_rate_),
-                          1.0f);
-      if (l.phase < 0.0f)
-        l.phase += 1.0f;
+      state().set_mod_offset(id, std::clamp(offset, -1.0f, 1.0f));
     }
   }
 
@@ -754,8 +804,10 @@ private:
 
   // Slot zero is deliberately unused because Pulp parameter IDs are
   // 1-based.  This makes indexing safe for every declared parameter ID.
-  std::array<LfoModulation, static_cast<std::size_t>(kLastModulatableParam) + 1>
-      lfo_{};
+  static constexpr std::size_t kLfoLaneCount = 2;
+  using LfoTable = std::array<LfoModulation,
+                              static_cast<std::size_t>(kLastModulatableParam) + 1>;
+  std::array<LfoTable, kLfoLaneCount> lfo_lanes_{};
   std::array<std::string, 2> route_ids_{};
 
   static bool select_effect_media(double sample_rate,

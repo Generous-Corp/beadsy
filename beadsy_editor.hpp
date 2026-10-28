@@ -1067,39 +1067,45 @@ public:
     auto *root = detail::root_view(this);
     if (!root)
       return nullptr;
-    const auto current = processor_.lfo(id);
     const auto *info = store_.info(id);
     const std::string target_name = info ? info->name : "Parameter";
     auto alive = import_binding_lifetime_token();
     pulp::view::ContextMenu::ModulationMenuSpec spec;
     spec.target_label = target_name;
-    spec.lane_count = 1; // Beadsy currently has one DSP LFO lane.
-    spec.lanes[0].label = "LFO 1";
-    spec.lanes[0].enabled = current.enabled;
-    spec.lanes[0].rate_normalized =
-        std::clamp((current.rate_hz - 0.01f) / 19.99f, 0.0f, 1.0f);
-    spec.lanes[0].depth_normalized = std::clamp(current.depth, 0.0f, 1.0f);
-    spec.lanes[0].shapes = {"Sine"}; // The Beadsy DSP lane is sine-based today.
-    spec.lanes[0].on_change = [alive, this, id](const auto &lane) {
-      if (alive.expired())
-        return;
-      auto modulation = processor_.lfo(id);
-      modulation.enabled = lane.enabled;
-      modulation.rate_hz = 0.01f + lane.rate_normalized * 19.99f;
-      // A newly enabled lane must be audible immediately. Beadsy's stored
-      // default is zero depth so a disabled lane is inert; when the user
-      // enables it from the contextual menu, choose a useful midpoint until
-      // they adjust the Depth slider themselves.
-      modulation.depth = lane.enabled && lane.depth_normalized <= 0.0f
-                             ? 0.5f
-                             : lane.depth_normalized;
-      processor_.set_lfo(id, modulation);
-      request_repaint();
-    };
+    spec.lane_count = 2;
+    for (std::size_t lane_index = 0; lane_index < spec.lane_count; ++lane_index) {
+      const auto current = processor_.lfo(id, lane_index);
+      spec.lanes[lane_index].label =
+          std::string("LFO ") + std::to_string(lane_index + 1);
+      spec.lanes[lane_index].enabled = current.enabled;
+      spec.lanes[lane_index].rate_normalized =
+          std::clamp((current.rate_hz - 0.01f) / 19.99f, 0.0f, 1.0f);
+      spec.lanes[lane_index].depth_normalized =
+          std::clamp(current.depth, 0.0f, 1.0f);
+      spec.lanes[lane_index].shapes = {"Sine", "Triangle", "Square", "Saw"};
+      spec.lanes[lane_index].shape_index =
+          static_cast<std::size_t>(std::min<int>(static_cast<int>(current.shape), 3));
+      spec.lanes[lane_index].on_change =
+          [alive, this, id, lane_index](const auto &lane) {
+            if (alive.expired())
+              return;
+            auto modulation = processor_.lfo(id, lane_index);
+            modulation.enabled = lane.enabled;
+            modulation.rate_hz = 0.01f + lane.rate_normalized * 19.99f;
+            modulation.depth = lane.enabled && lane.depth_normalized <= 0.0f
+                                   ? 0.5f
+                                   : lane.depth_normalized;
+            modulation.shape = static_cast<beadsy::LfoModulation::Shape>(
+                std::min<std::size_t>(lane.shape_index, 3));
+            processor_.set_lfo(id, modulation, lane_index);
+            request_repaint();
+          };
+    }
     spec.on_reset = [alive, this, id] {
       if (alive.expired())
         return;
-      processor_.clear_lfo(id);
+      processor_.clear_lfo(id, 0);
+      processor_.clear_lfo(id, 1);
       request_repaint();
     };
     spec.on_dismiss = [alive, this] {
@@ -1202,7 +1208,9 @@ private:
         raw->set_accent(pulp::canvas::Color::rgba8(211, 59, 97));
       if (p.id != 0) {
         raw->set_modulation_indicator(
-            [this, id = p.id] { return processor_.lfo(id).enabled; });
+            [this, id = p.id] {
+              return processor_.lfo(id, 0).enabled || processor_.lfo(id, 1).enabled;
+            });
         raw->on_context_menu = [this, id = p.id](pulp::view::Point position) {
           show_modulation_context_menu(id, position);
         };

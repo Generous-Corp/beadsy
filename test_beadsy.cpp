@@ -716,6 +716,37 @@ TEST_CASE("Beadsy LFO modulation leaves base automation intact and persists") {
   REQUIRE(restored.depth == 0.1f);
 }
 
+TEST_CASE("Beadsy exposes independent LFO 1 and LFO 2 state and shapes") {
+  beadsy::Beadsy source;
+  pulp::state::StateStore store;
+  source.set_state_store(&store);
+  source.define_parameters(store);
+  source.set_lfo(beadsy::kDensity,
+                 {.enabled = true, .rate_hz = 2.0f, .depth = 0.1f,
+                  .phase = 0.0f, .shape = beadsy::LfoModulation::Shape::Triangle},
+                 0);
+  source.set_lfo(beadsy::kDensity,
+                 {.enabled = true, .rate_hz = 3.0f, .depth = 0.2f,
+                  .phase = 0.25f, .shape = beadsy::LfoModulation::Shape::Saw},
+                 1);
+  const auto payload = source.serialize_plugin_state();
+  REQUIRE(payload[4] == 3);
+
+  beadsy::Beadsy restored;
+  pulp::state::StateStore restored_store;
+  restored.set_state_store(&restored_store);
+  restored.define_parameters(restored_store);
+  REQUIRE(restored.deserialize_plugin_state(payload));
+  const auto lane1 = restored.lfo(beadsy::kDensity, 0);
+  const auto lane2 = restored.lfo(beadsy::kDensity, 1);
+  REQUIRE(lane1.enabled);
+  REQUIRE(lane2.enabled);
+  REQUIRE(lane1.shape == beadsy::LfoModulation::Shape::Triangle);
+  REQUIRE(lane2.shape == beadsy::LfoModulation::Shape::Saw);
+  REQUIRE(lane1.rate_hz == 2.0f);
+  REQUIRE(lane2.rate_hz == 3.0f);
+}
+
 TEST_CASE("Beadsy persists host route identities as rebinding hints") {
   beadsy::Beadsy source;
   source.set_route_identity(0, "track:piano");
@@ -799,16 +830,15 @@ TEST_CASE("Beadsy accepts legacy ten-slot modulation state") {
       beadsy::kDensity,
       {.enabled = true, .rate_hz = 3.0f, .depth = 0.2f, .phase = 0.4f});
   constexpr std::size_t stride = 1 + sizeof(float) * 3;
-  const auto current = source.serialize_plugin_state();
   std::vector<std::uint8_t> legacy(6 + stride * 10, 0);
-  std::copy_n(current.begin(), 6, legacy.begin());
+  legacy[0] = 'G'; legacy[1] = 'F'; legacy[2] = 'M'; legacy[3] = 'D';
+  legacy[4] = 2;
   // The old format included slot zero before IDs 1..9; reconstruct that
   // layout explicitly instead of truncating the current ID-ordered form.
-  std::copy_n(current.begin() + 6 +
-                  (static_cast<std::size_t>(beadsy::kDensity) - 1) * stride,
-              stride,
-              legacy.begin() + 6 +
-                  static_cast<std::size_t>(beadsy::kDensity) * stride);
+  const std::size_t at = 6 + static_cast<std::size_t>(beadsy::kDensity) * stride;
+  legacy[at] = 1;
+  const float values[] = {3.0f, 0.2f, 0.4f};
+  std::memcpy(legacy.data() + at + 1, values, sizeof(values));
 
   beadsy::Beadsy restored;
   pulp::state::StateStore restored_store;

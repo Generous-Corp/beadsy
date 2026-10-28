@@ -606,7 +606,7 @@ TEST_CASE("Beadsy knob opens modulation menu through root right-click dispatch")
     REQUIRE(native->child_count() > 20);
     auto* menu = dynamic_cast<pulp::view::ContextMenu*>(native->child_at(native->child_count() - 1));
     REQUIRE(menu != nullptr);
-    REQUIRE(menu->items().size() == 8);
+    REQUIRE(menu->items().size() == 14);
 
     // The shared menu owns keyboard navigation and dismissal; its keyboard
     // contract is covered by the focused ContextMenu tests below.
@@ -724,7 +724,7 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
         beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
     REQUIRE(menu != nullptr);
     REQUIRE(native->modulation_context_target() == beadsy::kDensity);
-    REQUIRE(menu->items().size() == 8);
+    REQUIRE(menu->items().size() == 14);
     REQUIRE(menu->items()[3].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::toggle);
     REQUIRE(menu->items()[4].control_kind ==
@@ -733,7 +733,7 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
             pulp::view::ContextMenu::Item::ControlKind::slider);
     REQUIRE(menu->items()[6].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::slider);
-    REQUIRE(menu->items()[7].label == "Reset modulation");
+    REQUIRE(menu->items()[13].label == "Reset modulation");
 
     REQUIRE(menu->items()[3].on_change);
     auto toggle = menu->items()[3];
@@ -746,8 +746,17 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
     REQUIRE(menu->items()[6].normalized_value >= 0.0f);
     REQUIRE(menu->items()[6].normalized_value <= 1.0f);
 
+    // LFO 2 is a separate lane with its own toggle and controls.
+    REQUIRE(menu->items()[9].control_kind ==
+            pulp::view::ContextMenu::Item::ControlKind::toggle);
+    auto toggle2 = menu->items()[9];
+    toggle2.checked = true;
+    menu->items()[9].on_change(toggle2);
+    REQUIRE(processor.lfo(beadsy::kDensity, 1).enabled);
+
     menu->on_close(1);
     REQUIRE_FALSE(processor.lfo(beadsy::kDensity).enabled);
+    REQUIRE_FALSE(processor.lfo(beadsy::kDensity, 1).enabled);
     REQUIRE(processor.lfo(beadsy::kDensity).depth == 0.0f);
     REQUIRE_FALSE(native->modulation_context_target().has_value());
 }
