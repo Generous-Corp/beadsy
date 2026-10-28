@@ -724,27 +724,29 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
         beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
     REQUIRE(menu != nullptr);
     REQUIRE(native->modulation_context_target() == beadsy::kDensity);
-    REQUIRE(menu->items().size() == 4);
-    REQUIRE(menu->items()[0].control_kind ==
+    REQUIRE(menu->items().size() == 8);
+    REQUIRE(menu->items()[3].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::toggle);
-    REQUIRE(menu->items()[1].control_kind ==
+    REQUIRE(menu->items()[4].control_kind ==
+            pulp::view::ContextMenu::Item::ControlKind::choice);
+    REQUIRE(menu->items()[5].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::slider);
-    REQUIRE(menu->items()[2].control_kind ==
+    REQUIRE(menu->items()[6].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::slider);
-    REQUIRE(menu->items()[3].label == "Reset LFO");
+    REQUIRE(menu->items()[7].label == "Reset modulation");
 
-    REQUIRE(menu->items()[0].on_change);
-    auto toggle = menu->items()[0];
+    REQUIRE(menu->items()[3].on_change);
+    auto toggle = menu->items()[3];
     toggle.checked = true;
-    menu->items()[0].on_change(toggle);
+    menu->items()[3].on_change(toggle);
     REQUIRE(processor.lfo(beadsy::kDensity).enabled);
     REQUIRE(processor.lfo(beadsy::kDensity).depth > 0.0f);
-    REQUIRE(menu->items()[1].normalized_value >= 0.0f);
-    REQUIRE(menu->items()[1].normalized_value <= 1.0f);
-    REQUIRE(menu->items()[2].normalized_value >= 0.0f);
-    REQUIRE(menu->items()[2].normalized_value <= 1.0f);
+    REQUIRE(menu->items()[5].normalized_value >= 0.0f);
+    REQUIRE(menu->items()[5].normalized_value <= 1.0f);
+    REQUIRE(menu->items()[6].normalized_value >= 0.0f);
+    REQUIRE(menu->items()[6].normalized_value <= 1.0f);
 
-    menu->on_close(2);
+    menu->on_close(1);
     REQUIRE_FALSE(processor.lfo(beadsy::kDensity).enabled);
     REQUIRE(processor.lfo(beadsy::kDensity).depth == 0.0f);
     REQUIRE_FALSE(native->modulation_context_target().has_value());
