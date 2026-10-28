@@ -462,7 +462,7 @@ public:
     canvas.stroke_rounded_rect(0.5f, 0.5f, std::max(1.0f, b.width - 1.0f),
                                std::max(1.0f, b.height - 1.0f),
                                std::max(2.0f, b.height * 0.18f));
-    canvas.set_font_full("Roboto Mono", std::max(3.0f, b.height * 0.30f), 700,
+    canvas.set_font_full("Roboto Mono", std::max(3.0f, b.height * 0.40f), 700,
                          0, 0.35f);
     canvas.set_text_align(pulp::canvas::TextAlign::center);
     canvas.set_fill_color(pulp::canvas::Color::rgba8(241, 239, 229));
@@ -984,6 +984,15 @@ public:
         "independent scaffold; authorized artwork unavailable") {
       paint_scaffold_labels(canvas, b.width, b.height);
     }
+    // The original lower bay used this space for the two hardware jack
+    // legends that software replaces. Keep the new source selector explicit
+    // and aligned with the existing IN L / IN R legends.
+    canvas.set_font_full("Roboto", std::max(3.0f, 2.8f * std::min(panel_sx, panel_sy)),
+                         700, 0, 0.35f);
+    canvas.set_text_align(pulp::canvas::TextAlign::center);
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(32, 32, 32, 255));
+    canvas.fill_text("SOURCE", 35.4f * panel_sx,
+                     (128.5f - 22.0f) * panel_sy);
   }
 
   /// Target selected by the native right-click context interaction. Hosts
