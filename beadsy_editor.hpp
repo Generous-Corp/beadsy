@@ -1106,6 +1106,10 @@ public:
         return;
       processor_.clear_lfo(id, 0);
       processor_.clear_lfo(id, 1);
+      // Reset is a terminal action. Clear the product target immediately as
+      // well as through the SDK dismissal callback so direct/native host
+      // dispatch cannot leave a stale modulation target behind.
+      clear_modulation_context();
       request_repaint();
     };
     spec.on_dismiss = [alive, this] {
