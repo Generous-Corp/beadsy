@@ -137,7 +137,13 @@ inline pulp::format::PluginDescriptor make_descriptor() {
 #if defined(BEADSY_AU_NO_INPUT) || defined(BEADSY_LV2)
           {},
 #elif defined(BEADSY_AU_MAIN_INPUT_ONLY)
-          {{"Main In", 2, true}},
+          {{"Main In", 2, false}},
+#elif defined(BEADSY_EFFECT_VARIANT)
+          // The FX companion must have an active main input by default.  A
+          // host may leave the auxiliary sidechain disconnected, but marking
+          // Main In optional makes VST3/AU advertise zero default inputs and
+          // prevents ordinary track/bus routing from reaching the processor.
+          {{"Main In", 2, false}, {"Sidechain", 2, true}},
 #else
               {{"Main In", 2, true}, {"Sidechain", 2, true}},
 #endif

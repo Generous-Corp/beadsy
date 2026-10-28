@@ -5,7 +5,14 @@
 
 TEST_CASE("Beadsy FX is an audio-input companion") {
     auto processor = beadsy::create_beadsy();
-    REQUIRE(processor->descriptor().category == pulp::format::PluginCategory::Effect);
+    const auto descriptor = processor->descriptor();
+    REQUIRE(descriptor.category == pulp::format::PluginCategory::Effect);
+    REQUIRE(descriptor.input_buses.size() == 2);
+    REQUIRE(descriptor.input_buses[0].name == "Main In");
+    REQUIRE(descriptor.input_buses[0].default_channels == 2);
+    REQUIRE_FALSE(descriptor.input_buses[0].optional);
+    REQUIRE(descriptor.input_buses[1].name == "Sidechain");
+    REQUIRE(descriptor.input_buses[1].optional);
 
     pulp::state::StateStore store;
     processor->set_state_store(&store);
