@@ -667,6 +667,16 @@ TEST_CASE("Beadsy knob opens modulation menu through root right-click dispatch")
     REQUIRE(menu != nullptr);
     REQUIRE(menu->items().size() == 14);
 
+    if (const char *path = std::getenv("BEADSY_MENU_CAPTURE")) {
+        const auto capture = pulp::view::capture_view(
+            *editor, 201, 364, 2.0f, pulp::view::ScreenshotBackend::auto_select);
+        REQUIRE(capture.ok);
+        std::ofstream out(path, std::ios::binary);
+        out.write(reinterpret_cast<const char *>(capture.png.data()),
+                  static_cast<std::streamsize>(capture.png.size()));
+        REQUIRE(static_cast<bool>(out));
+    }
+
     // The shared menu owns keyboard navigation and dismissal; its keyboard
     // contract is covered by the focused ContextMenu tests below.
 }
