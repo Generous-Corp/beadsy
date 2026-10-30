@@ -1105,6 +1105,13 @@ public:
     canvas.set_fill_color(pulp::canvas::Color::rgba8(32, 32, 32, 255));
     canvas.fill_text("SOURCE", content_x + 35.4f * panel_sx,
                      content_y + (128.5f - 22.0f) * panel_sy);
+    // Reassert the software route legends at the exact centers of their
+    // fields. The imported artwork's right legend can drift by a few pixels
+    // at narrow host sizes; these labels share the picker geometry below.
+    canvas.fill_text("IN L", content_x + 12.0f * panel_sx,
+                     content_y + (128.5f - 13.0f) * panel_sy);
+    canvas.fill_text("IN R", content_x + 58.8f * panel_sx,
+                     content_y + (128.5f - 13.0f) * panel_sy);
   }
 
   /// Target selected by the native right-click context interaction. Hosts
