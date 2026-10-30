@@ -2,7 +2,7 @@
 
 ## Exact candidate
 
-- Beadsy source: `9151c23dd2869031914de90db3c9e2227076cd1e`
+- Beadsy source: `44af1ca1eb28e6a284262982793223fe02fe8d0f`
 - Beadsy version: `1.0.7`
 - Pulp SDK source: `26a4ae85e09cab39d4eef015123e6f835be7bc8b`
 - AU executable SHA-256: `27bbe0ca5f914d7421d66a83b892594b327bbfde7d329e86be91427ec4e49cbe`
