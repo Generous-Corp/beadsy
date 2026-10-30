@@ -436,16 +436,17 @@ public:
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
     const float r = std::max(2.0f, std::min(b.width, b.height) * 0.40f);
-    static constexpr pulp::canvas::Color accents[] = {
-        pulp::canvas::Color::rgba8(15, 15, 15),
-        pulp::canvas::Color::rgba8(24, 165, 175),
-        pulp::canvas::Color::rgba8(211, 59, 97),
-    };
-    canvas.set_fill_color(accents[destination_]);
+    // SWITCH_ASSIGN is a black push button in the original Beads panel.
+    // Destination state is represented by the three neighboring indicators,
+    // so the button itself must never turn into a colored knob.
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(15, 15, 15));
     canvas.fill_circle(b.width * 0.5f, b.height * 0.5f, r);
     canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
     canvas.set_line_width(std::max(0.7f, r * 0.10f));
     canvas.stroke_circle(b.width * 0.5f, b.height * 0.5f, r);
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(242, 240, 227));
+    canvas.fill_rect(b.width * 0.46f, b.height * 0.22f,
+                     std::max(1.0f, b.width * 0.08f), b.height * 0.28f);
   }
 private:
   int destination_ = 0;
