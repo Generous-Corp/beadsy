@@ -448,7 +448,7 @@ public:
   bool wants_mouse_input() const override { return true; }
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
-    const float r = std::max(2.0f, std::min(b.width, b.height) * 0.40f);
+    const float r = std::max(2.0f, std::min(b.width, b.height) * 0.42f);
     // SWITCH_ASSIGN is a black push button in the original Beads panel.
     // Destination state is represented by the three neighboring indicators,
     // so the button itself must never turn into a colored knob.
@@ -457,10 +457,9 @@ public:
     canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
     canvas.set_line_width(std::max(0.7f, r * 0.10f));
     canvas.stroke_circle(b.width * 0.5f, b.height * 0.5f, r);
-    // The destination is a three-state selector. Keep the switch face
-    // black, but show the selected destination with a restrained colored
-    // ring so a press has an unmistakable visual result without reading as a
-    // knob pointer.
+    // The destination is a three-state selector. Keep the switch face black
+    // and use a small state lamp in its center. A value ring or pointer makes
+    // this read as a knob, which is semantically wrong for this control.
     static constexpr pulp::canvas::Color destination_colors[] = {
         pulp::canvas::Color::rgba8(24, 165, 175),
         pulp::canvas::Color::rgba8(234, 166, 27),
@@ -468,14 +467,11 @@ public:
     };
     const float cx = b.width * 0.5f;
     const float cy = b.height * 0.5f;
-    // The bright, wide rim is the button's destination state. It is
-    // deliberately inside the black face so this never reads as a knob cap
-    // or a value indicator.
-    canvas.set_stroke_color(destination_colors[destination_]);
-    canvas.set_line_width(std::max(1.8f, r * 0.22f));
-    canvas.stroke_circle(cx, cy, r * 0.78f);
+    canvas.set_stroke_color(pulp::canvas::Color::rgba8(90, 90, 90));
+    canvas.set_line_width(std::max(0.7f, r * 0.09f));
+    canvas.stroke_circle(cx, cy, r * 0.82f);
     canvas.set_fill_color(destination_colors[destination_]);
-    canvas.fill_circle(cx, cy, std::max(0.9f, r * 0.11f));
+    canvas.fill_circle(cx, cy, std::max(1.1f, r * 0.24f));
   }
 private:
   int destination_ = 0;

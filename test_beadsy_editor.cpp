@@ -154,6 +154,36 @@ TEST_CASE("Beadsy quality and CV-assign buttons occupy separate original station
     REQUIRE(assign->access_label().find("Dry/Wet") != std::string::npos);
 }
 
+TEST_CASE("Beadsy CV assign station is a button with visible state feedback") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+
+    auto* button = native->assign_control();
+    REQUIRE(button != nullptr);
+    REQUIRE(button->access_role() == pulp::view::View::AccessRole::button);
+    const auto bounds = button->bounds();
+    const pulp::view::Point center{bounds.x + bounds.width * 0.5f,
+                                   bounds.y + bounds.height * 0.5f};
+    REQUIRE(native->hit_test(center) == button);
+    const auto before = pulp::view::capture_view(
+        *editor, 201, 364, 1.0f, pulp::view::ScreenshotBackend::auto_select);
+    REQUIRE(before.ok);
+    const auto destination = button->destination();
+    native->simulate_click(center);
+    REQUIRE(button->destination() == (destination + 1) % 3);
+    const auto after = pulp::view::capture_view(
+        *editor, 201, 364, 1.0f, pulp::view::ScreenshotBackend::auto_select);
+    REQUIRE(after.ok);
+    REQUIRE(after.png != before.png);
+}
+
 TEST_CASE("Beadsy source control clamps values to the declared bus topology") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
