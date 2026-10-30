@@ -55,22 +55,6 @@ inline pulp::view::Point local_to_root(pulp::view::View *view,
   return point;
 }
 
-inline pulp::view::Point root_to_local(pulp::view::View *view,
-                                       pulp::view::Point point) {
-  if (!view)
-    return point;
-  std::vector<pulp::view::View *> chain;
-  for (auto *current = view; current && current->parent();
-       current = current->parent())
-    chain.push_back(current);
-  for (auto it = chain.rbegin(); it != chain.rend(); ++it) {
-    const auto bounds = (*it)->bounds();
-    point.x -= bounds.x;
-    point.y -= bounds.y;
-  }
-  return point;
-}
-
 class PanelKnob final : public pulp::view::Knob {
 public:
   // The converted panel artwork is consistently about 1.8 pt left of the
@@ -1337,16 +1321,13 @@ private:
     // instead of the child knob. Resolve that editor-local point against the
     // same native control bounds and open the identical Spectr-style menu.
     on_context_menu = [this](pulp::view::Point position) {
-      const auto editor_position = detail::root_to_local(this, position);
       for (const auto &control : controls_) {
         if (!control.knob || control.id == 0)
           continue;
         const auto bounds = control.knob->bounds();
-        if (editor_position.x >= bounds.x &&
-            editor_position.x <= bounds.x + bounds.width &&
-            editor_position.y >= bounds.y &&
-            editor_position.y <= bounds.y + bounds.height) {
-          show_modulation_context_menu(control.id, editor_position);
+        if (position.x >= bounds.x && position.x <= bounds.x + bounds.width &&
+            position.y >= bounds.y && position.y <= bounds.y + bounds.height) {
+          show_modulation_context_menu(control.id, position);
           return;
         }
       }
