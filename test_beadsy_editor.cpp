@@ -728,7 +728,8 @@ TEST_CASE("Beadsy knob opens modulation menu through root right-click dispatch")
     REQUIRE(native->child_count() > 20);
     auto* menu = dynamic_cast<pulp::view::ContextMenu*>(native->child_at(native->child_count() - 1));
     REQUIRE(menu != nullptr);
-    REQUIRE(menu->items().size() == 31);
+    // Targets are progressively disclosed only after a lane is enabled.
+    REQUIRE(menu->items().size() == 18);
 
     if (const char *path = std::getenv("BEADSY_MENU_CAPTURE")) {
         const auto capture = pulp::view::capture_view(
@@ -902,7 +903,7 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
         beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
     REQUIRE(menu != nullptr);
     REQUIRE(native->modulation_context_target() == beadsy::kDensity);
-    REQUIRE(menu->items().size() == 31);
+    REQUIRE(menu->items().size() == 18);
     REQUIRE(menu->items()[3].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::toggle);
     REQUIRE(menu->items()[15].control_kind ==
@@ -912,9 +913,8 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
     REQUIRE(menu->items()[17].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::slider);
     REQUIRE(menu->items()[4].label == "Reset to Live");
-    REQUIRE(menu->items()[19].label == "TARGETS");
-    REQUIRE(menu->items()[20].label == "LFO 1 -> Density");
-    REQUIRE(menu->items()[30].label == "All targets");
+    REQUIRE(std::none_of(menu->items().begin(), menu->items().end(),
+                         [](const auto &item) { return item.label == "TARGETS"; }));
 
     REQUIRE(menu->items()[7].on_change);
     auto toggle = menu->items()[7];
@@ -926,6 +926,8 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
     REQUIRE(menu->items()[16].normalized_value <= 1.0f);
     REQUIRE(menu->items()[17].normalized_value >= 0.0f);
     REQUIRE(menu->items()[17].normalized_value <= 1.0f);
+    REQUIRE(std::any_of(menu->items().begin(), menu->items().end(),
+                        [](const auto &item) { return item.label == "TARGETS"; }));
 
     // LFO 2 is a separate lane with its own toggle and controls.
     REQUIRE(menu->items()[8].control_kind ==
@@ -965,9 +967,66 @@ TEST_CASE("Beadsy modulation menu is reachable through root secondary dispatch")
     auto* menu = native->child_at(native->child_count() - 1);
     auto* context = dynamic_cast<pulp::view::ContextMenu*>(menu);
     REQUIRE(context != nullptr);
-    REQUIRE(context->items().size() == 31);
+    REQUIRE(context->items().size() == 18);
     REQUIRE(context->items()[7].label == "LFO 1");
     REQUIRE(context->items()[8].label == "LFO 2");
+}
+
+TEST_CASE("Beadsy modulation toggles and lane tabs work through root dispatch") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+
+    auto* menu = native->show_modulation_context_menu(
+        beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
+    REQUIRE(menu != nullptr);
+    const auto click_row = [&](std::string_view label) {
+        const auto& items = menu->items();
+        const auto it = std::find_if(items.begin(), items.end(),
+                                     [&](const auto& item) { return item.label == label; });
+        REQUIRE(it != items.end());
+        const auto index = static_cast<std::size_t>(std::distance(items.begin(), it));
+        const auto row = menu->layout().rows[index];
+        native->simulate_click({row.x + row.width * 0.5f,
+                                 row.y + row.height * 0.5f});
+    };
+
+    click_row("LFO 1");
+    REQUIRE(processor.lfo(beadsy::kDensity, 0).enabled);
+    REQUIRE(processor.lfo(beadsy::kDensity, 0).depth > 0.0f);
+
+    // Target rows are below the compact viewport; exercise the same callback
+    // after locating the row (the core scroll/pointer path is covered by the
+    // shared ContextMenu tests).
+    auto target_it = std::find_if(menu->items().begin(), menu->items().end(),
+                                  [](const auto &item) {
+                                      return item.label == "LFO 1 -> Freeze";
+                                  });
+    REQUIRE(target_it != menu->items().end());
+    auto target_item = *target_it;
+    target_item.checked = true;
+    target_it->on_change(target_item);
+    REQUIRE_FALSE(processor.lfo(beadsy::kDensity, 0).enabled);
+    REQUIRE(processor.lfo(beadsy::kFreeze, 0).enabled);
+
+    click_row("EDIT LFO 2");
+    const auto& after_tab = menu->items();
+    REQUIRE(std::find_if(after_tab.begin(), after_tab.end(), [](const auto& item) {
+        return item.label == "LFO 2 PARAMETERS";
+    }) != after_tab.end());
+    REQUIRE(std::find_if(after_tab.begin(), after_tab.end(), [](const auto& item) {
+        return item.label == "LFO 1 PARAMETERS";
+    }) == after_tab.end());
+
+    click_row("LFO 2");
+    REQUIRE(processor.lfo(beadsy::kDensity, 1).enabled);
+    REQUIRE(processor.lfo(beadsy::kDensity, 1).depth > 0.0f);
 }
 
 TEST_CASE("Beadsy bound editor knob emits a host automation gesture") {

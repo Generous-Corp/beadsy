@@ -384,15 +384,24 @@ public:
   }
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
-    const float r = std::max(2.0f, std::min(b.width, b.height) * 0.40f);
-    const float cx = b.width * 0.5f;
-    const float cy = b.height * 0.48f;
-    // The quality selector is a black push button in the original panel;
-    // quality is communicated by the adjacent colored indicator artwork.
-    // Keeping the button silhouette invariant prevents the old colored-pot
-    // treatment from reading as a missing or inverted toggle at small scales.
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(15, 15, 15));
-    canvas.fill_circle(cx, cy, r);
+    const float w = std::max(6.0f, b.width * 0.78f);
+    const float h = std::max(5.0f, b.height * 0.58f);
+    const float x = (b.width - w) * 0.5f;
+    const float y = (b.height - h) * 0.5f;
+    // This station is a push button, so its silhouette must not resemble a
+    // seventh knob. The small inset LED is the state indicator and cycles with
+    // the quality mode.
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(24, 24, 24));
+    canvas.fill_rounded_rect(x, y, w, h, std::max(1.0f, h * 0.22f));
+    static constexpr pulp::canvas::Color led[] = {
+        pulp::canvas::Color::rgba8(48, 174, 210),
+        pulp::canvas::Color::rgba8(205, 214, 103),
+        pulp::canvas::Color::rgba8(234, 166, 27),
+        pulp::canvas::Color::rgba8(211, 59, 97),
+    };
+    canvas.set_fill_color(led[quality_]);
+    canvas.fill_circle(b.width * 0.5f, b.height * 0.5f,
+                       std::max(1.0f, std::min(w, h) * 0.22f));
   }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
@@ -429,7 +438,12 @@ public:
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
     const float r = std::max(2.0f, std::min(b.width, b.height) * 0.40f);
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(15, 15, 15));
+    static constexpr pulp::canvas::Color accents[] = {
+        pulp::canvas::Color::rgba8(15, 15, 15),
+        pulp::canvas::Color::rgba8(24, 165, 175),
+        pulp::canvas::Color::rgba8(211, 59, 97),
+    };
+    canvas.set_fill_color(accents[destination_]);
     canvas.fill_circle(b.width * 0.5f, b.height * 0.5f, r);
     canvas.set_fill_color(pulp::canvas::Color::rgba8(242, 240, 227));
     canvas.fill_rect(b.width * 0.46f, b.height * 0.22f,
@@ -1169,14 +1183,46 @@ public:
     // modulation lanes may address any of the product's source-backed grain
     // parameters, so expose that catalog instead of silently omitting the
     // TARGETS section from the popup.
-    spec.target_labels = {"Density", "Time", "Size", "Shape", "Pitch"};
-    spec.all_target_labels = spec.target_labels;
-    spec.target_index = 0;
+    const std::array<std::pair<const char *, pulp::state::ParamID>, 8>
+        modulation_targets = {{{"Density", beadsy::kDensity},
+                               {"Time", beadsy::kTime},
+                               {"Size", beadsy::kSize},
+                               {"Shape", beadsy::kShape},
+                               {"Pitch", beadsy::kPitch},
+                               {"Quality", beadsy::kQuality},
+                               {"Freeze", beadsy::kFreeze},
+                               {"Source", beadsy::kMode}}};
+    for (const auto &[label, target_id] : modulation_targets) {
+      spec.target_labels.emplace_back(label);
+      spec.all_target_labels.emplace_back(label);
+      if (target_id == id)
+        spec.target_index = spec.target_labels.size() - 1;
+    }
+    spec.lane_target_indices = {spec.target_index, spec.target_index};
     spec.on_target_change = [alive, this](std::size_t) {
       if (!alive.expired())
         request_repaint();
     };
+    spec.on_target_assignment = [alive, this, id,
+                                 modulation_targets](std::size_t lane,
+                                                      std::size_t target_index) {
+      if (alive.expired() || target_index >= modulation_targets.size())
+        return;
+      processor_.assign_lfo_target(id, modulation_targets[target_index].second,
+                                   lane);
+      request_repaint();
+    };
     spec.lane_count = 2;
+    spec.active_lane_index = 0;
+    spec.on_lane_select = [alive, this](std::size_t) {
+      if (!alive.expired())
+        request_repaint();
+    };
+    spec.live = true;
+    spec.on_live_change = [alive, this](bool) {
+      if (!alive.expired())
+        request_repaint();
+    };
     for (std::size_t lane_index = 0; lane_index < spec.lane_count; ++lane_index) {
       const auto current = processor_.lfo(id, lane_index);
       spec.lanes[lane_index].label =

@@ -716,6 +716,32 @@ TEST_CASE("Beadsy LFO modulation leaves base automation intact and persists") {
   REQUIRE(restored.depth == 0.1f);
 }
 
+TEST_CASE("Beadsy LFO offsets knobs and button parameters during processing") {
+  beadsy::Beadsy processor;
+  pulp::state::StateStore store;
+  processor.set_state_store(&store);
+  processor.define_parameters(store);
+  processor.prepare({.sample_rate = 48000.0,
+                     .max_buffer_size = 8,
+                     .input_channels = 0,
+                     .output_channels = 2});
+  processor.set_lfo(beadsy::kDensity,
+                    {.enabled = true, .rate_hz = 1.0f, .depth = 0.5f,
+                     .phase = 0.25f});
+  processor.set_lfo(beadsy::kFreeze,
+                    {.enabled = true, .rate_hz = 1.0f, .depth = 0.5f,
+                     .phase = 0.25f});
+  pulp::midi::MidiBuffer midi_in;
+  pulp::midi::MidiBuffer midi_out;
+  pulp::audio::Buffer<float> output(2, 8);
+  auto output_view = output.view();
+  pulp::audio::BufferView<const float> empty_input(nullptr, 0, 0);
+  processor.process(output_view, empty_input, midi_in, midi_out,
+                    {.sample_rate = 48000.0, .num_samples = 8});
+  REQUIRE(store.get_modulated(beadsy::kDensity) > store.get_value(beadsy::kDensity));
+  REQUIRE(store.get_modulated(beadsy::kFreeze) > store.get_value(beadsy::kFreeze));
+}
+
 TEST_CASE("Beadsy exposes independent LFO 1 and LFO 2 state and shapes") {
   beadsy::Beadsy source;
   pulp::state::StateStore store;

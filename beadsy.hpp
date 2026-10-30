@@ -308,6 +308,22 @@ public:
       state().set_mod_offset(id, 0.0f);
   }
 
+  // Move a lane's modulation assignment from the parameter whose menu is
+  // open to a newly selected target. The lane keeps its rate, depth and shape;
+  // only the destination changes. This is the product-side seam used by the
+  // shared Spectr-style target rows.
+  void assign_lfo_target(pulp::state::ParamID from,
+                         pulp::state::ParamID to,
+                         std::size_t lane = 0) {
+    if (!is_modulatable(from) || !is_modulatable(to) ||
+        lane >= lfo_lanes_.size())
+      return;
+    if (from == to)
+      return;
+    lfo_lanes_[lane][to] = lfo_lanes_[lane][from];
+    lfo_lanes_[lane][from] = {};
+  }
+
   /// Host-owned route identity captured by the editor for state restore.
   /// The host still owns the graph connection; these stable IDs are only a
   /// state hint that can be rebound when the catalog is injected again.
