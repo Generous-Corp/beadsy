@@ -1290,8 +1290,14 @@ private:
             [this, id = p.id] {
               return processor_.lfo(id, 0).enabled || processor_.lfo(id, 1).enabled;
             });
-        raw->on_context_menu = [this, id = p.id](pulp::view::Point position) {
-          show_modulation_context_menu(id, position);
+        raw->on_context_menu = [this, raw, id = p.id](pulp::view::Point position) {
+          // PanelKnob receives the secondary-click point in its own local
+          // coordinates. The shared menu factory expects an editor-local
+          // anchor, so translate through the knob's authored bounds before
+          // converting to the host root.
+          const auto knob_bounds = raw->bounds();
+          show_modulation_context_menu(
+              id, {knob_bounds.x + position.x, knob_bounds.y + position.y});
         };
       } else {
         // Geometry-only controls remain visible for layout inspection,
@@ -1308,8 +1314,24 @@ private:
       add_child(std::move(knob));
       if (p.id != 0)
         bindings_.push_back(pulp::view::bind_parameter(*raw, store_, p.id));
-      controls_.push_back({raw, p.x, p.y, p.r});
+      controls_.push_back({p.id, raw, p.x, p.y, p.r});
     }
+
+    // Some AUv2 bridges deliver a secondary click to the editor container
+    // instead of the child knob. Resolve that editor-local point against the
+    // same native control bounds and open the identical Spectr-style menu.
+    on_context_menu = [this](pulp::view::Point position) {
+      for (const auto &control : controls_) {
+        if (!control.knob || control.id == 0)
+          continue;
+        const auto bounds = control.knob->bounds();
+        if (position.x >= bounds.x && position.x <= bounds.x + bounds.width &&
+            position.y >= bounds.y && position.y <= bounds.y + bounds.height) {
+          show_modulation_context_menu(control.id, position);
+          return;
+        }
+      }
+    };
 
     // Keep the Seed control after the mapped geometry so existing panel
     // child ordering remains stable for hosts and screenshot probes.
@@ -1604,6 +1626,7 @@ private:
   }
 
   struct Control {
+    pulp::state::ParamID id;
     detail::PanelKnob *knob;
     float x;
     float y;
