@@ -572,7 +572,8 @@ public:
   explicit AudioRoutePicker(std::size_t bus_index = 0,
                             std::size_t channel_index = 0)
       : bus_index_(bus_index), channel_index_(channel_index) {
-    set_id("beadsy-audio-route");
+    set_id(std::string("beadsy-audio-route-") +
+           (channel_index_ == 0 ? "left" : "right"));
     set_access_label(channel_label() + ": host-owned routing menu");
     set_access_disabled("true");
     // Keep the no-catalog state legible inside the compact lower bay.  The

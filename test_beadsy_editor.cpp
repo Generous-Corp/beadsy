@@ -871,6 +871,24 @@ TEST_CASE("Beadsy top buttons receive clicks through the editor root") {
     }
 }
 
+TEST_CASE("Beadsy stereo route fields have distinct host-facing identities") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    std::vector<std::string> route_ids;
+    for (std::size_t i = 0; i < native->child_count(); ++i) {
+        auto* child = native->child_at(i);
+        if (child && child->id().find("beadsy-audio-route-") == 0)
+            route_ids.emplace_back(child->id());
+    }
+    REQUIRE(route_ids.size() == 2);
+    REQUIRE(route_ids[0] != route_ids[1]);
+}
+
 TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
