@@ -665,7 +665,7 @@ TEST_CASE("Beadsy knob opens modulation menu through root right-click dispatch")
     REQUIRE(native->child_count() > 20);
     auto* menu = dynamic_cast<pulp::view::ContextMenu*>(native->child_at(native->child_count() - 1));
     REQUIRE(menu != nullptr);
-    REQUIRE(menu->items().size() == 18);
+    REQUIRE(menu->items().size() == 31);
 
     if (const char *path = std::getenv("BEADSY_MENU_CAPTURE")) {
         const auto capture = pulp::view::capture_view(
@@ -793,7 +793,7 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
         beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
     REQUIRE(menu != nullptr);
     REQUIRE(native->modulation_context_target() == beadsy::kDensity);
-    REQUIRE(menu->items().size() == 18);
+    REQUIRE(menu->items().size() == 31);
     REQUIRE(menu->items()[3].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::toggle);
     REQUIRE(menu->items()[15].control_kind ==
@@ -803,6 +803,9 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
     REQUIRE(menu->items()[17].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::slider);
     REQUIRE(menu->items()[4].label == "Reset to Live");
+    REQUIRE(menu->items()[19].label == "TARGETS");
+    REQUIRE(menu->items()[20].label == "LFO 1 -> Density");
+    REQUIRE(menu->items()[30].label == "All targets");
 
     REQUIRE(menu->items()[7].on_change);
     auto toggle = menu->items()[7];
@@ -853,7 +856,7 @@ TEST_CASE("Beadsy modulation menu is reachable through root secondary dispatch")
     auto* menu = native->child_at(native->child_count() - 1);
     auto* context = dynamic_cast<pulp::view::ContextMenu*>(menu);
     REQUIRE(context != nullptr);
-    REQUIRE(context->items().size() == 18);
+    REQUIRE(context->items().size() == 31);
     REQUIRE(context->items()[7].label == "LFO 1");
     REQUIRE(context->items()[8].label == "LFO 2");
 }

@@ -1115,6 +1115,17 @@ public:
     auto alive = import_binding_lifetime_token();
     pulp::view::ContextMenu::ModulationMenuSpec spec;
     spec.target_label = target_name;
+    // The shared Spectr-style menu owns the target hierarchy.  Beadsy's
+    // modulation lanes may address any of the product's source-backed grain
+    // parameters, so expose that catalog instead of silently omitting the
+    // TARGETS section from the popup.
+    spec.target_labels = {"Density", "Time", "Size", "Shape", "Pitch"};
+    spec.all_target_labels = spec.target_labels;
+    spec.target_index = 0;
+    spec.on_target_change = [alive, this](std::size_t) {
+      if (!alive.expired())
+        request_repaint();
+    };
     spec.lane_count = 2;
     for (std::size_t lane_index = 0; lane_index < spec.lane_count; ++lane_index) {
       const auto current = processor_.lfo(id, lane_index);
