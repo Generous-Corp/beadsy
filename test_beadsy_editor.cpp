@@ -665,7 +665,7 @@ TEST_CASE("Beadsy knob opens modulation menu through root right-click dispatch")
     REQUIRE(native->child_count() > 20);
     auto* menu = dynamic_cast<pulp::view::ContextMenu*>(native->child_at(native->child_count() - 1));
     REQUIRE(menu != nullptr);
-    REQUIRE(menu->items().size() == 14);
+    REQUIRE(menu->items().size() == 18);
 
     if (const char *path = std::getenv("BEADSY_MENU_CAPTURE")) {
         const auto capture = pulp::view::capture_view(
@@ -793,34 +793,34 @@ TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") 
         beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
     REQUIRE(menu != nullptr);
     REQUIRE(native->modulation_context_target() == beadsy::kDensity);
-    REQUIRE(menu->items().size() == 14);
+    REQUIRE(menu->items().size() == 18);
     REQUIRE(menu->items()[3].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::toggle);
-    REQUIRE(menu->items()[4].control_kind ==
+    REQUIRE(menu->items()[15].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::choice);
-    REQUIRE(menu->items()[5].control_kind ==
+    REQUIRE(menu->items()[16].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::slider);
-    REQUIRE(menu->items()[6].control_kind ==
+    REQUIRE(menu->items()[17].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::slider);
-    REQUIRE(menu->items()[13].label == "Reset modulation");
+    REQUIRE(menu->items()[4].label == "Reset to Live");
 
-    REQUIRE(menu->items()[3].on_change);
-    auto toggle = menu->items()[3];
+    REQUIRE(menu->items()[7].on_change);
+    auto toggle = menu->items()[7];
     toggle.checked = true;
-    menu->items()[3].on_change(toggle);
+    menu->items()[7].on_change(toggle);
     REQUIRE(processor.lfo(beadsy::kDensity).enabled);
     REQUIRE(processor.lfo(beadsy::kDensity).depth > 0.0f);
-    REQUIRE(menu->items()[5].normalized_value >= 0.0f);
-    REQUIRE(menu->items()[5].normalized_value <= 1.0f);
-    REQUIRE(menu->items()[6].normalized_value >= 0.0f);
-    REQUIRE(menu->items()[6].normalized_value <= 1.0f);
+    REQUIRE(menu->items()[16].normalized_value >= 0.0f);
+    REQUIRE(menu->items()[16].normalized_value <= 1.0f);
+    REQUIRE(menu->items()[17].normalized_value >= 0.0f);
+    REQUIRE(menu->items()[17].normalized_value <= 1.0f);
 
     // LFO 2 is a separate lane with its own toggle and controls.
-    REQUIRE(menu->items()[9].control_kind ==
+    REQUIRE(menu->items()[8].control_kind ==
             pulp::view::ContextMenu::Item::ControlKind::toggle);
-    auto toggle2 = menu->items()[9];
+    auto toggle2 = menu->items()[8];
     toggle2.checked = true;
-    menu->items()[9].on_change(toggle2);
+    menu->items()[8].on_change(toggle2);
     REQUIRE(processor.lfo(beadsy::kDensity, 1).enabled);
 
     menu->on_close(1);
@@ -853,8 +853,8 @@ TEST_CASE("Beadsy modulation menu is reachable through root secondary dispatch")
     auto* menu = native->child_at(native->child_count() - 1);
     auto* context = dynamic_cast<pulp::view::ContextMenu*>(menu);
     REQUIRE(context != nullptr);
-    REQUIRE(context->items().size() == 14);
-    REQUIRE(context->items()[2].label == "LFO 1");
+    REQUIRE(context->items().size() == 18);
+    REQUIRE(context->items()[7].label == "LFO 1");
     REQUIRE(context->items()[8].label == "LFO 2");
 }
 
