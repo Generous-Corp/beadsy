@@ -106,6 +106,9 @@ public:
   void set_modulation_indicator(std::function<bool()> active) {
     modulation_active_ = std::move(active);
   }
+  void set_modulation_phase(std::function<float()> phase) {
+    modulation_phase_ = std::move(phase);
+  }
   void set_accent(std::optional<pulp::canvas::Color> accent) {
     accent_ = accent;
   }
@@ -236,9 +239,11 @@ public:
     // A restrained amber outer arc makes an enabled product-local LFO
     // visible without changing the original panel's black-and-brass knob.
     if (modulation_active_ && modulation_active_()) {
+      const float phase = modulation_phase_ ? modulation_phase_() : 0.0f;
       canvas.set_stroke_color(pulp::canvas::Color::rgba8(216, 155, 69));
       canvas.set_line_width(std::max(1.0f, radius * 0.06f));
-      canvas.stroke_arc(cx, cy, radius * 1.18f, -2.35f, 0.78f);
+      const float start = -2.35f + phase * 6.28318530718f;
+      canvas.stroke_arc(cx, cy, radius * 1.18f, start, start + 0.78f);
     }
   }
 
@@ -247,6 +252,7 @@ private:
   float diameter_ = 0.0f;
   std::optional<pulp::canvas::Color> accent_;
   std::function<bool()> modulation_active_;
+  std::function<float()> modulation_phase_;
 };
 
 } // namespace detail
@@ -1364,6 +1370,12 @@ private:
         raw->set_modulation_indicator(
             [this, id = p.id] {
               return processor_.lfo(id, 0).enabled || processor_.lfo(id, 1).enabled;
+            });
+        raw->set_modulation_phase(
+            [this, id = p.id] {
+              const auto first = processor_.lfo(id, 0);
+              const auto second = processor_.lfo(id, 1);
+              return first.enabled ? first.phase : second.phase;
             });
         raw->on_context_menu = [this, raw, id = p.id](pulp::view::Point position) {
           // PanelKnob receives the secondary-click point in its own local
