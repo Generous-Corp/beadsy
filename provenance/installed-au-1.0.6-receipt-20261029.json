@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-10-30T03:01:42.693982+00:00",
+  "build_head": "49773936a3e241880fe6915f0dcfee03c4c2bad6",
+  "installed": "/Library/Audio/Plug-Ins/Components/Beadsy.component/Contents/MacOS/Beadsy",
+  "build": "/Users/danielraffel/Code/agent-worktrees/beadsy-two-lfo-clean-handoff-20261029/build/AU/Beadsy.component/Contents/MacOS/Beadsy",
+  "build_sha256": "25eae257b71858db59e3b56d0e605da8bbee84d20df7db4f9d042a071f296d27",
+  "installed_sha256": "25eae257b71858db59e3b56d0e605da8bbee84d20df7db4f9d042a071f296d27",
+  "metadata": {
+    "CFBundleShortVersionString": "1.0.6",
+    "CFBundleVersion": "1.0.6",
+    "AudioComponentsVersion": 65542
+  },
+  "user_level_beadsy_paths": []
+}
