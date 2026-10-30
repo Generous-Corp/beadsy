@@ -444,9 +444,18 @@ public:
     canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
     canvas.set_line_width(std::max(0.7f, r * 0.10f));
     canvas.stroke_circle(b.width * 0.5f, b.height * 0.5f, r);
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(242, 240, 227));
-    canvas.fill_rect(b.width * 0.46f, b.height * 0.22f,
-                     std::max(1.0f, b.width * 0.08f), b.height * 0.28f);
+    // The destination is a three-state selector. Keep the switch face
+    // black, but show the selected destination with a restrained colored
+    // ring so a press has an unmistakable visual result without reading as a
+    // knob pointer.
+    static constexpr pulp::canvas::Color destination_colors[] = {
+        pulp::canvas::Color::rgba8(24, 165, 175),
+        pulp::canvas::Color::rgba8(234, 166, 27),
+        pulp::canvas::Color::rgba8(211, 59, 97),
+    };
+    canvas.set_stroke_color(destination_colors[destination_]);
+    canvas.set_line_width(std::max(1.0f, r * 0.14f));
+    canvas.stroke_circle(b.width * 0.5f, b.height * 0.5f, r * 0.78f);
   }
 private:
   int destination_ = 0;
