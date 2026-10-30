@@ -106,8 +106,14 @@ TEST_CASE("Beadsy quality button cycles and follows restored state") {
     REQUIRE(native != nullptr);
     REQUIRE(native->quality_control() != nullptr);
     REQUIRE(native->quality_control()->quality() == 3);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
 
-    native->quality_control()->on_mouse_down({});
+    const auto qb = native->quality_control()->bounds();
+    const pulp::view::Point center{qb.x + qb.width * 0.5f,
+                                   qb.y + qb.height * 0.5f};
+    REQUIRE(native->hit_test(center) == native->quality_control());
+    native->simulate_click(center);
     REQUIRE(store.get_value(beadsy::kQuality) == 0.0f);
     REQUIRE(native->quality_control()->quality() == 0);
 
@@ -139,7 +145,11 @@ TEST_CASE("Beadsy quality and CV-assign buttons occupy separate original station
     REQUIRE(assign->bounds().x < 30.0f);
     REQUIRE(assign->bounds().y > 180.0f);
     const auto before = assign->destination();
-    assign->on_mouse_down({});
+    const auto ab = assign->bounds();
+    const pulp::view::Point center{ab.x + ab.width * 0.5f,
+                                   ab.y + ab.height * 0.5f};
+    REQUIRE(native->hit_test(center) == assign);
+    native->simulate_click(center);
     REQUIRE(assign->destination() == (before + 1) % 3);
     REQUIRE(assign->access_label().find("Dry/Wet") != std::string::npos);
 }
@@ -626,6 +636,23 @@ TEST_CASE("Beadsy procedural knob skin renders deterministic min mid max referen
         out.write(reinterpret_cast<const char*>(capture.png.data()),
                   static_cast<std::streamsize>(capture.png.size()));
         REQUIRE(static_cast<bool>(out));
+    }
+}
+
+TEST_CASE("Beadsy small knob pointer visibly follows its value") {
+    constexpr float diameter = 32.0f;
+    constexpr float height = diameter * 2.35f;
+    std::vector<std::uint8_t> previous;
+    for (const float value : {0.0f, 0.5f, 1.0f}) {
+        beadsy::detail::PanelKnob knob("utility-pointer", 6.0f);
+        knob.set_bounds({0.0f, 0.0f, diameter, height});
+        knob.set_value(value);
+        const auto png = pulp::view::render_to_png(
+            knob, static_cast<int>(diameter), static_cast<int>(height), 2.0f,
+            pulp::view::ScreenshotBackend::coregraphics);
+        REQUIRE(png.size() > 100);
+        if (!previous.empty()) REQUIRE(png != previous);
+        previous = png;
     }
 }
 

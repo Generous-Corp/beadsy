@@ -158,9 +158,21 @@ public:
     if (utility_knob) {
       canvas.set_fill_color(pulp::canvas::Color::rgba8(14, 14, 14));
       canvas.fill_circle(cx, cy, radius * 1.04f);
+      const float ux = std::cos(angle);
+      const float uy = std::sin(angle);
+      const float px = -uy;
+      const float py = ux;
+      const float inner = radius * 0.26f;
+      const float outer = radius * 0.89f;
+      const float half_width = radius * 0.13f;
+      const pulp::canvas::Canvas::Point2D pointer[] = {
+          {cx + ux * inner + px * half_width, cy + uy * inner + py * half_width},
+          {cx + ux * inner - px * half_width, cy + uy * inner - py * half_width},
+          {cx + ux * outer - px * half_width, cy + uy * outer - py * half_width},
+          {cx + ux * outer + px * half_width, cy + uy * outer + py * half_width},
+      };
       canvas.set_fill_color(pulp::canvas::Color::rgba8(242, 240, 227));
-      canvas.fill_rounded_rect(cx - radius * 0.13f, cy - radius * 0.88f,
-                               radius * 0.26f, radius * 0.62f, radius * 0.08f);
+      canvas.fill_path(pointer, 4);
       return;
     }
 
@@ -439,6 +451,7 @@ public:
 
   CenterIndicators() {
     set_id("beadsy-center-indicators");
+    set_pointer_events(pulp::view::View::PointerEvents::none);
     set_access_role(pulp::view::View::AccessRole::image);
     set_access_label("Status indicators");
   }
@@ -518,6 +531,15 @@ public:
                      : mode_ == 1 ? "MAIN IN"
                                   : "SIDECHAIN",
                      b.width * 0.5f, b.height * 0.63f);
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(241, 239, 229));
+    const float arrow_x = b.width - std::max(2.0f, b.height * 0.34f);
+    const float arrow_y = b.height * 0.50f;
+    const pulp::canvas::Canvas::Point2D arrow[] = {
+        {arrow_x - b.height * 0.16f, arrow_y - b.height * 0.10f},
+        {arrow_x + b.height * 0.16f, arrow_y - b.height * 0.10f},
+        {arrow_x, arrow_y + b.height * 0.14f},
+    };
+    canvas.fill_path(arrow, 3);
     // ComboBox's inherited event path owns the dropdown. The compact painted
     // field keeps the faceplate treatment while the popup itself gets the
     // shared Pulp checkmark/hover/keyboard behavior.
@@ -1033,11 +1055,17 @@ public:
     // The old output-jack illustration occupies the right-most lower bay;
     // remove that bay while preserving the panel border and printed density
     // label above it.
-    panel_rect(47.0f, 10.0f, 23.8f, 21.0f);
+    panel_rect(47.0f, 0.0f, 23.8f, 31.0f);
     // Clear the complete lower divider. The old mask stopped at the center
     // of the panel, leaving the imported line visibly coloured on its right
     // half in Logic captures.
     panel_rect(4.0f, 16.7f, 62.8f, 2.2f);
+    // Replace the partly grey, partly white lower border as one continuous
+    // faceplate stroke after masking the old output bay.
+    panel_rect(3.5f, 9.0f, 65.3f, 1.1f);
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(189, 188, 188));
+    panel_rect(3.5f, 9.25f, 65.3f, 0.60f);
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(248, 248, 246, 255));
     // FREEZE and SEED were labels for removed hardware jack controls. Keep
     // the stereo IN L / IN R legends above the software route pickers, while
     // removing only these two obsolete legends from the reclaimed row.
