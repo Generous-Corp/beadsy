@@ -2,12 +2,12 @@
 
 ## Exact candidate
 
-- Beadsy source: `44af1ca1eb28e6a284262982793223fe02fe8d0f`
+- Beadsy product code source: `266cb12547e8b27e3c8f77bb5e2af2c391352bbf` (later commits update this receipt only)
 - Beadsy version: `1.0.7`
 - Pulp SDK source: `26a4ae85e09cab39d4eef015123e6f835be7bc8b`
 - AU executable SHA-256: `e9c42e29f9a10fede9029bdabdb84379087fcbfffa8a69382edc92a929decf66`
 - VST3 executable SHA-256: `b193ca735ace1b67e451407156a07f04f3c93be0926649b4478bf8c1f72f6d53`
-- Package SHA-256: `8e5871d6f4e7b80153081fd5ad36d216ea3dcbb0c7c8c7babf48159a1aaa55be`
+- Installed test package SHA-256: `749d1585537e1b5b754f767821722b37f8dfe3bb32cbb9e4a44f45e90f1f4a6f`
 
 Only these Beadsy locations are installed: `/Library/Audio/Plug-Ins/Components/Beadsy.component` and `/Library/Audio/Plug-Ins/VST3/Beadsy.vst3`. No Beadsy component or VST3 exists under the user Library paths.
 
