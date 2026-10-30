@@ -780,6 +780,34 @@ TEST_CASE("Beadsy top Freeze control is source-backed and laid out beside Seed")
     REQUIRE_FALSE(freeze->pressed());
 }
 
+TEST_CASE("Beadsy top buttons receive clicks through the editor root") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+
+    for (const auto& [id, expected] :
+         std::array<std::pair<std::string_view, pulp::state::ParamID>, 2>{
+             {{"beadsy-freeze", beadsy::kFreeze},
+              {"beadsy-seed-mode", beadsy::kSeedMode}}}) {
+        pulp::view::View* button = nullptr;
+        for (std::size_t i = 0; i < native->child_count(); ++i)
+            if (native->child_at(i)->id() == id) button = native->child_at(i);
+        REQUIRE(button != nullptr);
+        const auto b = button->bounds();
+        const pulp::view::Point center{b.x + b.width * 0.5f,
+                                       b.y + b.height * 0.5f};
+        REQUIRE(native->hit_test(center) == button);
+        native->simulate_click(center);
+        REQUIRE(store.get_value(expected) == 1.0f);
+    }
+}
+
 TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
