@@ -61,7 +61,11 @@ public:
   // DXF-to-view affine fit. Keep that calibration in the editor layout rather
   // than nudging individual controls and losing the relationship between the
   // source map and the native hit regions.
-  static constexpr float kSourceXCorrectionMm = 0.64f;
+  // Utility controls are overlaid on the authored color strips.  The former
+  // 0.64 mm global correction put their black caps visibly left of those
+  // strips at Logic's reference scale; keep the shared affine fit nearly
+  // neutral and let the source coordinates provide the alignment.
+  static constexpr float kSourceXCorrectionMm = 0.10f;
   static constexpr float kSourceYCorrectionMm = 0.24f;
   static constexpr float kUtilityPaintRadiusFraction = 0.50f;
 
