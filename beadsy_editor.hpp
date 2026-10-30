@@ -376,6 +376,7 @@ public:
     set_access_role(pulp::view::View::AccessRole::button);
     set_access_label("Quality: 16-bit; click to cycle");
     set_focusable(true);
+    set_cursor(pulp::view::View::CursorStyle::pointer);
   }
   void set_quality(int quality) {
     quality_ = std::clamp(quality, 0, 3);
@@ -393,26 +394,20 @@ public:
     const float r = std::max(2.0f, std::min(b.width, b.height) * 0.40f);
     const float cx = b.width * 0.5f;
     const float cy = b.height * 0.5f;
-    // This station is a normal circular push button. Its neighboring LED,
-    // owned by CenterIndicators, communicates the selected quality color.
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(15, 15, 15));
-    canvas.fill_circle(cx, cy, r);
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(52, 52, 52));
-    canvas.set_line_width(std::max(0.7f, r * 0.10f));
-    canvas.stroke_circle(cx, cy, r);
-    // Keep the button face black, but make its selected quality visibly
-    // different from the parameter pots around it.  The adjacent LED is the
-    // source-backed quality indicator; this restrained colored rim makes a
-    // direct tap observable even at the smallest AU editor size.
+    // This station is one circular push button. Its face carries the selected
+    // quality color; there is no second LED that can be mistaken for another
+    // control or leave the state ambiguous.
     static constexpr pulp::canvas::Color colors[] = {
         pulp::canvas::Color::rgba8(48, 174, 210),
         pulp::canvas::Color::rgba8(205, 214, 103),
         pulp::canvas::Color::rgba8(234, 166, 27),
         pulp::canvas::Color::rgba8(211, 59, 97),
     };
-    canvas.set_stroke_color(colors[quality_]);
-    canvas.set_line_width(std::max(1.2f, r * 0.16f));
-    canvas.stroke_circle(cx, cy, r * 0.78f);
+    canvas.set_fill_color(colors[quality_]);
+    canvas.fill_circle(cx, cy, r);
+    canvas.set_stroke_color(pulp::canvas::Color::rgba8(52, 52, 52));
+    canvas.set_line_width(std::max(0.7f, r * 0.10f));
+    canvas.stroke_circle(cx, cy, r);
   }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
@@ -436,6 +431,7 @@ public:
     set_access_role(pulp::view::View::AccessRole::button);
     set_access_label("CV Assign (Feedback); click to cycle");
     set_focusable(true);
+    set_cursor(pulp::view::View::CursorStyle::pointer);
   }
   int destination() const { return destination_; }
   void on_mouse_down(pulp::view::Point) override {
@@ -449,29 +445,19 @@ public:
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
     const float r = std::max(2.0f, std::min(b.width, b.height) * 0.42f);
-    // SWITCH_ASSIGN is a black push button in the original Beads panel.
-    // Destination state is represented by the three neighboring indicators,
-    // so the button itself must never turn into a colored knob.
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(15, 15, 15));
-    canvas.fill_circle(b.width * 0.5f, b.height * 0.5f, r);
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
-    canvas.set_line_width(std::max(0.7f, r * 0.10f));
-    canvas.stroke_circle(b.width * 0.5f, b.height * 0.5f, r);
-    // The destination is a three-state selector. Keep the switch face black
-    // and use a small state lamp in its center. A value ring or pointer makes
-    // this read as a knob, which is semantically wrong for this control.
     static constexpr pulp::canvas::Color destination_colors[] = {
         pulp::canvas::Color::rgba8(24, 165, 175),
         pulp::canvas::Color::rgba8(234, 166, 27),
         pulp::canvas::Color::rgba8(211, 59, 97),
     };
-    const float cx = b.width * 0.5f;
-    const float cy = b.height * 0.5f;
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(90, 90, 90));
-    canvas.set_line_width(std::max(0.7f, r * 0.09f));
-    canvas.stroke_circle(cx, cy, r * 0.82f);
+    // This is a three-state button, not a knob plus a separate LED.  The
+    // complete circular face carries the destination colour so its state is
+    // visible in the same way as the quality button.
     canvas.set_fill_color(destination_colors[destination_]);
-    canvas.fill_circle(cx, cy, std::max(1.1f, r * 0.24f));
+    canvas.fill_circle(b.width * 0.5f, b.height * 0.5f, r);
+    canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
+    canvas.set_line_width(std::max(0.7f, r * 0.10f));
+    canvas.stroke_circle(b.width * 0.5f, b.height * 0.5f, r);
   }
 private:
   int destination_ = 0;
@@ -498,25 +484,9 @@ public:
     request_repaint();
   }
   void paint(pulp::canvas::Canvas &canvas) override {
-    const auto b = local_bounds();
-    const float unit = b.width / 12.0f;
-    const float y = b.height * 0.5f;
-    const float led_radius = std::max(1.0f, kLedRadiusMm * unit);
-    // The quality push button is a separate native child positioned beside
-    // this LED. Keeping the LED in its own view prevents the button from
-    // disappearing behind the imported artwork or being clipped by a shared
-    // indicator box.
-    static constexpr pulp::canvas::Color colors[] = {
-        pulp::canvas::Color::rgba8(48, 174, 210),
-        pulp::canvas::Color::rgba8(205, 214, 103),
-        pulp::canvas::Color::rgba8(234, 166, 27),
-        pulp::canvas::Color::rgba8(211, 59, 97),
-    };
-    canvas.set_fill_color(colors[quality_]);
-    canvas.fill_circle(b.width * kLedXFraction, y, led_radius);
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(137, 131, 123));
-    canvas.set_line_width(std::max(0.8f, unit * 0.18f));
-    canvas.stroke_circle(b.width * kLedXFraction, y, led_radius);
+    // The quality station owns its state now. Keep this compatibility child
+    // empty so old layout/accessibility probes remain harmless while no
+    // separate LED is painted.
   }
   bool wants_mouse_input() const override { return false; }
 private:
@@ -1682,7 +1652,9 @@ private:
     if (assign_button_) {
       const float unit = std::min(sx, sy);
       const float diameter = 7.0f * unit;
-      const float x = content_x + 8.7f * sx - diameter * 0.5f;
+      // The authored dashed guide is centered at 7.1mm; keep the button
+      // directly over that guide rather than over the old jack center.
+      const float x = content_x + 7.1f * sx - diameter * 0.5f;
       const float y = content_y + (128.5f - 51.7f) * sy - diameter * 0.5f;
       place_absolute(assign_button_, x, y, diameter, diameter);
     }
