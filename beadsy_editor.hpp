@@ -400,6 +400,19 @@ public:
     canvas.set_stroke_color(pulp::canvas::Color::rgba8(52, 52, 52));
     canvas.set_line_width(std::max(0.7f, r * 0.10f));
     canvas.stroke_circle(cx, cy, r);
+    // Keep the button face black, but make its selected quality visibly
+    // different from the parameter pots around it.  The adjacent LED is the
+    // source-backed quality indicator; this restrained colored rim makes a
+    // direct tap observable even at the smallest AU editor size.
+    static constexpr pulp::canvas::Color colors[] = {
+        pulp::canvas::Color::rgba8(48, 174, 210),
+        pulp::canvas::Color::rgba8(205, 214, 103),
+        pulp::canvas::Color::rgba8(234, 166, 27),
+        pulp::canvas::Color::rgba8(211, 59, 97),
+    };
+    canvas.set_stroke_color(colors[quality_]);
+    canvas.set_line_width(std::max(1.2f, r * 0.16f));
+    canvas.stroke_circle(cx, cy, r * 0.78f);
   }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
@@ -453,9 +466,16 @@ public:
         pulp::canvas::Color::rgba8(234, 166, 27),
         pulp::canvas::Color::rgba8(211, 59, 97),
     };
+    const float cx = b.width * 0.5f;
+    const float cy = b.height * 0.5f;
+    // The bright, wide rim is the button's destination state. It is
+    // deliberately inside the black face so this never reads as a knob cap
+    // or a value indicator.
     canvas.set_stroke_color(destination_colors[destination_]);
-    canvas.set_line_width(std::max(1.0f, r * 0.14f));
-    canvas.stroke_circle(b.width * 0.5f, b.height * 0.5f, r * 0.78f);
+    canvas.set_line_width(std::max(1.8f, r * 0.22f));
+    canvas.stroke_circle(cx, cy, r * 0.78f);
+    canvas.set_fill_color(destination_colors[destination_]);
+    canvas.fill_circle(cx, cy, std::max(0.9f, r * 0.11f));
   }
 private:
   int destination_ = 0;
