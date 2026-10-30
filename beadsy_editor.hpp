@@ -110,6 +110,18 @@ public:
     accent_ = accent;
   }
 
+  // Some AUv2 hosts deliver the secondary click to the embedded control but
+  // do not run Pulp's root context dispatcher. Handle that case at the knob
+  // boundary while preserving the normal Knob gesture path for left clicks.
+  void on_mouse_event(const pulp::view::MouseEvent &event) override {
+    if (event.button == pulp::view::MouseButton::right && event.isPress()) {
+      if (on_context_menu)
+        on_context_menu(event.position);
+      return;
+    }
+    pulp::view::Knob::on_mouse_event(event);
+  }
+
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
     const float cx = b.width * 0.5f;
