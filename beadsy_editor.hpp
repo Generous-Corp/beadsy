@@ -258,7 +258,9 @@ public:
     const float radius = std::max(3.0f, std::min(b.width, b.height) * 0.32f);
     const float cy = b.height * 0.62f;
     const auto off = pulp::canvas::Color::rgba8(226, 225, 217);
-    const auto on = pulp::canvas::Color::rgba8(246, 245, 235);
+    // Match the authored panel's yellow-green lit state instead of changing
+    // only the accessibility label when Seed is enabled.
+    const auto on = pulp::canvas::Color::rgba8(205, 214, 103);
     canvas.set_fill_color(mode_ == 0 ? off : on);
     canvas.fill_circle(cx, cy, radius);
     canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
@@ -310,7 +312,7 @@ public:
     const float cx = b.width * 0.5f;
     const float radius = std::max(3.0f, std::min(b.width, b.height) * 0.34f);
     const float cy = b.height * 0.62f;
-    const auto body = pressed_ ? pulp::canvas::Color::rgba8(196, 197, 187)
+    const auto body = pressed_ ? pulp::canvas::Color::rgba8(205, 214, 103)
                                : pulp::canvas::Color::rgba8(239, 238, 228);
     canvas.set_fill_color(body);
     canvas.fill_circle(cx, cy, radius);
@@ -1016,7 +1018,10 @@ public:
     // remove that bay while preserving the panel border and printed density
     // label above it.
     panel_rect(47.0f, 10.0f, 23.8f, 21.0f);
-    panel_rect(4.0f, 16.7f, 43.0f, 2.2f);
+    // Clear the complete lower divider. The old mask stopped at the center
+    // of the panel, leaving the imported line visibly coloured on its right
+    // half in Logic captures.
+    panel_rect(4.0f, 16.7f, 62.8f, 2.2f);
     // FREEZE and SEED were labels for removed hardware jack controls. Keep
     // the stereo IN L / IN R legends above the software route pickers, while
     // removing only these two obsolete legends from the reclaimed row.
