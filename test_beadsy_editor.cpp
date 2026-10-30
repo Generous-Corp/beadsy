@@ -405,6 +405,42 @@ TEST_CASE("Beadsy exposes independent stereo host route pickers") {
     REQUIRE(catalog.connected_route_channel(0, 1) == "track:piano");
 }
 
+TEST_CASE("Beadsy stereo route menus select the same host source through root clicks") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    EditorRouteCatalog catalog;
+    native->set_audio_route_catalog(&catalog, true);
+    native->source_mode_control()->set_mode(1);
+    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->layout_children();
+
+    for (auto* picker : {native->audio_route_picker(),
+                         native->audio_route_picker_right()}) {
+        REQUIRE(picker != nullptr);
+        picker->set_source_mode(1);
+        REQUIRE(picker->enabled());
+        const auto b = picker->bounds();
+        const pulp::view::Point center{b.x + b.width * 0.5f,
+                                       b.y + b.height * 0.5f};
+        REQUIRE(native->hit_test(center) == picker);
+        native->simulate_click(center);
+        REQUIRE(picker->is_open());
+        pulp::view::KeyEvent down{.key = pulp::view::KeyCode::down};
+        REQUIRE(picker->on_key_event(down));
+        REQUIRE(picker->on_key_event(down));
+        pulp::view::KeyEvent enter{.key = pulp::view::KeyCode::enter};
+        REQUIRE(picker->on_key_event(enter));
+        REQUIRE_FALSE(picker->is_open());
+    }
+    REQUIRE(catalog.connected_route_channel(0, 0) == "track:piano");
+    REQUIRE(catalog.connected_route_channel(0, 1) == "track:piano");
+}
+
 TEST_CASE("Beadsy refreshes distinct sidechain channel identities") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
