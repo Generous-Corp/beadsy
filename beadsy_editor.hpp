@@ -390,24 +390,16 @@ public:
   }
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
-    const float w = std::max(6.0f, b.width * 0.78f);
-    const float h = std::max(5.0f, b.height * 0.58f);
-    const float x = (b.width - w) * 0.5f;
-    const float y = (b.height - h) * 0.5f;
-    // This station is a push button, so its silhouette must not resemble a
-    // seventh knob. The small inset LED is the state indicator and cycles with
-    // the quality mode.
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(24, 24, 24));
-    canvas.fill_rounded_rect(x, y, w, h, std::max(1.0f, h * 0.22f));
-    static constexpr pulp::canvas::Color led[] = {
-        pulp::canvas::Color::rgba8(48, 174, 210),
-        pulp::canvas::Color::rgba8(205, 214, 103),
-        pulp::canvas::Color::rgba8(234, 166, 27),
-        pulp::canvas::Color::rgba8(211, 59, 97),
-    };
-    canvas.set_fill_color(led[quality_]);
-    canvas.fill_circle(b.width * 0.5f, b.height * 0.5f,
-                       std::max(1.0f, std::min(w, h) * 0.22f));
+    const float r = std::max(2.0f, std::min(b.width, b.height) * 0.40f);
+    const float cx = b.width * 0.5f;
+    const float cy = b.height * 0.5f;
+    // This station is a normal circular push button. Its neighboring LED,
+    // owned by CenterIndicators, communicates the selected quality color.
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(15, 15, 15));
+    canvas.fill_circle(cx, cy, r);
+    canvas.set_stroke_color(pulp::canvas::Color::rgba8(52, 52, 52));
+    canvas.set_line_width(std::max(0.7f, r * 0.10f));
+    canvas.stroke_circle(cx, cy, r);
   }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
@@ -451,9 +443,9 @@ public:
     };
     canvas.set_fill_color(accents[destination_]);
     canvas.fill_circle(b.width * 0.5f, b.height * 0.5f, r);
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(242, 240, 227));
-    canvas.fill_rect(b.width * 0.46f, b.height * 0.22f,
-                     std::max(1.0f, b.width * 0.08f), b.height * 0.28f);
+    canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
+    canvas.set_line_width(std::max(0.7f, r * 0.10f));
+    canvas.stroke_circle(b.width * 0.5f, b.height * 0.5f, r);
   }
 private:
   int destination_ = 0;
@@ -475,6 +467,10 @@ public:
     set_access_role(pulp::view::View::AccessRole::image);
     set_access_label("Status indicators");
   }
+  void set_quality(int quality) {
+    quality_ = std::clamp(quality, 0, 3);
+    request_repaint();
+  }
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
     const float unit = b.width / 12.0f;
@@ -484,13 +480,21 @@ public:
     // this LED. Keeping the LED in its own view prevents the button from
     // disappearing behind the imported artwork or being clipped by a shared
     // indicator box.
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(195, 179, 159));
+    static constexpr pulp::canvas::Color colors[] = {
+        pulp::canvas::Color::rgba8(48, 174, 210),
+        pulp::canvas::Color::rgba8(205, 214, 103),
+        pulp::canvas::Color::rgba8(234, 166, 27),
+        pulp::canvas::Color::rgba8(211, 59, 97),
+    };
+    canvas.set_fill_color(colors[quality_]);
     canvas.fill_circle(b.width * kLedXFraction, y, led_radius);
     canvas.set_stroke_color(pulp::canvas::Color::rgba8(137, 131, 123));
     canvas.set_line_width(std::max(0.8f, unit * 0.18f));
     canvas.stroke_circle(b.width * kLedXFraction, y, led_radius);
   }
   bool wants_mouse_input() const override { return false; }
+private:
+  int quality_ = 3;
 };
 
 /// Selects the software source path. Hardware Beads uses physical input
@@ -1471,8 +1475,13 @@ private:
     });
     quality_binding_ = store_.add_listener(
         [this](pulp::state::ParamID changed, float value) {
-          if (changed == kQuality && push_button_)
-            push_button_->set_quality(static_cast<int>(std::lround(value)));
+          if (changed == kQuality) {
+            const int quality = static_cast<int>(std::lround(value));
+            if (push_button_)
+              push_button_->set_quality(quality);
+            if (center_indicators_)
+              center_indicators_->set_quality(quality);
+          }
         },
         pulp::state::ListenerThread::Main,
         pulp::state::ListenerRestoreBehavior::Reconcile);
@@ -1484,6 +1493,8 @@ private:
 
     auto indicators = std::make_unique<CenterIndicators>();
     center_indicators_ = indicators.get();
+    center_indicators_->set_quality(
+        static_cast<int>(std::lround(store_.get_value(kQuality))));
     add_child(std::move(indicators));
 
     auto mode = std::make_unique<ModeControl>();
