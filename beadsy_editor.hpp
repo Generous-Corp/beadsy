@@ -314,8 +314,6 @@ public:
         on_context_menu_(event.position);
       return;
     }
-    if (event.phase == pulp::view::MousePhase::press && on_press_)
-      on_press_();
   }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
@@ -377,8 +375,6 @@ public:
         on_context_menu_(event.position);
       return;
     }
-    if (event.phase == pulp::view::MousePhase::press && on_press_)
-      on_press_();
   }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
@@ -444,8 +440,6 @@ public:
         on_context_menu_(event.position);
       return;
     }
-    if (event.phase == pulp::view::MousePhase::press && on_press_)
-      on_press_();
   }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
