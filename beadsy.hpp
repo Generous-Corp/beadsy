@@ -128,7 +128,7 @@ inline pulp::format::PluginDescriptor make_descriptor() {
 #else
           "com.independent_audio.beadsy",
 #endif
-      .version = "1.0.2",
+      .version = "1.0.8",
       .category =
 #if defined(BEADSY_EFFECT_VARIANT)
           pulp::format::PluginCategory::Effect,
