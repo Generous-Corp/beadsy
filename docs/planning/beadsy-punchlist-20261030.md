@@ -27,11 +27,18 @@ earlier phase lacks direct host evidence.
 ### Phase 1 — prove LFO animation and modulation
 
 - [ ] Attach LFO 1 and LFO 2 to a large knob, small knob, and button/toggle.
+- [ ] Ensure every interactive control type can be a modulation target,
+  including buttons, toggles, sliders, and future control kinds.
 - [ ] Verify visible movement/state changes in a fresh REAPER editor instance.
+- [ ] Verify controls animate while playing back recorded host automation as
+  well as while a product LFO is enabled.
 - [ ] Verify the rendered parameter/audio value changes over time, not only the
   menu state.
 - [ ] Repeat the focused check in AUv2 after Logic loads the exact installed
   component. Keep polyphony out of this phase.
+- [ ] Verify MIDI note-off behavior: distinguish an intentional granular tail
+  from a stuck gate, and confirm the synth does not remain indefinitely active
+  after the final note is released.
 
 ### Phase 2 — make source and bus routing clear and functional
 
@@ -75,6 +82,15 @@ earlier phase lacks direct host evidence.
 
 ## Shared Spectr-style modulation menu
 
+- [ ] Open the menu from every modulatable control, including buttons and
+  toggles, not only knobs.
+- [ ] Keep the popup inside the editor viewport at its minimum supported size;
+  increase the minimum editor size if needed instead of shrinking text below a
+  readable minimum.
+- [ ] Ensure the popup's rows never overlap and that slider tracks/thumbs remain
+  fully visible at standard and resized editor dimensions.
+- [ ] Align the slider thumb to the pointer's actual x position on tap, then
+  preserve that mapping during drag.
 - [ ] Use a highlight color that does not collide with switch thumbs or slider
   tracks; preserve readable light-on-dark contrast.
 - [ ] Size the menu from a stable maximum width so edit-lane changes do not
