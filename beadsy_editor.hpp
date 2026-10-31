@@ -1236,6 +1236,115 @@ public:
         "independent scaffold; authorized artwork unavailable") {
       paint_scaffold_labels(canvas, b.width, b.height);
     }
+    // Paint the three compact route fields in the editor surface as well as
+    // through their native child views. Standalone hosts can composite child
+    // ComboBox views below the retained panel layer; drawing the shared field
+    // here keeps the standalone and AU surfaces visually identical while the
+    // child still owns hit testing and host catalog selection.
+    const auto paint_route_field = [&](float center_x, std::string_view text,
+                                       bool enabled) {
+      const float field_w = 20.0f * std::min(panel_sx, panel_sy);
+      const float field_h = 5.5f * std::min(panel_sx, panel_sy);
+      const float x = content_x + center_x * panel_sx - field_w * 0.5f;
+      const float y = content_y + (128.5f - 17.0f) * panel_sy - field_h * 0.5f;
+      const auto fill = enabled ? pulp::canvas::Color::rgba8(38, 40, 43)
+                                : pulp::canvas::Color::rgba8(169, 169, 179);
+      const auto ink = enabled ? pulp::canvas::Color::rgba8(241, 239, 229)
+                               : pulp::canvas::Color::rgba8(211, 211, 219);
+      canvas.set_fill_color(fill);
+      canvas.fill_rounded_rect(x + 0.5f, y + 0.5f, std::max(1.0f, field_w - 1.0f),
+                               std::max(1.0f, field_h - 1.0f), field_h * 0.18f);
+      canvas.set_stroke_color(enabled ? pulp::canvas::Color::rgba8(210, 207, 193)
+                                      : pulp::canvas::Color::rgba8(126, 126, 136));
+      canvas.set_line_width(0.8f);
+      canvas.stroke_rounded_rect(x + 0.5f, y + 0.5f,
+                                 std::max(1.0f, field_w - 1.0f),
+                                 std::max(1.0f, field_h - 1.0f), field_h * 0.18f);
+      canvas.set_font_full("Roboto Mono", std::max(3.0f, field_h * 0.36f),
+                           700, 0, 0.35f);
+      canvas.set_text_align(pulp::canvas::TextAlign::center);
+      canvas.set_fill_color(ink);
+      canvas.fill_text(std::string(text), x + field_w * 0.5f - field_h * 0.12f,
+                       y + field_h * 0.63f);
+      const float arrow_x = x + field_w - std::max(2.0f, field_h * 0.34f);
+      const float arrow_y = y + field_h * 0.50f;
+      const pulp::canvas::Canvas::Point2D arrow[] = {
+          {arrow_x - field_h * 0.16f, arrow_y - field_h * 0.10f},
+          {arrow_x + field_h * 0.16f, arrow_y - field_h * 0.10f},
+          {arrow_x, arrow_y + field_h * 0.14f},
+      };
+      canvas.fill_path(arrow, 3);
+    };
+    paint_route_field(12.0f, "L IN", false);
+    paint_route_field(35.4f, "MIDI", true);
+    paint_route_field(58.8f, "R IN", false);
+    // Standalone's retained compositor can leave small native views beneath
+    // the imported faceplate. Repaint the stateful circular controls in the
+    // same layer so their visible state cannot regress by host format.
+    const auto paint_button = [&](float cx_mm, float cy_mm, float radius_mm,
+                                  pulp::canvas::Color fill) {
+      const float scale = std::min(panel_sx, panel_sy);
+      const float cx = content_x + cx_mm * panel_sx;
+      const float cy = content_y + (128.5f - cy_mm) * panel_sy;
+      canvas.set_fill_color(fill);
+      canvas.fill_circle(cx, cy, radius_mm * scale);
+      canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
+      canvas.set_line_width(std::max(0.8f, radius_mm * scale * 0.10f));
+      canvas.stroke_circle(cx, cy, radius_mm * scale);
+    };
+    const auto off = pulp::canvas::Color::rgba8(239, 238, 228);
+    const auto on = pulp::canvas::Color::rgba8(205, 214, 103);
+    paint_button(8.7f, 110.5f, 3.4f,
+                 store_.get_value(kFreeze) >= 0.5f ? on : off);
+    paint_button(62.0f, 110.5f, 3.2f,
+                 std::lround(store_.get_value(kSeedMode)) == 0 ?
+                     pulp::canvas::Color::rgba8(226, 225, 217) : on);
+    // Cover the authored quality LED before drawing the single quality button.
+    const auto mask_faceplate = [&](float cx_mm, float cy_mm, float radius_mm) {
+      const float scale = std::min(panel_sx, panel_sy);
+      canvas.set_fill_color(pulp::canvas::Color::rgba8(248, 248, 246));
+      canvas.fill_circle(content_x + cx_mm * panel_sx,
+                         content_y + (128.5f - cy_mm) * panel_sy,
+                         radius_mm * scale);
+    };
+    // These four tiny marks are the authored hardware mounting/LED artwork;
+    // software state is represented only by the large native button faces.
+    mask_faceplate(4.2f, 116.4f, 1.8f);
+    mask_faceplate(58.5f, 116.4f, 1.8f);
+    mask_faceplate(28.68f, 83.24f, 2.5f);
+    mask_faceplate(3.8f, 54.8f, 1.8f);
+    static constexpr pulp::canvas::Color quality_colors[] = {
+        pulp::canvas::Color::rgba8(48, 174, 210),
+        pulp::canvas::Color::rgba8(205, 214, 103),
+        pulp::canvas::Color::rgba8(234, 166, 27),
+        pulp::canvas::Color::rgba8(211, 59, 97),
+    };
+    paint_button(35.7f, 83.24f, 3.5f,
+                 quality_colors[std::clamp(static_cast<int>(std::lround(
+                     store_.get_value(kQuality))), 0, 3)]);
+    static constexpr pulp::canvas::Color assign_colors[] = {
+        pulp::canvas::Color::rgba8(24, 165, 175),
+        pulp::canvas::Color::rgba8(234, 166, 27),
+        pulp::canvas::Color::rgba8(211, 59, 97),
+    };
+    paint_button(7.1f, 51.7f, 3.5f,
+                 assign_colors[assign_button_ ? assign_button_->destination() : 0]);
+    // The original lower bay used this space for the two hardware jack
+    // legends that software replaces. Keep the new source selector explicit
+    // and aligned with the existing IN L / IN R legends.
+    canvas.set_font_full("Roboto", std::max(3.0f, 2.8f * std::min(panel_sx, panel_sy)),
+                         700, 0, 0.35f);
+    canvas.set_text_align(pulp::canvas::TextAlign::center);
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(32, 32, 32, 255));
+    canvas.fill_text("SOURCE", content_x + 35.4f * panel_sx,
+                     content_y + (128.5f - 22.0f) * panel_sy);
+    // Reassert the software route legends at the exact centers of their
+    // fields. The imported artwork's right legend can drift by a few pixels
+    // at narrow host sizes; these labels share the picker geometry below.
+    canvas.fill_text("IN L", content_x + 12.0f * panel_sx,
+                     content_y + (128.5f - 22.0f) * panel_sy);
+    canvas.fill_text("IN R", content_x + 58.8f * panel_sx,
+                     content_y + (128.5f - 22.0f) * panel_sy);
   }
 
   /// Target selected by the native right-click context interaction. Hosts
@@ -1594,6 +1703,7 @@ private:
         raw->set_accent(pulp::canvas::Color::rgba8(234, 166, 27));
       else if (std::string_view(p.name) == "Reverb")
         raw->set_accent(pulp::canvas::Color::rgba8(211, 59, 97));
+      raw->set_z_index(10);
       if (p.id != 0) {
         raw->set_modulation_indicator(
             [this, id = p.id] {
@@ -1670,6 +1780,7 @@ private:
     seed_mode_->set_display_value_provider([this] {
       return effective_display_value(kSeedMode);
     });
+    seed_mode_->set_z_index(100);
     seed_mode_->set_mode(
         static_cast<int>(std::lround(store_.get_value(kSeedMode))));
     seed_mode_->set_on_press([this] {
@@ -1701,6 +1812,7 @@ private:
     freeze_mode_->set_display_value_provider([this] {
       return effective_display_value(kFreeze);
     });
+    freeze_mode_->set_z_index(100);
     freeze_mode_->set_pressed(store_.get_value(kFreeze) >= 0.5f);
     freeze_mode_->set_on_press([this] {
       store_.begin_gesture(kFreeze);
@@ -1729,6 +1841,7 @@ private:
     push_button_->set_display_value_provider([this] {
       return effective_display_value(kQuality);
     });
+    push_button_->set_z_index(100);
     push_button_->set_quality(static_cast<int>(std::lround(
         store_.get_value(kQuality))));
     push_button_->set_on_press([this] {
@@ -1761,6 +1874,7 @@ private:
 
     auto assign = std::make_unique<AssignButtonControl>();
     assign_button_ = assign.get();
+    assign_button_->set_z_index(100);
     add_child(std::move(assign));
 
     auto indicators = std::make_unique<CenterIndicators>();
