@@ -740,6 +740,21 @@ TEST_CASE("Beadsy LFO offsets knobs and button parameters during processing") {
                     {.sample_rate = 48000.0, .num_samples = 8});
   REQUIRE(store.get_modulated(beadsy::kDensity) > store.get_value(beadsy::kDensity));
   REQUIRE(store.get_modulated(beadsy::kFreeze) > store.get_value(beadsy::kFreeze));
+  const auto density_display = store.displayed_modulation(beadsy::kDensity);
+  const auto freeze_display = store.displayed_modulation(beadsy::kFreeze);
+  REQUIRE(density_display.has_value());
+  REQUIRE(freeze_display.has_value());
+  REQUIRE(*density_display > store.get_value(beadsy::kDensity));
+  REQUIRE(*freeze_display > store.get_value(beadsy::kFreeze));
+
+  // Once the product LFO is disabled, the editor must stop showing a stale
+  // played value even though the base parameter remains valid.
+  processor.set_lfo(beadsy::kDensity, {});
+  processor.set_lfo(beadsy::kFreeze, {});
+  processor.process(output_view, empty_input, midi_in, midi_out,
+                    {.sample_rate = 48000.0, .num_samples = 8});
+  REQUIRE_FALSE(store.displayed_modulation(beadsy::kDensity).has_value());
+  REQUIRE_FALSE(store.displayed_modulation(beadsy::kFreeze).has_value());
 }
 
 TEST_CASE("Beadsy exposes independent LFO 1 and LFO 2 state and shapes") {
