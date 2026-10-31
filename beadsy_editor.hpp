@@ -1097,6 +1097,12 @@ public:
     // removing only these two obsolete legends from the reclaimed row.
     panel_rect(22.0f, 22.0f, 13.0f, 5.0f);
     panel_rect(36.0f, 22.0f, 11.0f, 5.0f);
+    // The imported panel also contains the original hardware IN L / IN R
+    // legends below the software route pickers.  The software legends are
+    // intentionally kept above the pickers, alongside SOURCE, so clear only
+    // these lower duplicates before the native controls are placed.
+    panel_rect(5.0f, 18.0f, 14.0f, 8.0f);
+    panel_rect(52.0f, 18.0f, 14.0f, 8.0f);
     if (std::string_view(kBeadsyPanelSourceStatus) ==
         "independent scaffold; authorized artwork unavailable") {
       paint_scaffold_labels(canvas, b.width, b.height);
