@@ -916,6 +916,9 @@ private:
 /// standalone windows and hosts that expose the Pulp resize callback.
 class ResizeGrip final : public pulp::view::View {
 public:
+  static constexpr float kMinimumWidth = 240.0f;
+  static constexpr float kMinimumHeight = 434.0f;
+
   explicit ResizeGrip(Beadsy &processor) : processor_(processor) {
     set_id("beadsy-resize-grip");
     set_access_role(pulp::view::View::AccessRole::button);
@@ -960,8 +963,8 @@ public:
                            ? event.movement_y
                            : event.window_position.y - start_pointer_.y;
       const float delta = std::abs(dx) >= std::abs(dy) ? dx : dy;
-      const float width = std::clamp(start_width_ + delta, 201.0f, 401.0f);
-      const float height = width * 364.0f / 201.0f;
+      const float width = std::clamp(start_width_ + delta, kMinimumWidth, 401.0f);
+      const float height = width * kMinimumHeight / kMinimumWidth;
       processor_.request_editor_resize(static_cast<uint32_t>(width),
                                        static_cast<uint32_t>(height));
       return;

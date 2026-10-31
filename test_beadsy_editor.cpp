@@ -1144,7 +1144,7 @@ TEST_CASE("Beadsy resize grip forwards an accepted host resize request") {
     drag.window_position = {235.0f, 362.0f};
     grip->on_mouse_event(drag);
     REQUIRE(requested_width == 241);
-    REQUIRE(requested_height == 436);
+    REQUIRE(requested_height == 435);
 
     pulp::view::MouseEvent release;
     release.phase = pulp::view::MousePhase::release;

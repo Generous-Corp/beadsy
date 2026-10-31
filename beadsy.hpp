@@ -189,7 +189,10 @@ public:
 
 #if defined(BEADSY_NATIVE_EDITOR) && !defined(PULP_HEADLESS)
   pulp::format::ViewSize view_size() const override {
-    return {201, 364, 201, 364, 401, 729};
+    // The modulation popup needs enough vertical room for its readable
+    // Spectr-style rows before it has to scroll. Keep the authored aspect
+    // ratio while raising the host-provided minimum size.
+    return {240, 434, 240, 434, 401, 729};
   }
   std::unique_ptr<pulp::view::View> create_view() override;
 #endif
