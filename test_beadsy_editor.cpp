@@ -569,7 +569,7 @@ TEST_CASE("Beadsy auxiliary knobs are interactive at their painted centers") {
     }
 }
 
-TEST_CASE("Beadsy density indicators use separated source-sized LED and button") {
+TEST_CASE("Beadsy quality station uses one button and hides the legacy LED") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
     processor.set_state_store(&store);
@@ -591,6 +591,7 @@ TEST_CASE("Beadsy density indicators use separated source-sized LED and button")
     REQUIRE(b.height > 20.0f);
     REQUIRE(b.y > 115.0f);
     REQUIRE(b.y < 130.0f);
+    REQUIRE_FALSE(indicators->wants_mouse_input());
 }
 
 TEST_CASE("Beadsy native editor captures a non-empty faithful panel frame") {

@@ -463,9 +463,9 @@ private:
   int destination_ = 0;
 };
 
-/// Two small center indicators present below DENSITY: a pale LED and a black
-/// round button. They are visual hardware affordances with no guessed DSP
-/// semantics, so they remain non-parameterized until documentation maps them.
+/// Covers the legacy panel LED beside the quality station. Quality is exposed
+/// by the single native circular button; leaving the artwork LED visible
+/// would create a second, ambiguous state indicator.
 class CenterIndicators final : public pulp::view::View {
 public:
   static constexpr float kLedXFraction = 0.23f;
@@ -484,9 +484,14 @@ public:
     request_repaint();
   }
   void paint(pulp::canvas::Canvas &canvas) override {
-    // The quality station owns its state now. Keep this compatibility child
-    // empty so old layout/accessibility probes remain harmless while no
-    // separate LED is painted.
+    const auto b = local_bounds();
+    const float unit = b.width / 12.0f;
+    // The reviewed panel artwork contains a small red LED at the left side
+    // of this station. Paint over that authored marker with the panel's
+    // neutral surface so only the native quality button communicates state.
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(247, 245, 239));
+    canvas.fill_circle(b.width * 0.23f, b.height * 0.5f,
+                      std::max(2.0f, 2.25f * unit));
   }
   bool wants_mouse_input() const override { return false; }
 private:
