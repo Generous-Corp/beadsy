@@ -285,6 +285,9 @@ public:
   void set_on_press(std::function<void()> callback) {
     on_press_ = std::move(callback);
   }
+  void set_on_context_menu(std::function<void(pulp::view::Point)> callback) {
+    on_context_menu_ = std::move(callback);
+  }
 
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
@@ -305,6 +308,15 @@ public:
     // mounting dot above it belongs to the faceplate and is not an LED.
   }
 
+  void on_mouse_event(const pulp::view::MouseEvent &event) override {
+    if (event.button == pulp::view::MouseButton::right && event.isPress()) {
+      if (on_context_menu_)
+        on_context_menu_(event.position);
+      return;
+    }
+    if (event.phase == pulp::view::MousePhase::press && on_press_)
+      on_press_();
+  }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
       on_press_();
@@ -314,6 +326,7 @@ public:
 private:
   int mode_ = 0;
   std::function<void()> on_press_;
+  std::function<void(pulp::view::Point)> on_context_menu_;
 };
 
 /// A native, source-backed FREEZE button.  The physical panel uses a large
@@ -340,6 +353,9 @@ public:
   void set_on_press(std::function<void()> callback) {
     on_press_ = std::move(callback);
   }
+  void set_on_context_menu(std::function<void(pulp::view::Point)> callback) {
+    on_context_menu_ = std::move(callback);
+  }
 
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
@@ -355,6 +371,15 @@ public:
     canvas.stroke_circle(cx, cy, radius);
   }
 
+  void on_mouse_event(const pulp::view::MouseEvent &event) override {
+    if (event.button == pulp::view::MouseButton::right && event.isPress()) {
+      if (on_context_menu_)
+        on_context_menu_(event.position);
+      return;
+    }
+    if (event.phase == pulp::view::MousePhase::press && on_press_)
+      on_press_();
+  }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
       on_press_();
@@ -364,6 +389,7 @@ public:
 private:
   bool pressed_ = false;
   std::function<void()> on_press_;
+  std::function<void(pulp::view::Point)> on_context_menu_;
 };
 
 /// The physical lower-left control is a momentary black push button, not a
@@ -389,6 +415,9 @@ public:
   void set_on_press(std::function<void()> callback) {
     on_press_ = std::move(callback);
   }
+  void set_on_context_menu(std::function<void(pulp::view::Point)> callback) {
+    on_context_menu_ = std::move(callback);
+  }
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
     const float r = std::max(2.0f, std::min(b.width, b.height) * 0.40f);
@@ -409,6 +438,15 @@ public:
     canvas.set_line_width(std::max(0.7f, r * 0.10f));
     canvas.stroke_circle(cx, cy, r);
   }
+  void on_mouse_event(const pulp::view::MouseEvent &event) override {
+    if (event.button == pulp::view::MouseButton::right && event.isPress()) {
+      if (on_context_menu_)
+        on_context_menu_(event.position);
+      return;
+    }
+    if (event.phase == pulp::view::MousePhase::press && on_press_)
+      on_press_();
+  }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
       on_press_();
@@ -418,6 +456,7 @@ public:
 private:
   int quality_ = 3;
   std::function<void()> on_press_;
+  std::function<void(pulp::view::Point)> on_context_menu_;
 };
 
 /// The reclaimed lower-left M control selects the assignable modulation
@@ -1453,6 +1492,10 @@ private:
       store_.set_value(kSeedMode, static_cast<float>(next));
       store_.end_gesture(kSeedMode);
     });
+    seed_mode_->set_on_context_menu([this](pulp::view::Point position) {
+      const auto b = seed_mode_->bounds();
+      show_modulation_context_menu(kSeedMode, {b.x + position.x, b.y + position.y});
+    });
     seed_mode_binding_ = store_.add_listener(
         [this](pulp::state::ParamID changed, float) {
           if (changed == kSeedMode && seed_mode_)
@@ -1470,6 +1513,10 @@ private:
       store_.begin_gesture(kFreeze);
       store_.set_value(kFreeze, freeze_mode_->pressed() ? 0.0f : 1.0f);
       store_.end_gesture(kFreeze);
+    });
+    freeze_mode_->set_on_context_menu([this](pulp::view::Point position) {
+      const auto b = freeze_mode_->bounds();
+      show_modulation_context_menu(kFreeze, {b.x + position.x, b.y + position.y});
     });
     freeze_mode_binding_ = store_.add_listener(
         [this](pulp::state::ParamID changed, float value) {
@@ -1489,6 +1536,10 @@ private:
       store_.begin_gesture(kQuality);
       store_.set_value(kQuality, static_cast<float>(next));
       store_.end_gesture(kQuality);
+    });
+    push_button_->set_on_context_menu([this](pulp::view::Point position) {
+      const auto b = push_button_->bounds();
+      show_modulation_context_menu(kQuality, {b.x + position.x, b.y + position.y});
     });
     quality_binding_ = store_.add_listener(
         [this](pulp::state::ParamID changed, float value) {
