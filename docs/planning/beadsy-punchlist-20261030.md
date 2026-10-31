@@ -19,10 +19,53 @@ capture evidence from the exact installed build.
 - [ ] Make the AUv2 resize grip draggable in Logic and verify proportional
   resizing at standard, narrow, and wide sizes.
 
+## Phased completion plan
+
+Work proceeds in this order. Later phases do not count as complete while an
+earlier phase lacks direct host evidence.
+
+### Phase 1 — prove LFO animation and modulation
+
+- [ ] Attach LFO 1 and LFO 2 to a large knob, small knob, and button/toggle.
+- [ ] Verify visible movement/state changes in a fresh REAPER editor instance.
+- [ ] Verify the rendered parameter/audio value changes over time, not only the
+  menu state.
+- [ ] Repeat the focused check in AUv2 after Logic loads the exact installed
+  component. Keep polyphony out of this phase.
+
+### Phase 2 — make source and bus routing clear and functional
+
+- [ ] Make `SOURCE` visibly switch between MIDI, `MAIN IN`, and `SIDECHAIN`.
+- [ ] Expose and validate stereo main-input and sidechain buses in AUv2, VST3,
+  and CLAP-capable hosts.
+- [ ] Decide and document the L/R control contract: use them only when a host
+  supplies a real route catalog; otherwise remove or clearly disable them and
+  direct track selection to the host routing UI.
+- [ ] Prove external audio enters, is granularly processed, and exits with
+  numeric evidence in each supported format.
+
+### Phase 3 — add concise contextual help
+
+- [ ] Add a bottom-right `?` button after source and modulation behavior are
+  stable.
+- [ ] Use the Spectr-style compact scrollable popup with stable sizing,
+  dismissal, and readable text.
+- [ ] Ground the text in the Beads manual at
+  `/Users/danielraffel/Code/mutable-instruments-documentation/docs/modules/beads`
+  and explain Beadsy-specific source/bus behavior succinctly.
+
+### Phase 4 — decide polyphony
+
+- [ ] Revisit polyphonic MIDI only after the external-audio effect path and
+  host routing are accepted. Treat it as a separate design decision.
+
 ## Source selection and real-time audio
 
-- [ ] `Source`, `L IN`, and `R IN` must be real selectable dropdowns with an
-  affordance, popup dismissal, and persistent selection.
+- [ ] `Source` must be a real selectable dropdown with an affordance, popup
+  dismissal, and persistent selection.
+- [ ] `L IN` and `R IN` remain only if a host-owned route catalog can populate
+  and connect them; otherwise remove them from the visible UI rather than
+  presenting disabled controls that imply track selection.
 - [ ] Beadsy FX must expose host-routed stereo input and process external audio
   in real time in Main In and Sidechain modes.
 - [ ] Prove left/right route selection, including the same route on both
