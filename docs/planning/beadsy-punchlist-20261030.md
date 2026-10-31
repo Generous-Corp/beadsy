@@ -107,6 +107,8 @@ earlier phase lacks direct host evidence.
 
 ## Verification gates
 
+- [ ] Modulation control hit targets: waveform buttons (Sine/Triangle/Square/Saw), inline sliders, and other compact controls must use their painted bounds plus a consistent touch margin. A tap anywhere on a visible waveform icon must select that shape; a slider tap must place the thumb at the tapped normalized position. Verify with pointer-level host evidence, not only state callbacks.
+
 - [ ] Run the complete editor/DSP/FX suite after each semantic slice.
 - [ ] Capture standard, narrow, and wide editor frames from the exact installed
   binary and compare against the authored Beads source artwork.
@@ -117,6 +119,20 @@ earlier phase lacks direct host evidence.
 - [ ] Keep PR #11248 and the shared SDK capability dependency visible in the
   final handoff; do not claim completion while the required core API is only a
   local temporary SDK artifact.
+
+## Host identity and working rules
+
+- [ ] Use one named completion worktree for host validation and record its
+  branch, commit, package path, bundle path, inode, and executable SHA before
+  every host claim.
+- [ ] Keep Beadsy instrument (`aumu` / `Bead`) and Beadsy FX (`aumf` / `BdFX`)
+  as separate validation rows. A Logic `Inst 1` screenshot is not evidence for
+  the FX row, and an FX screenshot is not evidence for the instrument row.
+- [ ] Restart the host and plugin instance after installing a package. Reject
+  any screen whose loaded executable path or SHA does not match the recorded
+  package.
+- [ ] Commit each semantic slice before moving to the next slice so the last
+  known-good build is always recoverable.
 
 ## Current evidence
 
@@ -139,3 +155,13 @@ The current installed package is a test artifact, not a signed release.
 - Still open until fresh direct host evidence: route popup interaction in Logic
   or REAPER, visible modulation-menu pointer/slider behavior, Logic resize,
   exact artwork alignment captures, and numeric external-audio-through proof.
+
+## 2026-10-31 validation checkpoint
+
+- The restored four-bundle package is installed and its AU instrument and FX
+  variants both pass `auval`.
+- A prior standalone screenshot was proven stale: its process executable came
+  from `beadsy-clean-validation-20261023`, not the active completion worktree.
+- Current open direct-host items remain: instrument-versus-FX identity proof in
+  Logic, button secondary-click overlays, waveform and slider pointer targets,
+  smooth proportional resize, LFO animation, and recorded automation playback.
