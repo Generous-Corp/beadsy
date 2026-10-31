@@ -958,7 +958,10 @@ public:
     set_background_color(pulp::canvas::Color::rgba8(22, 21, 19));
     build_controls();
     layout_controls();
-    set_continuous_repaint(false);
+    // Internal LFOs publish a played value for bound controls. Keep the
+    // editor ticking so knobs and other animated indicators visibly follow
+    // that value while audio or host automation is running.
+    set_continuous_repaint(true);
   }
 
   void on_resized() override { layout_controls(); }

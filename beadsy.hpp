@@ -707,10 +707,12 @@ private:
     for (pulp::state::ParamID id = kFirstModulatableParam;
          id <= kLastModulatableParam; ++id) {
       float offset = 0.0f;
+      bool active = false;
       for (auto &lane : lfo_lanes_) {
         auto &l = lane[id];
         if (!l.enabled || l.depth == 0.0f)
           continue;
+        active = true;
         const float phase = l.phase - std::floor(l.phase);
         float value = 0.0f;
         switch (l.shape) {
@@ -735,7 +737,17 @@ private:
         if (l.phase < 0.0f)
           l.phase += 1.0f;
       }
-      state().set_mod_offset(id, std::clamp(offset, -1.0f, 1.0f));
+      const float bounded_offset = std::clamp(offset, -1.0f, 1.0f);
+      state().set_mod_offset(id, bounded_offset);
+      // The editor's parameter bindings display an internal modulator only
+      // when the processor publishes the value it is actually playing.
+      // Without this publication the DSP moved while the on-screen knob kept
+      // showing its base value, making LFOs appear nonfunctional.
+      if (active)
+        state().set_display_modulation(id,
+                                       state().get_value(id) + bounded_offset);
+      else
+        state().clear_display_modulation(id);
     }
   }
 
