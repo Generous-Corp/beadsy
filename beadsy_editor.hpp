@@ -1297,6 +1297,16 @@ public:
       if (!alive.expired())
         request_repaint();
     };
+    // The shared SDK menu exposes shape choices as ordinary strings. Keep the
+    // product-owned shape selection intact while making the selected name and
+    // waveform cue visible in the choice field itself. In particular, square
+    // is represented as a stepped high/low trace (rather than a filled box),
+    // which remains legible in hosts whose menu renderer has no custom shape
+    // painter hook.
+    const auto shape_choice_labels = [] {
+      return std::vector<std::string>{"Sine  ~", "Triangle  /\\", 
+                                      "Square  _|‾|", "Saw  /|"};
+    };
     for (std::size_t lane_index = 0; lane_index < spec.lane_count; ++lane_index) {
       const auto current = processor_.lfo(id, lane_index);
       spec.lanes[lane_index].label =
@@ -1306,7 +1316,7 @@ public:
           std::clamp((current.rate_hz - 0.01f) / 19.99f, 0.0f, 1.0f);
       spec.lanes[lane_index].depth_normalized =
           std::clamp(current.depth, 0.0f, 1.0f);
-      spec.lanes[lane_index].shapes = {"Sine", "Triangle", "Square", "Saw"};
+      spec.lanes[lane_index].shapes = shape_choice_labels();
       spec.lanes[lane_index].shape_index =
           static_cast<std::size_t>(std::min<int>(static_cast<int>(current.shape), 3));
       spec.lanes[lane_index].on_change =

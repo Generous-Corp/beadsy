@@ -1003,6 +1003,38 @@ TEST_CASE("Beadsy modulation menu is reachable through root secondary dispatch")
     REQUIRE(context->items()[8].label == "LFO 2");
 }
 
+TEST_CASE("Beadsy modulation shape choices expose names and stepped waveform cues") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+
+    auto* menu = native->show_modulation_context_menu(
+        beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
+    REQUIRE(menu != nullptr);
+    const auto choice = std::find_if(
+        menu->items().begin(), menu->items().end(), [](const auto& item) {
+          return item.control_kind ==
+                 pulp::view::ContextMenu::Item::ControlKind::choice;
+        });
+    REQUIRE(choice != menu->items().end());
+    REQUIRE(choice->choices.size() == 4);
+    REQUIRE(choice->choices[0].find("Sine") != std::string::npos);
+    REQUIRE(choice->choices[1].find("Triangle") != std::string::npos);
+    REQUIRE(choice->choices[2].find("Square") != std::string::npos);
+    REQUIRE(choice->choices[2].find("_|‾|") != std::string::npos);
+    REQUIRE(choice->choices[3].find("Saw") != std::string::npos);
+    REQUIRE(choice->on_change);
+
+    auto selected = *choice;
+    selected.set_choice_index(2);
+    REQUIRE(processor.lfo(beadsy::kDensity).shape ==
+            beadsy::LfoModulation::Shape::Square);
+}
+
 TEST_CASE("Beadsy modulation toggles and lane tabs work through root dispatch") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
