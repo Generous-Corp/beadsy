@@ -236,15 +236,9 @@ public:
     canvas.set_fill_color(pulp::canvas::Color::rgba8(244, 242, 230));
     canvas.fill_path(pointer, 4);
 
-    // A restrained amber outer arc makes an enabled product-local LFO
-    // visible without changing the original panel's black-and-brass knob.
-    if (modulation_active_ && modulation_active_()) {
-      const float phase = modulation_phase_ ? modulation_phase_() : 0.0f;
-      canvas.set_stroke_color(pulp::canvas::Color::rgba8(216, 155, 69));
-      canvas.set_line_width(std::max(1.0f, radius * 0.06f));
-      const float start = -2.35f + phase * 6.28318530718f;
-      canvas.stroke_arc(cx, cy, radius * 1.18f, start, start + 0.78f);
-    }
+    // Modulation remains visible through the animated value/pointer. Do not
+    // draw a second rotating Saturn-style ring around the knob: it reads as
+    // an additional control and obscures the authored hardware silhouette.
   }
 
 private:
@@ -923,11 +917,15 @@ public:
     set_id("beadsy-resize-grip");
     set_access_role(pulp::view::View::AccessRole::button);
     set_access_label("Resize editor");
+    set_cursor(pulp::view::View::CursorStyle::bottom_right_resize);
   }
 
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(86, 96, 102, 210));
+    const auto color = is_hovered()
+                           ? pulp::canvas::Color::rgba8(35, 108, 132, 255)
+                           : pulp::canvas::Color::rgba8(86, 96, 102, 210);
+    canvas.set_stroke_color(color);
     canvas.set_line_width(std::max(1.0f, b.width * 0.08f));
     for (int i = 1; i <= 3; ++i) {
       const float inset = b.width * (0.18f + 0.20f * static_cast<float>(i - 1));
@@ -975,6 +973,8 @@ public:
     }
   }
   bool wants_mouse_input() const override { return true; }
+  void on_mouse_enter() override { request_repaint(); }
+  void on_mouse_leave() override { request_repaint(); }
 
 private:
   Beadsy &processor_;
