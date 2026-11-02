@@ -637,7 +637,14 @@ public:
     on_change = [this](int index) { on_change_route(index); };
   }
 
-  ~AudioRoutePicker() override { detach_catalog(); }
+  // The host catalog is non-owning and may be torn down before the editor
+  // (notably during standalone shutdown). Do not call back into that possibly
+  // dead object from the view destructor; the observer token makes any late
+  // catalog notification a no-op after this view has gone away.
+  ~AudioRoutePicker() override {
+    lifetime_.reset();
+    catalog_ = nullptr;
+  }
 
   /// Attach a host catalog.  The catalog contract has one callback slot;
   /// therefore observation is opt-in and is safe only when this picker owns
@@ -655,7 +662,10 @@ public:
     }
     if (observe_changes) {
       observing_changes_ = true;
-      catalog_->set_change_callback([this] {
+      const std::weak_ptr<int> lifetime = lifetime_;
+      catalog_->set_change_callback([this, lifetime] {
+        if (lifetime.expired())
+          return;
         // AudioRouteCatalog is a control-thread seam.  Do not
         // enumerate or mutate a View from a notification; the next
         // control-thread refresh consumes this flag.
@@ -801,6 +811,7 @@ private:
   std::size_t bus_index_ = 0;
   std::size_t channel_index_ = 0;
   pulp::host::AudioRouteCatalog *catalog_ = nullptr;
+  std::shared_ptr<int> lifetime_ = std::make_shared<int>(0);
   bool observing_changes_ = false;
   std::vector<std::string> route_ids_;
   std::atomic_bool refresh_pending_{false};
