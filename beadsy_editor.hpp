@@ -1452,7 +1452,7 @@ private:
                          0.20f * scale);
     canvas.set_text_align(pulp::canvas::TextAlign::center);
     canvas.set_fill_color(ink);
-    // Baseline y=25 leaves a small gap below each dotted guide while keeping
+    // Baseline y=29 leaves a small gap below each dotted guide while keeping
     // the text above the reclaimed source/menu strip.
     for (const auto &[name, x] : std::array{
              std::pair<const char *, float>{"TIME", 18.565f},
@@ -1460,7 +1460,7 @@ private:
              std::pair<const char *, float>{"SHAPE", 41.465f},
              std::pair<const char *, float>{"PITCH", 52.915f}}) {
       canvas.fill_text(name, content_x + x * panel_sx,
-                       content_y + (128.5f - 25.0f) * panel_sy);
+                       content_y + (128.5f - 29.0f) * panel_sy);
     }
   }
 
