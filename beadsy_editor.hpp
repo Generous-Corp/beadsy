@@ -974,6 +974,7 @@ public:
         start_height_ = root->bounds().height;
       }
       set_pointer_capture(pointer_id_);
+      request_repaint();
       return;
     }
     if (dragging_ && !release &&
