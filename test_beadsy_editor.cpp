@@ -589,7 +589,9 @@ TEST_CASE("Beadsy quality station uses one button and hides the legacy LED") {
     REQUIRE(indicators != nullptr);
     const auto b = indicators->bounds();
     REQUIRE(b.height > 20.0f);
-    REQUIRE(b.y > 115.0f);
+  // The product panel now crops the inert routing bay, so the quality
+  // station is intentionally higher in the reclaimed-height layout.
+  REQUIRE(b.y > 80.0f);
     REQUIRE(b.y < 130.0f);
     REQUIRE_FALSE(indicators->wants_mouse_input());
 }
