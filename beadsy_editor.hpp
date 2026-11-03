@@ -1617,11 +1617,6 @@ private:
         pulp::state::ListenerThread::Main,
         pulp::state::ListenerRestoreBehavior::Reconcile);
     add_child(std::move(mode));
-    // The host-routing bay is intentionally hidden in the compact product
-    // editor. The source and route parameters remain available to automation
-    // and host state, but the disabled fields consumed vertical space without
-    // offering an actionable control in standalone/FX captures.
-    source_mode_->set_visible(false);
 
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
     auto route_picker_left = std::make_unique<AudioRoutePicker>(0, 0);
@@ -1634,7 +1629,6 @@ private:
     route_picker_left_->set_source_mode(
         static_cast<int>(std::lround(store_.get_value(kMode))));
     add_child(std::move(route_picker_left));
-    route_picker_left_->set_visible(false);
     auto route_picker_right = std::make_unique<AudioRoutePicker>(0, 1);
     route_picker_right_ = route_picker_right.get();
     route_picker_right_->set_access_label("Input R: host-owned routing menu");
@@ -1645,7 +1639,6 @@ private:
     route_picker_right_->set_source_mode(
         static_cast<int>(std::lround(store_.get_value(kMode))));
     add_child(std::move(route_picker_right));
-    route_picker_right_->set_visible(false);
 #else
     // Older SDKs can still show the complete stereo routing UX while the
     // host catalog capability is being adopted. These selectors are upgraded
@@ -1657,7 +1650,6 @@ private:
     route_picker_left_fallback_->set_items({"L IN"});
     route_picker_left_fallback_->set_selected_silent(0);
     add_child(std::move(route_left));
-    route_picker_left_fallback_->set_visible(false);
     auto route_right = std::make_unique<pulp::view::ComboBox>();
     route_picker_right_fallback_ = route_right.get();
     route_picker_right_fallback_->set_id("beadsy-audio-route-right");
@@ -1665,7 +1657,6 @@ private:
     route_picker_right_fallback_->set_items({"R IN"});
     route_picker_right_fallback_->set_selected_silent(0);
     add_child(std::move(route_right));
-    route_picker_right_fallback_->set_visible(false);
 #endif
 
     auto grip = std::make_unique<ResizeGrip>(processor_);
