@@ -1411,6 +1411,17 @@ private:
     label("MIX / MOTION", 100.3465f, 217.0f, 3.2f, accent,
           pulp::canvas::TextAlign::center, 700);
     label("PARAMETER CONTROLS", 100.3465f, 245.0f, 3.0f, muted);
+    // The four lower trim pots are modulation amounts for the named
+    // destinations. Keep the labels below the authored dashed guides so the
+    // small black caps remain unobstructed while the mapping is discoverable.
+    label("TIME", 18.565f, 104.5f, 3.0f, ink,
+          pulp::canvas::TextAlign::center, 700);
+    label("FREEZE", 30.015f, 104.5f, 3.0f, ink,
+          pulp::canvas::TextAlign::center, 700);
+    label("SEED", 41.465f, 104.5f, 3.0f, ink,
+          pulp::canvas::TextAlign::center, 700);
+    label("PITCH", 52.915f, 104.5f, 3.0f, ink,
+          pulp::canvas::TextAlign::center, 700);
     label("48 KHZ  •  MONO VOICE  •  MIDI", 100.3465f, 344.0f, 3.0f, accent);
     label("INDEPENDENT PRODUCT SCAFFOLD", 100.3465f, 353.0f, 2.5f, muted);
   }
