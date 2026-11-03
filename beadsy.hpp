@@ -192,7 +192,7 @@ public:
     // The modulation popup needs enough vertical room for its readable
     // Spectr-style rows before it has to scroll. Keep the authored aspect
     // ratio while raising the host-provided minimum size.
-    return {240, 434, 240, 434, 401, 729};
+    return {220, 398, 220, 398, 370, 670};
   }
   std::unique_ptr<pulp::view::View> create_view() override;
 #endif

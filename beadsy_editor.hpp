@@ -1157,22 +1157,6 @@ public:
         "independent scaffold; authorized artwork unavailable") {
       paint_scaffold_labels(canvas, b.width, b.height);
     }
-    // The original lower bay used this space for the two hardware jack
-    // legends that software replaces. Keep the new source selector explicit
-    // and aligned with the existing IN L / IN R legends.
-    canvas.set_font_full("Roboto", std::max(3.0f, 2.8f * std::min(panel_sx, panel_sy)),
-                         700, 0, 0.35f);
-    canvas.set_text_align(pulp::canvas::TextAlign::center);
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(32, 32, 32, 255));
-    canvas.fill_text("SOURCE", content_x + 35.4f * panel_sx,
-                     content_y + (128.5f - 22.0f) * panel_sy);
-    // Reassert the software route legends at the exact centers of their
-    // fields. The imported artwork's right legend can drift by a few pixels
-    // at narrow host sizes; these labels share the picker geometry below.
-    canvas.fill_text("IN L", content_x + 12.0f * panel_sx,
-                     content_y + (128.5f - 13.0f) * panel_sy);
-    canvas.fill_text("IN R", content_x + 58.8f * panel_sx,
-                     content_y + (128.5f - 13.0f) * panel_sy);
   }
 
   /// Target selected by the native right-click context interaction. Hosts
@@ -1633,6 +1617,11 @@ private:
         pulp::state::ListenerThread::Main,
         pulp::state::ListenerRestoreBehavior::Reconcile);
     add_child(std::move(mode));
+    // The host-routing bay is intentionally hidden in the compact product
+    // editor. The source and route parameters remain available to automation
+    // and host state, but the disabled fields consumed vertical space without
+    // offering an actionable control in standalone/FX captures.
+    source_mode_->set_visible(false);
 
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
     auto route_picker_left = std::make_unique<AudioRoutePicker>(0, 0);
@@ -1645,6 +1634,7 @@ private:
     route_picker_left_->set_source_mode(
         static_cast<int>(std::lround(store_.get_value(kMode))));
     add_child(std::move(route_picker_left));
+    route_picker_left_->set_visible(false);
     auto route_picker_right = std::make_unique<AudioRoutePicker>(0, 1);
     route_picker_right_ = route_picker_right.get();
     route_picker_right_->set_access_label("Input R: host-owned routing menu");
@@ -1655,6 +1645,7 @@ private:
     route_picker_right_->set_source_mode(
         static_cast<int>(std::lround(store_.get_value(kMode))));
     add_child(std::move(route_picker_right));
+    route_picker_right_->set_visible(false);
 #else
     // Older SDKs can still show the complete stereo routing UX while the
     // host catalog capability is being adopted. These selectors are upgraded
@@ -1666,6 +1657,7 @@ private:
     route_picker_left_fallback_->set_items({"L IN"});
     route_picker_left_fallback_->set_selected_silent(0);
     add_child(std::move(route_left));
+    route_picker_left_fallback_->set_visible(false);
     auto route_right = std::make_unique<pulp::view::ComboBox>();
     route_picker_right_fallback_ = route_right.get();
     route_picker_right_fallback_->set_id("beadsy-audio-route-right");
@@ -1673,6 +1665,7 @@ private:
     route_picker_right_fallback_->set_items({"R IN"});
     route_picker_right_fallback_->set_selected_silent(0);
     add_child(std::move(route_right));
+    route_picker_right_fallback_->set_visible(false);
 #endif
 
     auto grip = std::make_unique<ResizeGrip>(processor_);
