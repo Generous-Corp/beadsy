@@ -196,7 +196,14 @@ public:
     // The modulation popup needs enough vertical room for its readable
     // Spectr-style rows before it has to scroll. Keep the authored aspect
     // ratio while raising the host-provided minimum size.
-    return {240, 434, 240, 434, 401, 729};
+    // The authored panel is 240:434.  Use the wider review size as the
+    // default while retaining that exact aspect ratio; the minimum and
+    // maximum bounds stay proportional so AUv2 hosts cannot introduce edge
+    // padding or a sheared panel during resize.
+    constexpr uint32_t kDefaultWidth = 350;
+    constexpr uint32_t kDefaultHeight = 633; // round(350 * 434 / 240)
+    return {kDefaultWidth, kDefaultHeight, kDefaultWidth, kDefaultHeight,
+            kDefaultWidth * 2, kDefaultHeight * 2};
   }
   std::unique_ptr<pulp::view::View> create_view() override;
 #endif
