@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <array>
+#include <atomic>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
@@ -98,7 +99,7 @@ inline beads::SeedButtonState seed_button_state_from_value(float value) {
 // declared parameter range rather than by an unrelated historical count so a
 // newly added control cannot silently become non-modulatable.
 inline constexpr pulp::state::ParamID kFirstModulatableParam = kTime;
-inline constexpr pulp::state::ParamID kLastModulatableParam = kPitchAmount;
+inline constexpr pulp::state::ParamID kLastModulatableParam = kSeedMode;
 inline constexpr std::size_t kModulatableParamCount = static_cast<std::size_t>(
     kLastModulatableParam - kFirstModulatableParam + 1);
 
@@ -108,6 +109,9 @@ struct LfoModulation {
   enum class Shape : std::uint8_t { Sine = 0, Triangle = 1, Square = 2, Saw = 3 };
   bool enabled = false;
   float rate_hz = 1.0f;
+  // In target-facing lfo()/set_lfo(), this is that destination's normalized
+  // depth. Generator snapshots retain it for older callers/state migration;
+  // shared generator depth does not scale routes in the processing path.
   float depth = 0.0f;
   float phase = 0.0f;
   Shape shape = Shape::Sine;
@@ -198,6 +202,7 @@ public:
 #endif
 
   void define_parameters(pulp::state::StateStore &store) override {
+    modulation_store_ = &store;
     store.add_parameter({.id = kTime,
                          .name = "Time",
                          .unit = "%",
@@ -294,37 +299,66 @@ public:
 
   void set_lfo(pulp::state::ParamID id, LfoModulation lfo,
                std::size_t lane = 0) {
-    if (!is_modulatable(id) || lane >= lfo_lanes_.size())
+    if (!is_modulatable(id) || lane >= lfo_generators_.size())
       return;
-    lfo_lanes_[lane][id] = lfo;
+    // Retain this convenience for callers that enable a target and configure
+    // its generator together. Removing a target never stops other routes.
+    if (lfo.enabled) {
+      set_lfo_generator(lane, lfo);
+      set_lfo_target_depth(id, lane, lfo.depth);
+    }
+    set_lfo_target_enabled(id, lane, lfo.enabled);
   }
   LfoModulation lfo(pulp::state::ParamID id, std::size_t lane = 0) const {
-    return is_modulatable(id) && lane < lfo_lanes_.size()
-               ? lfo_lanes_[lane][id]
-               : LfoModulation{};
+    if (!is_modulatable(id) || lane >= lfo_generators_.size())
+      return {};
+    auto result = lfo_generator(lane);
+    result.enabled = result.enabled && lfo_target_enabled(id, lane);
+    result.depth = lfo_target_depth(id, lane);
+    return result;
+  }
+  LfoModulation lfo_generator(std::size_t lane) const {
+    return lane < lfo_generators_.size() ? lfo_generators_[lane].load()
+                                        : LfoModulation{};
+  }
+  void set_lfo_generator(std::size_t lane, LfoModulation lfo) {
+    if (lane >= lfo_generators_.size())
+      return;
+    lfo = sanitize_lfo(lfo);
+    lfo_generators_[lane].store(lfo);
+    if (!lfo.enabled)
+      for (pulp::state::ParamID id = kFirstModulatableParam;
+           id <= kLastModulatableParam; ++id)
+        clear_inactive_modulation(id);
+  }
+  bool lfo_target_enabled(pulp::state::ParamID id, std::size_t lane) const {
+    return is_modulatable(id) && lane < lfo_targets_.size() &&
+           lfo_targets_[lane][id].enabled.load(std::memory_order_relaxed);
+  }
+  float lfo_target_depth(pulp::state::ParamID id, std::size_t lane) const {
+    return is_modulatable(id) && lane < lfo_targets_.size()
+               ? lfo_targets_[lane][id].depth.load(std::memory_order_relaxed)
+               : 0.0f;
+  }
+  void set_lfo_target_depth(pulp::state::ParamID id, std::size_t lane,
+                            float depth) {
+    if (!is_modulatable(id) || lane >= lfo_targets_.size())
+      return;
+    depth = std::isfinite(depth) ? std::clamp(depth, 0.0f, 1.0f) : 0.0f;
+    lfo_targets_[lane][id].depth.store(depth, std::memory_order_relaxed);
+    if (depth == 0.0f)
+      clear_inactive_modulation(id);
+  }
+  void set_lfo_target_enabled(pulp::state::ParamID id, std::size_t lane,
+                              bool enabled) {
+    if (!is_modulatable(id) || lane >= lfo_targets_.size())
+      return;
+    lfo_targets_[lane][id].enabled.store(enabled, std::memory_order_relaxed);
+    if (!enabled)
+      clear_inactive_modulation(id);
   }
   void clear_lfo(pulp::state::ParamID id, std::size_t lane = 0) {
-    if (!is_modulatable(id) || lane >= lfo_lanes_.size())
-      return;
-    lfo_lanes_[lane][id] = {};
-    if (lane == 0 || !lfo_lanes_[0][id].enabled)
-      state().set_mod_offset(id, 0.0f);
-  }
-
-  // Move a lane's modulation assignment from the parameter whose menu is
-  // open to a newly selected target. The lane keeps its rate, depth and shape;
-  // only the destination changes. This is the product-side seam used by the
-  // shared Spectr-style target rows.
-  void assign_lfo_target(pulp::state::ParamID from,
-                         pulp::state::ParamID to,
-                         std::size_t lane = 0) {
-    if (!is_modulatable(from) || !is_modulatable(to) ||
-        lane >= lfo_lanes_.size())
-      return;
-    if (from == to)
-      return;
-    lfo_lanes_[lane][to] = lfo_lanes_[lane][from];
-    lfo_lanes_[lane][from] = {};
+    set_lfo_target_enabled(id, lane, false);
   }
 
   /// Host-owned route identity captured by the editor for state restore.
@@ -353,23 +387,26 @@ public:
 #endif
 
   std::vector<std::uint8_t> serialize_plugin_state() const override {
-    // Version 3 stores both standard modulation lanes. Version 2 stored only
-    // lane 1; the reader below retains compatibility with those presets.
-    std::vector<std::uint8_t> out{'G', 'F', 'M', 'D', 3, 0};
-    for (const auto &lane : lfo_lanes_)
-      for (pulp::state::ParamID id = kFirstModulatableParam;
-           id <= kLastModulatableParam; ++id) {
-      const auto &l = lane[id];
+    // Version 4 stores two shared generators independently from target routes.
+    // This keeps enabled/settings state even when no parameter is assigned.
+    std::vector<std::uint8_t> out{'G', 'F', 'M', 'D', 4, 0};
+    const auto append_float = [&out](float value) {
+      const auto *bytes = reinterpret_cast<const std::uint8_t *>(&value);
+      out.insert(out.end(), bytes, bytes + sizeof(float));
+    };
+    for (std::size_t lane = 0; lane < kLfoLaneCount; ++lane) {
+      const auto l = lfo_generator(lane);
       out.push_back(static_cast<std::uint8_t>(l.enabled));
       out.push_back(static_cast<std::uint8_t>(l.shape));
-      const auto append_float = [&out](float value) {
-        const auto *bytes = reinterpret_cast<const std::uint8_t *>(&value);
-        out.insert(out.end(), bytes, bytes + sizeof(float));
-      };
       append_float(l.rate_hz);
       append_float(l.depth);
       append_float(l.phase);
+      for (pulp::state::ParamID id = kFirstModulatableParam;
+           id <= kLastModulatableParam; ++id) {
+        out.push_back(static_cast<std::uint8_t>(lfo_target_enabled(id, lane)));
+        append_float(lfo_target_depth(id, lane));
       }
+    }
     for (const auto &route_id : route_ids_) {
       const auto length = std::min<std::size_t>(route_id.size(), 1024);
       out.push_back(static_cast<std::uint8_t>(length & 0xffu));
@@ -380,79 +417,126 @@ public:
   }
 
   bool deserialize_plugin_state(std::span<const std::uint8_t> data) override {
-    if (data.empty()) {
-      for (auto &lane : lfo_lanes_)
-        lane.fill({});
-      route_ids_.fill({});
-      return true;
-    }
-    constexpr std::size_t stride = 1 + sizeof(float) * 3;
-    constexpr std::size_t v3_stride = 2 + sizeof(float) * 3;
-    constexpr std::size_t v1_size = 6 + stride * kModulatableParamCount;
-    // GFMD v1 originally emitted ten slots (including unused slot zero).
-    // Accept that payload so existing presets retain IDs 1..9 while the
-    // current form adds the six controls that were previously omitted (the
-    // four source-backed CV amounts plus the two formerly unmodulated
-    // mix controls are represented in the expanded range).
-    constexpr std::size_t legacy_size = 6 + stride * 10;
-    const bool v1 = data.size() == v1_size && data[4] == 1;
-    const bool legacy =
-        data.size() == legacy_size && (data[4] == 1 || data[4] == 2);
-    const bool v2 = data.size() >= v1_size && data[4] == 2;
-    const std::size_t v3_min_size = 6 + v3_stride * kModulatableParamCount * 2 + 4;
-    const bool v3 = data.size() >= v3_min_size && data[4] == 3;
-    if ((!v1 && !legacy && !v2 && !v3) || data[0] != 'G' || data[1] != 'F' ||
-        data[2] != 'M' || data[3] != 'D')
-      return false;
-    std::size_t offset = 6;
-    for (auto &lane : lfo_lanes_)
-      lane.fill({});
-    route_ids_.fill({});
-    const auto read_float = [&data, &offset]() {
-      float value = 0.0f;
-      if (offset + sizeof(float) > data.size()) return value;
-      std::memcpy(&value, data.data() + offset, sizeof(float));
-      offset += sizeof(float);
-      return value;
+    std::array<LfoModulation, kLfoLaneCount> generators{};
+    struct StoredRoute {
+      bool enabled = false;
+      float depth = 0.5f;
     };
-    if (v3) {
-      for (std::size_t lane_index = 0; lane_index < lfo_lanes_.size(); ++lane_index)
-        for (std::size_t slot = 0; slot < kModulatableParamCount; ++slot) {
-          auto &l = lfo_lanes_[lane_index][slot + kFirstModulatableParam];
-          if (offset + 2 > data.size()) return false;
-          l.enabled = data[offset++] != 0;
-          l.shape = static_cast<LfoModulation::Shape>(std::min<std::uint8_t>(data[offset++], 3));
-          l.rate_hz = read_float();
-          l.depth = read_float();
-          l.phase = read_float();
-        }
-    } else {
-      const auto slots = (v1 || v2) ? kModulatableParamCount : std::size_t{10};
-      for (std::size_t slot = 0; slot < slots; ++slot) {
-        auto &l = lfo_lanes_[0][(v1 || v2) ? slot + kFirstModulatableParam : slot];
-        if (offset >= data.size()) return false;
+    std::array<std::array<StoredRoute, kLastModulatableParam + 1>, kLfoLaneCount>
+        targets{};
+    std::array<std::string, 2> route_ids{};
+    if (!data.empty()) {
+      if (data.size() < 6 || data[0] != 'G' || data[1] != 'F' ||
+          data[2] != 'M' || data[3] != 'D')
+        return false;
+      constexpr std::size_t old_param_count = 17;
+      constexpr std::size_t old_stride = 1 + sizeof(float) * 3;
+      constexpr std::size_t shape_stride = 2 + sizeof(float) * 3;
+      const auto version = data[4];
+      const bool legacy = (version == 1 || version == 2) &&
+                          data.size() == 6 + old_stride * 10;
+      if (version < 1 || version > 4)
+        return false;
+      std::size_t offset = 6;
+      const auto read_lfo = [&](LfoModulation &l, bool has_shape) {
+        const auto bytes = has_shape ? shape_stride : old_stride;
+        if (offset + bytes > data.size())
+          return false;
         l.enabled = data[offset++] != 0;
+        if (has_shape)
+          l.shape = static_cast<LfoModulation::Shape>(data[offset++]);
+        const auto read_float = [&]() {
+          float value;
+          std::memcpy(&value, data.data() + offset, sizeof(float));
+          offset += sizeof(float);
+          return value;
+        };
         l.rate_hz = read_float();
         l.depth = read_float();
         l.phase = read_float();
+        l = sanitize_lfo(l);
+        return true;
+      };
+      if (version == 4) {
+        for (std::size_t lane = 0; lane < kLfoLaneCount; ++lane) {
+          if (!read_lfo(generators[lane], true) ||
+              offset + kModulatableParamCount * (1 + sizeof(float)) > data.size())
+            return false;
+          for (pulp::state::ParamID id = kFirstModulatableParam;
+               id <= kLastModulatableParam; ++id) {
+            auto &route = targets[lane][id];
+            route.enabled = data[offset++] != 0;
+            std::memcpy(&route.depth, data.data() + offset, sizeof(float));
+            offset += sizeof(float);
+            route.depth = std::isfinite(route.depth)
+                              ? std::clamp(route.depth, 0.0f, 1.0f) : 0.0f;
+          }
+        }
+      } else {
+        // Older presets had a generator per target. Keep every enabled route;
+        // the lowest enabled parameter ID supplies the shared generator for
+        // each lane. A disabled lane retains its first stored configuration.
+        // This deterministic conversion intentionally unifies differing old
+        // target rates/shapes into the shared LFO model used by the editor.
+        const auto lanes = version == 3 ? kLfoLaneCount : std::size_t{1};
+        const auto slots = legacy ? std::size_t{10} : old_param_count;
+        for (std::size_t lane = 0; lane < lanes; ++lane) {
+          bool selected = false;
+          for (std::size_t slot = 0; slot < slots; ++slot) {
+            LfoModulation l;
+            if (!read_lfo(l, version == 3))
+              return false;
+            const auto id = static_cast<pulp::state::ParamID>(
+                legacy ? slot : slot + kFirstModulatableParam);
+            if (!is_modulatable(id))
+              continue;
+            // Old depth was a plain-unit offset; route depth is normalized.
+            // Preserve each destination's excursion while sharing timing.
+            const float span = modulation_target_span(id);
+            targets[lane][id] = {
+                l.enabled, span > 0.0f ? std::clamp(l.depth / span, 0.0f, 1.0f)
+                                      : 0.0f};
+            if (id == kFirstModulatableParam)
+              generators[lane] = l;
+            if (l.enabled && !selected) {
+              generators[lane] = l;
+              selected = true;
+            }
+          }
+        }
       }
-    }
-    if (v2 || v3) {
-      for (auto &route_id : route_ids_) {
-        if (offset + 2 > data.size())
-          return false;
-        const auto length = static_cast<std::size_t>(data[offset]) |
-                            (static_cast<std::size_t>(data[offset + 1]) << 8u);
-        offset += 2;
-        if (length > 1024 || offset + length > data.size())
-          return false;
-        route_id.assign(reinterpret_cast<const char *>(data.data() + offset),
-                        length);
-        offset += length;
+      if (version >= 2 && !legacy) {
+        for (auto &route_id : route_ids) {
+          if (offset + 2 > data.size())
+            return false;
+          const auto length = static_cast<std::size_t>(data[offset]) |
+                              (static_cast<std::size_t>(data[offset + 1]) << 8u);
+          offset += 2;
+          if (length > 1024 || offset + length > data.size())
+            return false;
+          route_id.assign(reinterpret_cast<const char *>(data.data() + offset),
+                          length);
+          offset += length;
+        }
       }
       if (offset != data.size())
         return false;
     }
+    // Do not partially alter a running processor on a malformed payload.
+    for (std::size_t lane = 0; lane < kLfoLaneCount; ++lane) {
+      set_lfo_generator(lane, generators[lane]);
+      for (pulp::state::ParamID id = kFirstModulatableParam;
+           id <= kLastModulatableParam; ++id) {
+        lfo_targets_[lane][id].enabled.store(targets[lane][id].enabled,
+                                             std::memory_order_relaxed);
+        lfo_targets_[lane][id].depth.store(targets[lane][id].depth,
+                                           std::memory_order_relaxed);
+      }
+    }
+    route_ids_ = std::move(route_ids);
+    for (pulp::state::ParamID id = kFirstModulatableParam;
+         id <= kLastModulatableParam; ++id)
+      clear_inactive_modulation(id);
     return true;
   }
 
@@ -704,51 +788,92 @@ public:
   }
 
 private:
+  float modulation_target_span(pulp::state::ParamID id) const {
+    if (modulation_store_)
+      if (const auto *info = modulation_store_->info(id))
+        return info->range.max - info->range.min;
+    // State can be restored before parameter registration. These are the
+    // declared non-unit ranges; all other destinations have a unit range.
+    switch (id) {
+    case kPitch: return 48.0f;
+    case kGain: return 72.0f;
+    case kQuality: return 3.0f;
+    case kMode: return static_cast<float>(kAvailableSourceModeMax);
+    case kTimeAmount:
+    case kSizeAmount:
+    case kShapeAmount:
+    case kPitchAmount:
+    case kSeedMode: return 2.0f;
+    default: return 1.0f;
+    }
+  }
+
+  void clear_inactive_modulation(pulp::state::ParamID id) {
+    if (!modulation_store_)
+      return;
+    for (std::size_t lane = 0; lane < kLfoLaneCount; ++lane) {
+      const auto config = lfo(id, lane);
+      if (config.enabled && config.depth > 0.0f)
+        return;
+    }
+    modulation_store_->set_mod_offset(id, 0.0f);
+    modulation_store_->clear_display_modulation(id);
+  }
+
   void update_modulation(std::size_t samples) {
     if (!sample_rate_)
       return;
+    std::array<float, kLfoLaneCount> waves{};
+    std::array<bool, kLfoLaneCount> active_lanes{};
+    for (std::size_t lane = 0; lane < kLfoLaneCount; ++lane) {
+      const auto l = lfo_generator(lane);
+      if (!l.enabled)
+        continue;
+      active_lanes[lane] = true;
+      const float phase = l.phase;
+      float value = 0.0f;
+      switch (l.shape) {
+      case LfoModulation::Shape::Triangle:
+        value = 1.0f - 4.0f * std::fabs(phase - 0.5f);
+        break;
+      case LfoModulation::Shape::Square:
+        value = phase < 0.5f ? 1.0f : -1.0f;
+        break;
+      case LfoModulation::Shape::Saw:
+        value = 2.0f * phase - 1.0f;
+        break;
+      case LfoModulation::Shape::Sine:
+      default:
+        value = std::sin(phase * 6.28318530718f);
+        break;
+      }
+      waves[lane] = value;
+      const float next_phase = std::fmod(
+          phase + l.rate_hz * static_cast<float>(samples) /
+                      static_cast<float>(sample_rate_),
+          1.0f);
+      // A generator advances once per block even with no assigned target.
+      // UI changes and audio phase publication use lock-free atomic fields.
+      auto observed_phase = phase;
+      lfo_generators_[lane].phase.compare_exchange_strong(
+          observed_phase, next_phase, std::memory_order_relaxed);
+    }
     for (pulp::state::ParamID id = kFirstModulatableParam;
          id <= kLastModulatableParam; ++id) {
       float offset = 0.0f;
       bool active = false;
-      for (auto &lane : lfo_lanes_) {
-        auto &l = lane[id];
-        if (!l.enabled || l.depth == 0.0f)
+      for (std::size_t lane = 0; lane < kLfoLaneCount; ++lane) {
+        if (!active_lanes[lane] || !lfo_target_enabled(id, lane))
           continue;
-        active = true;
-        const float phase = l.phase - std::floor(l.phase);
-        float value = 0.0f;
-        switch (l.shape) {
-        case LfoModulation::Shape::Triangle:
-          value = 1.0f - 4.0f * std::fabs(phase - 0.5f);
-          break;
-        case LfoModulation::Shape::Square:
-          value = phase < 0.5f ? 1.0f : -1.0f;
-          break;
-        case LfoModulation::Shape::Saw:
-          value = 2.0f * phase - 1.0f;
-          break;
-        case LfoModulation::Shape::Sine:
-        default:
-          value = std::sin(phase * 6.28318530718f);
-          break;
-        }
-        offset += value * l.depth;
-        l.phase = std::fmod(l.phase + l.rate_hz * static_cast<float>(samples) /
-                                          static_cast<float>(sample_rate_),
-                            1.0f);
-        if (l.phase < 0.0f)
-          l.phase += 1.0f;
+        const auto depth = lfo_target_depth(id, lane);
+        active |= depth > 0.0f;
+        offset += waves[lane] * depth;
       }
-      const float bounded_offset = std::clamp(offset, -1.0f, 1.0f);
+      const float span = modulation_target_span(id);
+      const float bounded_offset = std::clamp(offset, -1.0f, 1.0f) * span;
       state().set_mod_offset(id, bounded_offset);
-      // The editor's parameter bindings display an internal modulator only
-      // when the processor publishes the value it is actually playing.
-      // Without this publication the DSP moved while the on-screen knob kept
-      // showing its base value, making LFOs appear nonfunctional.
       if (active)
-        state().set_display_modulation(id,
-                                       state().get_value(id) + bounded_offset);
+        state().set_display_modulation(id, state().get_modulated(id));
       else
         state().clear_display_modulation(id);
     }
@@ -836,9 +961,51 @@ private:
   // Slot zero is deliberately unused because Pulp parameter IDs are
   // 1-based.  This makes indexing safe for every declared parameter ID.
   static constexpr std::size_t kLfoLaneCount = 2;
-  using LfoTable = std::array<LfoModulation,
-                              static_cast<std::size_t>(kLastModulatableParam) + 1>;
-  std::array<LfoTable, kLfoLaneCount> lfo_lanes_{};
+  static LfoModulation sanitize_lfo(LfoModulation lfo) {
+    lfo.rate_hz = std::isfinite(lfo.rate_hz)
+                      ? std::clamp(lfo.rate_hz, 0.01f, 20.0f) : 1.0f;
+    lfo.depth = std::isfinite(lfo.depth)
+                    ? std::clamp(lfo.depth, 0.0f, 1.0f) : 0.0f;
+    lfo.phase = std::isfinite(lfo.phase)
+                    ? lfo.phase - std::floor(lfo.phase) : 0.0f;
+    lfo.shape = static_cast<LfoModulation::Shape>(
+        std::min<std::uint8_t>(static_cast<std::uint8_t>(lfo.shape), 3));
+    return lfo;
+  }
+
+  struct SharedLfo {
+    static_assert(std::atomic<float>::is_always_lock_free);
+    static_assert(std::atomic<bool>::is_always_lock_free);
+    std::atomic<bool> enabled{false};
+    std::atomic<float> rate_hz{1.0f};
+    std::atomic<float> depth{0.0f};
+    std::atomic<float> phase{0.0f};
+    std::atomic<std::uint8_t> shape{0};
+    LfoModulation load() const {
+      return {.enabled = enabled.load(std::memory_order_relaxed),
+              .rate_hz = rate_hz.load(std::memory_order_relaxed),
+              .depth = depth.load(std::memory_order_relaxed),
+              .phase = phase.load(std::memory_order_relaxed),
+              .shape = static_cast<LfoModulation::Shape>(
+                  shape.load(std::memory_order_relaxed))};
+    }
+    void store(const LfoModulation &lfo) {
+      rate_hz.store(lfo.rate_hz, std::memory_order_relaxed);
+      depth.store(lfo.depth, std::memory_order_relaxed);
+      phase.store(lfo.phase, std::memory_order_relaxed);
+      shape.store(static_cast<std::uint8_t>(lfo.shape), std::memory_order_relaxed);
+      enabled.store(lfo.enabled, std::memory_order_relaxed);
+    }
+  };
+  struct LfoRoute {
+    std::atomic<bool> enabled{false};
+    std::atomic<float> depth{0.5f};
+  };
+  using LfoTargets = std::array<LfoRoute,
+                               static_cast<std::size_t>(kLastModulatableParam) + 1>;
+  std::array<SharedLfo, kLfoLaneCount> lfo_generators_{};
+  std::array<LfoTargets, kLfoLaneCount> lfo_targets_{};
+  pulp::state::StateStore *modulation_store_ = nullptr;
   std::array<std::string, 2> route_ids_{};
 
   static bool select_effect_media(double sample_rate,

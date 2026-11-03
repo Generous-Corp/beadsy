@@ -759,8 +759,8 @@ TEST_CASE("Beadsy knob opens modulation menu through root right-click dispatch")
     REQUIRE(native->child_count() > 20);
     auto* menu = dynamic_cast<pulp::view::ContextMenu*>(native->child_at(native->child_count() - 1));
     REQUIRE(menu != nullptr);
-    // Targets are progressively disclosed only after a lane is enabled.
-    REQUIRE(menu->items().size() == 18);
+    // Only the hovered target is shown until All targets is requested.
+    REQUIRE(menu->items().size() == 13);
 
     if (const char *path = std::getenv("BEADSY_MENU_CAPTURE")) {
         const auto capture = pulp::view::capture_view(
@@ -921,57 +921,129 @@ TEST_CASE("Beadsy stereo route fields have distinct host-facing identities") {
     REQUIRE(route_ids[0] != route_ids[1]);
 }
 
-TEST_CASE("Beadsy modulation context menu updates and resets the selected LFO") {
+namespace {
+using MenuItem = pulp::view::ContextMenu::Item;
+MenuItem menu_item(pulp::view::ContextMenu *menu, std::string_view label) {
+    const auto it = std::find_if(menu->items().begin(), menu->items().end(),
+                                [&](const auto &item) { return item.label == label; });
+    REQUIRE(it != menu->items().end());
+    return *it;
+}
+bool has_menu_item(pulp::view::ContextMenu *menu, std::string_view label) {
+    return std::any_of(menu->items().begin(), menu->items().end(),
+                       [&](const auto &item) { return item.label == label; });
+}
+void click_menu_row(beadsy::BeadsyEditor &editor, pulp::view::ContextMenu *menu,
+                    std::string_view label) {
+    const auto &items = menu->items();
+    const auto it = std::find_if(items.begin(), items.end(),
+                                [&](const auto &item) { return item.label == label; });
+    REQUIRE(it != items.end());
+    const auto row = menu->layout().rows[static_cast<std::size_t>(it - items.begin())];
+    editor.simulate_click({row.x + row.width * 0.5f, row.y + row.height * 0.5f});
+}
+}
+
+TEST_CASE("Beadsy keeps shared LFOs enabled while menus focus on another control") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
     processor.set_state_store(&store);
     processor.define_parameters(store);
     auto editor = processor.create_view();
-    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
     REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 350.0f, 634.0f});
+    native->layout_children();
+    auto *menu = native->show_modulation_context_menu(beadsy::kPitch, {12, 12});
+    REQUIRE(menu->items().front().label == "Reset Pitch");
+    REQUIRE(menu->items().size() == 13);
+    REQUIRE(menu->layout().max_scroll == 0.0f);
+    REQUIRE_FALSE(has_menu_item(menu, "LIVE"));
+    REQUIRE_FALSE(has_menu_item(menu, "Reset to Live"));
+    click_menu_row(*native, menu, "LFO 1");
+    REQUIRE(processor.lfo_generator(0).enabled);
+    REQUIRE(processor.lfo_target_enabled(beadsy::kPitch, 0));
+    REQUIRE(menu->items().size() == 13);
+    REQUIRE_FALSE(has_menu_item(menu, "LFO 1 -> Size"));
+    auto rate = menu_item(menu, "Rate");
+    rate.set_normalized_value(0.2f);
+    // Continuous root pointer dispatch must keep the slider captured across
+    // multiple motion events (rebuilding rows on change used to stop drag).
+    const auto rate_it = std::find_if(menu->items().begin(), menu->items().end(),
+                                     [](const auto &item) { return item.label == "Rate"; });
+    const auto rate_row = menu->layout().rows[static_cast<std::size_t>(rate_it - menu->items().begin())];
+    const float left = rate_row.x + std::min(90.0f, rate_row.width * 0.45f);
+    const float right = rate_row.x + rate_row.width - 52.0f;
+    const float y = rate_row.y + rate_row.height * 0.5f;
+    native->simulate_drag({left + (right - left) * 0.1f, y},
+                         {left + (right - left) * 0.8f, y}, 8);
+    REQUIRE(std::abs(processor.lfo_generator(0).rate_hz - (0.01f + 0.8f * 19.99f)) < 0.01f);
+    menu->on_mouse_event({.position = {left + (right - left) * 0.2f, y}, .is_down = true});
+    menu->on_mouse_event({.position = {left + (right - left) * 0.6f, y}, .is_down = false});
+    REQUIRE(std::abs(processor.lfo_generator(0).rate_hz - (0.01f + 0.6f * 19.99f)) < 0.01f);
+    menu->on_mouse_event({.position = {left + (right - left) * 0.6f, y}, .is_down = true});
+    const auto released_rate = processor.lfo_generator(0).rate_hz;
+    menu->on_mouse_event({.position = {left, y}, .phase = pulp::view::MousePhase::hover});
+    REQUIRE(processor.lfo_generator(0).rate_hz == released_rate);
+    const auto pitch_settings = processor.lfo_generator(0);
 
-    auto* menu = native->show_modulation_context_menu(
-        beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
-    REQUIRE(menu != nullptr);
-    REQUIRE(native->modulation_context_target() == beadsy::kDensity);
-    REQUIRE(menu->items().size() == 18);
-    REQUIRE(menu->items()[3].control_kind ==
-            pulp::view::ContextMenu::Item::ControlKind::toggle);
-    REQUIRE(menu->items()[15].control_kind ==
-            pulp::view::ContextMenu::Item::ControlKind::choice);
-    REQUIRE(menu->items()[16].control_kind ==
-            pulp::view::ContextMenu::Item::ControlKind::slider);
-    REQUIRE(menu->items()[17].control_kind ==
-            pulp::view::ContextMenu::Item::ControlKind::slider);
-    REQUIRE(menu->items()[4].label == "Reset to Live");
-    REQUIRE(std::none_of(menu->items().begin(), menu->items().end(),
-                         [](const auto &item) { return item.label == "TARGETS"; }));
+    menu = native->show_modulation_context_menu(beadsy::kSize, {12, 12});
+    REQUIRE(native->modulation_context_target() == beadsy::kSize);
+    REQUIRE(menu->items().front().label == "Reset Size");
+    REQUIRE(menu_item(menu, "LFO 1").checked);
+    REQUIRE_FALSE(menu_item(menu, "LFO 1 -> Size").checked);
+    REQUIRE(processor.lfo_generator(0).rate_hz == pitch_settings.rate_hz);
+    REQUIRE_FALSE(has_menu_item(menu, "LFO 1 -> Pitch"));
+    const auto pitch_depth = processor.lfo_target_depth(beadsy::kPitch, 0);
+    auto size_depth = menu_item(menu, "Depth");
+    size_depth.set_normalized_value(0.8f);
+    REQUIRE(processor.lfo_target_depth(beadsy::kSize, 0) == 0.8f);
+    REQUIRE(processor.lfo_target_depth(beadsy::kPitch, 0) == pitch_depth);
+    click_menu_row(*native, menu, "LFO 1 -> Size");
+    REQUIRE(processor.lfo_target_enabled(beadsy::kPitch, 0));
+    REQUIRE(processor.lfo_target_enabled(beadsy::kSize, 0));
+    REQUIRE(menu->items().size() == 13);
+    click_menu_row(*native, menu, "LFO 1 -> Size");
+    REQUIRE_FALSE(processor.lfo_target_enabled(beadsy::kSize, 0));
+    REQUIRE(processor.lfo_target_enabled(beadsy::kPitch, 0));
+    REQUIRE(processor.lfo_generator(0).enabled);
 
-    REQUIRE(menu->items()[7].on_change);
-    auto toggle = menu->items()[7];
-    toggle.checked = true;
-    menu->items()[7].on_change(toggle);
-    REQUIRE(processor.lfo(beadsy::kDensity).enabled);
-    REQUIRE(processor.lfo(beadsy::kDensity).depth > 0.0f);
-    REQUIRE(menu->items()[16].normalized_value >= 0.0f);
-    REQUIRE(menu->items()[16].normalized_value <= 1.0f);
-    REQUIRE(menu->items()[17].normalized_value >= 0.0f);
-    REQUIRE(menu->items()[17].normalized_value <= 1.0f);
-    REQUIRE(std::any_of(menu->items().begin(), menu->items().end(),
-                        [](const auto &item) { return item.label == "TARGETS"; }));
+    click_menu_row(*native, menu, "All targets…");
+    REQUIRE(has_menu_item(menu, "LFO 1 -> Pitch"));
+    REQUIRE(has_menu_item(menu, "LFO 1 -> Freeze"));
+    REQUIRE(has_menu_item(menu, "LFO 1 -> Seed Mode"));
+    auto pitch = menu_item(menu, "LFO 1 -> Pitch");
+    pitch.set_toggled(false);
+    REQUIRE_FALSE(processor.lfo_target_enabled(beadsy::kPitch, 0));
+    menu = native->show_modulation_context_menu(beadsy::kTime, {12, 12});
+    REQUIRE(menu_item(menu, "LFO 1").checked);
+    REQUIRE_FALSE(menu_item(menu, "All targets…").checked);
+    REQUIRE(menu->items().size() == 13);
+}
 
-    // LFO 2 is a separate lane with its own toggle and controls.
-    REQUIRE(menu->items()[8].control_kind ==
-            pulp::view::ContextMenu::Item::ControlKind::toggle);
-    auto toggle2 = menu->items()[8];
-    toggle2.checked = true;
-    menu->items()[8].on_change(toggle2);
-    REQUIRE(processor.lfo(beadsy::kDensity, 1).enabled);
-
-    menu->on_close(1);
-    REQUIRE_FALSE(processor.lfo(beadsy::kDensity).enabled);
-    REQUIRE_FALSE(processor.lfo(beadsy::kDensity, 1).enabled);
-    REQUIRE(processor.lfo(beadsy::kDensity).depth == 0.0f);
+TEST_CASE("Beadsy reset affects only the hovered control and its assignments") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    store.set_value(beadsy::kPitch, 9.0f);
+    store.set_value(beadsy::kSize, 0.8f);
+    processor.set_lfo(beadsy::kPitch, {.enabled = true, .rate_hz = 3, .depth = 0.4f});
+    processor.set_lfo_target_enabled(beadsy::kSize, 0, true);
+    processor.set_lfo(beadsy::kSize, {.enabled = true, .rate_hz = 2, .depth = 0.3f}, 1);
+    auto editor = processor.create_view();
+    auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
+    native->set_bounds({0, 0, 350, 634});
+    auto *menu = native->show_modulation_context_menu(beadsy::kSize, {12, 12});
+    click_menu_row(*native, menu, "Reset Size");
+    REQUIRE(store.get_value(beadsy::kSize) == store.info(beadsy::kSize)->range.default_value);
+    REQUIRE(store.get_value(beadsy::kPitch) == 9.0f);
+    REQUIRE_FALSE(processor.lfo_target_enabled(beadsy::kSize, 0));
+    REQUIRE_FALSE(processor.lfo_target_enabled(beadsy::kSize, 1));
+    REQUIRE(processor.lfo_target_enabled(beadsy::kPitch, 0));
+    REQUIRE(processor.lfo_generator(0).enabled);
+    REQUIRE(processor.lfo_generator(1).enabled);
+    REQUIRE(processor.lfo_generator(0).rate_hz == 3.0f);
     REQUIRE_FALSE(native->modulation_context_target().has_value());
 }
 
@@ -981,115 +1053,101 @@ TEST_CASE("Beadsy modulation menu is reachable through root secondary dispatch")
     processor.set_state_store(&store);
     processor.define_parameters(store);
     auto editor = processor.create_view();
-    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
     REQUIRE(native != nullptr);
-    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->set_bounds({0, 0, 350, 634});
     native->layout_children();
-
-    auto* density = dynamic_cast<beadsy::detail::PanelKnob*>(native->child_at(0));
+    auto *density = dynamic_cast<beadsy::detail::PanelKnob *>(native->child_at(0));
     REQUIRE(density != nullptr);
-    const auto b = density->bounds();
-    const pulp::view::Point center{b.x + b.width * 0.5f,
-                                   b.y + b.height * 0.5f};
-    REQUIRE(pulp::view::dispatch_context_menu(*native, center));
-
-    // The root-dispatched path must reach the same canonical factory used by
-    // a host right-click, including both LFO lanes and the reset command.
-    auto* menu = native->child_at(native->child_count() - 1);
-    auto* context = dynamic_cast<pulp::view::ContextMenu*>(menu);
-    REQUIRE(context != nullptr);
-    REQUIRE(context->items().size() == 18);
-    REQUIRE(context->items()[7].label == "LFO 1");
-    REQUIRE(context->items()[8].label == "LFO 2");
-}
-
-TEST_CASE("Beadsy modulation shape choices expose names and stepped waveform cues") {
-    beadsy::Beadsy processor;
-    pulp::state::StateStore store;
-    processor.set_state_store(&store);
-    processor.define_parameters(store);
-    auto editor = processor.create_view();
-    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
-    REQUIRE(native != nullptr);
-
-    auto* menu = native->show_modulation_context_menu(
-        beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
+    const auto bounds = density->bounds();
+    REQUIRE(pulp::view::dispatch_context_menu(*native,
+        {bounds.x + bounds.width * 0.5f, bounds.y + bounds.height * 0.5f}));
+    auto *menu = dynamic_cast<pulp::view::ContextMenu *>(native->child_at(native->child_count() - 1));
     REQUIRE(menu != nullptr);
-    const auto choice = std::find_if(
-        menu->items().begin(), menu->items().end(), [](const auto& item) {
-          return item.control_kind ==
-                 pulp::view::ContextMenu::Item::ControlKind::choice;
-        });
-    REQUIRE(choice != menu->items().end());
-    REQUIRE(choice->choices.size() == 4);
-    REQUIRE(choice->choices[0].find("Sine") != std::string::npos);
-    REQUIRE(choice->choices[1].find("Triangle") != std::string::npos);
-    REQUIRE(choice->choices[2].find("Square") != std::string::npos);
-    REQUIRE(choice->choices[2].find("_|‾|") != std::string::npos);
-    REQUIRE(choice->choices[3].find("Saw") != std::string::npos);
-    REQUIRE(choice->on_change);
-
-    auto selected = *choice;
-    selected.set_choice_index(2);
-    REQUIRE(processor.lfo(beadsy::kDensity).shape ==
-            beadsy::LfoModulation::Shape::Square);
+    REQUIRE(menu->items().front().label == "Reset Density");
+    REQUIRE(menu->items().size() == 13);
+    REQUIRE(has_menu_item(menu, "LFO 1 -> Density"));
+    REQUIRE_FALSE(has_menu_item(menu, "LFO 1 -> Size"));
 }
 
-TEST_CASE("Beadsy modulation toggles and lane tabs work through root dispatch") {
+TEST_CASE("Beadsy shows named waveforms and edits the selected shared LFO") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
     processor.set_state_store(&store);
     processor.define_parameters(store);
     auto editor = processor.create_view();
-    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
-    REQUIRE(native != nullptr);
-    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
+    native->set_bounds({0, 0, 350, 634});
+    auto *menu = native->show_modulation_context_menu(beadsy::kSize, {12, 12});
+    auto waveform = menu_item(menu, "Waveform");
+    REQUIRE(waveform.choices == std::vector<std::string>{"Sine", "Triangle", "Square", "Saw"});
+    waveform.set_choice_index(2);
+    REQUIRE(processor.lfo_generator(0).shape == beadsy::LfoModulation::Shape::Square);
+    const auto wave_it = std::find_if(menu->items().begin(), menu->items().end(),
+                                     [](const auto &item) { return item.label == "Waveform"; });
+    const auto wave_row = menu->layout().rows[static_cast<std::size_t>(wave_it - menu->items().begin())];
+    for (const std::size_t shape : {3u, 0u, 2u}) {
+        const auto icon = beadsy::detail::ModulationContextMenu::waveform_cell(wave_row, shape);
+        native->simulate_click({icon.x + icon.width * 0.5f, icon.y + icon.height * 0.5f});
+        REQUIRE(static_cast<std::size_t>(processor.lfo_generator(0).shape) == shape);
+        REQUIRE(menu_item(menu, "Waveform").choice_index == shape);
+    }
+    click_menu_row(*native, menu, "EDIT LFO 2");
+    waveform = menu_item(menu, "Waveform");
+    waveform.set_choice_index(1);
+    REQUIRE(processor.lfo_generator(1).shape == beadsy::LfoModulation::Shape::Triangle);
+    REQUIRE(processor.lfo_generator(0).shape == beadsy::LfoModulation::Shape::Square);
+    click_menu_row(*native, menu, "LFO 2");
+    REQUIRE(processor.lfo_generator(1).enabled);
+    REQUIRE(processor.lfo_target_enabled(beadsy::kSize, 1));
+}
+
+TEST_CASE("Beadsy paints played knob and button states without changing base values") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
+    native->set_bounds({0, 0, 350, 634});
     native->layout_children();
-
-    auto* menu = native->show_modulation_context_menu(
-        beadsy::kDensity, pulp::view::Point{12.0f, 12.0f});
-    REQUIRE(menu != nullptr);
-    const auto click_row = [&](std::string_view label) {
-        const auto& items = menu->items();
-        const auto it = std::find_if(items.begin(), items.end(),
-                                     [&](const auto& item) { return item.label == label; });
-        REQUIRE(it != items.end());
-        const auto index = static_cast<std::size_t>(std::distance(items.begin(), it));
-        const auto row = menu->layout().rows[index];
-        native->simulate_click({row.x + row.width * 0.5f,
-                                 row.y + row.height * 0.5f});
-    };
-
-    click_row("LFO 1");
-    REQUIRE(processor.lfo(beadsy::kDensity, 0).enabled);
-    REQUIRE(processor.lfo(beadsy::kDensity, 0).depth > 0.0f);
-
-    // Target rows are below the compact viewport; exercise the same callback
-    // after locating the row (the core scroll/pointer path is covered by the
-    // shared ContextMenu tests).
-    auto target_it = std::find_if(menu->items().begin(), menu->items().end(),
-                                  [](const auto &item) {
-                                      return item.label == "LFO 1 -> Freeze";
-                                  });
-    REQUIRE(target_it != menu->items().end());
-    auto target_item = *target_it;
-    target_item.checked = true;
-    target_it->on_change(target_item);
-    REQUIRE_FALSE(processor.lfo(beadsy::kDensity, 0).enabled);
-    REQUIRE(processor.lfo(beadsy::kFreeze, 0).enabled);
-
-    click_row("EDIT LFO 2");
-    const auto& after_tab = menu->items();
-    REQUIRE(std::find_if(after_tab.begin(), after_tab.end(), [](const auto& item) {
-        return item.label == "LFO 2 PARAMETERS";
-    }) != after_tab.end());
-    REQUIRE(std::find_if(after_tab.begin(), after_tab.end(), [](const auto& item) {
-        return item.label == "LFO 1 PARAMETERS";
-    }) == after_tab.end());
-
-    click_row("LFO 2");
-    REQUIRE(processor.lfo(beadsy::kDensity, 1).enabled);
-    REQUIRE(processor.lfo(beadsy::kDensity, 1).depth > 0.0f);
+    auto *knob = dynamic_cast<beadsy::detail::PanelKnob *>(native->child_at(0));
+    REQUIRE(knob != nullptr);
+    const auto knob_base = knob->value();
+    const auto before = pulp::view::render_to_png(*knob, 64, 80, 1.0f,
+        pulp::view::ScreenshotBackend::coregraphics);
+    REQUIRE(before.size() > 100);
+    store.set_display_modulation(beadsy::kDensity, 0.95f);
+    store.set_display_modulation(beadsy::kFreeze, 1.0f);
+    store.set_display_modulation(beadsy::kSeedMode, 2.0f);
+    store.set_display_modulation(beadsy::kQuality, 0.0f);
+    store.pump_listeners();
+    const auto after = pulp::view::render_to_png(*knob, 64, 80, 1.0f,
+        pulp::view::ScreenshotBackend::coregraphics);
+    REQUIRE(after != before);
+    REQUIRE(knob->value() == knob_base);
+    REQUIRE(knob->modulated_display_value() == 0.95f);
+    REQUIRE(native->quality_control()->displayed_quality() == 0);
+    REQUIRE(native->quality_control()->quality() == 3);
+    bool saw_seed = false;
+    bool saw_freeze = false;
+    for (std::size_t i = 0; i < native->child_count(); ++i) {
+        if (auto *seed = dynamic_cast<beadsy::SeedModeControl *>(native->child_at(i))) {
+            REQUIRE(seed->displayed_mode() == 2);
+            REQUIRE(seed->mode() == 0);
+            saw_seed = true;
+        }
+        if (auto *freeze = dynamic_cast<beadsy::FreezeControl *>(native->child_at(i))) {
+            REQUIRE(freeze->displayed_pressed());
+            REQUIRE_FALSE(freeze->pressed());
+            saw_freeze = true;
+        }
+    }
+    REQUIRE(saw_seed);
+    REQUIRE(saw_freeze);
+    REQUIRE(store.get_value(beadsy::kFreeze) == 0.0f);
+    REQUIRE(store.get_value(beadsy::kSeedMode) == 0.0f);
+    REQUIRE(store.get_value(beadsy::kQuality) == 3.0f);
 }
 
 TEST_CASE("Beadsy bound editor knob emits a host automation gesture") {

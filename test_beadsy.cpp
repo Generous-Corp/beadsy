@@ -771,7 +771,7 @@ TEST_CASE("Beadsy exposes independent LFO 1 and LFO 2 state and shapes") {
                   .phase = 0.25f, .shape = beadsy::LfoModulation::Shape::Saw},
                  1);
   const auto payload = source.serialize_plugin_state();
-  REQUIRE(payload[4] == 3);
+  REQUIRE(payload[4] == 4);
 
   beadsy::Beadsy restored;
   pulp::state::StateStore restored_store;
@@ -889,6 +889,207 @@ TEST_CASE("Beadsy accepts legacy ten-slot modulation state") {
   REQUIRE(restored.lfo(beadsy::kDensity).enabled);
   REQUIRE(restored.lfo(beadsy::kDensity).depth == 0.2f);
   REQUIRE_FALSE(restored.lfo(beadsy::kMode).enabled);
+}
+
+TEST_CASE("Beadsy shared LFO settings and target assignments are independent") {
+  beadsy::Beadsy processor;
+  pulp::state::StateStore store;
+  processor.set_state_store(&store);
+  processor.define_parameters(store);
+  const beadsy::LfoModulation config{
+      .enabled = true, .rate_hz = 2.5f, .depth = 0.4f, .phase = 0.125f,
+      .shape = beadsy::LfoModulation::Shape::Square};
+  processor.set_lfo_generator(0, config);
+  processor.set_lfo_target_enabled(beadsy::kPitch, 0, true);
+
+  // Visiting a new control must see the same running generator, while its
+  // destination switch remains independent from the existing Pitch route.
+  REQUIRE(processor.lfo_generator(0).enabled);
+  REQUIRE_FALSE(processor.lfo_target_enabled(beadsy::kSize, 0));
+  REQUIRE_FALSE(processor.lfo(beadsy::kSize, 0).enabled);
+  REQUIRE(processor.lfo(beadsy::kSize, 0).rate_hz == 2.5f);
+  REQUIRE(processor.lfo(beadsy::kSize, 0).shape == config.shape);
+  processor.set_lfo_target_enabled(beadsy::kSize, 0, true);
+  REQUIRE(processor.lfo(beadsy::kPitch, 0).enabled);
+  REQUIRE(processor.lfo(beadsy::kSize, 0).enabled);
+  processor.set_lfo_target_depth(beadsy::kPitch, 0, 0.8f);
+  processor.set_lfo_target_depth(beadsy::kSize, 0, 0.2f);
+  REQUIRE(processor.lfo(beadsy::kPitch, 0).depth == 0.8f);
+  REQUIRE(processor.lfo(beadsy::kSize, 0).depth == 0.2f);
+  processor.clear_lfo(beadsy::kSize, 0);
+  REQUIRE_FALSE(processor.lfo_target_enabled(beadsy::kSize, 0));
+  REQUIRE(processor.lfo(beadsy::kPitch, 0).enabled);
+  REQUIRE(processor.lfo_generator(0).depth == 0.4f);
+  processor.set_lfo(beadsy::kPitch, {});
+  REQUIRE_FALSE(processor.lfo_target_enabled(beadsy::kPitch, 0));
+  REQUIRE(processor.lfo_generator(0).enabled);
+  REQUIRE(processor.lfo_generator(0).phase == 0.125f);
+  REQUIRE(processor.lfo_target_depth(beadsy::kPitch, 0) == 0.8f);
+  REQUIRE(processor.lfo_target_depth(beadsy::kSize, 0) == 0.2f);
+
+  processor.set_lfo_target_enabled(beadsy::kSize, 0, true);
+  auto disabled = processor.lfo_generator(0);
+  disabled.enabled = false;
+  processor.set_lfo_generator(0, disabled);
+  REQUIRE(processor.lfo_target_enabled(beadsy::kSize, 0));
+  REQUIRE_FALSE(processor.lfo(beadsy::kSize, 0).enabled);
+  disabled.enabled = true;
+  processor.set_lfo_generator(0, disabled);
+  REQUIRE(processor.lfo(beadsy::kSize, 0).enabled);
+}
+
+TEST_CASE("Beadsy saves shared generators without routes and disabled routed lanes") {
+  beadsy::Beadsy source;
+  source.set_lfo_generator(0, {.enabled = true, .rate_hz = 4.0f,
+                              .depth = 0.3f, .phase = 0.2f,
+                              .shape = beadsy::LfoModulation::Shape::Saw});
+  source.set_lfo_generator(1, {.enabled = false, .rate_hz = 7.0f,
+                              .depth = 0.7f, .phase = 0.6f,
+                              .shape = beadsy::LfoModulation::Shape::Triangle});
+  source.set_lfo_target_enabled(beadsy::kSeedMode, 1, true);
+  source.set_lfo_target_depth(beadsy::kSeedMode, 1, 0.9f);
+  source.set_route_identity(0, "track:shared-lfo");
+  const auto payload = source.serialize_plugin_state();
+  beadsy::Beadsy restored;
+  REQUIRE(restored.deserialize_plugin_state(payload));
+  REQUIRE(restored.lfo_generator(0).enabled);
+  REQUIRE(restored.lfo_generator(0).rate_hz == 4.0f);
+  REQUIRE(restored.lfo_generator(0).depth == 0.3f);
+  REQUIRE(restored.lfo_generator(0).phase == 0.2f);
+  REQUIRE(restored.lfo_generator(0).shape == beadsy::LfoModulation::Shape::Saw);
+  REQUIRE_FALSE(restored.lfo_target_enabled(beadsy::kSize, 0));
+  REQUIRE_FALSE(restored.lfo_generator(1).enabled);
+  REQUIRE(restored.lfo_generator(1).rate_hz == 7.0f);
+  REQUIRE(restored.lfo_target_enabled(beadsy::kSeedMode, 1));
+  REQUIRE(restored.lfo_target_depth(beadsy::kSeedMode, 1) == 0.9f);
+  REQUIRE(restored.route_identity(0) == "track:shared-lfo");
+
+  auto truncated = payload;
+  truncated.pop_back();
+  REQUIRE_FALSE(restored.deserialize_plugin_state(truncated));
+  REQUIRE(restored.serialize_plugin_state() == payload);
+  REQUIRE_FALSE(restored.deserialize_plugin_state(std::vector<std::uint8_t>{'G'}));
+  REQUIRE(restored.serialize_plugin_state() == payload);
+}
+
+TEST_CASE("Beadsy shared oscillator advances once and displays scaled knob and seed values") {
+  beadsy::Beadsy processor;
+  pulp::state::StateStore store;
+  processor.set_state_store(&store);
+  processor.define_parameters(store);
+  processor.prepare({.sample_rate = 48000.0, .max_buffer_size = 8,
+                     .input_channels = 0, .output_channels = 2});
+  for (const auto id : {beadsy::kTime, beadsy::kSize, beadsy::kPitch,
+                        beadsy::kQuality, beadsy::kSeedMode}) {
+    const auto &range = store.info(id)->range;
+    store.set_value(id, range.min);
+    processor.set_lfo_target_enabled(id, 0, true);
+  }
+  processor.set_lfo_generator(0, {.enabled = true, .rate_hz = 3.0f,
+                                 .depth = 0.5f, .phase = 0.25f});
+  pulp::midi::MidiBuffer midi_in, midi_out;
+  pulp::audio::Buffer<float> output(2, 8);
+  auto output_view = output.view();
+  pulp::audio::BufferView<const float> empty_input(nullptr, 0, 0);
+  const auto process = [&] {
+    processor.process(output_view, empty_input, midi_in, midi_out,
+                      {.sample_rate = 48000.0, .num_samples = 8});
+  };
+  process();
+  REQUIRE(std::abs(processor.lfo_generator(0).phase - 0.2505f) < 0.000001f);
+  for (const auto id : {beadsy::kTime, beadsy::kSize, beadsy::kPitch,
+                        beadsy::kQuality, beadsy::kSeedMode}) {
+    const auto &range = store.info(id)->range;
+    const float expected = (range.min + range.max) * 0.5f;
+    REQUIRE(store.get_value(id) == range.min);
+    REQUIRE(std::abs(store.get_modulated(id) - expected) < 0.00001f);
+    REQUIRE(store.displayed_modulation(id).has_value());
+    REQUIRE(*store.displayed_modulation(id) ==
+            range.normalize(store.get_modulated(id)));
+  }
+  REQUIRE(beadsy::seed_button_state_from_value(store.get_modulated(beadsy::kSeedMode))
+          == beads::SEED_BUTTON_STATE_ON);
+
+  processor.set_lfo_target_depth(beadsy::kTime, 0, 0.1f);
+  processor.set_lfo_target_depth(beadsy::kSize, 0, 0.3f);
+  auto shared = processor.lfo_generator(0);
+  shared.phase = 0.25f;
+  shared.depth = 0.0f; // Legacy generator depth does not scale destinations.
+  processor.set_lfo_generator(0, shared);
+  process();
+  REQUIRE(std::abs(store.get_modulated(beadsy::kTime) - 0.1f) < 0.00001f);
+  REQUIRE(std::abs(store.get_modulated(beadsy::kSize) - 0.3f) < 0.00001f);
+  REQUIRE(store.get_modulated(beadsy::kSeedMode) == 1.0f);
+
+  // Clearing one target immediately restores its base display without
+  // stopping another assigned target or resetting the shared phase.
+  processor.clear_lfo(beadsy::kSize);
+  REQUIRE(store.get_modulated(beadsy::kSize) == store.get_value(beadsy::kSize));
+  REQUIRE_FALSE(store.displayed_modulation(beadsy::kSize).has_value());
+  REQUIRE(store.displayed_modulation(beadsy::kPitch).has_value());
+  REQUIRE(processor.lfo_generator(0).enabled);
+  auto negative = processor.lfo_generator(0);
+  negative.phase = 0.75f;
+  processor.set_lfo_generator(0, negative);
+  process();
+  REQUIRE(store.get_modulated(beadsy::kSeedMode) == 0.0f);
+  REQUIRE(store.get_value(beadsy::kSeedMode) == 0.0f);
+  REQUIRE(*store.displayed_modulation(beadsy::kSeedMode) == 0.0f);
+
+  // Hosts may suspend processing when transport stops. Disabling the shared
+  // generator must release its visible values without waiting for a block.
+  negative.enabled = false;
+  processor.set_lfo_generator(0, negative);
+  REQUIRE(processor.lfo_target_enabled(beadsy::kSeedMode, 0));
+  REQUIRE_FALSE(store.displayed_modulation(beadsy::kSeedMode).has_value());
+  REQUIRE_FALSE(store.displayed_modulation(beadsy::kPitch).has_value());
+}
+
+TEST_CASE("Beadsy migrates old modulation layouts with deterministic shared settings") {
+  const auto make_old = [](std::uint8_t version) {
+    std::vector<std::uint8_t> data{'G', 'F', 'M', 'D', version, 0};
+    const auto append = [&data](float value) {
+      const auto *bytes = reinterpret_cast<const std::uint8_t *>(&value);
+      data.insert(data.end(), bytes, bytes + sizeof(value));
+    };
+    const auto lanes = version == 3 ? 2 : 1;
+    for (int lane = 0; lane < lanes; ++lane) {
+      for (int id = 1; id <= 17; ++id) {
+        const bool enabled = id == beadsy::kSize || id == beadsy::kPitch;
+        data.push_back(enabled);
+        if (version == 3)
+          data.push_back(id == beadsy::kSize ? 2 : 3);
+        append(id == beadsy::kSize ? 2.0f + lane : 9.0f);
+        append(id == beadsy::kSize ? 0.4f : 0.8f);
+        append(id == beadsy::kSize ? 0.25f : 0.75f);
+      }
+    }
+    if (version >= 2)
+      data.insert(data.end(), 4, 0); // Two empty host routing identities.
+    return data;
+  };
+  for (const auto version : {1, 2, 3}) {
+    beadsy::Beadsy restored;
+    REQUIRE(restored.deserialize_plugin_state(make_old(version)));
+    REQUIRE(restored.lfo_generator(0).enabled);
+    REQUIRE(restored.lfo_generator(0).rate_hz == 2.0f);
+    REQUIRE(restored.lfo_generator(0).depth == 0.4f);
+    REQUIRE(restored.lfo_generator(0).phase == 0.25f);
+    REQUIRE(restored.lfo_target_enabled(beadsy::kSize, 0));
+    REQUIRE(restored.lfo_target_enabled(beadsy::kPitch, 0));
+    REQUIRE(restored.lfo_target_depth(beadsy::kSize, 0) == 0.4f);
+    REQUIRE(std::abs(restored.lfo_target_depth(beadsy::kPitch, 0) - 0.8f / 48.0f)
+            < 0.000001f);
+    REQUIRE_FALSE(restored.lfo_target_enabled(beadsy::kSeedMode, 0));
+    if (version == 3) {
+      REQUIRE(restored.lfo_generator(0).shape == beadsy::LfoModulation::Shape::Square);
+      REQUIRE(restored.lfo_generator(1).rate_hz == 3.0f);
+      REQUIRE(restored.lfo_target_enabled(beadsy::kPitch, 1));
+    } else {
+      REQUIRE(restored.lfo_generator(0).shape == beadsy::LfoModulation::Shape::Sine);
+      REQUIRE_FALSE(restored.lfo_generator(1).enabled);
+    }
+  }
 }
 
 namespace {

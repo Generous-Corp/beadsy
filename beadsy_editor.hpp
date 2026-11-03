@@ -12,6 +12,7 @@
 #include <pulp/canvas/canvas.hpp>
 #include <pulp/canvas/svg.hpp>
 #include <pulp/view/context_menu.hpp>
+#include "beadsy_modulation_menu.hpp"
 #include <pulp/view/parameter_binding.hpp>
 #include <pulp/view/ui_components.hpp>
 #include <pulp/view/view.hpp>
@@ -139,7 +140,8 @@ public:
                              : paint_radius_for_bounds(b.width, b.height);
     const float angle =
         pulp::view::Knob::start_angle +
-        (pulp::view::Knob::end_angle - pulp::view::Knob::start_angle) * value();
+        (pulp::view::Knob::end_angle - pulp::view::Knob::start_angle) *
+            modulated_display_value();
     // `radius` is in rendered pixels and therefore changes with editor scale.
     // The source-mapped diameter is the stable distinction between the seven
     // utility pots and the four larger Beads controls.
@@ -275,6 +277,13 @@ public:
     request_repaint();
   }
   int mode() const { return mode_; }
+  void set_display_value_provider(std::function<float()> provider) {
+    display_value_ = std::move(provider);
+  }
+  int displayed_mode() const {
+    return display_value_ ? std::clamp(static_cast<int>(std::lround(display_value_())), 0, 2)
+                          : mode_;
+  }
 
   void set_on_press(std::function<void()> callback) {
     on_press_ = std::move(callback);
@@ -292,7 +301,7 @@ public:
     // Match the authored panel's yellow-green lit state instead of changing
     // only the accessibility label when Seed is enabled.
     const auto on = pulp::canvas::Color::rgba8(205, 214, 103);
-    canvas.set_fill_color(mode_ == 0 ? off : on);
+    canvas.set_fill_color(displayed_mode() == 0 ? off : on);
     canvas.fill_circle(cx, cy, radius);
     canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
     canvas.set_line_width(0.8f);
@@ -317,6 +326,7 @@ public:
 
 private:
   int mode_ = 0;
+  std::function<float()> display_value_;
   std::function<void()> on_press_;
   std::function<void(pulp::view::Point)> on_context_menu_;
 };
@@ -341,6 +351,12 @@ public:
     request_repaint();
   }
   bool pressed() const { return pressed_; }
+  void set_display_value_provider(std::function<float()> provider) {
+    display_value_ = std::move(provider);
+  }
+  bool displayed_pressed() const {
+    return display_value_ ? display_value_() >= 0.5f : pressed_;
+  }
 
   void set_on_press(std::function<void()> callback) {
     on_press_ = std::move(callback);
@@ -354,7 +370,7 @@ public:
     const float cx = b.width * 0.5f;
     const float radius = std::max(3.0f, std::min(b.width, b.height) * 0.34f);
     const float cy = b.height * 0.62f;
-    const auto body = pressed_ ? pulp::canvas::Color::rgba8(205, 214, 103)
+    const auto body = displayed_pressed() ? pulp::canvas::Color::rgba8(205, 214, 103)
                                : pulp::canvas::Color::rgba8(239, 238, 228);
     canvas.set_fill_color(body);
     canvas.fill_circle(cx, cy, radius);
@@ -378,6 +394,7 @@ public:
 
 private:
   bool pressed_ = false;
+  std::function<float()> display_value_;
   std::function<void()> on_press_;
   std::function<void(pulp::view::Point)> on_context_menu_;
 };
@@ -402,6 +419,13 @@ public:
     request_repaint();
   }
   int quality() const { return quality_; }
+  void set_display_value_provider(std::function<float()> provider) {
+    display_value_ = std::move(provider);
+  }
+  int displayed_quality() const {
+    return display_value_ ? std::clamp(static_cast<int>(std::lround(display_value_())), 0, 3)
+                          : quality_;
+  }
   void set_on_press(std::function<void()> callback) {
     on_press_ = std::move(callback);
   }
@@ -422,7 +446,7 @@ public:
         pulp::canvas::Color::rgba8(234, 166, 27),
         pulp::canvas::Color::rgba8(211, 59, 97),
     };
-    canvas.set_fill_color(colors[quality_]);
+    canvas.set_fill_color(colors[displayed_quality()]);
     canvas.fill_circle(cx, cy, r);
     canvas.set_stroke_color(pulp::canvas::Color::rgba8(52, 52, 52));
     canvas.set_line_width(std::max(0.7f, r * 0.10f));
@@ -443,6 +467,7 @@ public:
 
 private:
   int quality_ = 3;
+  std::function<float()> display_value_;
   std::function<void()> on_press_;
   std::function<void(pulp::view::Point)> on_context_menu_;
 };
@@ -1270,117 +1295,180 @@ public:
   pulp::view::ContextMenu *
   show_modulation_context_menu(pulp::state::ParamID id,
                                pulp::view::Point position) {
-    open_modulation_context(id);
     auto *root = detail::root_view(this);
     if (!root)
       return nullptr;
-    const auto *info = store_.info(id);
-    const std::string target_name = info ? info->name : "Parameter";
+    auto session = std::make_shared<ModulationMenuSession>();
+    session->target = id;
     auto alive = import_binding_lifetime_token();
-    pulp::view::ContextMenu::ModulationMenuSpec spec;
-    spec.target_label = target_name;
-    // The shared Spectr-style menu owns the target hierarchy.  Beadsy's
-    // modulation lanes may address any of the product's source-backed grain
-    // parameters, so expose that catalog instead of silently omitting the
-    // TARGETS section from the popup.
-    const std::array<std::pair<const char *, pulp::state::ParamID>, 8>
-        modulation_targets = {{{"Density", beadsy::kDensity},
-                               {"Time", beadsy::kTime},
-                               {"Size", beadsy::kSize},
-                               {"Shape", beadsy::kShape},
-                               {"Pitch", beadsy::kPitch},
-                               {"Quality", beadsy::kQuality},
-                               {"Freeze", beadsy::kFreeze},
-                               {"Source", beadsy::kMode}}};
-    for (const auto &[label, target_id] : modulation_targets) {
-      spec.target_labels.emplace_back(label);
-      spec.all_target_labels.emplace_back(label);
-      if (target_id == id)
-        spec.target_index = spec.target_labels.size() - 1;
-    }
-    spec.lane_target_indices = {spec.target_index, spec.target_index};
-    spec.on_target_change = [alive, this](std::size_t) {
-      if (!alive.expired())
-        request_repaint();
-    };
-    spec.on_target_assignment = [alive, this, id,
-                                 modulation_targets](std::size_t lane,
-                                                      std::size_t target_index) {
-      if (alive.expired() || target_index >= modulation_targets.size())
-        return;
-      processor_.assign_lfo_target(id, modulation_targets[target_index].second,
-                                   lane);
-      request_repaint();
-    };
-    spec.lane_count = 2;
-    spec.active_lane_index = 0;
-    spec.on_lane_select = [alive, this](std::size_t) {
-      if (!alive.expired())
-        request_repaint();
-    };
-    spec.live = true;
-    spec.on_live_change = [alive, this](bool) {
-      if (!alive.expired())
-        request_repaint();
-    };
-    // The shared SDK menu exposes shape choices as ordinary strings. Keep the
-    // product-owned shape selection intact while making the selected name and
-    // waveform cue visible in the choice field itself. In particular, square
-    // is represented as a stepped high/low trace (rather than a filled box),
-    // which remains legible in hosts whose menu renderer has no custom shape
-    // painter hook.
-    const auto shape_choice_labels = [] {
-      return std::vector<std::string>{"Sine  ~", "Triangle  /\\", 
-                                      "Square  _|‾|", "Saw  /|"};
-    };
-    for (std::size_t lane_index = 0; lane_index < spec.lane_count; ++lane_index) {
-      const auto current = processor_.lfo(id, lane_index);
-      spec.lanes[lane_index].label =
-          std::string("LFO ") + std::to_string(lane_index + 1);
-      spec.lanes[lane_index].enabled = current.enabled;
-      spec.lanes[lane_index].rate_normalized =
-          std::clamp((current.rate_hz - 0.01f) / 19.99f, 0.0f, 1.0f);
-      spec.lanes[lane_index].depth_normalized =
-          std::clamp(current.depth, 0.0f, 1.0f);
-      spec.lanes[lane_index].shapes = shape_choice_labels();
-      spec.lanes[lane_index].shape_index =
-          static_cast<std::size_t>(std::min<int>(static_cast<int>(current.shape), 3));
-      spec.lanes[lane_index].on_change =
-          [alive, this, id, lane_index](const auto &lane) {
-            if (alive.expired())
-              return;
-            auto modulation = processor_.lfo(id, lane_index);
-            modulation.enabled = lane.enabled;
-            modulation.rate_hz = 0.01f + lane.rate_normalized * 19.99f;
-            modulation.depth = lane.enabled && lane.depth_normalized <= 0.0f
-                                   ? 0.5f
-                                   : lane.depth_normalized;
-            modulation.shape = static_cast<beadsy::LfoModulation::Shape>(
-                std::min<std::size_t>(lane.shape_index, 3));
-            processor_.set_lfo(id, modulation, lane_index);
-            request_repaint();
-          };
-    }
-    spec.on_reset = [alive, this, id] {
-      if (alive.expired())
-        return;
-      processor_.clear_lfo(id, 0);
-      processor_.clear_lfo(id, 1);
-      // Reset is a terminal action. Clear the product target immediately as
-      // well as through the SDK dismissal callback so direct/native host
-      // dispatch cannot leave a stale modulation target behind.
-      clear_modulation_context();
-      request_repaint();
-    };
-    spec.on_dismiss = [alive, this] {
-      if (!alive.expired())
-        clear_modulation_context();
-    };
-    return pulp::view::ContextMenu::show_modulation(
-        root, detail::local_to_root(this, position), std::move(spec));
+    session->menu = detail::ModulationContextMenu::show(
+        root, detail::local_to_root(this, position), modulation_menu_items(session),
+        [alive, this, session](std::optional<int> command) {
+          session->menu = nullptr;
+          if (alive.expired())
+            return;
+          if (command == 1) {
+            // Reset belongs to this control. Other targets and the two shared
+            // generators keep their assignments, settings and running phase.
+            processor_.clear_lfo(session->target, 0);
+            processor_.clear_lfo(session->target, 1);
+            if (const auto *info = store_.info(session->target)) {
+              store_.begin_gesture(session->target);
+              store_.set_value(session->target, info->range.default_value);
+              store_.end_gesture(session->target);
+            }
+          }
+          clear_modulation_context();
+          request_repaint();
+        });
+    open_modulation_context(id);
+    session->menu->set_min_width(250.0f);
+    return session->menu;
   }
 
 private:
+  float effective_display_value(pulp::state::ParamID id) const {
+    // StateStore publishes normalized display values for bound widgets.
+    // Discrete buttons need their original parameter range (Seed 0..2,
+    // Quality 0..3) before deciding which state to draw.
+    const auto played = store_.displayed_modulation(id);
+    const auto *info = store_.info(id);
+    return played && info ? info->range.denormalize(*played) : store_.get_value(id);
+  }
+
+  struct ModulationMenuSession {
+    pulp::state::ParamID target = kTime;
+    std::size_t lane = 0;
+    bool all_targets = false;
+    pulp::view::ContextMenu *menu = nullptr;
+  };
+
+  std::vector<pulp::view::ContextMenu::Item> modulation_menu_items(
+      const std::shared_ptr<ModulationMenuSession> &session) {
+    using Item = pulp::view::ContextMenu::Item;
+    const auto alive = import_binding_lifetime_token();
+    const auto refresh = [alive, this, session] {
+      if (alive.expired() || !session->menu)
+        return;
+      session->menu->set_items(modulation_menu_items(session));
+      request_repaint();
+    };
+    const auto label_for = [this](pulp::state::ParamID id) {
+      const auto *info = store_.info(id);
+      return info ? info->name : std::string("Parameter");
+    };
+    const auto target_name = label_for(session->target);
+    std::vector<Item> items;
+    items.push_back(Item{1, "Reset " + target_name});
+    items.push_back(Item::make_separator());
+    for (std::size_t lane = 0; lane != 2; ++lane) {
+      items.push_back(Item::make_toggle(
+          10 + static_cast<int>(lane), "LFO " + std::to_string(lane + 1),
+          processor_.lfo_generator(lane).enabled,
+          [alive, this, session, lane, refresh](const Item &item) {
+            if (alive.expired())
+              return;
+            auto config = processor_.lfo_generator(lane);
+            config.enabled = item.checked;
+            processor_.set_lfo_generator(lane, config);
+            // The first activation starts on the control the user clicked.
+            // Re-enabling an existing generator never changes its routing.
+            bool has_target = false;
+            for (pulp::state::ParamID id = kFirstModulatableParam;
+                 id <= kLastModulatableParam; ++id)
+              has_target |= processor_.lfo_target_enabled(id, lane);
+            if (config.enabled && !has_target)
+              processor_.set_lfo_target_enabled(session->target, lane, true);
+            refresh();
+          }));
+    }
+    for (std::size_t lane = 0; lane != 2; ++lane) {
+      items.push_back(Item::make_toggle(
+          20 + static_cast<int>(lane), "EDIT LFO " + std::to_string(lane + 1),
+          session->lane == lane,
+          [alive, session, lane, refresh](const Item &) {
+            if (alive.expired())
+              return;
+            session->lane = lane;
+            refresh();
+          }));
+    }
+    const auto lane = session->lane;
+    const auto config = processor_.lfo_generator(lane);
+    // Keep the selected waveform name visible beside the product's four
+    // directly selectable, accurately drawn waveform icons.
+    items.push_back(Item::make_choice(
+        30, "Waveform", {"Sine", "Triangle", "Square", "Saw"},
+        static_cast<std::size_t>(config.shape),
+        [alive, this, lane](const Item &item) {
+          if (alive.expired())
+            return;
+          auto next = processor_.lfo_generator(lane);
+          next.shape = static_cast<LfoModulation::Shape>(item.choice_index);
+          processor_.set_lfo_generator(lane, next);
+          request_repaint();
+        }));
+    auto rate = Item::make_slider(
+        31, "Rate", std::clamp((config.rate_hz - 0.01f) / 19.99f, 0.0f, 1.0f),
+        0.005f, [alive, this, lane](const Item &item) {
+          if (alive.expired())
+            return;
+          auto next = processor_.lfo_generator(lane);
+          next.rate_hz = 0.01f + item.normalized_value * 19.99f;
+          processor_.set_lfo_generator(lane, next);
+          request_repaint();
+        });
+    std::ostringstream rate_text;
+    rate_text.setf(std::ios::fixed);
+    rate_text.precision(2);
+    rate_text << config.rate_hz << " Hz";
+    rate.value_label = rate_text.str();
+    items.push_back(std::move(rate));
+    auto depth = Item::make_slider(
+        32, "Depth", processor_.lfo_target_depth(session->target, lane), 0.01f,
+        [alive, this, lane, target = session->target](const Item &item) {
+          if (alive.expired())
+            return;
+          processor_.set_lfo_target_depth(target, lane, item.normalized_value);
+          request_repaint();
+        });
+    depth.value_label = std::to_string(static_cast<int>(std::lround(processor_.lfo_target_depth(session->target, lane) * 100.0f))) + "%";
+    items.push_back(std::move(depth));
+    items.push_back(Item::make_separator());
+    const auto add_target = [&](pulp::state::ParamID id, std::size_t target_lane) {
+      items.push_back(Item::make_toggle(
+          100 + static_cast<int>(target_lane * 100 + id),
+          "LFO " + std::to_string(target_lane + 1) + " -> " + label_for(id),
+          processor_.lfo_target_enabled(id, target_lane),
+          [alive, this, id, target_lane](const Item &item) {
+            if (alive.expired())
+              return;
+            processor_.set_lfo_target_enabled(id, target_lane, item.checked);
+            request_repaint();
+          }));
+    };
+    // Opening another control always starts focused, even when an earlier
+    // popup had expanded All targets. Enabling an LFO never expands it.
+    add_target(session->target, 0);
+    add_target(session->target, 1);
+    items.push_back(Item::make_toggle(
+        40, "All targets…", session->all_targets,
+        [alive, session, refresh](const Item &item) {
+          if (alive.expired())
+            return;
+          session->all_targets = item.checked;
+          refresh();
+        }));
+    if (session->all_targets) {
+      items.push_back(Item::make_header("LFO " + std::to_string(lane + 1) + " TARGETS"));
+      for (pulp::state::ParamID id = kFirstModulatableParam;
+           id <= kLastModulatableParam; ++id)
+        if (id != session->target)
+          add_target(id, lane);
+    }
+    return items;
+  }
+
   struct Placement {
     pulp::state::ParamID id;
     const char *name;
@@ -1552,6 +1640,9 @@ private:
     // child ordering remains stable for hosts and screenshot probes.
     auto seed = std::make_unique<SeedModeControl>();
     seed_mode_ = seed.get();
+    seed_mode_->set_display_value_provider([this] {
+      return effective_display_value(kSeedMode);
+    });
     seed_mode_->set_mode(
         static_cast<int>(std::lround(store_.get_value(kSeedMode))));
     seed_mode_->set_on_press([this] {
@@ -1576,6 +1667,9 @@ private:
 
     auto freeze = std::make_unique<FreezeControl>();
     freeze_mode_ = freeze.get();
+    freeze_mode_->set_display_value_provider([this] {
+      return effective_display_value(kFreeze);
+    });
     freeze_mode_->set_pressed(store_.get_value(kFreeze) >= 0.5f);
     freeze_mode_->set_on_press([this] {
       store_.begin_gesture(kFreeze);
@@ -1597,6 +1691,9 @@ private:
 
     auto push = std::make_unique<PushButtonControl>();
     push_button_ = push.get();
+    push_button_->set_display_value_provider([this] {
+      return effective_display_value(kQuality);
+    });
     push_button_->set_quality(static_cast<int>(std::lround(
         store_.get_value(kQuality))));
     push_button_->set_on_press([this] {

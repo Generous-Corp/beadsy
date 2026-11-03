@@ -200,6 +200,16 @@ if(TARGET Pulp::view)
         # in-panel route widgets when the host owns that menu.
         BEADSY_SHOW_ROUTING_CONTROLS=1)
     catch_discover_tests(Beadsy-editor-test)
+
+    # Exercise the shipping editor configuration separately from the route
+    # characterization suite above, which intentionally enables test widgets.
+    add_executable(Beadsy-modulation-ui-test test_beadsy_modulation_ui.cpp)
+    target_link_libraries(Beadsy-modulation-ui-test PRIVATE
+        Pulp::format Pulp::view Catch2::Catch2WithMain beadsy_beads_dsp)
+    target_include_directories(Beadsy-modulation-ui-test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+    target_compile_definitions(Beadsy-modulation-ui-test PRIVATE BEADSY_NATIVE_EDITOR=1)
+    catch_discover_tests(Beadsy-modulation-ui-test)
 endif()
 
 pulp_add_plugin(Beadsy
