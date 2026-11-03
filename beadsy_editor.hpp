@@ -782,6 +782,11 @@ private:
     const bool enabled =
         catalog_ != nullptr && source_mode_ != 0 && has_routes();
     set_enabled(enabled);
+    // Do not present an inert routing field in standalone/instrument builds or
+    // before an FX host supplies its route catalog. Once the host attaches a
+    // catalog, the fields become visible and selectable through the normal
+    // ComboBox path.
+    set_visible(catalog_ != nullptr && source_mode_ != 0);
     set_access_disabled(enabled ? "false" : "true");
     if (!catalog_) {
       set_access_label(channel_label() + ": host-owned routing menu");
@@ -1649,6 +1654,7 @@ private:
     route_picker_left_fallback_->set_access_label("Input L: host routing menu");
     route_picker_left_fallback_->set_items({"L IN"});
     route_picker_left_fallback_->set_selected_silent(0);
+    route_picker_left_fallback_->set_visible(false);
     add_child(std::move(route_left));
     auto route_right = std::make_unique<pulp::view::ComboBox>();
     route_picker_right_fallback_ = route_right.get();
@@ -1656,6 +1662,7 @@ private:
     route_picker_right_fallback_->set_access_label("Input R: host routing menu");
     route_picker_right_fallback_->set_items({"R IN"});
     route_picker_right_fallback_->set_selected_silent(0);
+    route_picker_right_fallback_->set_visible(false);
     add_child(std::move(route_right));
 #endif
 
