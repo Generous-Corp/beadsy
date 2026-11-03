@@ -1444,8 +1444,11 @@ private:
                                              float panel_sx, float panel_sy) {
     const float scale = std::min(panel_sx, panel_sy);
     const auto ink = pulp::canvas::Color::rgba8(32, 35, 38);
-    canvas.set_font_full("Roboto Mono", 3.0f * scale, 700, 0,
-                         0.55f * scale);
+    // The four trim centers are only 11.45 panel units apart. Use a compact
+    // face and tight tracking so the labels remain distinct at the 240 px
+    // reference width while still reading clearly in a larger host window.
+    canvas.set_font_full("Roboto Mono", 2.1f * scale, 700, 0,
+                         0.20f * scale);
     canvas.set_text_align(pulp::canvas::TextAlign::center);
     canvas.set_fill_color(ink);
     // Baseline y=25 leaves a small gap below each dotted guide while keeping
