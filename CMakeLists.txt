@@ -193,7 +193,12 @@ if(TARGET Pulp::view)
     target_include_directories(Beadsy-editor-test PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
     target_compile_definitions(Beadsy-editor-test PRIVATE
-        BEADSY_NATIVE_EDITOR=1)
+        BEADSY_NATIVE_EDITOR=1
+        # The editor characterization suite exercises the host-routing
+        # controls directly. Product editors keep the underlying source/bus
+        # parameters and descriptor intact, but do not expose the inert
+        # in-panel route widgets when the host owns that menu.
+        BEADSY_SHOW_ROUTING_CONTROLS=1)
     catch_discover_tests(Beadsy-editor-test)
 endif()
 

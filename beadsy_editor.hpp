@@ -782,11 +782,16 @@ private:
     const bool enabled =
         catalog_ != nullptr && source_mode_ != 0 && has_routes();
     set_enabled(enabled);
-    // Do not present an inert routing field in standalone/instrument builds or
-    // before an FX host supplies its route catalog. Once the host attaches a
-    // catalog, the fields become visible and selectable through the normal
-    // ComboBox path.
+    // Host routing is still represented by the descriptor and the source
+    // parameter, but the route menu itself belongs to the host. Keep this
+    // view available to the editor characterization tests (which inject a
+    // catalog and exercise the ComboBox seam) while product editors stay free
+    // of an inert duplicate menu.
+#if defined(BEADSY_SHOW_ROUTING_CONTROLS)
     set_visible(catalog_ != nullptr && source_mode_ != 0);
+#else
+    set_visible(false);
+#endif
     set_access_disabled(enabled ? "false" : "true");
     if (!catalog_) {
       set_access_label(channel_label() + ": host-owned routing menu");
@@ -938,11 +943,12 @@ public:
 
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
-    const auto color = is_hovered()
-                           ? pulp::canvas::Color::rgba8(35, 108, 132, 255)
+    const bool active = is_hovered() || dragging_;
+    const auto color = active
+                           ? pulp::canvas::Color::rgba8(35, 128, 154, 255)
                            : pulp::canvas::Color::rgba8(86, 96, 102, 210);
     canvas.set_stroke_color(color);
-    canvas.set_line_width(std::max(1.0f, b.width * 0.08f));
+    canvas.set_line_width(std::max(1.0f, b.width * (active ? 0.12f : 0.08f)));
     for (int i = 1; i <= 3; ++i) {
       const float inset = b.width * (0.18f + 0.20f * static_cast<float>(i - 1));
       canvas.stroke_line(b.width - inset, b.height - 1.0f, b.width - 1.0f,
@@ -956,11 +962,13 @@ public:
                         event.is_down && !dragging_);
     const bool release = event.phase == pulp::view::MousePhase::release ||
                          (event.phase == pulp::view::MousePhase::automatic &&
-                          event.is_down && dragging_);
+                          !event.is_down && dragging_);
     if (press) {
       dragging_ = true;
       pointer_id_ = event.pointer_id;
       start_pointer_ = event.window_position;
+      accumulated_dx_ = 0.0f;
+      accumulated_dy_ = 0.0f;
       if (auto *root = detail::root_view(this)) {
         start_width_ = root->bounds().width;
         start_height_ = root->bounds().height;
@@ -969,15 +977,24 @@ public:
       return;
     }
     if (dragging_ && (event.phase == pulp::view::MousePhase::drag ||
-                      event.has_movement_delta)) {
-      const float dx = event.has_movement_delta
-                           ? event.movement_x
-                           : event.window_position.x - start_pointer_.x;
-      const float dy = event.has_movement_delta
-                           ? event.movement_y
-                           : event.window_position.y - start_pointer_.y;
-      const float delta = std::abs(dx) >= std::abs(dy) ? dx : dy;
-      const float width = std::clamp(start_width_ + delta, kMinimumWidth, 401.0f);
+                      (event.phase == pulp::view::MousePhase::automatic &&
+                       event.is_down) || event.has_movement_delta)) {
+      // Some AUv2 hosts report movement as per-event deltas while others
+      // report an absolute window position. Accumulate the former so each
+      // resize frame is anchored to the original press size; using only the
+      // latest delta made the window jump back toward its starting size.
+      if (event.has_movement_delta) {
+        accumulated_dx_ += event.movement_x;
+        accumulated_dy_ += event.movement_y;
+      } else {
+        accumulated_dx_ = event.window_position.x - start_pointer_.x;
+        accumulated_dy_ = event.window_position.y - start_pointer_.y;
+      }
+      const float delta = std::abs(accumulated_dx_) >= std::abs(accumulated_dy_)
+                              ? accumulated_dx_
+                              : accumulated_dy_;
+      const float width =
+          std::clamp(start_width_ + delta, kMinimumWidth, 401.0f);
       const float height = width * kMinimumHeight / kMinimumWidth;
       processor_.request_editor_resize(static_cast<uint32_t>(width),
                                        static_cast<uint32_t>(height));
@@ -986,6 +1003,9 @@ public:
     if (dragging_ && release) {
       release_pointer_capture(pointer_id_);
       dragging_ = false;
+      accumulated_dx_ = 0.0f;
+      accumulated_dy_ = 0.0f;
+      request_repaint();
     }
   }
   bool wants_mouse_input() const override { return true; }
@@ -999,6 +1019,8 @@ private:
   pulp::view::Point start_pointer_{};
   float start_width_ = 201.0f;
   float start_height_ = 364.0f;
+  float accumulated_dx_ = 0.0f;
+  float accumulated_dy_ = 0.0f;
 };
 
 class BeadsyEditor final : public pulp::view::View {
@@ -1158,6 +1180,19 @@ public:
     // these lower duplicates before the native controls are placed.
     panel_rect(5.0f, 18.0f, 14.0f, 8.0f);
     panel_rect(52.0f, 18.0f, 14.0f, 8.0f);
+#if !defined(BEADSY_SHOW_ROUTING_CONTROLS)
+    // Product editors do not duplicate the host's project/track routing
+    // menu. Clear the remaining printed SOURCE/IN L/IN R row as one faceplate
+    // strip when those native widgets are hidden; the lower trim labels are
+    // painted after this mask.
+    panel_rect(4.0f, 18.0f, 63.0f, 9.0f);
+#endif
+    // These four attenurandomizer trims are product controls in both the
+    // instrument and FX. Their destinations sit below the dashed guides, so
+    // paint the names on every artwork path (including the authorized panel)
+    // after any host-routing mask has been applied.
+    paint_attenurandomizer_labels(canvas, content_x, content_y, panel_sx,
+                                  panel_sy);
     if (std::string_view(kBeadsyPanelSourceStatus) ==
         "independent scaffold; authorized artwork unavailable") {
       paint_scaffold_labels(canvas, b.width, b.height);
@@ -1400,19 +1435,29 @@ private:
     label("MIX / MOTION", 100.3465f, 217.0f, 3.2f, accent,
           pulp::canvas::TextAlign::center, 700);
     label("PARAMETER CONTROLS", 100.3465f, 245.0f, 3.0f, muted);
-    // The four lower trim pots are modulation amounts for the named
-    // destinations. Keep the labels below the authored dashed guides so the
-    // small black caps remain unobstructed while the mapping is discoverable.
-    label("TIME", 18.565f, 104.5f, 3.0f, ink,
-          pulp::canvas::TextAlign::center, 700);
-    label("SIZE", 30.015f, 104.5f, 3.0f, ink,
-          pulp::canvas::TextAlign::center, 700);
-    label("SHAPE", 41.465f, 104.5f, 3.0f, ink,
-          pulp::canvas::TextAlign::center, 700);
-    label("PITCH", 52.915f, 104.5f, 3.0f, ink,
-          pulp::canvas::TextAlign::center, 700);
     label("48 KHZ  •  MONO VOICE  •  MIDI", 100.3465f, 344.0f, 3.0f, accent);
     label("INDEPENDENT PRODUCT SCAFFOLD", 100.3465f, 353.0f, 2.5f, muted);
+  }
+
+  static void paint_attenurandomizer_labels(pulp::canvas::Canvas &canvas,
+                                             float content_x, float content_y,
+                                             float panel_sx, float panel_sy) {
+    const float scale = std::min(panel_sx, panel_sy);
+    const auto ink = pulp::canvas::Color::rgba8(32, 35, 38);
+    canvas.set_font_full("Roboto Mono", 3.0f * scale, 700, 0,
+                         0.55f * scale);
+    canvas.set_text_align(pulp::canvas::TextAlign::center);
+    canvas.set_fill_color(ink);
+    // Baseline y=25 leaves a small gap below each dotted guide while keeping
+    // the text above the reclaimed source/menu strip.
+    for (const auto &[name, x] : std::array{
+             std::pair<const char *, float>{"TIME", 18.565f},
+             std::pair<const char *, float>{"SIZE", 30.015f},
+             std::pair<const char *, float>{"SHAPE", 41.465f},
+             std::pair<const char *, float>{"PITCH", 52.915f}}) {
+      canvas.fill_text(name, content_x + x * panel_sx,
+                       content_y + (128.5f - 25.0f) * panel_sy);
+    }
   }
 
   void build_controls() {
@@ -1622,6 +1667,13 @@ private:
         pulp::state::ListenerThread::Main,
         pulp::state::ListenerRestoreBehavior::Reconcile);
     add_child(std::move(mode));
+#if !defined(BEADSY_SHOW_ROUTING_CONTROLS)
+    // Source selection remains a real, automatable parameter for hosts, but
+    // its project/track menu is host-owned. Product editors therefore omit
+    // this single-choice/inert widget and reclaim the lower bay for the
+    // controls that are actually actionable in the plug-in UI.
+    source_mode_->set_visible(false);
+#endif
 
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
     auto route_picker_left = std::make_unique<AudioRoutePicker>(0, 0);

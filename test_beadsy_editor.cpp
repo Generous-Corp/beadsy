@@ -1178,6 +1178,16 @@ TEST_CASE("Beadsy resize grip forwards an accepted host resize request") {
     REQUIRE(requested_width == 241);
     REQUIRE(requested_height == 435);
 
+    // AUv2 hosts commonly report each pointer update as a delta. The second
+    // update must remain anchored to the original press size rather than
+    // jumping back to the first frame's width.
+    drag.movement_x = 10.0f;
+    drag.movement_y = 0.0f;
+    drag.window_position = {245.0f, 362.0f};
+    grip->on_mouse_event(drag);
+    REQUIRE(requested_width == 251);
+    REQUIRE(requested_height == 453);
+
     pulp::view::MouseEvent release;
     release.phase = pulp::view::MousePhase::release;
     release.pointer_id = 1;
