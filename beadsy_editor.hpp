@@ -976,9 +976,10 @@ public:
       set_pointer_capture(pointer_id_);
       return;
     }
-    if (dragging_ && (event.phase == pulp::view::MousePhase::drag ||
-                      (event.phase == pulp::view::MousePhase::automatic &&
-                       event.is_down) || event.has_movement_delta)) {
+    if (dragging_ && !release &&
+        (event.phase == pulp::view::MousePhase::drag ||
+         (event.phase == pulp::view::MousePhase::automatic && event.is_down) ||
+         event.has_movement_delta)) {
       // Some AUv2 hosts report movement as per-event deltas while others
       // report an absolute window position. Accumulate the former so each
       // resize frame is anchored to the original press size; using only the
