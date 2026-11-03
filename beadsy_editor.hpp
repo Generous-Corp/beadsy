@@ -1416,9 +1416,9 @@ private:
     // small black caps remain unobstructed while the mapping is discoverable.
     label("TIME", 18.565f, 104.5f, 3.0f, ink,
           pulp::canvas::TextAlign::center, 700);
-    label("FREEZE", 30.015f, 104.5f, 3.0f, ink,
+    label("SIZE", 30.015f, 104.5f, 3.0f, ink,
           pulp::canvas::TextAlign::center, 700);
-    label("SEED", 41.465f, 104.5f, 3.0f, ink,
+    label("SHAPE", 41.465f, 104.5f, 3.0f, ink,
           pulp::canvas::TextAlign::center, 700);
     label("PITCH", 52.915f, 104.5f, 3.0f, ink,
           pulp::canvas::TextAlign::center, 700);
