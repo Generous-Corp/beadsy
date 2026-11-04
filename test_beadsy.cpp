@@ -757,6 +757,25 @@ TEST_CASE("Beadsy LFO offsets knobs and button parameters during processing") {
   REQUIRE_FALSE(store.displayed_modulation(beadsy::kFreeze).has_value());
 }
 
+TEST_CASE("Beadsy publishes LFO display modulation at host rates outside DSP media") {
+  beadsy::Beadsy processor;
+  pulp::state::StateStore store;
+  processor.set_state_store(&store);
+  processor.define_parameters(store);
+  processor.prepare({.sample_rate = 44100.0, .max_buffer_size = 64,
+                     .input_channels = 2, .output_channels = 2});
+  processor.set_lfo(beadsy::kPitch,
+                    {.enabled = true, .rate_hz = 2.0f, .depth = 0.25f,
+                     .phase = 0.25f});
+  pulp::audio::Buffer<float> output(2, 64);
+  pulp::audio::Buffer<float> input(2, 64);
+  pulp::midi::MidiBuffer midi_in;
+  pulp::midi::MidiBuffer midi_out;
+  processor.process(output.view(), input.view(), midi_in, midi_out,
+                    {.sample_rate = 44100.0, .num_samples = 64});
+  REQUIRE(store.displayed_modulation(beadsy::kPitch).has_value());
+}
+
 TEST_CASE("Beadsy exposes independent LFO 1 and LFO 2 state and shapes") {
   beadsy::Beadsy source;
   pulp::state::StateStore store;

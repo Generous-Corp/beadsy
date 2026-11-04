@@ -617,11 +617,14 @@ public:
     output.clear();
     last_gate_size_ = 0;
     last_velocity_gain_size_ = 0;
+    // Publish played values before the DSP capability guard. Hosts such as
+    // Logic may prepare an effect at 44.1 kHz while this Beads DSP path is
+    // restricted to 48 kHz; LFO automation and editor feedback must still
+    // animate the actual controls in that host session.
+    update_modulation(output.num_samples());
     if (!supported_rate_ || !resources_ok_ || output.num_channels() < 2 ||
         output.num_samples() > frames_.size())
       return;
-
-    update_modulation(output.num_samples());
 
     std::fill(seed_gate_flags_.begin(),
               seed_gate_flags_.begin() + output.num_samples(),

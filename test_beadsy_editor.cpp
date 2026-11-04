@@ -796,6 +796,36 @@ TEST_CASE("Beadsy knob opens modulation menu through root right-click dispatch")
     // contract is covered by the focused ContextMenu tests below.
 }
 
+TEST_CASE("Beadsy buttons open modulation menus through secondary dispatch") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 350.0f, 558.0f});
+    native->layout_children();
+    for (const auto id : {beadsy::kSeedMode, beadsy::kFreeze, beadsy::kQuality}) {
+      pulp::view::View *button = nullptr;
+      for (std::size_t i = 0; i < native->child_count(); ++i) {
+        auto *candidate = native->child_at(i);
+        if ((id == beadsy::kSeedMode && dynamic_cast<beadsy::SeedModeControl *>(candidate)) ||
+            (id == beadsy::kFreeze && dynamic_cast<beadsy::FreezeControl *>(candidate)) ||
+            (id == beadsy::kQuality && dynamic_cast<beadsy::PushButtonControl *>(candidate))) {
+          button = candidate;
+          break;
+        }
+      }
+      REQUIRE(button != nullptr);
+      const auto b = button->bounds();
+      REQUIRE(pulp::view::dispatch_context_menu(
+          *native, {b.x + b.width * 0.5f, b.y + b.height * 0.5f}));
+      REQUIRE(native->modulation_context_target() == id);
+      native->clear_modulation_context();
+    }
+}
+
 TEST_CASE("Beadsy binds source-backed auxiliary controls without decorative ports") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;

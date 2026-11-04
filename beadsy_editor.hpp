@@ -1646,6 +1646,21 @@ private:
           return;
         }
       }
+      const auto button_target = [&](pulp::view::View *button,
+                                     pulp::state::ParamID id) {
+        if (!button)
+          return false;
+        const auto bounds = button->bounds();
+        if (position.x < bounds.x || position.x > bounds.x + bounds.width ||
+            position.y < bounds.y || position.y > bounds.y + bounds.height)
+          return false;
+        show_modulation_context_menu(id, position);
+        return true;
+      };
+      if (button_target(seed_mode_, kSeedMode) ||
+          button_target(freeze_mode_, kFreeze) ||
+          button_target(push_button_, kQuality))
+        return;
     };
 
     // Keep the Seed control after the mapped geometry so existing panel
@@ -1667,6 +1682,10 @@ private:
       const auto b = seed_mode_->bounds();
       show_modulation_context_menu(kSeedMode, {b.x + position.x, b.y + position.y});
     });
+    seed_mode_->on_context_menu = [this](pulp::view::Point position) {
+      const auto b = seed_mode_->bounds();
+      show_modulation_context_menu(kSeedMode, {b.x + position.x, b.y + position.y});
+    };
     seed_mode_binding_ = store_.add_listener(
         [this](pulp::state::ParamID changed, float) {
           if (changed == kSeedMode && seed_mode_)
@@ -1692,6 +1711,10 @@ private:
       const auto b = freeze_mode_->bounds();
       show_modulation_context_menu(kFreeze, {b.x + position.x, b.y + position.y});
     });
+    freeze_mode_->on_context_menu = [this](pulp::view::Point position) {
+      const auto b = freeze_mode_->bounds();
+      show_modulation_context_menu(kFreeze, {b.x + position.x, b.y + position.y});
+    };
     freeze_mode_binding_ = store_.add_listener(
         [this](pulp::state::ParamID changed, float value) {
           if (changed == kFreeze && freeze_mode_)
@@ -1718,6 +1741,10 @@ private:
       const auto b = push_button_->bounds();
       show_modulation_context_menu(kQuality, {b.x + position.x, b.y + position.y});
     });
+    push_button_->on_context_menu = [this](pulp::view::Point position) {
+      const auto b = push_button_->bounds();
+      show_modulation_context_menu(kQuality, {b.x + position.x, b.y + position.y});
+    };
     quality_binding_ = store_.add_listener(
         [this](pulp::state::ParamID changed, float value) {
           if (changed == kQuality) {
