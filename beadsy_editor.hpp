@@ -1236,48 +1236,6 @@ public:
         "independent scaffold; authorized artwork unavailable") {
       paint_scaffold_labels(canvas, b.width, b.height);
     }
-    // Paint the three compact route fields in the editor surface as well as
-    // through their native child views. Standalone hosts can composite child
-    // ComboBox views below the retained panel layer; drawing the shared field
-    // here keeps the standalone and AU surfaces visually identical while the
-    // child still owns hit testing and host catalog selection.
-    const auto paint_route_field = [&](float center_x, std::string_view text,
-                                       bool enabled) {
-      const float field_w = 20.0f * std::min(panel_sx, panel_sy);
-      const float field_h = 5.5f * std::min(panel_sx, panel_sy);
-      const float x = content_x + center_x * panel_sx - field_w * 0.5f;
-      const float y = content_y + (128.5f - 17.0f) * panel_sy - field_h * 0.5f;
-      const auto fill = enabled ? pulp::canvas::Color::rgba8(38, 40, 43)
-                                : pulp::canvas::Color::rgba8(169, 169, 179);
-      const auto ink = enabled ? pulp::canvas::Color::rgba8(241, 239, 229)
-                               : pulp::canvas::Color::rgba8(211, 211, 219);
-      canvas.set_fill_color(fill);
-      canvas.fill_rounded_rect(x + 0.5f, y + 0.5f, std::max(1.0f, field_w - 1.0f),
-                               std::max(1.0f, field_h - 1.0f), field_h * 0.18f);
-      canvas.set_stroke_color(enabled ? pulp::canvas::Color::rgba8(210, 207, 193)
-                                      : pulp::canvas::Color::rgba8(126, 126, 136));
-      canvas.set_line_width(0.8f);
-      canvas.stroke_rounded_rect(x + 0.5f, y + 0.5f,
-                                 std::max(1.0f, field_w - 1.0f),
-                                 std::max(1.0f, field_h - 1.0f), field_h * 0.18f);
-      canvas.set_font_full("Roboto Mono", std::max(3.0f, field_h * 0.36f),
-                           700, 0, 0.35f);
-      canvas.set_text_align(pulp::canvas::TextAlign::center);
-      canvas.set_fill_color(ink);
-      canvas.fill_text(std::string(text), x + field_w * 0.5f - field_h * 0.12f,
-                       y + field_h * 0.63f);
-      const float arrow_x = x + field_w - std::max(2.0f, field_h * 0.34f);
-      const float arrow_y = y + field_h * 0.50f;
-      const pulp::canvas::Canvas::Point2D arrow[] = {
-          {arrow_x - field_h * 0.16f, arrow_y - field_h * 0.10f},
-          {arrow_x + field_h * 0.16f, arrow_y - field_h * 0.10f},
-          {arrow_x, arrow_y + field_h * 0.14f},
-      };
-      canvas.fill_path(arrow, 3);
-    };
-    paint_route_field(12.0f, "L IN", false);
-    paint_route_field(35.4f, "MIDI", true);
-    paint_route_field(58.8f, "R IN", false);
     // Standalone's retained compositor can leave small native views beneath
     // the imported faceplate. Repaint the stateful circular controls in the
     // same layer so their visible state cannot regress by host format.
@@ -1329,23 +1287,8 @@ public:
     };
     paint_button(7.1f, 51.7f, 3.5f,
                  assign_colors[assign_button_ ? assign_button_->destination() : 0]);
-    // The original lower bay used this space for the two hardware jack
-    // legends that software replaces. Keep the new source selector explicit
-    // and aligned with the existing IN L / IN R legends.
-    canvas.set_font_full("Roboto", std::max(3.0f, 2.8f * std::min(panel_sx, panel_sy)),
-                         700, 0, 0.35f);
-    canvas.set_text_align(pulp::canvas::TextAlign::center);
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(32, 32, 32, 255));
-    canvas.fill_text("SOURCE", content_x + 35.4f * panel_sx,
-                     content_y + (128.5f - 22.0f) * panel_sy);
-    // Reassert the software route legends at the exact centers of their
-    // fields. The imported artwork's right legend can drift by a few pixels
-    // at narrow host sizes; these labels share the picker geometry below.
-    canvas.fill_text("IN L", content_x + 12.0f * panel_sx,
-                     content_y + (128.5f - 22.0f) * panel_sy);
-    canvas.fill_text("IN R", content_x + 58.8f * panel_sx,
-                     content_y + (128.5f - 22.0f) * panel_sy);
   }
+
 
   /// Target selected by the native right-click context interaction. Hosts
   /// can use this seam to present their native modulation menu.
