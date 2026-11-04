@@ -650,6 +650,24 @@ TEST_CASE("Beadsy preserves panel aspect ratio on host-provided resize") {
     }
 }
 
+TEST_CASE("Beadsy publishes the proportional default size to every host") {
+    beadsy::Beadsy processor;
+    const auto size = processor.view_size();
+
+    REQUIRE(size.preferred_width == 350);
+    REQUIRE(size.preferred_height == 558);
+    REQUIRE(size.min_width == size.preferred_width);
+    REQUIRE(size.min_height == size.preferred_height);
+    REQUIRE(size.max_width == size.preferred_width * 2);
+    REQUIRE(size.max_height == size.preferred_height * 2);
+    // The aspect field is the host-side resize lock. Leaving it at zero makes
+    // AUv2/standalone accept a free-form drag even though the editor itself
+    // lays out the authored panel uniformly.
+    REQUIRE(std::abs(size.aspect_ratio -
+                     static_cast<double>(size.preferred_width) /
+                         size.preferred_height) < 1.0e-9);
+}
+
 TEST_CASE("Beadsy explicit GPU capture reports its actual backend") {
     if (!std::getenv("BEADSY_GPU_CAPTURE_PROBE")) return;
 

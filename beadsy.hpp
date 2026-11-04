@@ -202,8 +202,10 @@ public:
     // padding or a sheared panel during resize.
     constexpr uint32_t kDefaultWidth = 350;
     constexpr uint32_t kDefaultHeight = 558; // width-locked panel with compact lower bay
+    constexpr double kAspectRatio =
+        static_cast<double>(kDefaultWidth) / kDefaultHeight;
     return {kDefaultWidth, kDefaultHeight, kDefaultWidth, kDefaultHeight,
-            kDefaultWidth * 2, kDefaultHeight * 2};
+            kDefaultWidth * 2, kDefaultHeight * 2, kAspectRatio};
   }
   std::unique_ptr<pulp::view::View> create_view() override;
 #endif
