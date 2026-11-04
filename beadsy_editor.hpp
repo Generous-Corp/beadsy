@@ -970,7 +970,7 @@ public:
     const auto b = local_bounds();
     const bool active = is_hovered() || dragging_;
     const auto color = active
-                           ? pulp::canvas::Color::rgba8(35, 128, 154, 255)
+                           ? pulp::canvas::Color::rgba8(14, 14, 14, 255)
                            : pulp::canvas::Color::rgba8(86, 96, 102, 210);
     canvas.set_stroke_color(color);
     canvas.set_line_width(std::max(1.0f, b.width * (active ? 0.12f : 0.08f)));
