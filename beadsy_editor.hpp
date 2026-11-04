@@ -1267,8 +1267,8 @@ public:
     };
     // These four tiny marks are the authored hardware mounting/LED artwork;
     // software state is represented only by the large native button faces.
-    mask_faceplate(4.2f, 116.4f, 1.8f);
-    mask_faceplate(58.5f, 116.4f, 1.8f);
+    mask_faceplate(4.2f, 124.5f, 1.8f);
+    mask_faceplate(58.5f, 124.5f, 1.8f);
     mask_faceplate(28.68f, 83.24f, 2.5f);
     mask_faceplate(3.8f, 54.8f, 1.8f);
     static constexpr pulp::canvas::Color quality_colors[] = {
