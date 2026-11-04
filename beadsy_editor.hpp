@@ -1052,11 +1052,6 @@ private:
 
 class BeadsyEditor final : public pulp::view::View {
 public:
-  static constexpr float kPanelWidthMm = 70.8f;
-  static constexpr float kPanelHeightMm = 111.5f;
-  static constexpr float kPanelWidthPx = 200.693f;
-  static constexpr float kPanelHeightPx = 315.8f;
-  static constexpr float kPanelSourceHeightPx = 3470.0f;
   BeadsyEditor(Beadsy &processor, pulp::state::StateStore &store)
       : processor_(processor), store_(store),
         panel_(pulp::canvas::SvgImage::from_string(kBeadsyPanelSvg)) {
@@ -1116,9 +1111,9 @@ public:
     // clip the utility artwork at the edge of a narrow resize. The native
     // controls use this same content rect below.
     const float content_scale =
-        std::min(b.width / kPanelWidthPx, b.height / kPanelHeightPx);
-    const float content_width = kPanelWidthPx * content_scale;
-    const float content_height = kPanelHeightPx * content_scale;
+        std::min(b.width / 200.693f, b.height / 364.252f);
+    const float content_width = 200.693f * content_scale;
+    const float content_height = 364.252f * content_scale;
     const float content_x = (b.width - content_width) * 0.5f;
     const float content_y = (b.height - content_height) * 0.5f;
     // The Illustrator/SVG panel is an opaque white faceplate in the physical
@@ -1133,7 +1128,7 @@ public:
     if (canvas.supports_image_draw()) {
       drew_panel = canvas.draw_image_from_static_data_rect(
           panel_asset::kPng, panel_asset::kPngSize, 0.0f, 0.0f, 2203.0f,
-          kPanelSourceHeightPx, content_x, content_y, content_width, content_height);
+          4000.0f, content_x, content_y, content_width, content_height);
     }
 #endif
     if (!drew_panel && panel_.is_valid()) {
@@ -1160,11 +1155,11 @@ public:
     // painted above.  Using pure white here leaves visible rectangular seams
     // wherever a removed construction line or jack is masked.
     canvas.set_fill_color(pulp::canvas::Color::rgba8(248, 248, 246, 255));
-    const float panel_sx = content_width / kPanelWidthMm;
-    const float panel_sy = content_height / kPanelHeightMm;
+    const float panel_sx = content_width / 70.8f;
+    const float panel_sy = content_height / 128.5f;
     const auto panel_rect = [&](float x, float y, float w, float h) {
       canvas.fill_rect(content_x + x * panel_sx,
-                       content_y + (kPanelHeightMm - (y + h)) * panel_sy,
+                       content_y + (128.5f - (y + h)) * panel_sy,
                        w * panel_sx, h * panel_sy);
     };
     // Leave the source artwork beneath the large TIME/PITCH pots intact. The
@@ -1184,7 +1179,7 @@ public:
     // completely intact.
     for (const float x : {6.5f, 18.0f, 33.4f, 46.0f}) {
       canvas.fill_circle(content_x + x * panel_sx,
-                         content_y + (kPanelHeightMm - 17.2f) * panel_sy,
+                         content_y + (128.5f - 17.2f) * panel_sy,
                         3.4f * std::min(panel_sx, panel_sy));
     }
     // The old output-jack illustration occupies the right-most lower bay;
@@ -1221,11 +1216,6 @@ public:
     // Reclaim the dead padding below the attenurandomizer labels while
     // keeping the authored overall panel ratio. Replace the old bottom
     // border with a closer product divider above the resize grip.
-    panel_rect(0.0f, 0.0f, kPanelWidthMm, 30.0f);
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(189, 188, 188));
-    canvas.fill_rect(content_x + 3.5f * panel_sx,
-                     content_y + (kPanelHeightMm - 3.0f) * panel_sy,
-                     65.3f * panel_sx, 0.9f * panel_sy);
 #endif
     // These four attenurandomizer trims are product controls in both the
     // instrument and FX. Their destinations sit below the dashed guides, so
@@ -1496,8 +1486,8 @@ private:
     // font dependencies. Paint its labels through the native canvas so
     // the clean-room scaffold remains legible in screenshots and hosts;
     // rights-gated authoring SVGs are passed through without overlays.
-    const float sx = width / kPanelWidthPx;
-    const float sy = height / kPanelHeightPx;
+    const float sx = width / 200.693f;
+    const float sy = height / 364.252f;
     const float scale = std::min(sx, sy);
     const auto label = [&canvas, sx, sy,
                         scale](const char *value, float x, float y, float size,
@@ -1562,7 +1552,7 @@ private:
              std::pair<const char *, float>{"SHAPE", 41.465f},
              std::pair<const char *, float>{"PITCH", 52.915f}}) {
       canvas.fill_text(name, content_x + x * panel_sx,
-                       content_y + (kPanelHeightMm - 36.0f) * panel_sy);
+                       content_y + (128.5f - 29.0f) * panel_sy);
     }
   }
 
@@ -1846,9 +1836,9 @@ private:
     // Use the same aspect-preserving content rect as paint(). A host resize
     // must never shear the authored panel or separate a symbol from the
     // control it annotates.
-    const float unit = std::min(width / kPanelWidthMm, height / kPanelHeightMm);
-    const float content_width = kPanelWidthMm * unit;
-    const float content_height = kPanelHeightMm * unit;
+    const float unit = std::min(width / 70.8f, height / 128.5f);
+    const float content_width = 70.8f * unit;
+    const float content_height = 128.5f * unit;
     const float content_x = (width - content_width) * 0.5f;
     const float content_y = (height - content_height) * 0.5f;
     const float sx = unit;
@@ -1875,7 +1865,7 @@ private:
                       (c.x - detail::PanelKnob::kSourceXCorrectionMm) * sx -
                       diameter * 0.5f;
       const float y = content_y +
-                      (kPanelHeightMm -
+                      (128.5f -
                        (c.y - detail::PanelKnob::kSourceYCorrectionMm)) *
                           sy -
                       diameter * 0.5f;
@@ -1890,14 +1880,14 @@ private:
       const float width = 10.0f * std::min(sx, sy);
       const float height = 8.5f * std::min(sx, sy);
       const float x = content_x + 62.0f * sx - width * 0.5f;
-      const float y = content_y + (kPanelHeightMm - 110.5f) * sy - height * 0.5f;
+      const float y = content_y + (128.5f - 110.5f) * sy - height * 0.5f;
       place_absolute(seed_mode_, x, y, width, height);
     }
     if (freeze_mode_) {
       const float width = 10.0f * std::min(sx, sy);
       const float height = 8.5f * std::min(sx, sy);
       const float x = content_x + 8.7f * sx - width * 0.5f;
-      const float y = content_y + (kPanelHeightMm - 110.5f) * sy - height * 0.5f;
+      const float y = content_y + (128.5f - 110.5f) * sy - height * 0.5f;
       place_absolute(freeze_mode_, x, y, width, height);
     }
     if (push_button_) {
@@ -1905,7 +1895,7 @@ private:
       const float diameter = 7.0f * unit;
       // Recording quality selector [A], directly under DENSITY.
       const float x = content_x + 35.7f * sx - diameter * 0.5f;
-      const float y = content_y + (kPanelHeightMm - 83.24f) * sy - diameter * 0.5f;
+      const float y = content_y + (128.5f - 83.24f) * sy - diameter * 0.5f;
       place_absolute(push_button_, x, y, diameter, diameter);
     }
     if (assign_button_) {
@@ -1914,7 +1904,7 @@ private:
       // The authored dashed guide is centered at 7.1mm; keep the button
       // directly over that guide rather than over the old jack center.
       const float x = content_x + 7.1f * sx - diameter * 0.5f;
-      const float y = content_y + (kPanelHeightMm - 51.7f) * sy - diameter * 0.5f;
+      const float y = content_y + (128.5f - 51.7f) * sy - diameter * 0.5f;
       place_absolute(assign_button_, x, y, diameter, diameter);
     }
     if (center_indicators_) {
@@ -1926,7 +1916,7 @@ private:
       const float w = 12.0f * unit;
       const float h = 8.0f * unit;
       const float x = content_x + 31.92f * sx - w * 0.5f;
-      const float y = content_y + (kPanelHeightMm - 83.24f) * sy - h * 0.5f;
+      const float y = content_y + (128.5f - 83.24f) * sy - h * 0.5f;
       place_absolute(center_indicators_, x, y, w, h);
     }
     if (source_mode_) {
@@ -1936,7 +1926,7 @@ private:
       // Software source selection occupies the reclaimed lower jack area;
       // keep the original printed header unobstructed.
       const float x = content_x + 35.4f * sx - mode_width * 0.5f;
-      const float y = content_y + (kPanelHeightMm - 17.0f) * sy - mode_height * 0.5f;
+      const float y = content_y + (128.5f - 17.0f) * sy - mode_height * 0.5f;
       place_absolute(source_mode_, x, y, mode_width, mode_height);
     }
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)
@@ -1944,7 +1934,7 @@ private:
       const float unit = std::min(sx, sy);
       const float route_width = 20.0f * unit;
       const float route_height = 5.5f * unit;
-      const float y = content_y + (kPanelHeightMm - 17.0f) * sy - route_height * 0.5f;
+      const float y = content_y + (128.5f - 17.0f) * sy - route_height * 0.5f;
       if (route_picker_left_) {
         place_absolute(route_picker_left_,
                        content_x + 12.0f * sx - route_width * 0.5f, y, route_width,
@@ -1961,7 +1951,7 @@ private:
       const float unit = std::min(sx, sy);
       const float route_width = 20.0f * unit;
       const float route_height = 5.5f * unit;
-      const float y = content_y + (kPanelHeightMm - 17.0f) * sy - route_height * 0.5f;
+      const float y = content_y + (128.5f - 17.0f) * sy - route_height * 0.5f;
       if (route_picker_left_fallback_) {
         place_absolute(route_picker_left_fallback_,
                        content_x + 12.0f * sx - route_width * 0.5f, y, route_width,
