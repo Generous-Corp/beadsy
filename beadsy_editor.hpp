@@ -1716,7 +1716,8 @@ private:
       };
       if (button_target(seed_mode_, kSeedMode) ||
           button_target(freeze_mode_, kFreeze) ||
-          button_target(push_button_, kQuality))
+          button_target(push_button_, kQuality) ||
+          button_target(assign_button_, kFeedback))
         return;
     };
 
