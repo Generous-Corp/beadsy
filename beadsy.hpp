@@ -201,7 +201,7 @@ public:
     // maximum bounds stay proportional so AUv2 hosts cannot introduce edge
     // padding or a sheared panel during resize.
     constexpr uint32_t kDefaultWidth = 350;
-    constexpr uint32_t kDefaultHeight = 633; // round(350 * 434 / 240)
+    constexpr uint32_t kDefaultHeight = 558; // width-locked panel with compact lower bay
     return {kDefaultWidth, kDefaultHeight, kDefaultWidth, kDefaultHeight,
             kDefaultWidth * 2, kDefaultHeight * 2};
   }

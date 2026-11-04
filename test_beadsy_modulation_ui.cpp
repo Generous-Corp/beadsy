@@ -17,7 +17,7 @@ TEST_CASE("Beadsy shipping editor keeps modulation focused and renders its menu"
   REQUIRE(native != nullptr);
   REQUIRE(native->source_mode_control() != nullptr);
   REQUIRE_FALSE(native->source_mode_control()->visible());
-  native->set_bounds({0, 0, 350, 633});
+  native->set_bounds({0, 0, 350, 558});
   native->layout_children();
   processor.set_lfo(beadsy::kPitch, {.enabled = true, .rate_hz = 2, .depth = 0.25f});
   auto *menu = native->show_modulation_context_menu(beadsy::kSize, {24, 120});
@@ -43,7 +43,7 @@ TEST_CASE("Beadsy shipping editor keeps modulation focused and renders its menu"
   REQUIRE_FALSE(menu->items()[row("All targets…")].checked);
 
   const auto capture = [&](const char *name) {
-    const auto shot = pulp::view::capture_view(*editor, 350, 633, 2.0f,
+    const auto shot = pulp::view::capture_view(*editor, 350, 558, 2.0f,
                                               pulp::view::ScreenshotBackend::coregraphics);
     REQUIRE(shot.ok);
     REQUIRE(shot.png.size() > 1000);

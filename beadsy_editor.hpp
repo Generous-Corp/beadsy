@@ -1110,12 +1110,14 @@ public:
     // its small printed symbols drift away from the native controls and can
     // clip the utility artwork at the edge of a narrow resize. The native
     // controls use this same content rect below.
-    const float content_scale =
-        std::min(b.width / 200.693f, b.height / 364.252f);
+    // Keep the authored scale locked to width. The compact product frame
+    // intentionally crops only the unused lower bay; shrinking the scale to
+    // fit height would move Density and make the upper controls float.
+    const float content_scale = b.width / 200.693f;
     const float content_width = 200.693f * content_scale;
     const float content_height = 364.252f * content_scale;
     const float content_x = (b.width - content_width) * 0.5f;
-    const float content_y = (b.height - content_height) * 0.5f;
+    const float content_y = std::max(0.0f, (b.height - content_height) * 0.5f);
     // The Illustrator/SVG panel is an opaque white faceplate in the physical
     // module, but the exported scene intentionally carries transparent paper
     // so its vector flourishes remain composable. Paint the substrate before
@@ -1213,6 +1215,13 @@ public:
     // strip when those native widgets are hidden; the lower trim labels are
     // painted after this mask.
     panel_rect(4.0f, 18.0f, 63.0f, 9.0f);
+    // Lift the product divider into the reclaimed bay so the gap below the
+    // labels is comparable to the remaining edge padding.
+    panel_rect(0.0f, 0.0f, 70.8f, 12.0f);
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(189, 188, 188));
+    canvas.fill_rect(content_x + 3.5f * panel_sx,
+                     content_y + (128.5f - 23.0f) * panel_sy,
+                     65.3f * panel_sx, 0.9f * panel_sy);
     // Reclaim the dead padding below the attenurandomizer labels while
     // keeping the authored overall panel ratio. Replace the old bottom
     // border with a closer product divider above the resize grip.
@@ -1836,11 +1845,11 @@ private:
     // Use the same aspect-preserving content rect as paint(). A host resize
     // must never shear the authored panel or separate a symbol from the
     // control it annotates.
-    const float unit = std::min(width / 70.8f, height / 128.5f);
+    const float unit = width / 70.8f;
     const float content_width = 70.8f * unit;
     const float content_height = 128.5f * unit;
     const float content_x = (width - content_width) * 0.5f;
-    const float content_y = (height - content_height) * 0.5f;
+    const float content_y = std::max(0.0f, (height - content_height) * 0.5f);
     const float sx = unit;
     const float sy = unit;
     // The native host uses Yoga for the final layout pass.  `set_bounds()`
