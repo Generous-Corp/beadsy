@@ -305,9 +305,9 @@ public:
         on_context_menu_(event.position);
       return;
     }
-    if (event.button == pulp::view::MouseButton::left && event.isPress() &&
-        on_press_)
-      on_press_();
+    // A left press is delivered once more on the legacy `on_mouse_down`
+    // channel by every Pulp host; handling it here as well fired each toggle
+    // twice per click (Freeze cancelled itself, the cyclers skipped a state).
   }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
@@ -368,9 +368,9 @@ public:
         on_context_menu_(event.position);
       return;
     }
-    if (event.button == pulp::view::MouseButton::left && event.isPress() &&
-        on_press_)
-      on_press_();
+    // A left press is delivered once more on the legacy `on_mouse_down`
+    // channel by every Pulp host; handling it here as well fired each toggle
+    // twice per click (Freeze cancelled itself, the cyclers skipped a state).
   }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
@@ -427,9 +427,9 @@ public:
         on_context_menu_(event.position);
       return;
     }
-    if (event.button == pulp::view::MouseButton::left && event.isPress() &&
-        on_press_)
-      on_press_();
+    // A left press is delivered once more on the legacy `on_mouse_down`
+    // channel by every Pulp host; handling it here as well fired each toggle
+    // twice per click (Freeze cancelled itself, the cyclers skipped a state).
   }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
@@ -467,8 +467,7 @@ public:
         on_context_menu_(event.position);
       return;
     }
-    if (event.button == pulp::view::MouseButton::left && event.isPress())
-      on_mouse_down(event.position);
+    // Left presses arrive on the legacy `on_mouse_down` channel below.
   }
   void on_mouse_down(pulp::view::Point) override {
     destination_ = (destination_ + 1) % 3;
