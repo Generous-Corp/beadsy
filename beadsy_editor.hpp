@@ -509,9 +509,10 @@ public:
     const auto b = local_bounds();
     const float unit = b.width / 12.0f;
     // The reviewed panel artwork contains a small red LED at the left side
-    // of this station. Paint over that authored marker with the panel's
-    // neutral surface so only the native quality button communicates state.
-    canvas.set_fill_color(pulp::canvas::Color::rgba8(247, 245, 239));
+    // of this station. Paint over that authored marker with exactly the
+    // faceplate substrate the editor paints beneath the artwork; any other
+    // tone reads as a pale disc beside the quality button.
+    canvas.set_fill_color(pulp::canvas::Color::rgba8(248, 248, 246));
     canvas.fill_circle(b.width * 0.23f, b.height * 0.5f,
                       std::max(2.0f, 2.25f * unit));
   }
