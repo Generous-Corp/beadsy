@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(Beadsy VERSION 1.0.25 LANGUAGES CXX)
+project(Beadsy VERSION 1.0.26 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -220,7 +220,7 @@ pulp_add_plugin(Beadsy
     PLUGIN_NAME     "Beadsy"
     BUNDLE_ID       "com.independent-audio.beadsy"
     MANUFACTURER    "Independent Audio"
-    VERSION         "1.0.25"
+    VERSION         "1.0.26"
     CATEGORY        Instrument
     ACCEPTS_MIDI
     PLUGIN_CODE     "Bead"
@@ -272,7 +272,7 @@ pulp_add_plugin(BeadsyFX
     PLUGIN_NAME     "Beadsy FX"
     BUNDLE_ID       "com.independent-audio.beadsy-fx"
     MANUFACTURER    "Independent Audio"
-    VERSION         "1.0.25"
+    VERSION         "1.0.26"
     CATEGORY        Effect
     ACCEPTS_MIDI
     PLUGIN_CODE     "BdFX"
