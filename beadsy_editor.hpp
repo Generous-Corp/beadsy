@@ -413,24 +413,7 @@ public:
     on_context_menu_ = std::move(callback);
   }
   void paint(pulp::canvas::Canvas &canvas) override {
-    const auto b = local_bounds();
-    const float r = std::max(2.0f, std::min(b.width, b.height) * 0.40f);
-    const float cx = b.width * 0.5f;
-    const float cy = b.height * 0.5f;
-    // This station is one circular push button. Its face carries the selected
-    // quality color; there is no second LED that can be mistaken for another
-    // control or leave the state ambiguous.
-    static constexpr pulp::canvas::Color colors[] = {
-        pulp::canvas::Color::rgba8(48, 174, 210),
-        pulp::canvas::Color::rgba8(205, 214, 103),
-        pulp::canvas::Color::rgba8(234, 166, 27),
-        pulp::canvas::Color::rgba8(211, 59, 97),
-    };
-    canvas.set_fill_color(colors[displayed_quality()]);
-    canvas.fill_circle(cx, cy, r);
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(52, 52, 52));
-    canvas.set_line_width(std::max(0.7f, r * 0.10f));
-    canvas.stroke_circle(cx, cy, r);
+    (void)canvas; // parent compositor paints the single full-size face
   }
   void on_mouse_event(const pulp::view::MouseEvent &event) override {
     if (event.button == pulp::view::MouseButton::right && event.isPress()) {
@@ -475,21 +458,7 @@ public:
   }
   bool wants_mouse_input() const override { return true; }
   void paint(pulp::canvas::Canvas &canvas) override {
-    const auto b = local_bounds();
-    const float r = std::max(2.0f, std::min(b.width, b.height) * 0.42f);
-    static constexpr pulp::canvas::Color destination_colors[] = {
-        pulp::canvas::Color::rgba8(24, 165, 175),
-        pulp::canvas::Color::rgba8(234, 166, 27),
-        pulp::canvas::Color::rgba8(211, 59, 97),
-    };
-    // This is a three-state button, not a knob plus a separate LED.  The
-    // complete circular face carries the destination colour so its state is
-    // visible in the same way as the quality button.
-    canvas.set_fill_color(destination_colors[destination_]);
-    canvas.fill_circle(b.width * 0.5f, b.height * 0.5f, r);
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
-    canvas.set_line_width(std::max(0.7f, r * 0.10f));
-    canvas.stroke_circle(b.width * 0.5f, b.height * 0.5f, r);
+    (void)canvas; // parent compositor paints the single full-size face
   }
 private:
   int destination_ = 0;
