@@ -29,6 +29,11 @@ public:
     raw->set_bounds(root->local_bounds());
     raw->flex().preferred_width = root->local_bounds().width;
     raw->flex().preferred_height = root->local_bounds().height;
+    // The editor raises its knobs and toggle hit targets above the faceplate
+    // with explicit z-indices. The menu must sit above all of them, or the
+    // z-sorted hit-test hands a click on a menu row to the control underneath
+    // and the knobs paint over the open menu.
+    raw->set_z_index(1000);
     raw->on_close = [root, raw, close = std::move(close)](std::optional<int> result) {
       if (close)
         close(result);
