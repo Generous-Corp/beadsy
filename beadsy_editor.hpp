@@ -926,8 +926,12 @@ private:
 /// standalone windows and hosts that expose the Pulp resize callback.
 class ResizeGrip final : public pulp::view::View {
 public:
-  static constexpr float kMinimumWidth = 240.0f;
-  static constexpr float kMinimumHeight = 434.0f;
+  /// Grip footprint at a given panel unit (px per authored mm). Shared by
+  /// the editor's layout and its painted lower divider so the divider's
+  /// padding above the grip is the same at every size.
+  static float size_for_unit(float unit) {
+    return std::max(8.0f, 7.0f * unit);
+  }
 
   explicit ResizeGrip(Beadsy &processor) : processor_(processor) {
     set_id("beadsy-resize-grip");
@@ -987,14 +991,20 @@ public:
         accumulated_dx_ = event.window_position.x - start_pointer_.x;
         accumulated_dy_ = event.window_position.y - start_pointer_.y;
       }
+      // The window is locked to the artwork ratio, so a diagonal drag is
+      // one scalar: whichever axis moved further drives the width and the
+      // height follows from the ratio the processor publishes to hosts.
       const float delta = std::abs(accumulated_dx_) >= std::abs(accumulated_dy_)
                               ? accumulated_dx_
-                              : accumulated_dy_;
-      const float width =
-          std::clamp(start_width_ + delta, kMinimumWidth, 401.0f);
-      const float height = width * kMinimumHeight / kMinimumWidth;
-      processor_.request_editor_resize(static_cast<uint32_t>(width),
-                                       static_cast<uint32_t>(height));
+                              : accumulated_dy_ * static_cast<float>(kPanelAspectRatio);
+      const auto hints = processor_.view_size();
+      const float width = std::clamp(
+          start_width_ + delta, static_cast<float>(hints.min_width),
+          static_cast<float>(hints.max_width));
+      const float height = width / static_cast<float>(kPanelAspectRatio);
+      processor_.request_editor_resize(
+          static_cast<uint32_t>(std::lround(width)),
+          static_cast<uint32_t>(std::lround(height)));
       return;
     }
     if (dragging_ && release) {
@@ -1014,8 +1024,8 @@ private:
   bool dragging_ = false;
   int pointer_id_ = 0;
   pulp::view::Point start_pointer_{};
-  float start_width_ = 201.0f;
-  float start_height_ = 364.0f;
+  float start_width_ = 350.0f;
+  float start_height_ = 635.0f;
   float accumulated_dx_ = 0.0f;
   float accumulated_dy_ = 0.0f;
 };
@@ -1181,20 +1191,21 @@ public:
     panel_rect(52.0f, 18.0f, 14.0f, 8.0f);
 #if !defined(BEADSY_SHOW_ROUTING_CONTROLS)
     // Product editors do not duplicate the host's project/track routing
-    // menu. Clear the remaining printed SOURCE/IN L/IN R row as one faceplate
-    // strip when those native widgets are hidden; the lower trim labels are
-    // painted after this mask.
-    panel_rect(4.0f, 18.0f, 63.0f, 9.0f);
-    // Lift the product divider into the reclaimed bay so the gap below the
-    // labels is comparable to the remaining edge padding.
-    panel_rect(0.0f, 0.0f, 70.8f, 12.0f);
+    // menu. Clear the whole reclaimed lower bay, from the printed
+    // SOURCE/IN L/IN R row down to the window edge, as one faceplate strip;
+    // the lower trim labels are painted after this mask.
+    const float bay_top = content_y + (128.5f - 27.0f) * panel_sy;
+    canvas.fill_rect(0.0f, bay_top, b.width, std::max(0.0f, b.height - bay_top));
+    // The product divider replaces the old bottom border and sits a fixed
+    // small distance above the resize grip at every window size, so a
+    // proportional resize never opens a blank band beneath it.
+    const float grip_unit = std::min(panel_sx, panel_sy);
+    const float divider_height = 0.9f * grip_unit;
+    const float divider_y = b.height - ResizeGrip::size_for_unit(grip_unit) -
+                            0.6f * grip_unit - divider_height;
     canvas.set_fill_color(pulp::canvas::Color::rgba8(189, 188, 188));
-    canvas.fill_rect(content_x + 3.5f * panel_sx,
-                     content_y + (128.5f - 23.0f) * panel_sy,
-                     65.3f * panel_sx, 0.9f * panel_sy);
-    // Reclaim the dead padding below the attenurandomizer labels while
-    // keeping the authored overall panel ratio. Replace the old bottom
-    // border with a closer product divider above the resize grip.
+    canvas.fill_rect(content_x + 3.5f * panel_sx, divider_y, 65.3f * panel_sx,
+                     divider_height);
 #endif
     // These four attenurandomizer trims are product controls in both the
     // instrument and FX. Their destinations sit below the dashed guides, so
@@ -2035,7 +2046,7 @@ private:
     }
 #endif
     if (resize_grip_) {
-      const float grip = std::max(8.0f, 7.0f * std::min(sx, sy));
+      const float grip = ResizeGrip::size_for_unit(std::min(sx, sy));
       place_absolute(resize_grip_, width - grip, height - grip, grip, grip);
     }
   }

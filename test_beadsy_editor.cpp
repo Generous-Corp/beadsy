@@ -655,7 +655,8 @@ TEST_CASE("Beadsy publishes the proportional default size to every host") {
     const auto size = processor.view_size();
 
     REQUIRE(size.preferred_width == 350);
-    REQUIRE(size.preferred_height == 558);
+    // The complete authored 200.693:364.252 faceplate at 350 px wide.
+    REQUIRE(size.preferred_height == 635);
     REQUIRE(size.min_width == size.preferred_width);
     REQUIRE(size.min_height == size.preferred_height);
     REQUIRE(size.max_width == size.preferred_width * 2);
@@ -663,9 +664,10 @@ TEST_CASE("Beadsy publishes the proportional default size to every host") {
     // The aspect field is the host-side resize lock. Leaving it at zero makes
     // AUv2/standalone accept a free-form drag even though the editor itself
     // lays out the authored panel uniformly.
-    REQUIRE(std::abs(size.aspect_ratio -
-                     static_cast<double>(size.preferred_width) /
-                         size.preferred_height) < 1.0e-9);
+    REQUIRE(std::abs(size.aspect_ratio - beadsy::kPanelAspectRatio) < 1.0e-9);
+    REQUIRE(std::abs(size.aspect_ratio - 200.693 / 364.252) < 1.0e-9);
+    REQUIRE(std::lround(size.preferred_width / size.aspect_ratio) ==
+            size.preferred_height);
 }
 
 TEST_CASE("Beadsy explicit GPU capture reports its actual backend") {
@@ -1254,10 +1256,12 @@ TEST_CASE("Beadsy resize grip forwards an accepted host resize request") {
             return true;
         });
 
+    const auto hints = processor.view_size();
     auto editor = processor.create_view();
     auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
     REQUIRE(native != nullptr);
-    native->set_bounds({0.0f, 0.0f, 201.0f, 364.0f});
+    native->set_bounds({0.0f, 0.0f, static_cast<float>(hints.preferred_width),
+                        static_cast<float>(hints.preferred_height)});
     native->layout_children();
 
     beadsy::ResizeGrip* grip = nullptr;
@@ -1266,12 +1270,16 @@ TEST_CASE("Beadsy resize grip forwards an accepted host resize request") {
             grip = dynamic_cast<beadsy::ResizeGrip*>(native->child_at(i));
     }
     REQUIRE(grip != nullptr);
+    const auto locked_height = [&](uint32_t width) {
+        return static_cast<uint32_t>(
+            std::lround(width / beadsy::kPanelAspectRatio));
+    };
 
     pulp::view::MouseEvent press;
     press.phase = pulp::view::MousePhase::press;
     press.is_down = true;
     press.pointer_id = 1;
-    press.window_position = {195.0f, 358.0f};
+    press.window_position = {345.0f, 630.0f};
     grip->on_mouse_event(press);
 
     pulp::view::MouseEvent drag;
@@ -1281,20 +1289,42 @@ TEST_CASE("Beadsy resize grip forwards an accepted host resize request") {
     drag.has_movement_delta = true;
     drag.movement_x = 40.0f;
     drag.movement_y = 4.0f;
-    drag.window_position = {235.0f, 362.0f};
+    drag.window_position = {385.0f, 634.0f};
     grip->on_mouse_event(drag);
-    REQUIRE(requested_width == 241);
-    REQUIRE(requested_height == 435);
+    REQUIRE(requested_width == 390);
+    REQUIRE(requested_height == locked_height(390));
 
     // AUv2 hosts commonly report each pointer update as a delta. The second
     // update must remain anchored to the original press size rather than
     // jumping back to the first frame's width.
     drag.movement_x = 10.0f;
     drag.movement_y = 0.0f;
-    drag.window_position = {245.0f, 362.0f};
+    drag.window_position = {395.0f, 634.0f};
     grip->on_mouse_event(drag);
-    REQUIRE(requested_width == 251);
-    REQUIRE(requested_height == 453);
+    REQUIRE(requested_width == 400);
+    REQUIRE(requested_height == locked_height(400));
+
+    // A mostly vertical drag drives the same lock: the height moves with the
+    // pointer and the width follows the artwork ratio.
+    drag.movement_x = 0.0f;
+    drag.movement_y = 100.0f;
+    drag.window_position = {395.0f, 734.0f};
+    grip->on_mouse_event(drag);
+    REQUIRE(requested_height == locked_height(requested_width));
+    REQUIRE(static_cast<double>(requested_width) /
+                static_cast<double>(requested_height) ==
+            Catch::Approx(beadsy::kPanelAspectRatio).epsilon(0.01));
+
+    // The grip never requests a size the processor would refuse.
+    drag.movement_x = 2000.0f;
+    drag.movement_y = 0.0f;
+    grip->on_mouse_event(drag);
+    REQUIRE(requested_width == hints.max_width);
+    REQUIRE(requested_height == locked_height(hints.max_width));
+    drag.movement_x = -4000.0f;
+    grip->on_mouse_event(drag);
+    REQUIRE(requested_width == hints.min_width);
+    REQUIRE(requested_height == locked_height(hints.min_width));
 
     pulp::view::MouseEvent release;
     release.phase = pulp::view::MousePhase::release;

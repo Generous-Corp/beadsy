@@ -89,5 +89,8 @@ int main(int argc, char** argv) {
     }
 
     app.set_config(config);
-    return app.run_with_editor(false) ? 0 : 1;
+    // The GPU window host is the only standalone host that implements the
+    // OS-level aspect lock and design viewport the editor's size hints ask
+    // for; the CPU host silently ignores both and lets the window shear.
+    return app.run_with_editor(true) ? 0 : 1;
 }

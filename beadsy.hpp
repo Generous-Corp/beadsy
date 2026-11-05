@@ -20,6 +20,13 @@
 // architecture. Upstream notices for the adapted DSP live under third_party/.
 namespace beadsy {
 
+/// Authored faceplate size in SVG user units (the reviewed straight-on panel
+/// viewBox). Every host-facing size hint and the editor's own resize grip
+/// derive their width:height lock from this one ratio.
+inline constexpr double kPanelWidthUnits = 200.693;
+inline constexpr double kPanelHeightUnits = 364.252;
+inline constexpr double kPanelAspectRatio = kPanelWidthUnits / kPanelHeightUnits;
+
 enum ParamIDs : pulp::state::ParamID {
   kTime = 1,
   kSize,
@@ -193,15 +200,14 @@ public:
 
 #if defined(BEADSY_NATIVE_EDITOR) && !defined(PULP_HEADLESS)
   pulp::format::ViewSize view_size() const override {
-    // The modulation popup needs enough vertical room for its readable
-    // Spectr-style rows before it has to scroll. Keep the authored aspect
-    // ratio while raising the host-provided minimum size.
-    // The authored panel is 240:434. Use the wider review size while retaining the exact aspect ratio.
+    // The editor shows the complete authored faceplate, so every host locks
+    // interactive resize to the artwork ratio and the default window is the
+    // full panel at 350 px wide. The default is also the minimum so the
+    // modulation menu always has room for its rows without scrolling.
     constexpr uint32_t kDefaultWidth = 350;
-    constexpr uint32_t kDefaultHeight = 558;
-    constexpr double kAspectRatio = static_cast<double>(kDefaultWidth) / kDefaultHeight;
+    constexpr uint32_t kDefaultHeight = 635; // round(350 / kPanelAspectRatio)
     return {kDefaultWidth, kDefaultHeight, kDefaultWidth, kDefaultHeight,
-            kDefaultWidth * 2, kDefaultHeight * 2, kAspectRatio};
+            kDefaultWidth * 2, kDefaultHeight * 2, kPanelAspectRatio};
   }
   std::unique_ptr<pulp::view::View> create_view() override;
 #endif
