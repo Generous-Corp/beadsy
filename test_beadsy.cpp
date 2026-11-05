@@ -771,7 +771,9 @@ TEST_CASE("Beadsy publishes LFO display modulation at host rates outside DSP med
   pulp::audio::Buffer<float> input(2, 64);
   pulp::midi::MidiBuffer midi_in;
   pulp::midi::MidiBuffer midi_out;
-  processor.process(output.view(), input.view(), midi_in, midi_out,
+  auto output_view = output.view();
+  const auto input_view = std::as_const(input).view();
+  processor.process(output_view, input_view, midi_in, midi_out,
                     {.sample_rate = 44100.0, .num_samples = 64});
   REQUIRE(store.displayed_modulation(beadsy::kPitch).has_value());
 }
