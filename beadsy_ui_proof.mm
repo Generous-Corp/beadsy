@@ -261,6 +261,67 @@ Steps steps_for(const std::string &step) {
       p.drag(kDensityX, kDensityY, kDensityX, kDensityY - 60.0f, 20);
       p.report("after");
     }};
+  if (step == "lfo-freeze") {
+    // Enable LFO 1 on Freeze through the real menu (secondary press, then a
+    // press on the "LFO 1" row), then sample the played value the faces
+    // show over a little more than one period at the default 1 Hz.
+    Steps s;
+    s.push_back([](Proof &p) {
+      p.click(kFreezeX, kFreezeY, true);
+      p.report("menu-open");
+    });
+    s.push_back([](Proof &p) {
+      auto *menu = p.editor->modulation_menu();
+      if (!menu) { p.log("{\"error\":\"no menu\"}"); return; }
+      const auto &items = menu->items();
+      for (std::size_t i = 0; i < items.size(); ++i) {
+        if (items[i].label != "LFO 1") continue;
+        const auto row = menu->layout().rows[i];
+        p.click(row.x + row.width * 0.5f, row.y + row.height * 0.5f);
+        break;
+      }
+      p.report("lfo1-row-pressed");
+    });
+    s.push_back([](Proof &p) {
+      p.click(kBayX, kBayY);
+      p.report("menu-dismissed");
+    });
+    for (int i = 0; i < 12; ++i)
+      s.push_back([i](Proof &p) {
+        const auto shown = p.store->displayed_modulation(kFreeze);
+        char buf[160];
+        std::snprintf(buf, sizeof buf,
+                      "{\"step\":\"lfo-freeze\",\"sample\":%d,\"base\":%.1f,\"shown\":%s,\"face_on\":%d}",
+                      i, p.value(kFreeze), shown ? std::to_string(*shown).c_str() : "null",
+                      shown ? (*shown >= 0.5f ? 1 : 0) : (p.value(kFreeze) >= 0.5f ? 1 : 0));
+        p.log(buf);
+      });
+    return s;
+  }
+  if (step == "aspect-probe")
+    return {[](Proof &p) {
+      // Ask the window's own delegate what an interactive edge drag may
+      // produce: AppKit routes every live resize through windowWillResize,
+      // so this is the OS-level proportional lock, independent of the grip.
+      NSWindow *window = p.view.window;
+      id<NSWindowDelegate> delegate = window.delegate;
+      const NSSize sizes[] = {NSMakeSize(500, 700), NSMakeSize(350, 900),
+                              NSMakeSize(900, 700), NSMakeSize(420, 420)};
+      for (const auto &requested : sizes) {
+        NSSize accepted = requested;
+        if ([delegate respondsToSelector:@selector(windowWillResize:toSize:)])
+          accepted = [delegate windowWillResize:window toSize:requested];
+        const NSRect content = [window contentRectForFrameRect:NSMakeRect(0, 0, accepted.width, accepted.height)];
+        char buf[256];
+        std::snprintf(buf, sizeof buf,
+                      "{\"step\":\"aspect-probe\",\"requested_frame\":[%.0f,%.0f],"
+                      "\"accepted_frame\":[%.1f,%.1f],\"accepted_content\":[%.1f,%.1f],\"content_ratio\":%.4f}",
+                      requested.width, requested.height, accepted.width, accepted.height,
+                      content.size.width, content.size.height,
+                      content.size.height > 0 ? content.size.width / content.size.height : 0.0);
+        p.log(buf);
+      }
+    }};
   if (step == "grip-drag") return grip(120.0f, 60.0f, "grip");
   if (step == "grip-drag-vertical") return grip(10.0f, 220.0f, "grip-vertical");
   if (step == "all")

@@ -1346,6 +1346,18 @@ public:
   }
 #endif
 
+  /// The modulation menu currently open from this editor, if any. Proof and
+  /// host tests use it to drive the real rows; it is never owned here.
+  pulp::view::ContextMenu *modulation_menu() const {
+    auto *root = detail::root_view(const_cast<BeadsyEditor *>(this));
+    if (!root)
+      return nullptr;
+    for (std::size_t i = root->child_count(); i > 0; --i)
+      if (auto *menu = dynamic_cast<pulp::view::ContextMenu *>(root->child_at(i - 1)))
+        return menu;
+    return nullptr;
+  }
+
   /// Show the same menu used by a knob's real secondary-click handler.
   /// This is public so host/editor characterization tests can exercise the
   /// complete menu lifecycle without synthesizing platform pointer events.
