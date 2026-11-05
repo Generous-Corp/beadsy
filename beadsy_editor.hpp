@@ -1346,6 +1346,9 @@ public:
   }
 #endif
 
+  /// The processor this editor edits (proofs and host tests read LFO state).
+  Beadsy &processor() const { return processor_; }
+
   /// The modulation menu currently open from this editor, if any. Proof and
   /// host tests use it to drive the real rows; it is never owned here.
   pulp::view::ContextMenu *modulation_menu() const {
@@ -1487,9 +1490,12 @@ private:
           processor_.set_lfo_generator(lane, next);
           request_repaint();
         });
+    // The menu reserves a fixed value column to the right of the track;
+    // "20.00 Hz" overran it and sat on the thumb. Keep the label to seven
+    // characters: 20 Hz, 2.5 Hz, 0.25 Hz.
     std::ostringstream rate_text;
     rate_text.setf(std::ios::fixed);
-    rate_text.precision(2);
+    rate_text.precision(config.rate_hz >= 9.995f ? 0 : config.rate_hz >= 0.995f ? 1 : 2);
     rate_text << config.rate_hz << " Hz";
     rate.value_label = rate_text.str();
     items.push_back(std::move(rate));

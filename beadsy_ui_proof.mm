@@ -382,10 +382,14 @@ Steps steps_for(const std::string &step) {
     for (int i = 0; i < 12; ++i)
       s.push_back([i](Proof &p) {
         const auto shown = p.store->displayed_modulation(kFreeze);
-        char buf[160];
+        char buf[200];
         std::snprintf(buf, sizeof buf,
-                      "{\"step\":\"lfo-freeze\",\"sample\":%d,\"base\":%.1f,\"shown\":%s,\"face_on\":%d}",
-                      i, p.value(kFreeze), shown ? std::to_string(*shown).c_str() : "null",
+                      "{\"step\":\"lfo-freeze\",\"sample\":%d,\"lfo1\":%d,\"target\":%d,\"phase_\":%.3f,\"base\":%.1f,\"modulated\":%.3f,\"shown\":%s,\"face_on\":%d}",
+                      i, p.editor->processor().lfo_generator(0).enabled ? 1 : 0,
+                      p.editor->processor().lfo_target_enabled(kFreeze, 0) ? 1 : 0,
+                      static_cast<float>(p.editor->processor().lfo_generator(0).phase),
+                      p.value(kFreeze), p.store->get_modulated(kFreeze),
+                      shown ? std::to_string(*shown).c_str() : "null",
                       shown ? (*shown >= 0.5f ? 1 : 0) : (p.value(kFreeze) >= 0.5f ? 1 : 0));
         p.log(buf);
       });
