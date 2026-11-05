@@ -1044,7 +1044,14 @@ inline std::unique_ptr<pulp::format::Processor> create_beadsy() {
 
 #if defined(BEADSY_NATIVE_EDITOR) && !defined(PULP_HEADLESS)
 #include "beadsy_editor.hpp"
+#if defined(BEADSY_UI_PROOF)
+#include "beadsy_ui_proof.hpp"
+#endif
 inline std::unique_ptr<pulp::view::View> beadsy::Beadsy::create_view() {
-  return std::make_unique<beadsy::BeadsyEditor>(*this, state());
+  auto editor = std::make_unique<beadsy::BeadsyEditor>(*this, state());
+#if defined(BEADSY_UI_PROOF)
+  beadsy::install_ui_proof(state(), *editor);
+#endif
+  return editor;
 }
 #endif

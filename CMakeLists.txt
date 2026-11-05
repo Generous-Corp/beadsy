@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Pulp CONFIG REQUIRED)
+if(APPLE)
+    enable_language(OBJCXX)
+endif()
 
 # The checked-in panel conversion is the product's reviewed visual source. It
 # is enabled for normal local/product builds so a build cannot silently fall
@@ -237,6 +240,11 @@ foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AUv3 AAX Standalone)
             target_include_directories(Beadsy_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
             target_compile_definitions(Beadsy_${_fmt} PRIVATE
                 BEADSY_NATIVE_EDITOR=1)
+            if(APPLE)
+                # Env-gated in-process UI proof driver (see beadsy_ui_proof.hpp).
+                target_sources(Beadsy_${_fmt} PRIVATE beadsy_ui_proof.mm)
+                target_compile_definitions(Beadsy_${_fmt} PRIVATE BEADSY_UI_PROOF=1)
+            endif()
         endif()
         if(_fmt STREQUAL "LV2")
             # LV2's Pulp adapter exposes one aggregated input bus. Keep the
@@ -280,6 +288,10 @@ foreach(_fmt IN ITEMS VST3 CLAP AU AUv3 Standalone)
             target_include_directories(BeadsyFX_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
             target_compile_definitions(BeadsyFX_${_fmt} PRIVATE
         BEADSY_NATIVE_EDITOR=1)
+            if(APPLE)
+                target_sources(BeadsyFX_${_fmt} PRIVATE beadsy_ui_proof.mm)
+                target_compile_definitions(BeadsyFX_${_fmt} PRIVATE BEADSY_UI_PROOF=1)
+            endif()
         endif()
         if(_fmt STREQUAL "AU")
             target_compile_definitions(BeadsyFX_${_fmt} PRIVATE BEADSY_AU_MAIN_INPUT_ONLY=1)
