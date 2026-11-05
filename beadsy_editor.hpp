@@ -1046,6 +1046,12 @@ public:
   }
 
   void on_resized() override { layout_controls(); }
+  /// The host lays the window out with one Yoga pass over the whole tree.
+  /// Owning the children's layout makes that pass call layout_children()
+  /// here instead of applying Yoga's own rects to the controls after the
+  /// editor's size was applied, which left every control at the size the
+  /// editor was constructed with (0 x 0, so the 201 x 364 fallback).
+  bool owns_child_layout() const override { return true; }
   void layout_children() override {
     pulp::view::View::layout_children();
 #if defined(BEADSY_HAS_AUDIO_ROUTE_CATALOG)

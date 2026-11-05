@@ -1,7 +1,9 @@
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_approx.hpp>
 #include <pulp/state/store.hpp>
 #include <pulp/view/screenshot.hpp>
 #include <pulp/view/pointer_dispatch.hpp>
+#include <pulp/view/overlay_dismissal.hpp>
 #include "beadsy.hpp"
 #include "beadsy_editor.hpp"
 
@@ -1331,4 +1333,119 @@ TEST_CASE("Beadsy resize grip forwards an accepted host resize request") {
     release.pointer_id = 1;
     grip->on_mouse_event(release);
     processor.set_editor_resize_handler({});
+}
+
+namespace {
+pulp::view::View* beadsy_child(beadsy::BeadsyEditor& editor, std::string_view id) {
+    for (std::size_t i = 0; i < editor.child_count(); ++i)
+        if (editor.child_at(i)->id() == id) return editor.child_at(i);
+    return nullptr;
+}
+pulp::view::Point beadsy_center(const pulp::view::View& view) {
+    const auto b = view.bounds();
+    return {b.x + b.width * 0.5f, b.y + b.height * 0.5f};
+}
+}  // namespace
+
+TEST_CASE("Beadsy toggles answer the host pointer verbs at the default size") {
+    // The macOS window and plug-in hosts deliver a left press through
+    // deliver_mouse_down/deliver_mouse_up and a secondary press through
+    // route_context_press. Drive those exact verbs rather than simulate_click
+    // so the proof covers the same layer a real NSEvent reaches.
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    const auto size = processor.view_size();
+    native->set_bounds({0.0f, 0.0f, static_cast<float>(size.preferred_width),
+                        static_cast<float>(size.preferred_height)});
+    native->layout_children();
+
+    const auto press = [&](pulp::view::Point p) {
+        auto* target = native->hit_test(p);
+        REQUIRE(target != nullptr);
+        REQUIRE(pulp::view::deliver_mouse_down(*native, target, p, 0, 1));
+        pulp::view::deliver_mouse_up(*native, target, p, 0, 1, {});
+    };
+
+    auto* freeze = beadsy_child(*native, "beadsy-freeze");
+    auto* seed = beadsy_child(*native, "beadsy-seed-mode");
+    auto* quality = beadsy_child(*native, "beadsy-push-button");
+    auto* assign = beadsy_child(*native, "beadsy-assign-button");
+    REQUIRE(freeze != nullptr);
+    REQUIRE(seed != nullptr);
+    REQUIRE(quality != nullptr);
+    REQUIRE(assign != nullptr);
+
+    press(beadsy_center(*freeze));
+    REQUIRE(store.get_value(beadsy::kFreeze) == 1.0f);
+    press(beadsy_center(*freeze));
+    REQUIRE(store.get_value(beadsy::kFreeze) == 0.0f);
+    press(beadsy_center(*seed));
+    REQUIRE(store.get_value(beadsy::kSeedMode) == 1.0f);
+    press(beadsy_center(*quality));
+    REQUIRE(store.get_value(beadsy::kQuality) == 0.0f);
+    press(beadsy_center(*assign));
+    REQUIRE(native->assign_control()->destination() == 1);
+
+    const auto context = [&](pulp::view::View* view, pulp::state::ParamID expected) {
+        pulp::view::route_context_press(*native, beadsy_center(*view));
+        REQUIRE(native->modulation_context_target() == expected);
+        auto* menu = dynamic_cast<pulp::view::ContextMenu*>(
+            native->child_at(native->child_count() - 1));
+        REQUIRE(menu != nullptr);
+        REQUIRE(menu->items().front().label.rfind("Reset ", 0) == 0);
+        menu->on_key_event({.key = pulp::view::KeyCode::escape, .is_down = true});
+    };
+    context(freeze, beadsy::kFreeze);
+    context(seed, beadsy::kSeedMode);
+    context(quality, beadsy::kQuality);
+    context(assign, beadsy::kFeedback);
+}
+
+TEST_CASE("Beadsy controls survive a host-owned Yoga layout pass") {
+    // Standalone and plug-in hosts place the editor inside their own root and
+    // lay the whole window out with one Yoga pass. Yoga applies the editor's
+    // rect first (which places the controls for that size) and then applies
+    // its own rects to the editor's children; unless the editor owns its
+    // children's layout those rects come from the styles captured before the
+    // editor had a size, so every control lands at the 201 x 364 fallback.
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+
+    pulp::view::View host_root;
+    // The standalone chrome and the plug-in bridge both let the editor fill
+    // the host root through flex-grow rather than an explicit size.
+    editor->flex().flex_grow = 1.0f;
+    host_root.add_child(std::move(editor));
+    const auto size = processor.view_size();
+    host_root.set_bounds({0.0f, 0.0f, static_cast<float>(size.preferred_width),
+                          static_cast<float>(size.preferred_height)});
+    host_root.layout_children();
+
+    REQUIRE(native->bounds().width == Catch::Approx(350.0f));
+    REQUIRE(native->bounds().height == Catch::Approx(635.0f));
+    auto* freeze = beadsy_child(*native, "beadsy-freeze");
+    auto* density = beadsy_child(*native, "beadsy-Density");
+    REQUIRE(freeze != nullptr);
+    REQUIRE(density != nullptr);
+    // At 350 px wide the Freeze hit target is centred at (43, 89); at the
+    // 201 px fallback it sat at (25, 51), which is what a real right-click
+    // on Freeze resolved to in the standalone (it opened the Time menu).
+    const auto fb = freeze->bounds();
+    REQUIRE(fb.x + fb.width * 0.5f == Catch::Approx(43.0f).margin(1.0f));
+    REQUIRE(fb.y + fb.height * 0.5f == Catch::Approx(89.0f).margin(1.0f));
+    REQUIRE(host_root.hit_test({43.0f, 89.0f}) == freeze);
+    REQUIRE(density->bounds().width == Catch::Approx(91.4f).margin(1.0f));
+
+    pulp::view::route_context_press(host_root, {43.0f, 89.0f});
+    REQUIRE(native->modulation_context_target() == beadsy::kFreeze);
 }
