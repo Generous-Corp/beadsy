@@ -657,8 +657,9 @@ TEST_CASE("Beadsy publishes the proportional default size to every host") {
     const auto size = processor.view_size();
 
     REQUIRE(size.preferred_width == 350);
-    // The complete authored 200.693:364.252 faceplate at 350 px wide.
-    REQUIRE(size.preferred_height == 635);
+    // The width-locked faceplate cropped just below the trim labels
+    // (111.5 of 128.5 mm) at 350 px wide.
+    REQUIRE(size.preferred_height == 551);
     REQUIRE(size.min_width == size.preferred_width);
     REQUIRE(size.min_height == size.preferred_height);
     REQUIRE(size.max_width == size.preferred_width * 2);
@@ -667,7 +668,7 @@ TEST_CASE("Beadsy publishes the proportional default size to every host") {
     // AUv2/standalone accept a free-form drag even though the editor itself
     // lays out the authored panel uniformly.
     REQUIRE(std::abs(size.aspect_ratio - beadsy::kPanelAspectRatio) < 1.0e-9);
-    REQUIRE(std::abs(size.aspect_ratio - 200.693 / 364.252) < 1.0e-9);
+    REQUIRE(std::abs(size.aspect_ratio - 70.8 / 111.5) < 1.0e-6);
     REQUIRE(std::lround(size.preferred_width / size.aspect_ratio) ==
             size.preferred_height);
 }
@@ -1281,7 +1282,7 @@ TEST_CASE("Beadsy resize grip forwards an accepted host resize request") {
     press.phase = pulp::view::MousePhase::press;
     press.is_down = true;
     press.pointer_id = 1;
-    press.window_position = {345.0f, 630.0f};
+    press.window_position = {345.0f, 546.0f};
     grip->on_mouse_event(press);
 
     pulp::view::MouseEvent drag;
@@ -1291,7 +1292,7 @@ TEST_CASE("Beadsy resize grip forwards an accepted host resize request") {
     drag.has_movement_delta = true;
     drag.movement_x = 40.0f;
     drag.movement_y = 4.0f;
-    drag.window_position = {385.0f, 634.0f};
+    drag.window_position = {385.0f, 550.0f};
     grip->on_mouse_event(drag);
     REQUIRE(requested_width == 390);
     REQUIRE(requested_height == locked_height(390));
@@ -1301,7 +1302,7 @@ TEST_CASE("Beadsy resize grip forwards an accepted host resize request") {
     // jumping back to the first frame's width.
     drag.movement_x = 10.0f;
     drag.movement_y = 0.0f;
-    drag.window_position = {395.0f, 634.0f};
+    drag.window_position = {395.0f, 550.0f};
     grip->on_mouse_event(drag);
     REQUIRE(requested_width == 400);
     REQUIRE(requested_height == locked_height(400));
@@ -1310,7 +1311,7 @@ TEST_CASE("Beadsy resize grip forwards an accepted host resize request") {
     // pointer and the width follows the artwork ratio.
     drag.movement_x = 0.0f;
     drag.movement_y = 100.0f;
-    drag.window_position = {395.0f, 734.0f};
+    drag.window_position = {395.0f, 650.0f};
     grip->on_mouse_event(drag);
     REQUIRE(requested_height == locked_height(requested_width));
     REQUIRE(static_cast<double>(requested_width) /
@@ -1432,7 +1433,7 @@ TEST_CASE("Beadsy controls survive a host-owned Yoga layout pass") {
     host_root.layout_children();
 
     REQUIRE(native->bounds().width == Catch::Approx(350.0f));
-    REQUIRE(native->bounds().height == Catch::Approx(635.0f));
+    REQUIRE(native->bounds().height == Catch::Approx(551.0f));
     auto* freeze = beadsy_child(*native, "beadsy-freeze");
     auto* density = beadsy_child(*native, "beadsy-Density");
     REQUIRE(freeze != nullptr);
@@ -1458,7 +1459,7 @@ TEST_CASE("Beadsy toggle faces follow the played modulation and presses step the
     auto editor = processor.create_view();
     auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
     REQUIRE(native != nullptr);
-    native->set_bounds({0.0f, 0.0f, 350.0f, 635.0f});
+    native->set_bounds({0.0f, 0.0f, 350.0f, 551.0f});
     native->layout_children();
     auto* freeze = dynamic_cast<beadsy::FreezeControl*>(beadsy_child(*native, "beadsy-freeze"));
     auto* seed = dynamic_cast<beadsy::SeedModeControl*>(beadsy_child(*native, "beadsy-seed-mode"));

@@ -1614,9 +1614,9 @@ private:
     // the text above the reclaimed source/menu strip.
     for (const auto &[name, x] : std::array{
              std::pair<const char *, float>{"TIME", 18.249f},
-             std::pair<const char *, float>{"SIZE", 29.570f},
-             std::pair<const char *, float>{"SHAPE", 40.892f},
-             std::pair<const char *, float>{"PITCH", 52.213f}}) {
+             std::pair<const char *, float>{"SIZE", 29.69f},
+             std::pair<const char *, float>{"SHAPE", 41.12f},
+             std::pair<const char *, float>{"PITCH", 52.55f}}) {
       canvas.fill_text(name, content_x + x * panel_sx,
                        content_y + (128.5f - 29.0f) * panel_sy);
     }
@@ -1625,17 +1625,22 @@ private:
   void build_controls() {
     constexpr Placement placements[] = {
         {kDensity, "Density", 35.316f, 104.4f, 9.25f},
-        {kTime, "Time", 11.490f, 90.1f, 9.25f},
-        {kPitch, "Pitch", 58.127f, 90.1f, 9.25f},
+        // Time and Pitch sit on the artwork's ring centres (Pitch's pointer
+        // on its 12 o'clock mark); both caps were a third of a millimetre low.
+        {kTime, "Time", 11.490f, 90.44f, 9.25f},
+        {kPitch, "Pitch", 59.03f, 90.44f, 9.25f},
         {kSize, "Size", 24.163f, 67.9f, 7.2f},
         {kShape, "Shape", 46.468f, 67.9f, 7.2f},
-        {kFeedback, "Feedback", 7.115f, 67.9f, 3.0f},
-        {kDryWet, "Dry Wet", 64.365f, 67.9f, 3.0f},
-        {kReverb, "Reverb", 64.365f, 51.7f, 3.0f},
+        // The three utility caps centre on their cyan, orange and magenta
+        // bodies; the four trims centre on the dashed guides above and
+        // below them, Time being the reference that already matched.
+        {kFeedback, "Feedback", 6.76f, 67.9f, 3.0f},
+        {kDryWet, "Dry Wet", 64.0f, 67.9f, 3.0f},
+        {kReverb, "Reverb", 64.0f, 51.7f, 3.0f},
         {kTimeAmount, "Time CV Amount", 18.249f, 47.9f, 3.0f},
-        {kSizeAmount, "Size CV Amount", 29.570f, 47.9f, 3.0f},
-        {kShapeAmount, "Shape CV Amount", 40.892f, 47.9f, 3.0f},
-        {kPitchAmount, "Pitch CV Amount", 52.213f, 47.9f, 3.0f},
+        {kSizeAmount, "Size CV Amount", 29.69f, 47.9f, 3.0f},
+        {kShapeAmount, "Shape CV Amount", 41.12f, 47.9f, 3.0f},
+        {kPitchAmount, "Pitch CV Amount", 52.55f, 47.9f, 3.0f},
     };
     for (const auto &p : placements) {
       const float diameter = p.r * 2.0f;

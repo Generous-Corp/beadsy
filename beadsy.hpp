@@ -21,11 +21,15 @@
 namespace beadsy {
 
 /// Authored faceplate size in SVG user units (the reviewed straight-on panel
-/// viewBox). Every host-facing size hint and the editor's own resize grip
-/// derive their width:height lock from this one ratio.
+/// viewBox). The editor shows the panel width-locked and crops the bottom
+/// below the attenurandomizer labels, where the hardware jack bay sat, so
+/// the visible height is 111.5 of the panel's 128.5 mm. Every host-facing
+/// size hint and the editor's own resize grip derive their width:height
+/// lock from this one ratio.
 inline constexpr double kPanelWidthUnits = 200.693;
 inline constexpr double kPanelHeightUnits = 364.252;
-inline constexpr double kPanelAspectRatio = kPanelWidthUnits / kPanelHeightUnits;
+inline constexpr double kPanelVisibleHeightUnits = kPanelHeightUnits * 111.5 / 128.5;
+inline constexpr double kPanelAspectRatio = kPanelWidthUnits / kPanelVisibleHeightUnits;
 
 enum ParamIDs : pulp::state::ParamID {
   kTime = 1,
@@ -207,12 +211,12 @@ public:
 
 #if defined(BEADSY_NATIVE_EDITOR) && !defined(PULP_HEADLESS)
   pulp::format::ViewSize view_size() const override {
-    // The editor shows the complete authored faceplate, so every host locks
-    // interactive resize to the artwork ratio and the default window is the
-    // full panel at 350 px wide. The default is also the minimum so the
+    // Every host locks interactive resize to the editor's ratio and the
+    // default window is the width-locked panel at 350 px wide, cropped just
+    // below the trim labels. The default is also the minimum so the
     // modulation menu always has room for its rows without scrolling.
     constexpr uint32_t kDefaultWidth = 350;
-    constexpr uint32_t kDefaultHeight = 635; // round(350 / kPanelAspectRatio)
+    constexpr uint32_t kDefaultHeight = 551; // round(350 / kPanelAspectRatio)
     return {kDefaultWidth, kDefaultHeight, kDefaultWidth, kDefaultHeight,
             kDefaultWidth * 2, kDefaultHeight * 2, kPanelAspectRatio};
   }

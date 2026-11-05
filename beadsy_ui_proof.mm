@@ -23,8 +23,8 @@ constexpr float kSeedX = 62.0f * kUnit, kSeedY = (128.5f - 110.5f) * kUnit;
 constexpr float kQualityX = 35.7f * kUnit, kQualityY = (128.5f - 83.24f) * kUnit;
 constexpr float kAssignX = 7.1f * kUnit, kAssignY = (128.5f - 51.7f) * kUnit;
 constexpr float kDensityX = 35.316f * kUnit, kDensityY = (128.5f - 104.4f) * kUnit;
-constexpr float kGripX = 350.0f - 17.0f, kGripY = 635.0f - 17.0f;
-constexpr float kBayX = 175.0f, kBayY = 560.0f; // empty faceplate below the labels
+constexpr float kGripX = 350.0f - 17.0f, kGripY = 551.0f - 17.0f;
+constexpr float kBayX = 175.0f, kBayY = 505.0f; // empty faceplate below the labels
 
 struct Proof {
   pulp::state::StateStore *store = nullptr;
@@ -83,9 +83,14 @@ struct Proof {
   // event's window coordinates through the Pulp NSView, which is not flipped.
   NSPoint to_window(float x, float y) const {
     const auto c = content();
-    const NSPoint local{x * (c.width / 350.0f), c.height - y * (c.height / 635.0f)};
+    const auto design = editor_live() ? editor->bounds() : pulp::view::Rect{0, 0, 350, 551};
+    const float dw = design.width > 1.0f ? design.width : 350.0f;
+    const float dh = design.height > 1.0f ? design.height : 551.0f;
+    const NSPoint local{x * (c.width / dw), c.height - y * (c.height / dh)};
     return [view convertPoint:local toView:nil];
   }
+
+  bool route_through_app = false;
 
   void send(NSEventType type, NSPoint p, int click_count = 1) {
     NSEvent *event = [NSEvent mouseEventWithType:type
@@ -100,6 +105,12 @@ struct Proof {
                                                           type == NSEventTypeRightMouseUp
                                                       ? 0.0f
                                                       : 1.0f];
+    if (route_through_app) {
+      // Full AppKit routing (window made key first): NSApplication ->
+      // NSWindow -> responder chain, exactly as a physical click arrives.
+      [NSApp sendEvent:event];
+      return;
+    }
     // Dispatch straight to Pulp's NSView: a window that is not key swallows
     // its first click inside NSWindow's own routing, which would make a
     // proof depend on focus.
@@ -261,6 +272,57 @@ Steps steps_for(const std::string &step) {
       p.drag(kDensityX, kDensityY, kDensityX, kDensityY - 60.0f, 20);
       p.report("after");
     }};
+  if (step == "click-freeze-real") {
+    // Physical-click shape: window key, hover first, ~80 ms between the press
+    // and the release, a pause between taps, everything through NSApp.
+    Steps s;
+    s.push_back([](Proof &p) {
+      [p.view.window makeKeyAndOrderFront:nil];
+      [NSApp activateIgnoringOtherApps:YES];
+      p.route_through_app = true;
+      p.report("window-key");
+    });
+    for (int tap = 1; tap <= 4; ++tap) {
+      s.push_back([](Proof &p) { p.send(NSEventTypeMouseMoved, p.to_window(kFreezeX, kFreezeY)); });
+      s.push_back([](Proof &p) { p.send(NSEventTypeLeftMouseDown, p.to_window(kFreezeX, kFreezeY)); });
+      s.push_back([tap](Proof &p) {
+        p.send(NSEventTypeLeftMouseUp, p.to_window(kFreezeX, kFreezeY));
+        p.report((std::string("tap-") + std::to_string(tap)).c_str());
+      });
+    }
+    return s;
+  }
+  if (step == "click-freeze-double") {
+    // A physical double-tap: the second press arrives with clickCount 2.
+    // Both presses must step the toggle, and so must a later single tap.
+    Steps s;
+    s.push_back([](Proof &p) {
+      [p.view.window makeKeyAndOrderFront:nil];
+      [NSApp activateIgnoringOtherApps:YES];
+      p.route_through_app = true;
+      p.report("window-key");
+    });
+    s.push_back([](Proof &p) {
+      const auto pt = p.to_window(kFreezeX, kFreezeY);
+      p.send(NSEventTypeMouseMoved, pt);
+      p.send(NSEventTypeLeftMouseDown, pt, 1);
+      p.send(NSEventTypeLeftMouseUp, pt, 1);
+      p.report("tap-1");
+    });
+    s.push_back([](Proof &p) {
+      const auto pt = p.to_window(kFreezeX, kFreezeY);
+      p.send(NSEventTypeLeftMouseDown, pt, 2);
+      p.send(NSEventTypeLeftMouseUp, pt, 2);
+      p.report("tap-2-clickcount-2");
+    });
+    s.push_back([](Proof &p) {
+      const auto pt = p.to_window(kFreezeX, kFreezeY);
+      p.send(NSEventTypeLeftMouseDown, pt, 1);
+      p.send(NSEventTypeLeftMouseUp, pt, 1);
+      p.report("tap-3");
+    });
+    return s;
+  }
   if (step == "lfo-freeze") {
     // Enable LFO 1 on Freeze through the real menu (secondary press, then a
     // press on the "LFO 1" row), then sample the played value the faces
