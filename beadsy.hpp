@@ -2,6 +2,8 @@
 
 #include "beads/dsp/synth.h"
 #include <pulp/format/processor.hpp>
+#include <pulp/runtime/log.hpp>
+#include <filesystem>
 #include <pulp/midi/buffer.hpp>
 
 #include <algorithm>
@@ -848,6 +850,11 @@ private:
   void update_modulation(std::size_t samples) {
     if (!sample_rate_)
       return;
+    if (host_diagnostics_enabled_ && (++diag_block_count_ % 400) == 1)
+      pulp::runtime::log_info(
+          "[beadsy-diag] dsp blocks={} samples={} sr={} lfo1={} lfo1_phase={} freeze_mod={}",
+          diag_block_count_, samples, sample_rate_, lfo_generator(0).enabled,
+          static_cast<float>(lfo_generator(0).phase), state().get_modulated(kFreeze));
     std::array<float, kLfoLaneCount> waves{};
     std::array<bool, kLfoLaneCount> active_lanes{};
     for (std::size_t lane = 0; lane < kLfoLaneCount; ++lane) {
@@ -957,6 +964,11 @@ private:
   beads::Processor effect_;
   beads::Processor::Scratch effect_scratch_;
   double sample_rate_ = 48000.0;
+  std::uint64_t diag_block_count_ = 0;
+  const bool host_diagnostics_enabled_ = [] {
+    const char *home = std::getenv("HOME");
+    return home && std::filesystem::exists(std::string(home) + "/.config/pulp/beadsy-diag");
+  }();
   std::size_t max_block_size_ = 0;
   bool supported_rate_ = false;
   beads::Processor::Media effect_media_ = beads::Processor::MEDIA_DIGITAL;

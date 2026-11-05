@@ -12,6 +12,9 @@
 #include <pulp/canvas/canvas.hpp>
 #include <pulp/canvas/svg.hpp>
 #include <pulp/view/context_menu.hpp>
+#include <pulp/runtime/log.hpp>
+#include <cstdlib>
+#include <filesystem>
 #include "beadsy_modulation_menu.hpp"
 #include <pulp/view/parameter_binding.hpp>
 #include <pulp/view/ui_components.hpp>
@@ -35,6 +38,19 @@
 #include <vector>
 
 namespace beadsy {
+
+namespace detail {
+/// Host diagnostics switch: the file ~/.config/pulp/beadsy-diag turns on
+/// low-rate os_log lines (prefix "[beadsy-diag]") that are readable from the
+/// unified log even when a DAW hosts the AU out-of-process. Off by default.
+inline bool host_diagnostics_enabled() {
+  static const bool enabled = [] {
+    const char *home = std::getenv("HOME");
+    return home && std::filesystem::exists(std::string(home) + "/.config/pulp/beadsy-diag");
+  }();
+  return enabled;
+}
+} // namespace detail
 
 namespace detail {
 
@@ -1091,6 +1107,15 @@ public:
 
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
+    if (detail::host_diagnostics_enabled() && (++diag_paint_count_ % 60) == 1) {
+      const auto shown = store_.displayed_modulation(kFreeze);
+      pulp::runtime::log_info(
+          "[beadsy-diag] paint n={} bounds={}x{} freeze_base={} freeze_mod={} freeze_shown={} lfo1={} time_shown={}",
+          diag_paint_count_, b.width, b.height, store_.get_value(kFreeze),
+          store_.get_modulated(kFreeze), shown ? *shown : -1.0f,
+          processor_.lfo_generator(0).enabled,
+          store_.displayed_modulation(kTime).value_or(-1.0f));
+    }
     // Keep the authored faceplate aspect ratio invariant. Hosts are allowed
     // to hand an editor an arbitrary rectangle (especially while restoring a
     // saved plug-in window); stretching the SVG independently in X/Y makes
@@ -2120,6 +2145,7 @@ private:
   pulp::view::ComboBox *route_picker_right_fallback_ = nullptr;
 #endif
   ResizeGrip *resize_grip_ = nullptr;
+  std::uint64_t diag_paint_count_ = 0;
   pulp::state::ListenerToken source_mode_binding_;
   std::optional<pulp::state::ParamID> context_target_;
 };
