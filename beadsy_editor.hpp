@@ -305,6 +305,9 @@ public:
         on_context_menu_(event.position);
       return;
     }
+    if (event.button == pulp::view::MouseButton::left && event.isPress() &&
+        on_press_)
+      on_press_();
   }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
@@ -365,6 +368,9 @@ public:
         on_context_menu_(event.position);
       return;
     }
+    if (event.button == pulp::view::MouseButton::left && event.isPress() &&
+        on_press_)
+      on_press_();
   }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
@@ -421,6 +427,9 @@ public:
         on_context_menu_(event.position);
       return;
     }
+    if (event.button == pulp::view::MouseButton::left && event.isPress() &&
+        on_press_)
+      on_press_();
   }
   void on_mouse_down(pulp::view::Point) override {
     if (on_press_)
@@ -449,6 +458,18 @@ public:
     set_cursor(pulp::view::View::CursorStyle::pointer);
   }
   int destination() const { return destination_; }
+  void set_on_context_menu(std::function<void(pulp::view::Point)> callback) {
+    on_context_menu_ = std::move(callback);
+  }
+  void on_mouse_event(const pulp::view::MouseEvent &event) override {
+    if (event.button == pulp::view::MouseButton::right && event.isPress()) {
+      if (on_context_menu_)
+        on_context_menu_(event.position);
+      return;
+    }
+    if (event.button == pulp::view::MouseButton::left && event.isPress())
+      on_mouse_down(event.position);
+  }
   void on_mouse_down(pulp::view::Point) override {
     destination_ = (destination_ + 1) % 3;
     static constexpr const char *names[] = {"Feedback", "Dry/Wet", "Reverb"};
@@ -462,6 +483,7 @@ public:
   }
 private:
   int destination_ = 0;
+  std::function<void(pulp::view::Point)> on_context_menu_;
 };
 
 /// Covers the legacy panel LED beside the quality station. Quality is exposed
@@ -1770,6 +1792,10 @@ private:
     auto assign = std::make_unique<AssignButtonControl>();
     assign_button_ = assign.get();
     assign_button_->set_z_index(100);
+    assign_button_->set_on_context_menu([this](pulp::view::Point position) {
+      const auto b = assign_button_->bounds();
+      show_modulation_context_menu(kFeedback, {b.x + position.x, b.y + position.y});
+    });
     add_child(std::move(assign));
 
     auto indicators = std::make_unique<CenterIndicators>();
