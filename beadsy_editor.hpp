@@ -293,22 +293,10 @@ public:
   }
 
   void paint(pulp::canvas::Canvas &canvas) override {
-    const auto b = local_bounds();
-    const float cx = b.width * 0.5f;
-    const float radius = std::max(3.0f, std::min(b.width, b.height) * 0.32f);
-    const float cy = b.height * 0.62f;
-    const auto off = pulp::canvas::Color::rgba8(226, 225, 217);
-    // Match the authored panel's yellow-green lit state instead of changing
-    // only the accessibility label when Seed is enabled.
-    const auto on = pulp::canvas::Color::rgba8(205, 214, 103);
-    canvas.set_fill_color(displayed_mode() == 0 ? off : on);
-    canvas.fill_circle(cx, cy, radius);
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
-    canvas.set_line_width(0.8f);
-    canvas.stroke_circle(cx, cy, radius);
-
-    // The original SEED control is a plain white push button. The black
-    // mounting dot above it belongs to the faceplate and is not an LED.
+    // The editor compositor paints the full-size toggle face. Keep this
+    // native view interactive for clicks and context menus, but do not paint
+    // a second small circle over the face.
+    (void)canvas;
   }
 
   void on_mouse_event(const pulp::view::MouseEvent &event) override {
@@ -366,17 +354,9 @@ public:
   }
 
   void paint(pulp::canvas::Canvas &canvas) override {
-    const auto b = local_bounds();
-    const float cx = b.width * 0.5f;
-    const float radius = std::max(3.0f, std::min(b.width, b.height) * 0.34f);
-    const float cy = b.height * 0.62f;
-    const auto body = displayed_pressed() ? pulp::canvas::Color::rgba8(205, 214, 103)
-                               : pulp::canvas::Color::rgba8(239, 238, 228);
-    canvas.set_fill_color(body);
-    canvas.fill_circle(cx, cy, radius);
-    canvas.set_stroke_color(pulp::canvas::Color::rgba8(42, 43, 42));
-    canvas.set_line_width(0.8f);
-    canvas.stroke_circle(cx, cy, radius);
+    // The editor compositor paints the full-size toggle face. This native
+    // view remains the hit target and context-menu owner only.
+    (void)canvas;
   }
 
   void on_mouse_event(const pulp::view::MouseEvent &event) override {
