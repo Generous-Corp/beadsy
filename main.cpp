@@ -1,5 +1,8 @@
 #include "beadsy.hpp"
 #include "beadsy_standalone_state.hpp"
+#if defined(__APPLE__)
+#include "beadsy_standalone_first_mouse.hpp"
+#endif
 
 #include <pulp/format/standalone.hpp>
 
@@ -89,6 +92,9 @@ int main(int argc, char** argv) {
     }
 
     app.set_config(config);
+#if defined(__APPLE__)
+    beadsy::accept_first_mouse_in_standalone();
+#endif
     // The GPU window host is the only standalone host that implements the
     // OS-level aspect lock and design viewport the editor's size hints ask
     // for; the CPU host silently ignores both and lets the window shear.

@@ -292,6 +292,37 @@ Steps steps_for(const std::string &step) {
     }
     return s;
   }
+  if (step == "click-freeze-inactive") {
+    // The window is NOT key when the tap arrives, as after switching back
+    // from another app. AppKit asks the view acceptsFirstMouse:; a NO means
+    // the tap only activates the window and the toggle needs a second tap.
+    Steps s;
+    s.push_back([](Proof &p) {
+      [NSApp activateIgnoringOtherApps:YES];
+      [p.view.window makeKeyAndOrderFront:nil];
+      p.route_through_app = true;
+      p.report("window-key");
+    });
+    s.push_back([](Proof &p) {
+      [p.view.window resignKeyWindow];
+      [NSApp deactivate];
+      p.report("window-inactive");
+    });
+    s.push_back([](Proof &p) {
+      const auto pt = p.to_window(kFreezeX, kFreezeY);
+      p.send(NSEventTypeMouseMoved, pt);
+      p.send(NSEventTypeLeftMouseDown, pt, 1);
+      p.send(NSEventTypeLeftMouseUp, pt, 1);
+      p.report("tap-while-inactive");
+    });
+    s.push_back([](Proof &p) {
+      const auto pt = p.to_window(kFreezeX, kFreezeY);
+      p.send(NSEventTypeLeftMouseDown, pt, 1);
+      p.send(NSEventTypeLeftMouseUp, pt, 1);
+      p.report("tap-after");
+    });
+    return s;
+  }
   if (step == "click-freeze-double") {
     // A physical double-tap: the second press arrives with clickCount 2.
     // Both presses must step the toggle, and so must a later single tap.
