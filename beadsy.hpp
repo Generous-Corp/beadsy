@@ -198,6 +198,13 @@ public:
     };
   }
 
+  /// Button destinations whose modulated value is read as a state index.
+  /// They take twice the LFO stroke of a knob so the default depth switches
+  /// states (see update_modulation()).
+  static constexpr bool discrete_modulation_target(pulp::state::ParamID id) {
+    return id == kFreeze || id == kSeedMode || id == kQuality;
+  }
+
 #if defined(BEADSY_NATIVE_EDITOR) && !defined(PULP_HEADLESS)
   pulp::format::ViewSize view_size() const override {
     // The editor shows the complete authored faceplate, so every host locks
@@ -884,7 +891,15 @@ private:
         offset += waves[lane] * depth;
       }
       const float span = modulation_target_span(id);
-      const float bounded_offset = std::clamp(offset, -1.0f, 1.0f) * span;
+      // A button destination switches state only when the modulated value
+      // crosses a half-step. Scaled like a knob, the default 50% depth never
+      // reaches that threshold from the OFF state, so Freeze, Seed, and
+      // Quality looked unmodulated. Doubling the stroke for discrete targets
+      // makes any non-zero depth switch states at the wave extremes while a
+      // full depth still spans the whole range.
+      const float stroke = discrete_modulation_target(id) ? 2.0f : 1.0f;
+      const float bounded_offset =
+          std::clamp(offset * stroke, -1.0f, 1.0f) * span;
       state().set_mod_offset(id, bounded_offset);
       if (active)
         state().set_display_modulation(id, state().get_modulated(id));

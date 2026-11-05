@@ -1449,3 +1449,43 @@ TEST_CASE("Beadsy controls survive a host-owned Yoga layout pass") {
     pulp::view::route_context_press(host_root, {43.0f, 89.0f});
     REQUIRE(native->modulation_context_target() == beadsy::kFreeze);
 }
+
+TEST_CASE("Beadsy toggle faces follow the played modulation and presses step the base") {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    auto editor = processor.create_view();
+    auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
+    REQUIRE(native != nullptr);
+    native->set_bounds({0.0f, 0.0f, 350.0f, 635.0f});
+    native->layout_children();
+    auto* freeze = dynamic_cast<beadsy::FreezeControl*>(beadsy_child(*native, "beadsy-freeze"));
+    auto* seed = dynamic_cast<beadsy::SeedModeControl*>(beadsy_child(*native, "beadsy-seed-mode"));
+    REQUIRE(freeze != nullptr);
+    REQUIRE(seed != nullptr);
+
+    // An internal LFO publishes the value it plays; the shown state follows
+    // it while the stored base stays put.
+    store.set_display_modulation(beadsy::kFreeze, 1.0f);
+    store.set_display_modulation(beadsy::kSeedMode, 2.0f);
+    REQUIRE(store.get_value(beadsy::kFreeze) == 0.0f);
+    REQUIRE(freeze->displayed_pressed());
+    REQUIRE_FALSE(freeze->pressed());
+    REQUIRE(seed->displayed_mode() == 2);
+    REQUIRE(seed->mode() == 0);
+
+    // A press steps from the stored base, never from the modulated display
+    // and never from a stale cached copy on the native view.
+    freeze->set_pressed(true);  // stale cache: store still says 0
+    native->simulate_click(beadsy_center(*freeze));
+    REQUIRE(store.get_value(beadsy::kFreeze) == 1.0f);
+    native->simulate_click(beadsy_center(*freeze));
+    REQUIRE(store.get_value(beadsy::kFreeze) == 0.0f);
+    native->simulate_click(beadsy_center(*seed));
+    REQUIRE(store.get_value(beadsy::kSeedMode) == 1.0f);
+    store.clear_display_modulation(beadsy::kFreeze);
+    store.clear_display_modulation(beadsy::kSeedMode);
+    REQUIRE_FALSE(freeze->displayed_pressed());
+    REQUIRE(seed->displayed_mode() == 1);
+}

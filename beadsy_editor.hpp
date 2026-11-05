@@ -1238,12 +1238,15 @@ public:
       canvas.set_line_width(std::max(0.8f, radius_mm * scale * 0.10f));
       canvas.stroke_circle(cx, cy, radius_mm * scale);
     };
+    // The faces show the value the DSP plays: an internal LFO assigned to a
+    // button publishes its modulated value, and the painted state must
+    // follow it exactly as the knobs do, not the stored base value.
     const auto off = pulp::canvas::Color::rgba8(239, 238, 228);
     const auto on = pulp::canvas::Color::rgba8(205, 214, 103);
     paint_button(8.7f, 110.5f, 3.4f,
-                 store_.get_value(kFreeze) >= 0.5f ? on : off);
+                 effective_display_value(kFreeze) >= 0.5f ? on : off);
     paint_button(62.0f, 110.5f, 3.2f,
-                 std::lround(store_.get_value(kSeedMode)) == 0 ?
+                 std::lround(effective_display_value(kSeedMode)) == 0 ?
                      pulp::canvas::Color::rgba8(226, 225, 217) : on);
     // Cover the authored quality LED before drawing the single quality button.
     const auto mask_faceplate = [&](float cx_mm, float cy_mm, float radius_mm) {
@@ -1269,7 +1272,7 @@ public:
     };
     paint_button(35.7f, 83.24f, 3.5f,
                  quality_colors[std::clamp(static_cast<int>(std::lround(
-                     store_.get_value(kQuality))), 0, 3)]);
+                     effective_display_value(kQuality))), 0, 3)]);
     static constexpr pulp::canvas::Color assign_colors[] = {
         pulp::canvas::Color::rgba8(24, 165, 175),
         pulp::canvas::Color::rgba8(234, 166, 27),
@@ -1718,7 +1721,12 @@ private:
     seed_mode_->set_mode(
         static_cast<int>(std::lround(store_.get_value(kSeedMode))));
     seed_mode_->set_on_press([this] {
-      const int next = (seed_mode_->mode() + 1) % 3;
+      // Step from the stored base value: the native view's cached mode only
+      // follows the store through a main-thread listener, and a modulated
+      // display must never decide the next base state.
+      const int next =
+          (std::clamp(static_cast<int>(std::lround(store_.get_value(kSeedMode))),
+                      0, 2) + 1) % 3;
       store_.begin_gesture(kSeedMode);
       store_.set_value(kSeedMode, static_cast<float>(next));
       store_.end_gesture(kSeedMode);
@@ -1750,7 +1758,7 @@ private:
     freeze_mode_->set_pressed(store_.get_value(kFreeze) >= 0.5f);
     freeze_mode_->set_on_press([this] {
       store_.begin_gesture(kFreeze);
-      store_.set_value(kFreeze, freeze_mode_->pressed() ? 0.0f : 1.0f);
+      store_.set_value(kFreeze, store_.get_value(kFreeze) >= 0.5f ? 0.0f : 1.0f);
       store_.end_gesture(kFreeze);
     });
     freeze_mode_->set_on_context_menu([this](pulp::view::Point position) {
@@ -1779,7 +1787,9 @@ private:
     push_button_->set_quality(static_cast<int>(std::lround(
         store_.get_value(kQuality))));
     push_button_->set_on_press([this] {
-      const int next = (push_button_->quality() + 1) % 4;
+      const int next =
+          (std::clamp(static_cast<int>(std::lround(store_.get_value(kQuality))),
+                      0, 3) + 1) % 4;
       store_.begin_gesture(kQuality);
       store_.set_value(kQuality, static_cast<float>(next));
       store_.end_gesture(kQuality);

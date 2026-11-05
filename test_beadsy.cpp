@@ -1021,7 +1021,12 @@ TEST_CASE("Beadsy shared oscillator advances once and displays scaled knob and s
   for (const auto id : {beadsy::kTime, beadsy::kSize, beadsy::kPitch,
                         beadsy::kQuality, beadsy::kSeedMode}) {
     const auto &range = store.info(id)->range;
-    const float expected = (range.min + range.max) * 0.5f;
+    // Knobs take half their span at 50% depth. Button destinations read the
+    // modulated value as a state index, so they get twice the stroke and
+    // reach their last state at the wave peak.
+    const float expected = beadsy::Beadsy::discrete_modulation_target(id)
+                               ? range.max
+                               : (range.min + range.max) * 0.5f;
     REQUIRE(store.get_value(id) == range.min);
     REQUIRE(std::abs(store.get_modulated(id) - expected) < 0.00001f);
     REQUIRE(store.displayed_modulation(id).has_value());
@@ -1029,7 +1034,7 @@ TEST_CASE("Beadsy shared oscillator advances once and displays scaled knob and s
             range.normalize(store.get_modulated(id)));
   }
   REQUIRE(beadsy::seed_button_state_from_value(store.get_modulated(beadsy::kSeedMode))
-          == beads::SEED_BUTTON_STATE_ON);
+          == beads::SEED_BUTTON_STATE_LOCKED);
 
   processor.set_lfo_target_depth(beadsy::kTime, 0, 0.1f);
   processor.set_lfo_target_depth(beadsy::kSize, 0, 0.3f);
@@ -1040,7 +1045,9 @@ TEST_CASE("Beadsy shared oscillator advances once and displays scaled knob and s
   process();
   REQUIRE(std::abs(store.get_modulated(beadsy::kTime) - 0.1f) < 0.00001f);
   REQUIRE(std::abs(store.get_modulated(beadsy::kSize) - 0.3f) < 0.00001f);
-  REQUIRE(store.get_modulated(beadsy::kSeedMode) == 1.0f);
+  // Seed keeps its 50% target depth; as a button destination it reaches the
+  // LOCKED state at the wave peak.
+  REQUIRE(store.get_modulated(beadsy::kSeedMode) == 2.0f);
 
   // Clearing one target immediately restores its base display without
   // stopping another assigned target or resetting the shared phase.
@@ -1256,4 +1263,39 @@ TEST_CASE("Beadsy sample-rate and mode matrix is finite and fail-closed") {
   for (std::size_t channel = 0; channel < unsupported.num_channels(); ++channel)
     for (float sample : unsupported.channel(channel))
       REQUIRE(sample == 0.0f);
+}
+
+TEST_CASE("Beadsy LFO at the default depth switches Freeze on and off every cycle") {
+  // A toggle modulated like a knob never crossed its half-step from OFF at the
+  // default 50% depth, so an LFO on Freeze looked inert. Walk one period and
+  // require both states from each base value.
+  for (const float base : {0.0f, 1.0f}) {
+    beadsy::Beadsy processor;
+    pulp::state::StateStore store;
+    processor.set_state_store(&store);
+    processor.define_parameters(store);
+    processor.prepare({.sample_rate = 48000.0, .max_buffer_size = 480,
+                       .input_channels = 0, .output_channels = 2});
+    store.set_value(beadsy::kFreeze, base);
+    processor.set_lfo(beadsy::kFreeze,
+                      {.enabled = true, .rate_hz = 2.0f, .depth = 0.5f});
+    pulp::midi::MidiBuffer midi_in, midi_out;
+    pulp::audio::Buffer<float> output(2, 480);
+    auto output_view = output.view();
+    pulp::audio::BufferView<const float> empty_input(nullptr, 0, 0);
+    bool saw_on = false, saw_off = false;
+    for (int block = 0; block < 60; ++block) {  // 60 x 10 ms = 1.2 periods
+      processor.process(output_view, empty_input, midi_in, midi_out,
+                        {.sample_rate = 48000.0, .num_samples = 480});
+      const bool frozen = store.get_modulated(beadsy::kFreeze) >= 0.5f;
+      saw_on |= frozen;
+      saw_off |= !frozen;
+      const auto shown = store.displayed_modulation(beadsy::kFreeze);
+      REQUIRE(shown.has_value());
+      REQUIRE((*shown >= 0.5f) == frozen);
+    }
+    REQUIRE(saw_on);
+    REQUIRE(saw_off);
+    REQUIRE(store.get_value(beadsy::kFreeze) == base);
+  }
 }
