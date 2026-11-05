@@ -14,6 +14,7 @@
 #include <pulp/view/context_menu.hpp>
 #include <pulp/runtime/log.hpp>
 #include <cstdlib>
+#include <chrono>
 #include <filesystem>
 #include "beadsy_modulation_menu.hpp"
 #include <pulp/view/parameter_binding.hpp>
@@ -1107,6 +1108,9 @@ public:
 
   void paint(pulp::canvas::Canvas &canvas) override {
     const auto b = local_bounds();
+    processor_.advance_display_modulation(
+        std::chrono::duration<double>(
+            std::chrono::steady_clock::now().time_since_epoch()).count());
     if (detail::host_diagnostics_enabled() && (++diag_paint_count_ % 60) == 1) {
       const auto shown = store_.displayed_modulation(kFreeze);
       pulp::runtime::log_info(

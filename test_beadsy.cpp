@@ -1299,3 +1299,85 @@ TEST_CASE("Beadsy LFO at the default depth switches Freeze on and off every cycl
     REQUIRE(store.get_value(beadsy::kFreeze) == base);
   }
 }
+
+TEST_CASE("Beadsy LFO configuration is carried by host parameters") {
+  // Logic edits an AUv2 through a separate synchronized instance that only
+  // carries parameters to the audio instance. Everything the modulation
+  // menu changes must therefore be a parameter, and a second instance fed
+  // the same parameter values must modulate identically.
+  beadsy::Beadsy editor_side;
+  pulp::state::StateStore editor_store;
+  editor_side.set_state_store(&editor_store);
+  editor_side.define_parameters(editor_store);
+  REQUIRE(editor_store.info(beadsy::kLfo1On) != nullptr);
+  REQUIRE(editor_store.info(beadsy::kLastLfoParam) != nullptr);
+  REQUIRE(std::string(editor_store.info(
+              beadsy::lfo_route_param(0, beadsy::kFreeze, beadsy::LfoRouteParam::Depth))->name)
+          == "LFO 1 -> Freeze Depth");
+
+  editor_side.set_lfo_generator(0, {.enabled = true, .rate_hz = 3.0f,
+                                    .shape = beadsy::LfoModulation::Shape::Square});
+  editor_side.set_lfo_target_enabled(beadsy::kFreeze, 0, true);
+  editor_side.set_lfo_target_depth(beadsy::kFreeze, 0, 0.75f);
+  REQUIRE(editor_store.get_value(beadsy::kLfo1On) == 1.0f);
+  REQUIRE(editor_store.get_value(beadsy::kLfo1Rate) == 3.0f);
+  REQUIRE(editor_store.get_value(beadsy::kLfo1Shape) == 2.0f);
+  REQUIRE(editor_store.get_value(beadsy::lfo_route_param(0, beadsy::kFreeze,
+                                                         beadsy::LfoRouteParam::On)) == 1.0f);
+  REQUIRE(editor_store.get_value(beadsy::lfo_route_param(0, beadsy::kFreeze,
+                                                         beadsy::LfoRouteParam::Depth)) == 0.75f);
+  // A host writing the parameters is read back through the same API.
+  editor_store.set_value(beadsy::kLfo1Rate, 7.0f);
+  REQUIRE(editor_side.lfo_generator(0).rate_hz == 7.0f);
+
+  beadsy::Beadsy audio_side;
+  pulp::state::StateStore audio_store;
+  audio_side.set_state_store(&audio_store);
+  audio_side.define_parameters(audio_store);
+  audio_side.prepare({.sample_rate = 48000.0, .max_buffer_size = 480,
+                      .input_channels = 0, .output_channels = 2});
+  for (const auto &param : editor_store.all_params())
+    audio_store.set_value(param.id, editor_store.get_value(param.id));
+  REQUIRE(audio_side.lfo_generator(0).enabled);
+  REQUIRE(audio_side.lfo_target_enabled(beadsy::kFreeze, 0));
+  REQUIRE(audio_side.lfo_target_depth(beadsy::kFreeze, 0) == 0.75f);
+  pulp::midi::MidiBuffer midi_in, midi_out;
+  pulp::audio::Buffer<float> output(2, 480);
+  auto output_view = output.view();
+  pulp::audio::BufferView<const float> empty_input(nullptr, 0, 0);
+  bool saw_on = false, saw_off = false;
+  for (int block = 0; block < 40; ++block) {
+    audio_side.process(output_view, empty_input, midi_in, midi_out,
+                       {.sample_rate = 48000.0, .num_samples = 480});
+    const bool frozen = audio_store.get_modulated(beadsy::kFreeze) >= 0.5f;
+    saw_on |= frozen;
+    saw_off |= !frozen;
+  }
+  REQUIRE(saw_on);
+  REQUIRE(saw_off);
+}
+
+TEST_CASE("Beadsy animates the modulation display while its own DSP is idle") {
+  // The editor-side instance in Logic is never rendered; its display must
+  // still follow the LFO so the faces and knobs move.
+  beadsy::Beadsy processor;
+  pulp::state::StateStore store;
+  processor.set_state_store(&store);
+  processor.define_parameters(store);
+  processor.set_lfo(beadsy::kFreeze, {.enabled = true, .rate_hz = 2.0f, .depth = 0.5f});
+  REQUIRE_FALSE(store.displayed_modulation(beadsy::kFreeze).has_value());
+  double now = 1000.0;
+  processor.advance_display_modulation(now);  // first tick only arms the clock
+  bool saw_on = false, saw_off = false;
+  for (int tick = 0; tick < 60; ++tick) {
+    now += 1.0 / 60.0;
+    processor.advance_display_modulation(now);
+    const auto shown = store.displayed_modulation(beadsy::kFreeze);
+    REQUIRE(shown.has_value());
+    saw_on |= *shown >= 0.5f;
+    saw_off |= *shown < 0.5f;
+  }
+  REQUIRE(saw_on);
+  REQUIRE(saw_off);
+  REQUIRE(store.get_value(beadsy::kFreeze) == 0.0f);
+}

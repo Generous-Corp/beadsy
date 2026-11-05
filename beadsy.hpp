@@ -3,6 +3,7 @@
 #include "beads/dsp/synth.h"
 #include <pulp/format/processor.hpp>
 #include <pulp/runtime/log.hpp>
+#include <chrono>
 #include <filesystem>
 #include <pulp/midi/buffer.hpp>
 
@@ -55,6 +56,20 @@ enum ParamIDs : pulp::state::ParamID {
   // Keep it after the existing IDs so current automation and state payloads
   // retain their meanings when this source-backed mode is introduced.
   kSeedMode,
+  // The two shared LFO generators and their per-destination routes are host
+  // parameters. Logic edits an AUv2 through a separate synchronized
+  // instance that only carries parameters to the audio instance, so a
+  // plug-in-private LFO setup never reached the sound there.
+  kLfo1On,
+  kLfo1Rate,
+  kLfo1Shape,
+  kLfo2On,
+  kLfo2Rate,
+  kLfo2Shape,
+  // Route parameters follow: for lane L and destination D (kTime..kSeedMode)
+  // the "on" switch is kLfoRouteBase + (L * kModulatableParamCount +
+  // (D - kTime)) * 2 and its depth is the next id.
+  kLfoRouteBase,
 };
 
 /// Stable product-level source identity. The legacy kInputSource parameter is
@@ -115,6 +130,28 @@ inline constexpr pulp::state::ParamID kFirstModulatableParam = kTime;
 inline constexpr pulp::state::ParamID kLastModulatableParam = kSeedMode;
 inline constexpr std::size_t kModulatableParamCount = static_cast<std::size_t>(
     kLastModulatableParam - kFirstModulatableParam + 1);
+inline constexpr std::size_t kLfoLaneCount = 2;
+
+enum class LfoLaneParam : std::uint8_t { On = 0, Rate = 1, Shape = 2 };
+enum class LfoRouteParam : std::uint8_t { On = 0, Depth = 1 };
+
+/// Parameter id of one shared generator setting.
+constexpr pulp::state::ParamID lfo_lane_param(std::size_t lane, LfoLaneParam which) {
+  return static_cast<pulp::state::ParamID>(
+      kLfo1On + lane * 3 + static_cast<std::size_t>(which));
+}
+/// Parameter id of one route setting (lane -> destination).
+constexpr pulp::state::ParamID lfo_route_param(std::size_t lane,
+                                               pulp::state::ParamID target,
+                                               LfoRouteParam which) {
+  return static_cast<pulp::state::ParamID>(
+      kLfoRouteBase +
+      (lane * kModulatableParamCount +
+       static_cast<std::size_t>(target - kFirstModulatableParam)) * 2 +
+      static_cast<std::size_t>(which));
+}
+inline constexpr pulp::state::ParamID kLastLfoParam =
+    lfo_route_param(kLfoLaneCount - 1, kLastModulatableParam, LfoRouteParam::Depth);
 
 /// Product-local LFO modulation.  The base StateStore value remains the host
 /// automation value; the offset is applied through StateStore's modulation API.
@@ -319,6 +356,53 @@ public:
                          .name = "Pitch CV Amount",
                          .unit = "%",
                          .range = {-1.0f, 1.0f, 0.0f}});
+    for (std::size_t lane = 0; lane < kLfoLaneCount; ++lane) {
+      const std::string prefix = "LFO " + std::to_string(lane + 1);
+      store.add_parameter(
+          {.id = lfo_lane_param(lane, LfoLaneParam::On),
+           .name = prefix + " On",
+           .unit = "toggle",
+           .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
+      store.add_parameter({.id = lfo_lane_param(lane, LfoLaneParam::Rate),
+                           .name = prefix + " Rate",
+                           .unit = "Hz",
+                           .range = {0.01f, 20.0f, 1.0f}});
+      store.add_parameter(
+          {.id = lfo_lane_param(lane, LfoLaneParam::Shape),
+           .name = prefix + " Shape",
+           .unit = "shape",
+           .range = pulp::state::ParamRange::linear(0.0f, 3.0f, 0.0f, 1.0f)});
+      for (pulp::state::ParamID id = kFirstModulatableParam;
+           id <= kLastModulatableParam; ++id) {
+        const auto *info = store.info(id);
+        const std::string target = info ? info->name : std::to_string(id);
+        store.add_parameter(
+            {.id = lfo_route_param(lane, id, LfoRouteParam::On),
+             .name = prefix + " -> " + target + " On",
+             .unit = "toggle",
+             .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
+        store.add_parameter({.id = lfo_route_param(lane, id, LfoRouteParam::Depth),
+                             .name = prefix + " -> " + target + " Depth",
+                             .unit = "%",
+                             .range = {0.0f, 1.0f, 0.5f}});
+      }
+    }
+    // State can be restored before the parameters exist; publish whatever
+    // the shadow copy already holds so the host and the audio path agree.
+    for (std::size_t lane = 0; lane < kLfoLaneCount; ++lane) {
+      const auto l = lfo_generators_[lane].load();
+      store.set_value(lfo_lane_param(lane, LfoLaneParam::On), l.enabled ? 1.0f : 0.0f);
+      store.set_value(lfo_lane_param(lane, LfoLaneParam::Rate), l.rate_hz);
+      store.set_value(lfo_lane_param(lane, LfoLaneParam::Shape),
+                      static_cast<float>(l.shape));
+      for (pulp::state::ParamID id = kFirstModulatableParam;
+           id <= kLastModulatableParam; ++id) {
+        store.set_value(lfo_route_param(lane, id, LfoRouteParam::On),
+                        lfo_targets_[lane][id].enabled.load() ? 1.0f : 0.0f);
+        store.set_value(lfo_route_param(lane, id, LfoRouteParam::Depth),
+                        lfo_targets_[lane][id].depth.load());
+      }
+    }
   }
 
   void set_lfo(pulp::state::ParamID id, LfoModulation lfo,
@@ -341,28 +425,57 @@ public:
     result.depth = lfo_target_depth(id, lane);
     return result;
   }
+  /// Generator settings are host parameters once registered; the shadow
+  /// copy serves state restored before registration and keeps the running
+  /// phase, which is not a parameter.
   LfoModulation lfo_generator(std::size_t lane) const {
-    return lane < lfo_generators_.size() ? lfo_generators_[lane].load()
-                                        : LfoModulation{};
+    if (lane >= lfo_generators_.size())
+      return {};
+    auto l = lfo_generators_[lane].load();
+    if (lfo_params_registered()) {
+      l.enabled = modulation_store_->get_value(
+                      lfo_lane_param(lane, LfoLaneParam::On)) >= 0.5f;
+      l.rate_hz = modulation_store_->get_value(lfo_lane_param(lane, LfoLaneParam::Rate));
+      l.shape = static_cast<LfoModulation::Shape>(std::clamp(
+          static_cast<int>(std::lround(modulation_store_->get_value(
+              lfo_lane_param(lane, LfoLaneParam::Shape)))),
+          0, 3));
+    }
+    return sanitize_lfo(l);
   }
   void set_lfo_generator(std::size_t lane, LfoModulation lfo) {
     if (lane >= lfo_generators_.size())
       return;
     lfo = sanitize_lfo(lfo);
     lfo_generators_[lane].store(lfo);
+    if (lfo_params_registered()) {
+      modulation_store_->set_value(lfo_lane_param(lane, LfoLaneParam::On),
+                                   lfo.enabled ? 1.0f : 0.0f);
+      modulation_store_->set_value(lfo_lane_param(lane, LfoLaneParam::Rate), lfo.rate_hz);
+      modulation_store_->set_value(lfo_lane_param(lane, LfoLaneParam::Shape),
+                                   static_cast<float>(lfo.shape));
+    }
     if (!lfo.enabled)
       for (pulp::state::ParamID id = kFirstModulatableParam;
            id <= kLastModulatableParam; ++id)
         clear_inactive_modulation(id);
   }
   bool lfo_target_enabled(pulp::state::ParamID id, std::size_t lane) const {
-    return is_modulatable(id) && lane < lfo_targets_.size() &&
-           lfo_targets_[lane][id].enabled.load(std::memory_order_relaxed);
+    if (!is_modulatable(id) || lane >= lfo_targets_.size())
+      return false;
+    if (lfo_params_registered())
+      return modulation_store_->get_value(
+                 lfo_route_param(lane, id, LfoRouteParam::On)) >= 0.5f;
+    return lfo_targets_[lane][id].enabled.load(std::memory_order_relaxed);
   }
   float lfo_target_depth(pulp::state::ParamID id, std::size_t lane) const {
-    return is_modulatable(id) && lane < lfo_targets_.size()
-               ? lfo_targets_[lane][id].depth.load(std::memory_order_relaxed)
-               : 0.0f;
+    if (!is_modulatable(id) || lane >= lfo_targets_.size())
+      return 0.0f;
+    const float depth =
+        lfo_params_registered()
+            ? modulation_store_->get_value(lfo_route_param(lane, id, LfoRouteParam::Depth))
+            : lfo_targets_[lane][id].depth.load(std::memory_order_relaxed);
+    return std::isfinite(depth) ? std::clamp(depth, 0.0f, 1.0f) : 0.0f;
   }
   void set_lfo_target_depth(pulp::state::ParamID id, std::size_t lane,
                             float depth) {
@@ -370,6 +483,8 @@ public:
       return;
     depth = std::isfinite(depth) ? std::clamp(depth, 0.0f, 1.0f) : 0.0f;
     lfo_targets_[lane][id].depth.store(depth, std::memory_order_relaxed);
+    if (lfo_params_registered())
+      modulation_store_->set_value(lfo_route_param(lane, id, LfoRouteParam::Depth), depth);
     if (depth == 0.0f)
       clear_inactive_modulation(id);
   }
@@ -378,8 +493,32 @@ public:
     if (!is_modulatable(id) || lane >= lfo_targets_.size())
       return;
     lfo_targets_[lane][id].enabled.store(enabled, std::memory_order_relaxed);
+    if (lfo_params_registered())
+      modulation_store_->set_value(lfo_route_param(lane, id, LfoRouteParam::On),
+                                   enabled ? 1.0f : 0.0f);
     if (!enabled)
       clear_inactive_modulation(id);
+  }
+
+  /// Animate the editor's modulation display when this instance is not
+  /// being rendered: Logic edits an AUv2 through a separate synchronized
+  /// instance whose process() never runs, so the faces and knobs would sit
+  /// still while the audio instance modulates. Called from the editor's
+  /// frame; a no-op while the audio thread has processed recently.
+  void advance_display_modulation(double now_seconds) {
+    constexpr double kIdleSeconds = 0.25;
+    const double last_process = last_process_seconds_.load(std::memory_order_relaxed);
+    if (now_seconds - last_process < kIdleSeconds) {
+      last_display_tick_seconds_ = now_seconds;
+      return;
+    }
+    const double dt = last_display_tick_seconds_ > 0.0
+                          ? std::clamp(now_seconds - last_display_tick_seconds_, 0.0, 0.1)
+                          : 0.0;
+    last_display_tick_seconds_ = now_seconds;
+    if (dt <= 0.0 || !sample_rate_)
+      return;
+    update_modulation(static_cast<std::size_t>(dt * sample_rate_));
   }
   void clear_lfo(pulp::state::ParamID id, std::size_t lane = 0) {
     set_lfo_target_enabled(id, lane, false);
@@ -551,10 +690,8 @@ public:
       set_lfo_generator(lane, generators[lane]);
       for (pulp::state::ParamID id = kFirstModulatableParam;
            id <= kLastModulatableParam; ++id) {
-        lfo_targets_[lane][id].enabled.store(targets[lane][id].enabled,
-                                             std::memory_order_relaxed);
-        lfo_targets_[lane][id].depth.store(targets[lane][id].depth,
-                                           std::memory_order_relaxed);
+        set_lfo_target_depth(id, lane, targets[lane][id].depth);
+        set_lfo_target_enabled(id, lane, targets[lane][id].enabled);
       }
     }
     route_ids_ = std::move(route_ids);
@@ -636,6 +773,7 @@ public:
     // Logic may prepare an effect at 44.1 kHz while this Beads DSP path is
     // restricted to 48 kHz; LFO automation and editor feedback must still
     // animate the actual controls in that host session.
+    last_process_seconds_.store(monotonic_seconds(), std::memory_order_relaxed);
     update_modulation(output.num_samples());
     if (!supported_rate_ || !resources_ok_ || output.num_channels() < 2 ||
         output.num_samples() > frames_.size())
@@ -1005,7 +1143,6 @@ private:
 
   // Slot zero is deliberately unused because Pulp parameter IDs are
   // 1-based.  This makes indexing safe for every declared parameter ID.
-  static constexpr std::size_t kLfoLaneCount = 2;
   static LfoModulation sanitize_lfo(LfoModulation lfo) {
     lfo.rate_hz = std::isfinite(lfo.rate_hz)
                       ? std::clamp(lfo.rate_hz, 0.01f, 20.0f) : 1.0f;
@@ -1051,6 +1188,16 @@ private:
   std::array<SharedLfo, kLfoLaneCount> lfo_generators_{};
   std::array<LfoTargets, kLfoLaneCount> lfo_targets_{};
   pulp::state::StateStore *modulation_store_ = nullptr;
+  std::atomic<double> last_process_seconds_{0.0};
+  double last_display_tick_seconds_ = 0.0;
+
+  bool lfo_params_registered() const {
+    return modulation_store_ && modulation_store_->info(kLastLfoParam) != nullptr;
+  }
+  static double monotonic_seconds() {
+    using clock = std::chrono::steady_clock;
+    return std::chrono::duration<double>(clock::now().time_since_epoch()).count();
+  }
   std::array<std::string, 2> route_ids_{};
 
   static bool select_effect_media(double sample_rate,
