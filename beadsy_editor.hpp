@@ -1271,10 +1271,8 @@ public:
     mask_faceplate(58.5f, 124.5f, 1.8f);
     mask_faceplate(28.68f, 83.24f, 2.5f);
     mask_faceplate(3.8f, 54.8f, 1.8f);
-    // Remove the isolated construction dot beneath each small cap; retain the
-    // longer dotted guide runs used by the labels.
-    for (const float x : {18.249f, 29.570f, 40.892f, 52.213f})
-      mask_faceplate(x, 40.3f, 1.05f);
+    // Preserve the authored dotted guide runs. The old construction-dot mask
+    // cut their first segment and produced the visible gaps below the trims.
     static constexpr pulp::canvas::Color quality_colors[] = {
         pulp::canvas::Color::rgba8(48, 174, 210),
         pulp::canvas::Color::rgba8(205, 214, 103),
