@@ -1249,6 +1249,20 @@ public:
     // after any host-routing mask has been applied.
     paint_attenurandomizer_labels(canvas, content_x, content_y, panel_sx,
                                   panel_sy);
+#if defined(BEADSY_LAB_VARIANT)
+    {
+      // The current source, where the hardware would show a patch cable.
+      const int mode = std::clamp(
+          static_cast<int>(std::lround(store_.get_value(kMode))), 0, 2);
+      const char *names[] = {"SOURCE  INTERNAL", "SOURCE  MAIN IN", "SOURCE  SIDE CHAIN"};
+      const float scale = std::min(panel_sx, panel_sy);
+      canvas.set_font_full("Roboto Mono", 1.7f * scale, 700, 0, 0.25f * scale);
+      canvas.set_text_align(pulp::canvas::TextAlign::center);
+      canvas.set_fill_color(pulp::canvas::Color::rgba8(120, 124, 128));
+      canvas.fill_text(names[mode], content_x + 35.4f * panel_sx,
+                       content_y + (128.5f - 25.4f) * panel_sy);
+    }
+#endif
     if (std::string_view(kBeadsyPanelSourceStatus) ==
         "independent scaffold; authorized artwork unavailable") {
       paint_scaffold_labels(canvas, b.width, b.height);
@@ -1377,6 +1391,73 @@ public:
 
   /// The processor this editor edits (proofs and host tests read LFO state).
   Beadsy &processor() const { return processor_; }
+
+#if defined(BEADSY_LAB_VARIANT)
+  /// Lab builds: the panel's own menu (secondary press on the faceplate) holds
+  /// the one switch the hardware does with a patch cable, Source, plus the
+  /// software VCA (Note Gate, Note Release). Public so tests can drive it.
+  pulp::view::ContextMenu *show_panel_menu(pulp::view::Point position) {
+    using Item = pulp::view::ContextMenu::Item;
+    auto *root = detail::root_view(this);
+    if (!root)
+      return nullptr;
+    const auto alive = import_binding_lifetime_token();
+    std::vector<Item> items;
+    items.push_back(Item::make_header("Beadsy Lab"));
+    std::vector<std::string> sources{"Internal synth", "Main In"};
+    if (kAvailableSourceModeMax >= 2)
+      sources.push_back("Side Chain");
+    const auto current = static_cast<std::size_t>(std::clamp(
+        static_cast<int>(std::lround(store_.get_value(kMode))), 0,
+        kAvailableSourceModeMax));
+    items.push_back(Item::make_choice(
+        40, "Source", sources, current, [alive, this](const Item &item) {
+          if (alive.expired())
+            return;
+          store_.begin_gesture(kMode);
+          store_.set_value(kMode, static_cast<float>(item.choice_index));
+          store_.end_gesture(kMode);
+          request_repaint();
+        }));
+    items.push_back(Item::make_separator());
+    items.push_back(Item::make_toggle(
+        41, "Note Gate", store_.get_value(kNoteGate) >= 0.5f,
+        [alive, this](const Item &item) {
+          if (alive.expired())
+            return;
+          store_.begin_gesture(kNoteGate);
+          store_.set_value(kNoteGate, item.checked ? 1.0f : 0.0f);
+          store_.end_gesture(kNoteGate);
+        }));
+    const auto *release_info = store_.info(kNoteRelease);
+    auto release = Item::make_slider(
+        42, "Release",
+        release_info ? release_info->range.normalize(store_.get_value(kNoteRelease)) : 0.0f,
+        0.01f, [alive, this](const Item &item) {
+          if (alive.expired())
+            return;
+          if (const auto *info = store_.info(kNoteRelease)) {
+            store_.begin_gesture(kNoteRelease);
+            store_.set_value(kNoteRelease, info->range.denormalize(item.normalized_value));
+            store_.end_gesture(kNoteRelease);
+          }
+        });
+    {
+      std::ostringstream text;
+      text << static_cast<int>(std::lround(store_.get_value(kNoteRelease))) << " ms";
+      release.value_label = text.str();
+    }
+    items.push_back(std::move(release));
+    auto *menu = detail::ModulationContextMenu::show(
+        root, detail::local_to_root(this, position), std::move(items),
+        [alive, this](std::optional<int>) {
+          if (!alive.expired())
+            request_repaint();
+        });
+    menu->set_min_width(250.0f);
+    return menu;
+  }
+#endif
 
   /// The modulation menu currently open from this editor, if any. Proof and
   /// host tests use it to drive the real rows; it is never owned here.
@@ -1760,6 +1841,9 @@ private:
           button_target(push_button_, kQuality) ||
           button_target(assign_button_, kFeedback))
         return;
+#if defined(BEADSY_LAB_VARIANT)
+      show_panel_menu(position);
+#endif
     };
 
     // Keep the Seed control after the mapped geometry so existing panel

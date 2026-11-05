@@ -70,6 +70,10 @@ enum ParamIDs : pulp::state::ParamID {
   // the "on" switch is kLfoRouteBase + (L * kModulatableParamCount +
   // (D - kTime)) * 2 and its depth is the next id.
   kLfoRouteBase,
+  // Lab builds only: the software stand-in for the VCA every rack puts
+  // after the module when it is played as a voice (see note_gate below).
+  kNoteGate = kLfoRouteBase + 2 * 18 * 2,
+  kNoteRelease,
 };
 
 /// Stable product-level source identity. The legacy kInputSource parameter is
@@ -152,6 +156,7 @@ constexpr pulp::state::ParamID lfo_route_param(std::size_t lane,
 }
 inline constexpr pulp::state::ParamID kLastLfoParam =
     lfo_route_param(kLfoLaneCount - 1, kLastModulatableParam, LfoRouteParam::Depth);
+static_assert(kNoteGate == kLastLfoParam + 1, "Lab parameters follow the LFO routes");
 
 /// Product-local LFO modulation.  The base StateStore value remains the host
 /// automation value; the offset is applied through StateStore's modulation API.
@@ -170,14 +175,22 @@ struct LfoModulation {
 inline pulp::format::PluginDescriptor make_descriptor() {
   auto descriptor = pulp::format::PluginDescriptor{
       .name =
-#if defined(BEADSY_EFFECT_VARIANT)
+#if defined(BEADSY_LAB_VARIANT) && defined(BEADSY_EFFECT_VARIANT)
+          "Beadsy Lab FX",
+#elif defined(BEADSY_LAB_VARIANT)
+          "Beadsy Lab",
+#elif defined(BEADSY_EFFECT_VARIANT)
           "Beadsy FX",
 #else
           "Beadsy",
 #endif
       .manufacturer = "Independent Audio",
       .bundle_id =
-#if defined(BEADSY_EFFECT_VARIANT)
+#if defined(BEADSY_LAB_VARIANT) && defined(BEADSY_EFFECT_VARIANT)
+          "com.independent_audio.beadsy-lab-fx",
+#elif defined(BEADSY_LAB_VARIANT)
+          "com.independent_audio.beadsy-lab",
+#elif defined(BEADSY_EFFECT_VARIANT)
           "com.independent_audio.beadsy-fx",
 #else
           "com.independent_audio.beadsy",
@@ -387,6 +400,20 @@ public:
                              .range = {0.0f, 1.0f, 0.5f}});
       }
     }
+#if defined(BEADSY_LAB_VARIANT)
+    // The hardware has no amplitude stage tied to a gate; a rack adds a VCA
+    // after it when Beads is played as a voice. The Lab builds add that
+    // stage in software, active only while the internal synth is the source.
+    store.add_parameter(
+        {.id = kNoteGate,
+         .name = "Note Gate",
+         .unit = "toggle",
+         .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 1.0f, 1.0f)});
+    store.add_parameter({.id = kNoteRelease,
+                         .name = "Note Release",
+                         .unit = "ms",
+                         .range = {10.0f, 4000.0f, 250.0f}});
+#endif
     // State can be restored before the parameters exist; publish whatever
     // the shadow copy already holds so the host and the audio path agree.
     for (std::size_t lane = 0; lane < kLfoLaneCount; ++lane) {
@@ -943,6 +970,7 @@ public:
       synth_.Render(seed, seed_gate_flags_.data(), freeze_.get(), quality,
                     density, parameters, mix, triggers_, merged_gate_flags_,
                     frames_.data(), n);
+      apply_note_gate(n);
     }
 
     const float gain = std::pow(10.0f, state().get_modulated(kGain) / 20.0f);
@@ -952,7 +980,41 @@ public:
     }
   }
 
+  /// Current note-gate envelope level (0..1); 1 when the gate is disabled.
+  float note_gate_level() const { return note_gate_level_; }
+
 private:
+  /// Lab builds: an attack/release envelope that follows the held MIDI gate,
+  /// applied to the synth output so the continuous oscillator and latched
+  /// grains stop when the keys are released. The granular engine keeps
+  /// running underneath, so the next note resumes the texture.
+  void apply_note_gate(std::size_t n) {
+#if defined(BEADSY_LAB_VARIANT)
+    if (state().get_modulated(kNoteGate) < 0.5f) {
+      note_gate_level_ = 1.0f;
+      return;
+    }
+    const float release_ms =
+        std::clamp(state().get_modulated(kNoteRelease), 10.0f, 4000.0f);
+    const float attack_coeff =
+        1.0f - std::exp(-1.0f / (0.005f * static_cast<float>(sample_rate_)));
+    // Release is the time to fall 60 dB (6.9 time constants), the usual
+    // meaning of an envelope release, not a bare time constant.
+    const float release_coeff =
+        1.0f - std::exp(-6.9f / (release_ms * 0.001f * static_cast<float>(sample_rate_)));
+    float level = note_gate_level_;
+    for (std::size_t i = 0; i < n; ++i) {
+      const bool held = (seed_gate_flags_[i] & stmlib::GATE_FLAG_HIGH) != 0;
+      level += ((held ? 1.0f : 0.0f) - level) * (held ? attack_coeff : release_coeff);
+      frames_[i].l *= level;
+      frames_[i].r *= level;
+    }
+    note_gate_level_ = level < 1.0e-5f ? 0.0f : level;
+#else
+    (void)n;
+#endif
+  }
+
   float modulation_target_span(pulp::state::ParamID id) const {
     if (modulation_store_)
       if (const auto *info = modulation_store_->info(id))
@@ -1189,6 +1251,7 @@ private:
   std::array<LfoTargets, kLfoLaneCount> lfo_targets_{};
   pulp::state::StateStore *modulation_store_ = nullptr;
   std::atomic<double> last_process_seconds_{0.0};
+  float note_gate_level_ = 0.0f;
   double last_display_tick_seconds_ = 0.0;
 
   bool lfo_params_registered() const {

@@ -305,6 +305,66 @@ foreach(_fmt IN ITEMS VST3 CLAP AU AUv3 Standalone)
     endif()
 endforeach()
 
+# Exploration builds: the same engine with the hardware's one real mode switch
+# (Source) visible and a software VCA (Note Gate) for keyboard play. Separate
+# identities so they install next to the shipping instrument and FX.
+pulp_add_plugin(BeadsyLab
+    FORMATS         VST3 CLAP AU
+    PLUGIN_NAME     "Beadsy Lab"
+    BUNDLE_ID       "com.independent-audio.beadsy-lab"
+    MANUFACTURER    "Independent Audio"
+    VERSION         "1.0.27"
+    CATEGORY        Instrument
+    ACCEPTS_MIDI
+    PLUGIN_CODE     "BdLb"
+    MANUFACTURER_CODE "Inde"
+)
+pulp_add_plugin(BeadsyLabFX
+    FORMATS         VST3 CLAP AU
+    PLUGIN_NAME     "Beadsy Lab FX"
+    BUNDLE_ID       "com.independent-audio.beadsy-lab-fx"
+    MANUFACTURER    "Independent Audio"
+    VERSION         "1.0.27"
+    CATEGORY        Effect
+    ACCEPTS_MIDI
+    PLUGIN_CODE     "BdLf"
+    MANUFACTURER_CODE "Inde"
+)
+foreach(_lab IN ITEMS BeadsyLab BeadsyLabFX)
+    foreach(_fmt IN ITEMS VST3 CLAP AU)
+        if(TARGET ${_lab}_${_fmt})
+            target_compile_definitions(${_lab}_${_fmt} PRIVATE BEADSY_LAB_VARIANT=1)
+            if(_lab STREQUAL "BeadsyLabFX")
+                target_compile_definitions(${_lab}_${_fmt} PRIVATE BEADSY_EFFECT_VARIANT=1)
+            endif()
+            target_link_libraries(${_lab}_${_fmt} PRIVATE beadsy_beads_dsp)
+            if(TARGET Pulp::view)
+                target_link_libraries(${_lab}_${_fmt} PRIVATE Pulp::view)
+                if(TARGET Pulp::host)
+                    target_link_libraries(${_lab}_${_fmt} PRIVATE Pulp::host)
+                endif()
+                target_include_directories(${_lab}_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+                target_compile_definitions(${_lab}_${_fmt} PRIVATE BEADSY_NATIVE_EDITOR=1)
+                if(APPLE)
+                    target_sources(${_lab}_${_fmt} PRIVATE beadsy_ui_proof.mm)
+                    target_compile_definitions(${_lab}_${_fmt} PRIVATE BEADSY_UI_PROOF=1)
+                endif()
+            endif()
+        endif()
+    endforeach()
+endforeach()
+if(TARGET Catch2::Catch2WithMain)
+    add_executable(Beadsy-lab-test test_beadsy_lab.cpp)
+    target_link_libraries(Beadsy-lab-test PRIVATE Catch2::Catch2WithMain beadsy_beads_dsp Pulp::format)
+    if(TARGET Pulp::view)
+        target_link_libraries(Beadsy-lab-test PRIVATE Pulp::view)
+        target_compile_definitions(Beadsy-lab-test PRIVATE BEADSY_NATIVE_EDITOR=1)
+    endif()
+    target_include_directories(Beadsy-lab-test PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+    target_compile_definitions(Beadsy-lab-test PRIVATE BEADSY_LAB_VARIANT=1 BEADSY_TESTING=1)
+    catch_discover_tests(Beadsy-lab-test)
+endif()
+
 # The installed Pulp SDK builds the LV2 shared object but does not emit the
 # discovery TTL files. Keep this product-local manifest in the bundle so LV2
 # hosts can discover Beadsy's audio, control, and MIDI ports.
