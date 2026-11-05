@@ -57,6 +57,46 @@ case "pixel":
         print("(\(args[i]),\(args[i+1])) r=\(Int(c.redComponent*255)) g=\(Int(c.greenComponent*255)) b=\(Int(c.blueComponent*255))")
         i += 2
     }
+case "centroid":
+    // centroid FILE X0 Y0 X1 Y1 THRESH -> centroid + bbox of pixels with r+g+b < THRESH
+    let img = NSImage(contentsOfFile: args[2])!
+    let rep = NSBitmapImageRep(data: img.tiffRepresentation!)!
+    let x0 = Int(args[3])!, y0 = Int(args[4])!, x1 = Int(args[5])!, y1 = Int(args[6])!, th = Int(args[7])!
+    var sx = 0.0, sy = 0.0, n = 0, minx = Int.max, maxx = -1, miny = Int.max, maxy = -1
+    for y in y0..<y1 { for x in x0..<x1 {
+        let c = rep.colorAt(x: x, y: y)!
+        let v = Int((c.redComponent + c.greenComponent + c.blueComponent) * 255)
+        if v < th { sx += Double(x); sy += Double(y); n += 1; minx = min(minx, x); maxx = max(maxx, x); miny = min(miny, y); maxy = max(maxy, y) }
+    } }
+    if n > 0 { print(String(format: "n=%d centroid=(%.1f,%.1f) bbox=(%d,%d)-(%d,%d) mid=(%.1f,%.1f)", n, sx/Double(n), sy/Double(n), minx, miny, maxx, maxy, Double(minx+maxx)/2, Double(miny+maxy)/2)) } else { print("n=0") }
+case "cols":
+    // cols FILE X0 Y0 X1 Y1 THRESH -> per-column count of dark pixels (non-zero only)
+    let img = NSImage(contentsOfFile: args[2])!
+    let rep = NSBitmapImageRep(data: img.tiffRepresentation!)!
+    let x0 = Int(args[3])!, y0 = Int(args[4])!, x1 = Int(args[5])!, y1 = Int(args[6])!, th = Int(args[7])!
+    var out: [String] = []
+    for x in x0..<x1 { var n = 0; for y in y0..<y1 { let c = rep.colorAt(x: x, y: y)!; if Int((c.redComponent + c.greenComponent + c.blueComponent) * 255) < th { n += 1 } }; if n > 0 { out.append("\(x):\(n)") } }
+    print(out.joined(separator: " "))
+case "rows":
+    let img = NSImage(contentsOfFile: args[2])!
+    let rep = NSBitmapImageRep(data: img.tiffRepresentation!)!
+    let x0 = Int(args[3])!, y0 = Int(args[4])!, x1 = Int(args[5])!, y1 = Int(args[6])!, th = Int(args[7])!
+    var out: [String] = []
+    for y in y0..<y1 { var n = 0; for x in x0..<x1 { let c = rep.colorAt(x: x, y: y)!; if Int((c.redComponent + c.greenComponent + c.blueComponent) * 255) < th { n += 1 } }; if n > 0 { out.append("\(y):\(n)") } }
+    print(out.joined(separator: " "))
+case "colorc":
+    // colorc FILE X0 Y0 X1 Y1 RMIN RMAX GMIN GMAX BMIN BMAX -> centroid of pixels in the colour box
+    let img = NSImage(contentsOfFile: args[2])!
+    let rep = NSBitmapImageRep(data: img.tiffRepresentation!)!
+    let x0 = Int(args[3])!, y0 = Int(args[4])!, x1 = Int(args[5])!, y1 = Int(args[6])!
+    let rmin = Int(args[7])!, rmax = Int(args[8])!, gmin = Int(args[9])!, gmax = Int(args[10])!, bmin = Int(args[11])!, bmax = Int(args[12])!
+    var sx = 0.0, sy = 0.0, n = 0, minx = Int.max, maxx = -1, miny = Int.max, maxy = -1
+    for y in y0..<y1 { for x in x0..<x1 {
+        let c = rep.colorAt(x: x, y: y)!
+        let r = Int(c.redComponent*255), g = Int(c.greenComponent*255), b = Int(c.blueComponent*255)
+        if r >= rmin && r <= rmax && g >= gmin && g <= gmax && b >= bmin && b <= bmax { sx += Double(x); sy += Double(y); n += 1; minx = min(minx, x); maxx = max(maxx, x); miny = min(miny, y); maxy = max(maxy, y) }
+    } }
+    if n > 0 { print(String(format: "n=%d centroid=(%.1f,%.1f) bbox=(%d,%d)-(%d,%d) mid=(%.1f,%.1f)", n, sx/Double(n), sy/Double(n), minx, miny, maxx, maxy, Double(minx+maxx)/2, Double(miny+maxy)/2)) } else { print("n=0") }
 case "move":
     post(.mouseMoved, CGPoint(x: Double(args[2])!, y: Double(args[3])!), button: .left); print("moved")
 default: print("usage: windows PID | shot WID OUT | click X Y | rclick X Y | drag X1 Y1 X2 Y2 [steps] | move X Y")
