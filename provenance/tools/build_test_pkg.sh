@@ -23,6 +23,8 @@ component() { # name bundle install-location
 SET=${4:-release}
 if [[ "$SET" == "lab" ]]; then
   # Exploration bundles only: they install next to the shipping plug-ins.
+  component lab-app "$BUILD/Beadsy Lab.app" /Applications
+  component lab-fx-app "$BUILD/Beadsy Lab FX.app" /Applications
   component lab-au "$BUILD/AU/Beadsy Lab.component" /Library/Audio/Plug-Ins/Components
   component lab-fx-au "$BUILD/AU/Beadsy Lab FX.component" /Library/Audio/Plug-Ins/Components
   component lab-vst3 "$BUILD/VST3/Beadsy Lab.vst3" /Library/Audio/Plug-Ins/VST3

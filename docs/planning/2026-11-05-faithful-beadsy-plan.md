@@ -47,14 +47,18 @@ menus reachable from that band.
 
 ## Slices (each lands with tests, a capture, and a host check)
 
-1. Band UX + help panel (this round). Help text: acknowledgement first,
-   then how Source, Seed modes, Freeze, Density, grain parameters,
-   attenurandomizers, the mix section, Note Gate and the modulation menu work,
-   in our own words.
-2. Seed button fidelity: click toggles latched (`LOCKED`) ↔ gated (`OFF`);
-   press-and-hold is momentary `ON` (grains while held), matching
-   `ui.cc:OnSwitchReleased`. MIDI gate stays the SEED input.
-   Verify DENSITY semantics per mode against `trigger_generator.cc`.
+1. Band UX + help panel. Landed in 1.0.28 (`beadsy_help.hpp`): "?" at the
+   divider's left edge opens the scrolling acknowledgement + help panel (a
+   framework overlay, so Escape and outside-click close it); the Source chip
+   in the band's centre names the live source and opens the Source menu on a
+   primary press. Proven in the Lab standalone (GPU frames) and in REAPER.
+2. Seed button fidelity, per `ui.cc`: a press sets `seed_button_state_ =
+   true` for as long as it is held (and clears `seed_button_locked_`); a
+   release after `long_press_duration` sets `locked`; a short release just
+   drops the state. SEED+FREEZE together also lock. So in software: mouse
+   down = momentary ON while held, hold beyond the long-press time = latch
+   on release, and a press while latched unlatches. MIDI gate stays the SEED
+   input. Verify DENSITY semantics per state against `trigger_generator.cc`.
 3. Attenurandomizers: the four small knobs as internal random sources with the
    peaky/uniform law (`dsp/randomized_parameter.h:50`), CV amount when a host
    modulation is assigned.
