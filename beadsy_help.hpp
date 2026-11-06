@@ -19,6 +19,8 @@ namespace beadsy {
 struct HelpSection {
   const char *title;
   const char *body;
+  /// Painted under a rule: the sources and licenses stand apart from the help.
+  bool rule_before = false;
 };
 
 /// Acknowledgement first, then how the instrument works, in our own words.
@@ -86,6 +88,21 @@ inline const std::vector<HelpSection> &help_sections() {
        "LFOs with waveform, rate and depth, each routable to any control. The "
        "settings are ordinary host parameters, so they are automatable and "
        "saved with the project."},
+      {"Sources, licenses and thanks",
+       "The granular engine is adapted from the Beads firmware by Emilie Gillet "
+       "(Mutable Instruments), used under the MIT license, together with files "
+       "from her stmlib library, also MIT. Source: github.com/pichenettes/eurorack "
+       "(Beads at commit f4cfa769, stmlib at commit e3bd7c9c). The license terms "
+       "are stated in that repository's README and in the notice at the top of "
+       "every adapted file, which Beadsy keeps verbatim: "
+       "github.com/pichenettes/eurorack/blob/f4cfa769/README.md. "
+       "The help above paraphrases the Beads manual at "
+       "mutable-instruments.net/modules/beads. Beadsy is built on the Pulp SDK "
+       "(MIT). The straight-on panel artwork is used with its owner's permission "
+       "and remains theirs. Mutable Instruments and Emilie Gillet are not "
+       "affiliated with Beadsy and do not endorse it. Thank you, Emilie, for the "
+       "instrument and for publishing its source.",
+       true},
   };
   return sections;
 }
@@ -128,6 +145,14 @@ public:
     const float body_size = 12.0f, title_size = 14.0f;
     const float body_line = body_size * 1.45f;
     for (const auto &section : help_sections()) {
+      if (section.rule_before) {
+        y += 6.0f;
+        canvas.set_stroke_color(pulp::canvas::Color::rgba8(90, 94, 100));
+        canvas.set_line_width(1.0f);
+        if (y > top - 2.0f && y < bottom + 2.0f)
+          canvas.stroke_line(left, y, left + width, y);
+        y += 10.0f;
+      }
       canvas.set_font_full("Roboto Mono", title_size, 700, 0, 0.0f);
       canvas.set_text_align(pulp::canvas::TextAlign::left);
       canvas.set_fill_color(pulp::canvas::Color::rgba8(236, 238, 232));
@@ -211,6 +236,15 @@ public:
         line = word;
       } else {
         line = candidate;
+      }
+      // A single token wider than the column (a long URL) breaks at the
+      // last character that fits rather than running off the card.
+      while (canvas.measure_text(line) > width && line.size() > 1) {
+        std::size_t cut = line.size() - 1;
+        while (cut > 1 && canvas.measure_text(line.substr(0, cut)) > width)
+          --cut;
+        lines.push_back(line.substr(0, cut));
+        line = line.substr(cut);
       }
     }
     if (!line.empty())

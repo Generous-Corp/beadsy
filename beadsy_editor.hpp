@@ -323,6 +323,8 @@ public:
   /// Tests inject a clock so a four-second hold needs no four seconds.
   void set_clock(std::function<double()> seconds) { clock_ = std::move(seconds); }
   bool held() const { return held_; }
+  /// Seconds the button has been held so far; 0 when it is up.
+  double held_seconds() const { return held_ ? now() - press_time_ : 0.0; }
 
   void paint(pulp::canvas::Canvas &canvas) override {
     // The editor compositor paints the full-size toggle face. Keep this
@@ -1336,6 +1338,31 @@ public:
                                          mix(217.0f, 103.0f));
       }
       paint_button(62.0f, 110.5f, 3.2f, face);
+      // The hardware gives no cue during the four-second hold. A software
+      // button can: a ring grows around the face while it is held, and
+      // closes exactly when the latch would take.
+      if (seed_mode_ && seed_mode_->held() && seed_state < 2) {
+        const double t = std::clamp(
+            seed_mode_->held_seconds() / SeedModeControl::kLatchHoldSeconds, 0.0, 1.0);
+        if (t > 0.03) {
+          const float scale = std::min(panel_sx, panel_sy);
+          const float cx = content_x + 62.0f * panel_sx;
+          const float cy = content_y + (128.5f - 110.5f) * panel_sy;
+          const float r = 4.1f * scale;
+          constexpr int kSegments = 48;
+          const int n = std::max(1, static_cast<int>(std::lround(t * kSegments)));
+          canvas.set_stroke_color(on);
+          canvas.set_line_width(std::max(1.0f, 0.5f * scale));
+          const auto point = [&](int k) {
+            const float a = -1.5707963f + 6.2831853f * static_cast<float>(k) / kSegments;
+            return pulp::view::Point{cx + r * std::cos(a), cy + r * std::sin(a)};
+          };
+          for (int k = 0; k < n; ++k) {
+            const auto a = point(k), b = point(k + 1);
+            canvas.stroke_line(a.x, a.y, b.x, b.y);
+          }
+        }
+      }
     }
     // Cover the authored quality LED before drawing the single quality button.
     const auto mask_faceplate = [&](float cx_mm, float cy_mm, float radius_mm) {
@@ -1480,15 +1507,22 @@ public:
           }));
     }
     items.push_back(Item::make_separator());
-    items.push_back(Item::make_toggle(
-        45, "Note Gate", store_.get_value(kNoteGate) >= 0.5f,
-        [alive, this](const Item &item) {
+    // The gate is the VCA a rack puts after the module when the module is
+    // the voice: it shapes the internal synth. With audio patched in, the
+    // output is the processed signal and the keys only seed grains, so the
+    // rows stay visible but inert.
+    const bool synth_source = current == 0;
+    auto gate = Item::make_toggle(
+        45, synth_source ? "Note Gate" : "Note Gate (internal synth)",
+        store_.get_value(kNoteGate) >= 0.5f, [alive, this](const Item &item) {
           if (alive.expired())
             return;
           store_.begin_gesture(kNoteGate);
           store_.set_value(kNoteGate, item.checked ? 1.0f : 0.0f);
           store_.end_gesture(kNoteGate);
-        }));
+        });
+    gate.enabled = synth_source;
+    items.push_back(std::move(gate));
     const auto *release_info = store_.info(kNoteRelease);
     auto release = Item::make_slider(
         46, "Release",
@@ -1507,7 +1541,18 @@ public:
       text << static_cast<int>(std::lround(store_.get_value(kNoteRelease))) << " ms";
       release.value_label = text.str();
     }
+    release.enabled = synth_source;
     items.push_back(std::move(release));
+    // The "edit lane" rows select which lane the controls below edit; the
+    // SDK paints a selecting toggle as a tab rather than a switch.
+    const auto mark_tab = [](auto &item) {
+      if constexpr (requires { item.tab; }) {
+        if (item.label.rfind("EDIT LFO ", 0) == 0)
+          item.tab = true;
+      }
+    };
+    for (auto &item : items)
+      mark_tab(item);
     return items;
   }
 

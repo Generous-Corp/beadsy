@@ -443,6 +443,10 @@ Steps steps_for(const std::string &step) {
     });
     return s;
   }
+  if (step == "show-seed-hold") {
+    // Press and keep holding so the frame capture shows the hold ring.
+    return {[](Proof &p) { p.press(kSeedX, kSeedY); p.report("seed-holding"); }};
+  }
   if (step == "show-source" || step == "show-help") {
     // Open and leave open, so the frame capture shows the overlay itself.
     const bool help = step == "show-help";

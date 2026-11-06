@@ -878,18 +878,27 @@ TEST_CASE("Beadsy Seed button is momentary, latches on a long hold and unlatches
     REQUIRE(seed->mode() == 0);
     REQUIRE(seed->access_label().find("off") != std::string::npos);
 
-    // Held: grains play (ON) only while the button is down.
+    // Held: grains play (ON) only while the button is down, and the hold
+    // time is readable for the progress ring.
+    REQUIRE(seed->held_seconds() == 0.0);
     seed->on_mouse_down({});
     REQUIRE(store.get_value(beadsy::kSeedMode) == 1.0f);
     REQUIRE(seed->held());
     now += 0.2;
+    REQUIRE(seed->held_seconds() == Catch::Approx(0.2));
     seed->on_mouse_up({});
+    REQUIRE(seed->held_seconds() == 0.0);
     REQUIRE(store.get_value(beadsy::kSeedMode) == 0.0f);
     REQUIRE_FALSE(seed->held());
 
-    // A four-second hold latches on release.
+    // A four-second hold latches on release. Halfway through, the ring
+    // around the face shows the progress; the render is the capture.
     seed->on_mouse_down({});
-    now += beadsy::SeedModeControl::kLatchHoldSeconds;
+    now += beadsy::SeedModeControl::kLatchHoldSeconds * 0.6;
+    REQUIRE(seed->held_seconds() == Catch::Approx(2.4));
+    REQUIRE(pulp::view::render_to_file(*native, 350, 551,
+                                       (std::filesystem::temp_directory_path() / "beadsy-seed-hold.png").string(), 1.0f));
+    now += beadsy::SeedModeControl::kLatchHoldSeconds * 0.4;
     seed->on_mouse_up({});
     REQUIRE(store.get_value(beadsy::kSeedMode) == 2.0f);
     REQUIRE(seed->mode() == 2);

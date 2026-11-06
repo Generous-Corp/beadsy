@@ -200,6 +200,16 @@ TEST_CASE("Beadsy Lab help button opens the acknowledgement panel and Escape clo
   REQUIRE(about.find("Emilie Gillet") != std::string_view::npos);
   REQUIRE(about.find("MIT license") != std::string_view::npos);
   REQUIRE(about.find("not affiliated") != std::string_view::npos);
+  // The sources and licenses close the panel under a rule, with the
+  // repository, the license and the thanks.
+  const auto &last = sections.back();
+  REQUIRE(last.rule_before);
+  REQUIRE(std::string_view(last.title).find("licenses") != std::string_view::npos);
+  const std::string_view credits = last.body;
+  REQUIRE(credits.find("github.com/pichenettes/eurorack") != std::string_view::npos);
+  REQUIRE(credits.find("MIT") != std::string_view::npos);
+  REQUIRE(credits.find("Thank you, Emilie") != std::string_view::npos);
+  REQUIRE(sections.front().rule_before == false);
 
   REQUIRE(native->help_panel() == nullptr);
   const auto hb = native->help_button()->bounds();
@@ -222,6 +232,9 @@ TEST_CASE("Beadsy Lab help button opens the acknowledgement panel and Escape clo
   wheel.scroll_delta_y = 1.0e6f;
   panel->on_mouse_event(wheel);
   REQUIRE(panel->scroll_y() < panel->content_height());
+  // Scrolled to the end: the sources and licenses are the visible tail.
+  const auto png_end = std::filesystem::temp_directory_path() / "beadsy-lab-help-end.png";
+  REQUIRE(pulp::view::render_to_file(*native, 350, 551, png_end.string(), 1.0f));
   // Escape goes through the framework overlay path, the same one a menu uses.
   pulp::view::View::dismiss_active_overlay(*native);
   REQUIRE(native->help_panel() == nullptr);
@@ -233,4 +246,34 @@ TEST_CASE("Beadsy Lab help button opens the acknowledgement panel and Escape clo
   press.position = {350.0f - 18.0f - 30.0f + 13.0f, 36.0f + 4.0f + 13.0f};
   native->help_panel()->on_mouse_event(press);
   REQUIRE(native->help_panel() == nullptr);
+}
+
+TEST_CASE("Beadsy Lab note gate rows are inert unless the source is the internal synth") {
+  beadsy::Beadsy processor;
+  pulp::state::StateStore store;
+  processor.set_state_store(&store);
+  processor.define_parameters(store);
+  auto editor = processor.create_view();
+  auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
+  REQUIRE(native != nullptr);
+  native->set_bounds({0, 0, 350, 551});
+  native->layout_children();
+  store.set_value(beadsy::kMode, 1.0f);
+  auto *menu = native->show_panel_menu({175.0f, 505.0f});
+  REQUIRE(menu != nullptr);
+  const auto find = [&](std::string_view label) -> const pulp::view::ContextMenu::Item & {
+    for (const auto &item : menu->items())
+      if (item.label == label) return item;
+    FAIL("missing row " << label);
+    return menu->items().front();
+  };
+  REQUIRE_FALSE(find("Note Gate (internal synth)").enabled);
+  REQUIRE_FALSE(find("Release").enabled);
+  // Choosing the internal synth brings them back.
+  auto &items = const_cast<std::vector<pulp::view::ContextMenu::Item> &>(menu->items());
+  for (auto &item : items)
+    if (item.label == "Internal synth") item.set_toggled(true);
+  REQUIRE(store.get_value(beadsy::kMode) == 0.0f);
+  REQUIRE(find("Note Gate").enabled);
+  REQUIRE(find("Release").enabled);
 }
