@@ -114,10 +114,22 @@ TEST_CASE("Beadsy Lab panel menu switches the source and the gate") {
     FAIL("missing row " << label);
     return items.front();
   };
-  auto &source = find("Source");
-  REQUIRE(source.choices.size() == 3);
-  source.set_choice_index(2);
+  // Source is three radio rows; picking one makes it the live source and the
+  // menu rebuilds with exactly that row checked.
+  REQUIRE(find("Internal synth").checked);
+  REQUIRE_FALSE(find("Side Chain").checked);
+  find("Side Chain").set_toggled(true);
   REQUIRE(store.get_value(beadsy::kMode) == 2.0f);
+  REQUIRE(find("Side Chain").checked);
+  REQUIRE_FALSE(find("Internal synth").checked);
+  find("Main In").set_toggled(true);
+  REQUIRE(store.get_value(beadsy::kMode) == 1.0f);
+  // Unchecking the current row keeps the selection: there is always a source.
+  find("Main In").set_toggled(false);
+  REQUIRE(store.get_value(beadsy::kMode) == 1.0f);
+  REQUIRE(find("Main In").checked);
+  find("Internal synth").set_toggled(true);
+  REQUIRE(store.get_value(beadsy::kMode) == 0.0f);
   find("Note Gate").set_toggled(false);
   REQUIRE(store.get_value(beadsy::kNoteGate) == 0.0f);
   find("Release").set_normalized_value(1.0f);

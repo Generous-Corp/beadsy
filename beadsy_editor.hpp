@@ -1251,16 +1251,18 @@ public:
                                   panel_sy);
 #if defined(BEADSY_LAB_VARIANT)
     {
-      // The current source, where the hardware would show a patch cable.
+      // The current source, where the hardware would show a patch cable:
+      // centred in the band below the divider, beside the resize grip.
       const int mode = std::clamp(
           static_cast<int>(std::lround(store_.get_value(kMode))), 0, 2);
       const char *names[] = {"SOURCE  INTERNAL", "SOURCE  MAIN IN", "SOURCE  SIDE CHAIN"};
-      const float scale = std::min(panel_sx, panel_sy);
-      canvas.set_font_full("Roboto Mono", 1.7f * scale, 700, 0, 0.25f * scale);
+      const float unit = std::min(panel_sx, panel_sy);
+      const float band_top = b.height - ResizeGrip::size_for_unit(unit) - 0.6f * unit;
+      canvas.set_font_full("Roboto Mono", 1.7f * unit, 700, 0, 0.25f * unit);
       canvas.set_text_align(pulp::canvas::TextAlign::center);
       canvas.set_fill_color(pulp::canvas::Color::rgba8(120, 124, 128));
-      canvas.fill_text(names[mode], content_x + 35.4f * panel_sx,
-                       content_y + (128.5f - 25.4f) * panel_sy);
+      canvas.fill_text(names[mode], b.width * 0.5f,
+                       (band_top + b.height) * 0.5f + 0.85f * unit);
     }
 #endif
     if (std::string_view(kBeadsyPanelSourceStatus) ==
@@ -1393,35 +1395,49 @@ public:
   Beadsy &processor() const { return processor_; }
 
 #if defined(BEADSY_LAB_VARIANT)
-  /// Lab builds: the panel's own menu (secondary press on the faceplate) holds
-  /// the one switch the hardware does with a patch cable, Source, plus the
-  /// software VCA (Note Gate, Note Release). Public so tests can drive it.
-  pulp::view::ContextMenu *show_panel_menu(pulp::view::Point position) {
+  struct PanelMenuSession {
+    pulp::view::ContextMenu *menu = nullptr;
+  };
+
+  /// Rows of the panel menu. Source is three radio-style rows (the hardware
+  /// has one patch cable; the software has one selected input), then the
+  /// software VCA. Rebuilt after every change so the checked row is always
+  /// the live value.
+  std::vector<pulp::view::ContextMenu::Item>
+  panel_menu_items(const std::shared_ptr<PanelMenuSession> &session) {
     using Item = pulp::view::ContextMenu::Item;
-    auto *root = detail::root_view(this);
-    if (!root)
-      return nullptr;
     const auto alive = import_binding_lifetime_token();
+    const auto refresh = [alive, this, session] {
+      if (alive.expired() || !session->menu)
+        return;
+      session->menu->set_items(panel_menu_items(session));
+      request_repaint();
+    };
     std::vector<Item> items;
-    items.push_back(Item::make_header("Beadsy Lab"));
-    std::vector<std::string> sources{"Internal synth", "Main In"};
-    if (kAvailableSourceModeMax >= 2)
-      sources.push_back("Side Chain");
-    const auto current = static_cast<std::size_t>(std::clamp(
+    items.push_back(Item::make_header("Source"));
+    const int current = std::clamp(
         static_cast<int>(std::lround(store_.get_value(kMode))), 0,
-        kAvailableSourceModeMax));
-    items.push_back(Item::make_choice(
-        40, "Source", sources, current, [alive, this](const Item &item) {
-          if (alive.expired())
-            return;
-          store_.begin_gesture(kMode);
-          store_.set_value(kMode, static_cast<float>(item.choice_index));
-          store_.end_gesture(kMode);
-          request_repaint();
-        }));
+        kAvailableSourceModeMax);
+    const char *names[] = {"Internal synth", "Main In", "Side Chain"};
+    for (int mode = 0; mode <= kAvailableSourceModeMax; ++mode) {
+      items.push_back(Item::make_toggle(
+          40 + mode, names[mode], current == mode,
+          [alive, this, mode, refresh](const Item &item) {
+            if (alive.expired())
+              return;
+            // A radio: selecting a row makes it the source; unchecking the
+            // current row keeps it, there is always exactly one source.
+            if (item.checked) {
+              store_.begin_gesture(kMode);
+              store_.set_value(kMode, static_cast<float>(mode));
+              store_.end_gesture(kMode);
+            }
+            refresh();
+          }));
+    }
     items.push_back(Item::make_separator());
     items.push_back(Item::make_toggle(
-        41, "Note Gate", store_.get_value(kNoteGate) >= 0.5f,
+        45, "Note Gate", store_.get_value(kNoteGate) >= 0.5f,
         [alive, this](const Item &item) {
           if (alive.expired())
             return;
@@ -1431,9 +1447,9 @@ public:
         }));
     const auto *release_info = store_.info(kNoteRelease);
     auto release = Item::make_slider(
-        42, "Release",
+        46, "Release",
         release_info ? release_info->range.normalize(store_.get_value(kNoteRelease)) : 0.0f,
-        0.01f, [alive, this](const Item &item) {
+        0.01f, [alive, this, refresh](const Item &item) {
           if (alive.expired())
             return;
           if (const auto *info = store_.info(kNoteRelease)) {
@@ -1448,14 +1464,26 @@ public:
       release.value_label = text.str();
     }
     items.push_back(std::move(release));
-    auto *menu = detail::ModulationContextMenu::show(
-        root, detail::local_to_root(this, position), std::move(items),
-        [alive, this](std::optional<int>) {
+    return items;
+  }
+
+  /// Lab builds: the panel's own menu (secondary press on bare faceplate).
+  /// Public so tests can drive it.
+  pulp::view::ContextMenu *show_panel_menu(pulp::view::Point position) {
+    auto *root = detail::root_view(this);
+    if (!root)
+      return nullptr;
+    auto session = std::make_shared<PanelMenuSession>();
+    const auto alive = import_binding_lifetime_token();
+    session->menu = detail::ModulationContextMenu::show(
+        root, detail::local_to_root(this, position), panel_menu_items(session),
+        [alive, this, session](std::optional<int>) {
+          session->menu = nullptr;
           if (!alive.expired())
             request_repaint();
         });
-    menu->set_min_width(250.0f);
-    return menu;
+    session->menu->set_min_width(250.0f);
+    return session->menu;
   }
 #endif
 
