@@ -273,13 +273,17 @@ private:
 
 } // namespace detail
 
-/// The hardware SEED control is a button with a latched mode indication.  In
-/// Beadsy the source-backed three-state Seed Mode parameter is the semantic
-/// authority, so the straight-on control cycles OFF → ON → LOCKED on click.
-/// Keeping this as a native view (rather than a guessed SVG hit region) makes
+/// The hardware SEED control is a momentary button with a latch: grains play
+/// while it is held, a four-second hold (or FREEZE pressed while it is held)
+/// latches continuous generation, and a short press unlatches. The control
+/// reports press and release with the held time; the editor turns those into
+/// the three-state Seed Mode parameter. Keeping this as a native view makes
 /// automation/state changes repaint the LED as well as the button.
 class SeedModeControl final : public pulp::view::View {
 public:
+  /// Hold time that latches, from the firmware's long-press table.
+  static constexpr double kLatchHoldSeconds = 4.0;
+
   SeedModeControl() {
     set_id("beadsy-seed-mode");
     set_access_role(pulp::view::View::AccessRole::button);
@@ -293,7 +297,8 @@ public:
     // variants still expose the same seed-button semantics.
     mode_ = std::clamp(mode, 0, 2);
     const char *state = mode_ == 0 ? "off" : mode_ == 1 ? "on" : "locked";
-    set_access_label(std::string("Seed Mode (") + state + "); click to cycle");
+    set_access_label(std::string("Seed Mode (") + state +
+                     "); hold for grains, hold 4 s to latch");
     request_repaint();
   }
   int mode() const { return mode_; }
@@ -308,9 +313,16 @@ public:
   void set_on_press(std::function<void()> callback) {
     on_press_ = std::move(callback);
   }
+  /// Called on release with the time the button was held, in seconds.
+  void set_on_release(std::function<void(double)> callback) {
+    on_release_ = std::move(callback);
+  }
   void set_on_context_menu(std::function<void(pulp::view::Point)> callback) {
     on_context_menu_ = std::move(callback);
   }
+  /// Tests inject a clock so a four-second hold needs no four seconds.
+  void set_clock(std::function<double()> seconds) { clock_ = std::move(seconds); }
+  bool held() const { return held_; }
 
   void paint(pulp::canvas::Canvas &canvas) override {
     // The editor compositor paints the full-size toggle face. Keep this
@@ -330,15 +342,35 @@ public:
     // twice per click (Freeze cancelled itself, the cyclers skipped a state).
   }
   void on_mouse_down(pulp::view::Point) override {
+    held_ = true;
+    press_time_ = now();
     if (on_press_)
       on_press_();
+  }
+  void on_mouse_up(pulp::view::Point) override {
+    if (!held_)
+      return;
+    held_ = false;
+    if (on_release_)
+      on_release_(now() - press_time_);
   }
   bool wants_mouse_input() const override { return true; }
 
 private:
+  double now() const {
+    if (clock_)
+      return clock_();
+    return std::chrono::duration<double>(
+               std::chrono::steady_clock::now().time_since_epoch())
+        .count();
+  }
   int mode_ = 0;
+  bool held_ = false;
+  double press_time_ = 0.0;
+  std::function<double()> clock_;
   std::function<float()> display_value_;
   std::function<void()> on_press_;
+  std::function<void(double)> on_release_;
   std::function<void(pulp::view::Point)> on_context_menu_;
 };
 
@@ -1051,6 +1083,15 @@ private:
   float accumulated_dy_ = 0.0f;
 };
 
+/// Brightness of the latched SEED LED at a wall-clock millisecond count: the
+/// firmware's 2048 ms triangle, scaled to run from a quarter to full. Pure so
+/// a test can pin it without painting.
+inline double seed_latch_breath(long long milliseconds) {
+  int triangle = static_cast<int>((milliseconds & 2047) >> 2);
+  triangle = triangle >= 256 ? 511 - triangle : triangle;
+  return ((triangle * 3 >> 2) + 64) / 255.0;
+}
+
 class BeadsyEditor final : public pulp::view::View {
 public:
   BeadsyEditor(Beadsy &processor, pulp::state::StateStore &store)
@@ -1277,9 +1318,25 @@ public:
     const auto on = pulp::canvas::Color::rgba8(205, 214, 103);
     paint_button(8.7f, 110.5f, 3.4f,
                  effective_display_value(kFreeze) >= 0.5f ? on : off);
-    paint_button(62.0f, 110.5f, 3.2f,
-                 std::lround(effective_display_value(kSeedMode)) == 0 ?
-                     pulp::canvas::Color::rgba8(226, 225, 217) : on);
+    {
+      // Latched: the hardware LED fades between a quarter and full
+      // brightness on a 2 s triangle; held: steady; off: unlit.
+      const auto seed_off = pulp::canvas::Color::rgba8(226, 225, 217);
+      const long seed_state = std::lround(effective_display_value(kSeedMode));
+      auto face = seed_state == 0 ? seed_off : on;
+      if (seed_state >= 2) {
+        const auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                            std::chrono::steady_clock::now().time_since_epoch())
+                            .count();
+        const float t = static_cast<float>(seed_latch_breath(ms));
+        const auto mix = [&](float a, float b) {
+          return static_cast<uint8_t>(std::lround(a + (b - a) * t));
+        };
+        face = pulp::canvas::Color::rgba8(mix(226.0f, 205.0f), mix(225.0f, 214.0f),
+                                         mix(217.0f, 103.0f));
+      }
+      paint_button(62.0f, 110.5f, 3.2f, face);
+    }
     // Cover the authored quality LED before drawing the single quality button.
     const auto mask_faceplate = [&](float cx_mm, float cy_mm, float radius_mm) {
       const float scale = std::min(panel_sx, panel_sy);
@@ -1919,14 +1976,17 @@ private:
     seed_mode_->set_mode(
         static_cast<int>(std::lround(store_.get_value(kSeedMode))));
     seed_mode_->set_on_press([this] {
-      // Step from the stored base value: the native view's cached mode only
-      // follows the store through a main-thread listener, and a modulated
-      // display must never decide the next base state.
-      const int next =
-          (std::clamp(static_cast<int>(std::lround(store_.get_value(kSeedMode))),
-                      0, 2) + 1) % 3;
+      // Hardware: a press plays grains for as long as the button is held and
+      // clears the latch; what the release does depends on how long it was.
+      seed_ignore_release_ = false;
       store_.begin_gesture(kSeedMode);
-      store_.set_value(kSeedMode, static_cast<float>(next));
+      store_.set_value(kSeedMode, 1.0f);
+    });
+    seed_mode_->set_on_release([this](double held_seconds) {
+      if (!seed_ignore_release_)
+        store_.set_value(kSeedMode,
+                         held_seconds >= SeedModeControl::kLatchHoldSeconds ? 2.0f
+                                                                            : 0.0f);
       store_.end_gesture(kSeedMode);
     });
     seed_mode_->set_on_context_menu([this](pulp::view::Point position) {
@@ -1955,6 +2015,13 @@ private:
     freeze_mode_->set_z_index(100);
     freeze_mode_->set_pressed(store_.get_value(kFreeze) >= 0.5f);
     freeze_mode_->set_on_press([this] {
+      // FREEZE while SEED is held latches SEED and does not freeze, as on
+      // the hardware; the SEED release then only ends the gesture.
+      if (seed_mode_ && seed_mode_->held()) {
+        store_.set_value(kSeedMode, 2.0f);
+        seed_ignore_release_ = true;
+        return;
+      }
       store_.begin_gesture(kFreeze);
       store_.set_value(kFreeze, store_.get_value(kFreeze) >= 0.5f ? 0.0f : 1.0f);
       store_.end_gesture(kFreeze);
@@ -2316,6 +2383,7 @@ private:
   std::vector<Control> controls_;
   std::vector<pulp::view::ParameterBinding> bindings_;
   SeedModeControl *seed_mode_ = nullptr;
+  bool seed_ignore_release_ = false;
   pulp::state::ListenerToken seed_mode_binding_;
   FreezeControl *freeze_mode_ = nullptr;
   pulp::state::ListenerToken freeze_mode_binding_;

@@ -50,14 +50,17 @@ inline const std::vector<HelpSection> &help_sections() {
        "channels 3 and 4 of this track. Only effect-type entries can receive "
        "audio in Logic."},
       {"Playing it",
-       "A MIDI note sets the pitch and acts as the hardware's SEED gate. In the "
-       "gated mode (Seed button off) grains fire only while a key is held; at "
-       "the twelve o'clock DENSITY position exactly one grain per key press. In "
-       "the latched mode (Seed button lit) grains fire continuously at the "
-       "DENSITY rate: clockwise a randomly modulated rate, counter-clockwise a "
-       "steady rate, twelve o'clock none. Note Gate, in the Source menu, is the "
-       "amplifier a rack would put after the module: with it on, the sound "
-       "fades out over the Release time when you let go of the keys."},
+       "A MIDI note sets the pitch and acts as the hardware's SEED gate. The "
+       "SEED button works like the module's: grains play while you hold it, "
+       "holding it for four seconds (or pressing FREEZE while holding it) "
+       "latches continuous generation and the button breathes, and a short "
+       "press unlatches. Unlatched, grains fire only while a key or the button "
+       "is held; at the twelve o'clock DENSITY position exactly one grain per "
+       "press. Latched, grains fire continuously at the DENSITY rate: clockwise "
+       "a randomly modulated rate, counter-clockwise a steady rate, twelve "
+       "o'clock none. Note Gate, in the Source menu, is the amplifier a rack "
+       "would put after the module: with it on, the sound fades out over the "
+       "Release time when you let go of the keys."},
       {"Grain controls",
        "TIME picks where on the buffer a grain starts, from the newest audio to "
        "the oldest. SIZE sets the grain duration, from 30 ms to 4 s, and plays it "

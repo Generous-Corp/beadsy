@@ -158,6 +158,13 @@ struct Proof {
     send(right ? NSEventTypeRightMouseUp : NSEventTypeLeftMouseUp, p);
   }
 
+  void press(float x, float y) {
+    const auto p = to_window(x, y);
+    send(NSEventTypeMouseMoved, p);
+    send(NSEventTypeLeftMouseDown, p);
+  }
+  void release(float x, float y) { send(NSEventTypeLeftMouseUp, to_window(x, y)); }
+
   void drag(float x0, float y0, float x1, float y1, int steps) {
     send(NSEventTypeMouseMoved, to_window(x0, y0));
     send(NSEventTypeLeftMouseDown, to_window(x0, y0));
@@ -260,7 +267,19 @@ Steps steps_for(const std::string &step) {
   };
   if (step == "layout") return {[](Proof &p) { p.report("after"); }};
   if (step == "click-freeze") return toggle(kFreezeX, kFreezeY, "freeze", 3);
-  if (step == "click-seed") return toggle(kSeedX, kSeedY, "seed", 3);
+  if (step == "click-seed") {
+    // Hardware semantics: ON while held, OFF on a short release, LOCKED after
+    // a four-second hold, unlatched by the next short press.
+    Steps s;
+    s.push_back([](Proof &p) { p.press(kSeedX, kSeedY); p.report("seed-held"); });
+    s.push_back([](Proof &p) { p.release(kSeedX, kSeedY); p.report("seed-released"); });
+    s.push_back([](Proof &p) { p.press(kSeedX, kSeedY); p.report("seed-long-press-start"); });
+    for (int i = 0; i < 13; ++i)
+      s.push_back([](Proof &) {});
+    s.push_back([](Proof &p) { p.release(kSeedX, kSeedY); p.report("seed-latched"); });
+    s.push_back([](Proof &p) { p.click(kSeedX, kSeedY); p.report("seed-unlatched"); });
+    return s;
+  }
   if (step == "click-quality") return toggle(kQualityX, kQualityY, "quality", 2);
   if (step == "click-assign") return toggle(kAssignX, kAssignY, "assign", 2);
   if (step == "menu-freeze-split")

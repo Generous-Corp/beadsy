@@ -8,7 +8,7 @@ STEPS=("$@"); [ ${#STEPS[@]} -eq 0 ] && STEPS=(layout click-freeze click-seed cl
 for step in "${STEPS[@]}"; do
   pkill -x "$(basename "$BIN")" 2>/dev/null; sleep 0.3
   rm -f "$OUT/$step.png"
-  PULP_SCREENSHOT="$OUT/$step.png" PULP_FRAMES=200 BEADSY_UI_PROOF="$step" timeout 40 "$BIN" > "$OUT/$step.log" 2>&1
+  PULP_SCREENSHOT="$OUT/$step.png" PULP_FRAMES=${PULP_FRAMES:-200} BEADSY_UI_PROOF="$step" timeout 40 "$BIN" > "$OUT/$step.log" 2>&1
   echo "== $step rc=$? png=$( [ -f "$OUT/$step.png" ] && sips -g pixelWidth -g pixelHeight "$OUT/$step.png" | awk '/pixel/{printf "%s ", $2}' )"
   grep -h 'beadsy-ui-proof' "$OUT/$step.log" | sed 's/^\[beadsy-ui-proof\] //'
 done

@@ -58,7 +58,12 @@ menus reachable from that band.
    drops the state. SEED+FREEZE together also lock. So in software: mouse
    down = momentary ON while held, hold beyond the long-press time = latch
    on release, and a press while latched unlatches. MIDI gate stays the SEED
-   input. Verify DENSITY semantics per state against `trigger_generator.cc`.
+   input. DENSITY semantics per state need no verification: the engine runs
+   the firmware's own `TriggerGenerator` (the adapted copy differs only by a
+   span in place of a VLA and by keeping the MIDI adapter's edge flags).
+   Implemented in `SeedModeControl` (press/release with held time, injected
+   clock for tests), FREEZE-while-held latch in the Freeze press handler,
+   and the latched face breathing on the firmware's 2048 ms triangle.
 3. Attenurandomizers: the four small knobs as internal random sources with the
    peaky/uniform law (`dsp/randomized_parameter.h:50`), CV amount when a host
    modulation is assigned.
