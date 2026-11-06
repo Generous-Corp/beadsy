@@ -47,8 +47,7 @@ inline const std::vector<HelpSection> &help_sections() {
        "the plug-in's main audio input (the track it sits on). Side Chain "
        "processes the second input, which the host fills: in Logic, use the "
        "Side Chain pop-up in the plug-in header; in REAPER, send audio to "
-       "channels 3 and 4 of this track. Only effect-type entries can receive "
-       "audio in Logic."},
+       "channels 3 and 4 of this track."},
       {"Playing it",
        "A MIDI note sets the pitch and acts as the hardware's SEED gate. The "
        "SEED button works like the module's: grains play while you hold it, "

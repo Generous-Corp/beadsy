@@ -6,8 +6,8 @@
 namespace beadsy::detail {
 
 // Product presentation on the ordinary SDK menu: retain its focus, keyboard,
-// scrolling and capture behavior while using accurate waveform drawings and
-// pointer coordinates for the visible slider tracks in the pinned SDK.
+// scrolling and capture behavior while drawing accurate waveform cells and
+// normalising the legacy gesture phases for slider rows.
 class ModulationContextMenu final : public pulp::view::ContextMenu {
 public:
   static ModulationContextMenu *show(
@@ -145,16 +145,8 @@ public:
           slider_row_ = static_cast<int>(row);
       }
     }
-    if (slider_row_ >= 0 && static_cast<std::size_t>(slider_row_) < items().size() &&
-        (mapped.isPress() || mapped.phase == pulp::view::MousePhase::drag)) {
-      const auto row = geometry.rows[static_cast<std::size_t>(slider_row_)];
-      const float left = row.x + std::min(90.0f, row.width * 0.45f);
-      const float painted_right = row.x + row.width - 52.0f;
-      const float sdk_right = row.x + row.width - 10.0f;
-      const float value = std::clamp((event.position.x - left) /
-                                       std::max(1.0f, painted_right - left), 0.0f, 1.0f);
-      mapped.position.x = left + value * (sdk_right - left);
-    }
+    // The SDK maps the pointer against the track it paints (a value label
+    // shortens both), so the position passes through unchanged.
     if (event.phase == pulp::view::MousePhase::release)
       slider_row_ = -1;
     ContextMenu::on_mouse_event(mapped);

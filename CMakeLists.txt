@@ -336,13 +336,10 @@ foreach(_lab IN ITEMS BeadsyLab BeadsyLabFX)
             target_compile_definitions(${_lab}_${_fmt} PRIVATE BEADSY_LAB_VARIANT=1)
             if(_lab STREQUAL "BeadsyLabFX")
                 target_compile_definitions(${_lab}_${_fmt} PRIVATE BEADSY_EFFECT_VARIANT=1)
-            elseif(_fmt STREQUAL "AU")
-                # Pulp's AU instrument adapter creates the audio unit with no
-                # input elements, so an aumu can never receive audio in Logic.
-                # Offer only the internal synth there instead of two dead rows;
-                # the VST3/CLAP instrument keeps all three sources.
-                target_compile_definitions(${_lab}_${_fmt} PRIVATE BEADSY_AU_NO_INPUT=1)
             endif()
+            # The AU instrument keeps its optional Main In + Side Chain buses:
+            # the SDK's AU v2 instrument adapter creates one input element per
+            # declared bus, so the aumu offers all three sources like VST3/CLAP.
             target_link_libraries(${_lab}_${_fmt} PRIVATE beadsy_beads_dsp)
             if(TARGET Pulp::view)
                 target_link_libraries(${_lab}_${_fmt} PRIVATE Pulp::view)
