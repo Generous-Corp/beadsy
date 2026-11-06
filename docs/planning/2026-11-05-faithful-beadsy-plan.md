@@ -82,6 +82,16 @@ menus reachable from that band.
    limiter as an option; Freeze-buffer persistence if the port exposes it.
 6. Fold Lab into the shipping bundles as 1.1; retire the Lab identities.
 
+## Status (2026-11-06)
+
+1.0.29 is released on an SDK cut from Pulp main (AU v2 instrument input
+elements with auval-clean negotiation, context-menu value labels): the Lab
+instrument's Audio Unit offers Internal, Main In and Side Chain, and every
+Audio Unit passes auval. Slices 1 and 2 are landed; 3 and 4 are the
+firmware's own code. Open: Logic's Side Chain pop-up on the Lab instrument
+(owner trial), a render test for the delay regime, slice 5, then fold Lab
+into 1.1.
+
 ## Release and openness
 
 - Repository: github.com/Generous-Corp/beadsy (private until the open-source
