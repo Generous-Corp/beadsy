@@ -64,13 +64,19 @@ menus reachable from that band.
    Implemented in `SeedModeControl` (press/release with held time, injected
    clock for tests), FREEZE-while-held latch in the Freeze press handler,
    and the latched face breathing on the firmware's 2048 ms triangle.
-3. Attenurandomizers: the four small knobs as internal random sources with the
-   peaky/uniform law (`dsp/randomized_parameter.h:50`), CV amount when a host
-   modulation is assigned.
+3. Attenurandomizers: inherited. The four amounts are passed as the centred
+   attenuverter value into the firmware's own `RandomizedParameter`
+   (`beadsy.hpp` `randomized()`), so the peaky/uniform law is the module's.
+   The hardware's CV path has no equivalent; the modulation menu's LFOs are
+   the software's CV.
 4. Delay mode: SIZE fully clockwise; DENSITY base time, SEED taps (MIDI notes)
    and host clock as the external clock, TIME multiplier, SHAPE envelope,
    PITCH shifter, FREEZE slicing (`dsp/delay_controller.h`,
-   `dsp/delay_clock.*`). Mostly present in the effect engine; verify and test.
+   `dsp/delay_clock.*`). Inherited: the effect path runs the firmware's own
+   `beads::Processor` (`effect_` in `beadsy.hpp`), and the SEED gate flags it
+   receives carry MIDI-note taps, so tap tempo and the external clock work as
+   on the module. What remains is a render test that pins the delay regime
+   at SIZE fully clockwise against the firmware's thresholds.
 5. Quality/media modes with resampling so the engine runs at any host rate
    (`Synth::Resolution` and `Processor` media paths); then auto input gain and
    limiter as an option; Freeze-buffer persistence if the port exposes it.
