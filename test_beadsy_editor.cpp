@@ -1076,6 +1076,19 @@ TEST_CASE("Beadsy keeps shared LFOs enabled while menus focus on another control
     REQUIRE(processor.lfo_generator(0).enabled);
     REQUIRE(processor.lfo_target_enabled(beadsy::kPitch, 0));
     REQUIRE(menu->items().size() == 13);
+    {
+        // Capture: LFO 1 on, Rate hovered; the switch, tab and slider styling.
+        const auto rows = menu->layout().rows;
+        for (std::size_t i = 0; i < menu->items().size(); ++i)
+            if (menu->items()[i].label == "Rate") {
+                pulp::view::MouseEvent hover;
+                hover.position = {rows[i].x + rows[i].width * 0.6f, rows[i].y + rows[i].height * 0.5f};
+                menu->on_mouse_event(hover);
+                REQUIRE(menu->cursor() == pulp::view::View::CursorStyle::pointer);
+            }
+        REQUIRE(pulp::view::render_to_file(*native, 350, 551,
+                                           (std::filesystem::temp_directory_path() / "beadsy-menu-lfo.png").string(), 1.0f));
+    }
     REQUIRE_FALSE(has_menu_item(menu, "LFO 1 -> Size"));
     auto rate = menu_item(menu, "Rate");
     rate.set_normalized_value(0.2f);

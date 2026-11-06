@@ -1543,16 +1543,6 @@ public:
     }
     release.enabled = synth_source;
     items.push_back(std::move(release));
-    // The "edit lane" rows select which lane the controls below edit; the
-    // SDK paints a selecting toggle as a tab rather than a switch.
-    const auto mark_tab = [](auto &item) {
-      if constexpr (requires { item.tab; }) {
-        if (item.label.rfind("EDIT LFO ", 0) == 0)
-          item.tab = true;
-      }
-    };
-    for (auto &item : items)
-      mark_tab(item);
     return items;
   }
 
@@ -1815,6 +1805,16 @@ private:
         if (id != session->target)
           add_target(id, lane);
     }
+    // The "edit lane" rows select which lane the controls below edit; the
+    // SDK paints a selecting toggle as a tab rather than a switch.
+    const auto mark_tab = [](auto &item) {
+      if constexpr (requires { item.tab; }) {
+        if (item.label.rfind("EDIT LFO ", 0) == 0)
+          item.tab = true;
+      }
+    };
+    for (auto &item : items)
+      mark_tab(item);
     return items;
   }
 

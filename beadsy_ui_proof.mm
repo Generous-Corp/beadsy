@@ -443,6 +443,37 @@ Steps steps_for(const std::string &step) {
     });
     return s;
   }
+  if (step == "show-menu-freeze") {
+    // Open the Freeze modulation menu, press LFO 1, hover Rate, and leave it
+    // open so the frame capture shows the rows.
+    Steps s;
+    s.push_back([](Proof &p) { p.click(kFreezeX, kFreezeY, true); p.report("menu-open"); });
+    s.push_back([](Proof &p) {
+      if (auto *menu = p.editor->modulation_menu()) {
+        const auto rows = menu->layout().rows;
+        for (std::size_t i = 0; i < menu->items().size() && i < rows.size(); ++i)
+          if (menu->items()[i].label == "LFO 1") {
+            const auto b = menu->bounds();
+            p.click(b.x + rows[i].x + 40.0f, b.y + rows[i].y + rows[i].height * 0.5f);
+          }
+      }
+      p.report("lfo1-on");
+    });
+    s.push_back([](Proof &p) {
+      if (auto *menu = p.editor->modulation_menu()) {
+        const auto rows = menu->layout().rows;
+        for (std::size_t i = 0; i < menu->items().size() && i < rows.size(); ++i)
+          if (menu->items()[i].label == "Rate") {
+            const auto b = menu->bounds();
+            const auto q = p.to_window(b.x + rows[i].x + rows[i].width * 0.6f,
+                                       b.y + rows[i].y + rows[i].height * 0.5f);
+            p.send(NSEventTypeMouseMoved, q);
+          }
+      }
+      p.report("rate-hovered");
+    });
+    return s;
+  }
   if (step == "show-seed-hold") {
     // Press and keep holding so the frame capture shows the hold ring.
     return {[](Proof &p) { p.press(kSeedX, kSeedY); p.report("seed-holding"); }};
