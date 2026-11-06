@@ -68,9 +68,22 @@ struct Proof {
                            : -1;
     std::snprintf(buf, sizeof buf,
                   "\"freeze\":%.1f,\"seed_mode\":%.1f,\"quality\":%.1f,"
-                  "\"density\":%.3f,\"assign\":%d,\"menu_target\":%d",
+                  "\"density\":%.3f,\"assign\":%d,\"menu_target\":%d,"
+                  "\"menu\":%d,\"help\":%d,\"mode\":%.0f,\"note_gate\":%.0f",
                   value(kFreeze), value(kSeedMode), value(kQuality),
-                  value(kDensity), assign, target ? static_cast<int>(*target) : -1);
+                  value(kDensity), assign, target ? static_cast<int>(*target) : -1,
+                  editor_live() && editor->modulation_menu() ? 1 : 0,
+#if defined(BEADSY_LAB_VARIANT)
+                  editor_live() && editor->help_panel() ? 1 : 0,
+#else
+                  0,
+#endif
+                  value(kMode),
+#if defined(BEADSY_LAB_VARIANT)
+                  value(kNoteGate));
+#else
+                  0.0f);
+#endif
     return buf;
   }
 
@@ -395,6 +408,50 @@ Steps steps_for(const std::string &step) {
       });
     return s;
   }
+#if defined(BEADSY_LAB_VARIANT)
+  if (step == "click-source") {
+    Steps s;
+    s.push_back([](Proof &p) {
+      const auto b = p.editor->source_chip()->bounds();
+      p.click(b.x + b.width * 0.5f, b.y + b.height * 0.5f);
+      p.report("source-menu-open");
+    });
+    s.push_back([](Proof &p) {
+      // Dismiss with a press on the faceplate's top edge, far from the menu
+      // that opens upward from the band.
+      p.click(kBayX, 12.0f);
+      p.report("source-menu-dismissed");
+    });
+    return s;
+  }
+  if (step == "show-source" || step == "show-help") {
+    // Open and leave open, so the frame capture shows the overlay itself.
+    const bool help = step == "show-help";
+    return {[help](Proof &p) {
+      const auto b = help ? p.editor->help_button()->bounds()
+                          : p.editor->source_chip()->bounds();
+      p.click(b.x + b.width * 0.5f, b.y + b.height * 0.5f);
+      p.report(help ? "help-open" : "source-menu-open");
+    }};
+  }
+  if (step == "click-help") {
+    Steps s;
+    s.push_back([](Proof &p) {
+      const auto b = p.editor->help_button()->bounds();
+      p.click(b.x + b.width * 0.5f, b.y + b.height * 0.5f);
+      p.report("help-open");
+    });
+    s.push_back([](Proof &p) {
+      if (auto *panel = p.editor->help_panel()) {
+        const auto c = panel->close_mark_centre();
+        const auto b = panel->bounds();
+        p.click(b.x + c.x, b.y + c.y);
+      }
+      p.report("help-closed");
+    });
+    return s;
+  }
+#endif
   if (step == "aspect-probe")
     return {[](Proof &p) {
       // Ask the window's own delegate what an interactive edge drag may

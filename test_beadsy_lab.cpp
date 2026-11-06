@@ -5,6 +5,9 @@
 #include "beadsy.hpp"
 #include "beadsy_editor.hpp"
 #include <pulp/view/overlay_dismissal.hpp>
+#include <pulp/view/screenshot.hpp>
+#include <filesystem>
+#include <string_view>
 
 #include <cmath>
 
@@ -138,4 +141,96 @@ TEST_CASE("Beadsy Lab panel menu switches the source and the gate") {
   native->simulate_click({175.0f, 505.0f});  // dismiss
   pulp::view::route_context_press(*native, {175.0f, 505.0f});
   REQUIRE(native->modulation_menu() != nullptr);
+}
+
+TEST_CASE("Beadsy Lab source chip sits in the band and opens the source menu on a left click") {
+  beadsy::Beadsy processor;
+  pulp::state::StateStore store;
+  processor.set_state_store(&store);
+  processor.define_parameters(store);
+  auto editor = processor.create_view();
+  auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
+  REQUIRE(native != nullptr);
+  native->set_bounds({0, 0, 350, 551});
+  native->layout_children();
+  auto *chip = native->source_chip();
+  auto *help = native->help_button();
+  REQUIRE(chip != nullptr);
+  REQUIRE(help != nullptr);
+  const auto cb = chip->bounds();
+  const auto hb = help->bounds();
+  // Both live in the band under the divider, beside the grip, and the chip
+  // is centred.
+  const float unit = 350.0f / 70.8f;
+  const float band_top = 551.0f - beadsy::ResizeGrip::size_for_unit(unit) - 0.6f * unit;
+  REQUIRE(cb.y >= band_top);
+  REQUIRE(cb.y + cb.height <= 551.0f);
+  REQUIRE(hb.y >= band_top);
+  REQUIRE(hb.x < cb.x);
+  REQUIRE(cb.x + cb.width * 0.5f == Catch::Approx(175.0f).margin(0.5f));
+  REQUIRE(std::string_view(chip->label_provider()) == "SOURCE  INTERNAL");
+  store.set_value(beadsy::kMode, 2.0f);
+  REQUIRE(std::string_view(chip->label_provider()) == "SOURCE  SIDE CHAIN");
+  // A primary press on the chip opens the same Source menu a secondary press
+  // on bare faceplate does.
+  REQUIRE(native->modulation_menu() == nullptr);
+  native->simulate_click({cb.x + cb.width * 0.5f, cb.y + cb.height * 0.5f});
+  auto *menu = native->modulation_menu();
+  REQUIRE(menu != nullptr);
+  bool has_main_in = false;
+  for (const auto &item : menu->items())
+    has_main_in = has_main_in || item.label == "Main In";
+  REQUIRE(has_main_in);
+}
+
+TEST_CASE("Beadsy Lab help button opens the acknowledgement panel and Escape closes it") {
+  beadsy::Beadsy processor;
+  pulp::state::StateStore store;
+  processor.set_state_store(&store);
+  processor.define_parameters(store);
+  auto editor = processor.create_view();
+  auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
+  REQUIRE(native != nullptr);
+  native->set_bounds({0, 0, 350, 551});
+  native->layout_children();
+  const auto &sections = beadsy::help_sections();
+  REQUIRE(sections.size() >= 5);
+  const std::string_view about = sections.front().body;
+  REQUIRE(about.find("Mutable Instruments") != std::string_view::npos);
+  REQUIRE(about.find("Emilie Gillet") != std::string_view::npos);
+  REQUIRE(about.find("MIT license") != std::string_view::npos);
+  REQUIRE(about.find("not affiliated") != std::string_view::npos);
+
+  REQUIRE(native->help_panel() == nullptr);
+  const auto hb = native->help_button()->bounds();
+  native->simulate_click({hb.x + hb.width * 0.5f, hb.y + hb.height * 0.5f});
+  auto *panel = native->help_panel();
+  REQUIRE(panel != nullptr);
+  REQUIRE(panel->bounds().width == Catch::Approx(350.0f));
+  REQUIRE(panel->bounds().height == Catch::Approx(551.0f));
+  // Painting lays the text out; the wrapped copy is taller than the card, so
+  // the wheel scrolls it and never past the end.
+  const auto png = std::filesystem::temp_directory_path() / "beadsy-lab-help.png";
+  REQUIRE(pulp::view::render_to_file(*native, 350, 551, png.string(), 1.0f));
+  REQUIRE(panel->content_height() > 551.0f);
+  pulp::view::MouseEvent wheel;
+  wheel.is_wheel = true;
+  wheel.scroll_delta_y = 100.0f;
+  wheel.position = {175.0f, 275.0f};
+  panel->on_mouse_event(wheel);
+  REQUIRE(panel->scroll_y() == Catch::Approx(100.0f));
+  wheel.scroll_delta_y = 1.0e6f;
+  panel->on_mouse_event(wheel);
+  REQUIRE(panel->scroll_y() < panel->content_height());
+  // Escape goes through the framework overlay path, the same one a menu uses.
+  pulp::view::View::dismiss_active_overlay(*native);
+  REQUIRE(native->help_panel() == nullptr);
+  // Reopen, then the close mark dismisses it too.
+  native->show_help();
+  REQUIRE(native->help_panel() != nullptr);
+  pulp::view::MouseEvent press;
+  press.is_down = true;
+  press.position = {350.0f - 18.0f - 30.0f + 13.0f, 36.0f + 4.0f + 13.0f};
+  native->help_panel()->on_mouse_event(press);
+  REQUIRE(native->help_panel() == nullptr);
 }

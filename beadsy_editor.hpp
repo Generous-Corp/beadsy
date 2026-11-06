@@ -17,6 +17,9 @@
 #include <chrono>
 #include <filesystem>
 #include "beadsy_modulation_menu.hpp"
+#if defined(BEADSY_LAB_VARIANT)
+#include "beadsy_help.hpp"
+#endif
 #include <pulp/view/parameter_binding.hpp>
 #include <pulp/view/ui_components.hpp>
 #include <pulp/view/view.hpp>
@@ -1249,22 +1252,6 @@ public:
     // after any host-routing mask has been applied.
     paint_attenurandomizer_labels(canvas, content_x, content_y, panel_sx,
                                   panel_sy);
-#if defined(BEADSY_LAB_VARIANT)
-    {
-      // The current source, where the hardware would show a patch cable:
-      // centred in the band below the divider, beside the resize grip.
-      const int mode = std::clamp(
-          static_cast<int>(std::lround(store_.get_value(kMode))), 0, 2);
-      const char *names[] = {"SOURCE  INTERNAL", "SOURCE  MAIN IN", "SOURCE  SIDE CHAIN"};
-      const float unit = std::min(panel_sx, panel_sy);
-      const float band_top = b.height - ResizeGrip::size_for_unit(unit) - 0.6f * unit;
-      canvas.set_font_full("Roboto Mono", 1.7f * unit, 700, 0, 0.25f * unit);
-      canvas.set_text_align(pulp::canvas::TextAlign::center);
-      canvas.set_fill_color(pulp::canvas::Color::rgba8(120, 124, 128));
-      canvas.fill_text(names[mode], b.width * 0.5f,
-                       (band_top + b.height) * 0.5f + 0.85f * unit);
-    }
-#endif
     if (std::string_view(kBeadsyPanelSourceStatus) ==
         "independent scaffold; authorized artwork unavailable") {
       paint_scaffold_labels(canvas, b.width, b.height);
@@ -1484,6 +1471,53 @@ public:
         });
     session->menu->set_min_width(250.0f);
     return session->menu;
+  }
+
+  /// Text on the Source chip for a source mode.
+  static const char *source_chip_label(int mode) {
+    static const char *const names[] = {"SOURCE  INTERNAL", "SOURCE  MAIN IN",
+                                        "SOURCE  SIDE CHAIN"};
+    return names[std::clamp(mode, 0, 2)];
+  }
+  int source_mode() const {
+    return std::clamp(static_cast<int>(std::lround(store_.get_value(kMode))), 0,
+                      kAvailableSourceModeMax);
+  }
+  SourceChip *source_chip() const { return source_chip_; }
+  HelpButton *help_button() const { return help_button_; }
+  HelpPanel *help_panel() const { return help_panel_; }
+
+  /// Opens the help and acknowledgement panel over the whole editor. It is a
+  /// framework overlay, so Escape and the host's outside-click path close it
+  /// the same way they close a menu. Public so tests and proofs can drive it.
+  HelpPanel *show_help() {
+    if (help_panel_)
+      return help_panel_;
+    auto *root = detail::root_view(this);
+    if (!root)
+      return nullptr;
+    auto panel = std::make_unique<HelpPanel>();
+    auto *raw = panel.get();
+    const auto rb = root->local_bounds();
+    raw->set_position(pulp::view::View::Position::absolute);
+    raw->set_left(0.0f);
+    raw->set_top(0.0f);
+    raw->set_bounds({0.0f, 0.0f, rb.width, rb.height});
+    raw->flex().preferred_width = rb.width;
+    raw->flex().preferred_height = rb.height;
+    const auto alive = import_binding_lifetime_token();
+    raw->on_close = [this, root, raw, alive] {
+      if (!alive.expired() && help_panel_ == raw)
+        help_panel_ = nullptr;
+      root->remove_child(raw);
+    };
+    raw->on_overlay_dismissed = [raw] { raw->dismiss(); };
+    help_panel_ = raw;
+    root->add_child(std::move(panel));
+    raw->set_overlay_consumes_outside_click(true);
+    raw->claim_overlay();
+    request_repaint();
+    return raw;
   }
 #endif
 
@@ -2085,6 +2119,26 @@ private:
     add_child(std::move(route_right));
 #endif
 
+#if defined(BEADSY_LAB_VARIANT)
+    {
+      auto help = std::make_unique<HelpButton>();
+      help_button_ = help.get();
+      help_button_->set_overlay_trigger(true);
+      help_button_->on_press = [this] { show_help(); };
+      add_child(std::move(help));
+      auto chip = std::make_unique<SourceChip>();
+      source_chip_ = chip.get();
+      source_chip_->set_overlay_trigger(true);
+      source_chip_->label_provider = [this] {
+        return std::string(source_chip_label(source_mode()));
+      };
+      source_chip_->on_press = [this](pulp::view::Point) {
+        const auto b = source_chip_->bounds();
+        show_panel_menu({b.x, b.y});
+      };
+      add_child(std::move(chip));
+    }
+#endif
     auto grip = std::make_unique<ResizeGrip>(processor_);
     resize_grip_ = grip.get();
     add_child(std::move(grip));
@@ -2230,6 +2284,23 @@ private:
       const float grip = ResizeGrip::size_for_unit(std::min(sx, sy));
       place_absolute(resize_grip_, width - grip, height - grip, grip, grip);
     }
+#if defined(BEADSY_LAB_VARIANT)
+    {
+      // The band between the divider and the window's bottom edge, beside the
+      // grip: "?" at the divider's left edge, the Source chip centred.
+      const float u = std::min(sx, sy);
+      const float grip = ResizeGrip::size_for_unit(u);
+      const float band_top = height - grip - 0.6f * u;
+      const float band_height = grip + 0.6f * u;
+      const float control_height = 4.4f * u;
+      const float y = band_top + (band_height - control_height) * 0.5f;
+      place_absolute(help_button_, content_x + 3.5f * sx, y, control_height,
+                     control_height);
+      const float chip_width = 31.0f * u;
+      place_absolute(source_chip_, (width - chip_width) * 0.5f, y, chip_width,
+                     control_height);
+    }
+#endif
   }
 
   struct Control {
@@ -2261,6 +2332,11 @@ private:
   pulp::view::ComboBox *route_picker_right_fallback_ = nullptr;
 #endif
   ResizeGrip *resize_grip_ = nullptr;
+#if defined(BEADSY_LAB_VARIANT)
+  HelpButton *help_button_ = nullptr;
+  SourceChip *source_chip_ = nullptr;
+  HelpPanel *help_panel_ = nullptr;
+#endif
   std::uint64_t diag_paint_count_ = 0;
   pulp::state::ListenerToken source_mode_binding_;
   std::optional<pulp::state::ParamID> context_target_;

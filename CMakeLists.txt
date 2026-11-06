@@ -309,7 +309,7 @@ endforeach()
 # (Source) visible and a software VCA (Note Gate) for keyboard play. Separate
 # identities so they install next to the shipping instrument and FX.
 pulp_add_plugin(BeadsyLab
-    FORMATS         VST3 CLAP AU
+    FORMATS         VST3 CLAP AU Standalone
     PLUGIN_NAME     "Beadsy Lab"
     BUNDLE_ID       "com.independent-audio.beadsy-lab"
     MANUFACTURER    "Independent Audio"
@@ -320,7 +320,7 @@ pulp_add_plugin(BeadsyLab
     MANUFACTURER_CODE "Inde"
 )
 pulp_add_plugin(BeadsyLabFX
-    FORMATS         VST3 CLAP AU
+    FORMATS         VST3 CLAP AU Standalone
     PLUGIN_NAME     "Beadsy Lab FX"
     BUNDLE_ID       "com.independent-audio.beadsy-lab-fx"
     MANUFACTURER    "Independent Audio"
@@ -331,7 +331,7 @@ pulp_add_plugin(BeadsyLabFX
     MANUFACTURER_CODE "Inde"
 )
 foreach(_lab IN ITEMS BeadsyLab BeadsyLabFX)
-    foreach(_fmt IN ITEMS VST3 CLAP AU)
+    foreach(_fmt IN ITEMS VST3 CLAP AU Standalone)
         if(TARGET ${_lab}_${_fmt})
             target_compile_definitions(${_lab}_${_fmt} PRIVATE BEADSY_LAB_VARIANT=1)
             if(_lab STREQUAL "BeadsyLabFX")
@@ -354,6 +354,9 @@ foreach(_lab IN ITEMS BeadsyLab BeadsyLabFX)
                 if(APPLE)
                     target_sources(${_lab}_${_fmt} PRIVATE beadsy_ui_proof.mm)
                     target_compile_definitions(${_lab}_${_fmt} PRIVATE BEADSY_UI_PROOF=1)
+                    if(_fmt STREQUAL "Standalone")
+                        target_sources(${_lab}_${_fmt} PRIVATE beadsy_standalone_first_mouse.mm)
+                    endif()
                 endif()
             endif()
         endif()
