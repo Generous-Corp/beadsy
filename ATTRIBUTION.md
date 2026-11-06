@@ -21,3 +21,26 @@ documentation tree, but no file-level permission to redistribute them was
 found:
 
 <https://github.com/pichenettes/mutable-instruments-documentation/tree/14d04a75ad54cd97e5e5f7b8f5a2ec7bb23046d5/docs/modules/beads>
+
+## Public-release checklist (2026-11-06)
+
+Decision on record: the repository stays private until the items below are
+confirmed; none of them is a secrets problem.
+
+- Done: a full-history audit found no keys, tokens, certificates or secret
+  files (`git ls-files`, token patterns over `git log --all -p`); the release
+  script names environment variables only and reads them from
+  `~/.config/pulp/secrets/` outside the repository.
+- Done: the in-plugin help panel ends with "Sources, licenses and thanks":
+  the Beads firmware and stmlib (MIT) with the repository, the pinned commits
+  and the README that states the terms, the manual, the Pulp SDK, the
+  artwork, the non-affiliation line and the thanks to Emilie Gillet.
+- Open: written permission for the straight-on panel artwork, and the
+  CC BY-SA 3.0 share-alike terms if that artwork derives from the hardware
+  files.
+- Open: the upstream README asks derivative works to avoid the Mutable
+  Instruments name and the module name; the product name and the help text
+  (which names both, nominatively) need an owner decision.
+- When those are confirmed, flipping visibility is one API call; nothing in
+  the history needs rewriting (the two signed installers committed under
+  `provenance/` are large but not sensitive).
