@@ -875,6 +875,13 @@ TEST_CASE("Beadsy Seed button is momentary, latches on a long hold and unlatches
     REQUIRE(freeze != nullptr);
     double now = 100.0;
     seed->set_clock([&] { return now; });
+    // Powers on latched, like the module; a tap unlatches.
+    REQUIRE(seed->mode() == 2);
+    REQUIRE(seed->access_label().find("locked") != std::string::npos);
+    seed->on_mouse_down({});
+    now += 0.1;
+    seed->on_mouse_up({});
+    REQUIRE(store.get_value(beadsy::kSeedMode) == 0.0f);
     REQUIRE(seed->mode() == 0);
     REQUIRE(seed->access_label().find("off") != std::string::npos);
 
@@ -1232,6 +1239,8 @@ TEST_CASE("Beadsy paints played knob and button states without changing base val
     pulp::state::StateStore store;
     processor.set_state_store(&store);
     processor.define_parameters(store);
+    // The module powers on latched; this test drives Seed from unlatched.
+    store.set_value(beadsy::kSeedMode, 0.0f);
     auto editor = processor.create_view();
     auto *native = dynamic_cast<beadsy::BeadsyEditor *>(editor.get());
     native->set_bounds({0, 0, 350, 634});
@@ -1536,6 +1545,8 @@ TEST_CASE("Beadsy toggle faces follow the played modulation and presses step the
     pulp::state::StateStore store;
     processor.set_state_store(&store);
     processor.define_parameters(store);
+    // The module powers on latched; this test drives Seed from unlatched.
+    store.set_value(beadsy::kSeedMode, 0.0f);
     auto editor = processor.create_view();
     auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
     REQUIRE(native != nullptr);

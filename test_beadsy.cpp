@@ -1133,6 +1133,9 @@ RenderedBlocks render_seeded_note(int quality = 3, bool freeze = false) {
   pulp::state::StateStore store;
   proc->set_state_store(&store);
   proc->define_parameters(store);
+  // The note is the seed gate here: start unlatched (the module powers on
+  // latched; a tap unlatches).
+  store.set_value(beadsy::kSeedMode, 0.0f);
   store.set_value(beadsy::kQuality, static_cast<float>(quality));
   store.set_value(beadsy::kFreeze, freeze ? 1.0f : 0.0f);
 
@@ -1380,4 +1383,13 @@ TEST_CASE("Beadsy animates the modulation display while its own DSP is idle") {
   REQUIRE(saw_on);
   REQUIRE(saw_off);
   REQUIRE(store.get_value(beadsy::kFreeze) == 0.0f);
+}
+
+TEST_CASE("Beadsy powers on with Seed latched like the module") {
+  beadsy::Beadsy processor;
+  pulp::state::StateStore store;
+  processor.set_state_store(&store);
+  processor.define_parameters(store);
+  REQUIRE(store.get_value(beadsy::kSeedMode) == 2.0f);
+  REQUIRE(processor.debug_seed_button_state() == beads::SEED_BUTTON_STATE_OFF);
 }

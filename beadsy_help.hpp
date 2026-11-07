@@ -51,8 +51,10 @@ inline const std::vector<HelpSection> &help_sections() {
        "Side Chain pop-up in the plug-in header; in REAPER, send audio to "
        "channels 3 and 4 of this track."},
       {"Playing it",
-       "A MIDI note sets the pitch and acts as the hardware's SEED gate. The "
-       "SEED button works like the module's: grains play while you hold it, "
+       "A MIDI note sets the pitch and acts as the hardware's SEED gate. Like the "
+       "module at power-on, Beadsy starts with SEED latched (lit, breathing): "
+       "grains run continuously at the DENSITY rate. The button works like the "
+       "module's: a short press unlatches it, grains then play while you hold it, "
        "holding it for four seconds (or pressing FREEZE while holding it) "
        "latches continuous generation and the button breathes, and a short "
        "press unlatches. Unlatched, grains fire only while a key or the button "

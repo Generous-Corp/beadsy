@@ -8,6 +8,7 @@
 #include <pulp/midi/buffer.hpp>
 
 #include <algorithm>
+#include <cstdlib>
 #include <array>
 #include <atomic>
 #include <cmath>
@@ -345,7 +346,9 @@ public:
         {.id = kSeedMode,
          .name = "Seed Mode",
          .unit = "mode",
-         .range = pulp::state::ParamRange::linear(0.0f, 2.0f, 0.0f, 1.0f)});
+         // The module powers on latched (continuous grains, SEED lit); a tap
+         // then unlatches and a four-second hold or SEED+FREEZE re-latches.
+         .range = pulp::state::ParamRange::linear(0.0f, 2.0f, 2.0f, 1.0f)});
     // Source-backed Beads attenurandomizer amounts. These are separate
     // host parameters so automation remains explicit and stable. The
     // hardware LAW_ATTENUVERTER is bipolar: its physical midpoint is
@@ -1289,6 +1292,12 @@ inline std::unique_ptr<pulp::format::Processor> create_beadsy() {
 #include "beadsy_ui_proof.hpp"
 #endif
 inline std::unique_ptr<pulp::view::View> beadsy::Beadsy::create_view() {
+#if __has_include(<pulp/view/native_context_menu.hpp>)
+  // Trial switch for the SDK's native menu presentation (NSMenu on macOS).
+  if (const char *native = std::getenv("BEADSY_NATIVE_MENUS"); native && *native == '1')
+    pulp::view::ContextMenu::set_default_presentation(
+        pulp::view::ContextMenu::Presentation::native);
+#endif
   auto editor = std::make_unique<beadsy::BeadsyEditor>(*this, state());
 #if defined(BEADSY_UI_PROOF)
   beadsy::install_ui_proof(state(), *editor);
