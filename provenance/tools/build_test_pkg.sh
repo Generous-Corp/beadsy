@@ -47,7 +47,10 @@ exit 0
 PRE
 chmod 755 "$SCRIPTS/preinstall"
 component_with_scripts() { # name bundle install-location
-  local name="$1" bundle="$2" location="$3" root="$STAGE/root-$name"
+  local name="$1"
+  local bundle="$2"
+  local location="$3"
+  local root="$STAGE/root-$name"
   mkdir -p "$root"
   ditto "$bundle" "$root/$(basename "$bundle")"
   pkgbuild --root "$root" --install-location "$location" --scripts "$SCRIPTS" \
