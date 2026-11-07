@@ -17,7 +17,6 @@ Mutable Instruments name and the original module name:
 <https://github.com/pichenettes/eurorack/blob/f4cfa7697095a28d292bff758beb51deb49b5a86/README.md>
 
 The Beads documentation and product photographs were reviewed from the pinned
-documentation tree, but no file-level permission to redistribute them was
-found:
+documentation tree and are not redistributed:
 
 <https://github.com/pichenettes/mutable-instruments-documentation/tree/14d04a75ad54cd97e5e5f7b8f5a2ec7bb23046d5/docs/modules/beads>

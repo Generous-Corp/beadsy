@@ -31,8 +31,11 @@ inline const std::vector<HelpSection> &help_sections() {
        "granular texture synthesizer designed by Emilie Gillet for Mutable "
        "Instruments. The signal processing is adapted from the Beads firmware, "
        "which Emilie Gillet released under the MIT license; every adapted file "
-       "keeps its original copyright notice. The straight-on panel artwork is "
-       "used with the permission of its owner and remains theirs. Beadsy is not "
+       "keeps its original copyright notice. The panel artwork is adapted from the "
+       "Beads front panel design by Mutable Instruments, shared under the "
+       "Creative Commons BY-SA 3.0 license, with the Mutable Instruments name "
+       "and mark removed; Beadsy's adaptation is shared under the same license. "
+       "Beadsy is not "
        "affiliated with, sponsored by, or endorsed by Mutable Instruments or "
        "Emilie Gillet. Our sincere thanks for the original work and for sharing "
        "its source."},
@@ -100,8 +103,12 @@ inline const std::vector<HelpSection> &help_sections() {
        "github.com/pichenettes/eurorack/blob/f4cfa769/README.md. "
        "The help above paraphrases the Beads manual at "
        "mutable-instruments.net/modules/beads. Beadsy is built on the Pulp SDK "
-       "(MIT). The straight-on panel artwork is used with its owner's permission "
-       "and remains theirs. Mutable Instruments and Emilie Gillet are not "
+       "(MIT). The panel artwork is adapted from the Beads front panel (Mutable "
+       "Instruments, CC BY-SA 3.0, github.com/pichenettes/eurorack, "
+       "beads/hardware_design/panel); the name and mark were removed and the "
+       "Beadsy lettering added, and the adaptation is CC BY-SA 3.0 as well "
+       "(creativecommons.org/licenses/by-sa/3.0). Mutable Instruments and "
+       "Emilie Gillet are not "
        "affiliated with Beadsy and do not endorse it. Thank you, Emilie, for the "
        "instrument and for publishing its source.",
        true},
