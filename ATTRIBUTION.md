@@ -24,8 +24,11 @@ found:
 
 ## Public-release checklist (2026-11-06)
 
-Decision on record: the repository stays private until the items below are
-confirmed; none of them is a secrets problem.
+Decision on record (2026-11-07, owner): publish. The secrets audit is clean;
+the panel artwork is distributed as CC BY-SA 3.0 outside the MIT grant (see
+LICENSES.md) with attribution in the help panel and here; the product name
+and the nominative mentions of Beads and Mutable Instruments stand with the
+non-affiliation line. Items still marked open below are tracked, not blocking.
 
 - Done: a full-history audit found no keys, tokens, certificates or secret
   files (`git ls-files`, token patterns over `git log --all -p`); the release
