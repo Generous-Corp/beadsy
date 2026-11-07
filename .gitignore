@@ -5,3 +5,13 @@ cmake-build-*/
 *.swp
 provenance/generated/
 assets/generated/
+
+# Internal planning and validation receipts live in the private planning repo.
+docs/planning/
+provenance/*.md
+provenance/*.log
+provenance/*.txt
+provenance/*-2026*.json
+provenance/*-2026*.png
+provenance/captures-*/
+provenance/ui-proof-*/
