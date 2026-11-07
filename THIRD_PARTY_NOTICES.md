@@ -22,6 +22,9 @@ Changes made for Meru (the license asks that they be indicated):
   control in the same way;
 - the jack field at the bottom of the panel is removed, the panel is cropped
   there, and a band with the Source menu and the help button takes its place;
+- the knobs are Meru's own drawings: the panel file carries no knobs (they
+  are hardware parts), so the large and small knobs were drawn for the
+  software and differ in style from the module's;
 - the artwork was rendered to `provenance/generated/` for the native panel. The adapted artwork is distributed under the same CC BY-SA 3.0
 license; it is not covered by Meru's MIT license. The original `.ai` file is
 not redistributed here; it remains available upstream. Mutable Instruments is a
