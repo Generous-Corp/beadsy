@@ -176,27 +176,21 @@ struct LfoModulation {
 inline pulp::format::PluginDescriptor make_descriptor() {
   auto descriptor = pulp::format::PluginDescriptor{
       .name =
-#if defined(BEADSY_LAB_VARIANT) && defined(BEADSY_EFFECT_VARIANT)
-          "Beadsy Lab FX",
-#elif defined(BEADSY_LAB_VARIANT)
-          "Beadsy Lab",
-#elif defined(BEADSY_EFFECT_VARIANT)
-          "Beadsy FX",
+#if defined(BEADSY_EFFECT_VARIANT)
+          "Meru FX",
 #else
-          "Beadsy",
+          "Meru",
 #endif
       .manufacturer = "Independent Audio",
+      // Identities stay as they were under the former name, so sessions
+      // saved with Beadsy keep loading Meru.
       .bundle_id =
-#if defined(BEADSY_LAB_VARIANT) && defined(BEADSY_EFFECT_VARIANT)
-          "com.independent_audio.beadsy-lab-fx",
-#elif defined(BEADSY_LAB_VARIANT)
-          "com.independent_audio.beadsy-lab",
-#elif defined(BEADSY_EFFECT_VARIANT)
+#if defined(BEADSY_EFFECT_VARIANT)
           "com.independent_audio.beadsy-fx",
 #else
           "com.independent_audio.beadsy",
 #endif
-      .version = "1.0.8",
+      .version = "1.1.0",
       .category =
 #if defined(BEADSY_EFFECT_VARIANT)
           pulp::format::PluginCategory::Effect,
@@ -411,7 +405,13 @@ public:
         {.id = kNoteGate,
          .name = "Note Gate",
          .unit = "toggle",
+         // The instrument is played from the keyboard, so it gates by
+         // default; the FX processes audio and leaves the gate off.
+#if defined(BEADSY_EFFECT_VARIANT)
+         .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 0.0f, 1.0f)});
+#else
          .range = pulp::state::ParamRange::linear(0.0f, 1.0f, 1.0f, 1.0f)});
+#endif
     store.add_parameter({.id = kNoteRelease,
                          .name = "Note Release",
                          .unit = "ms",

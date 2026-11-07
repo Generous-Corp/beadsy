@@ -26,16 +26,16 @@ struct HelpSection {
 /// Acknowledgement first, then how the instrument works, in our own words.
 inline const std::vector<HelpSection> &help_sections() {
   static const std::vector<HelpSection> sections{
-      {"About Beadsy",
-       "Beadsy is an independent software instrument inspired by Beads, the "
+      {"About Meru",
+       "Meru is an independent software instrument inspired by Beads, the "
        "granular texture synthesizer designed by Emilie Gillet for Mutable "
        "Instruments. The signal processing is adapted from the Beads firmware, "
        "which Emilie Gillet released under the MIT license; every adapted file "
        "keeps its original copyright notice. The panel artwork is adapted from the "
        "Beads front panel design by Mutable Instruments, shared under the "
        "Creative Commons BY-SA 3.0 license, with the Mutable Instruments name "
-       "and mark removed; Beadsy's adaptation is shared under the same license. "
-       "Beadsy is not "
+       "and mark removed; Meru's adaptation is shared under the same license. "
+       "Meru is not "
        "affiliated with, sponsored by, or endorsed by Mutable Instruments or "
        "Emilie Gillet. Our sincere thanks for the original work and for sharing "
        "its source."},
@@ -99,17 +99,19 @@ inline const std::vector<HelpSection> &help_sections() {
        "from her stmlib library, also MIT. Source: github.com/pichenettes/eurorack "
        "(Beads at commit f4cfa769, stmlib at commit e3bd7c9c). The license terms "
        "are stated in that repository's README and in the notice at the top of "
-       "every adapted file, which Beadsy keeps verbatim: "
+       "every adapted file, which Meru keeps verbatim: "
        "github.com/pichenettes/eurorack/blob/f4cfa769/README.md. "
        "The help above paraphrases the Beads manual at "
-       "mutable-instruments.net/modules/beads. Beadsy is built on the Pulp SDK "
+       "mutable-instruments.net/modules/beads. Meru is built on the Pulp SDK "
        "(MIT). The panel artwork is adapted from the Beads front panel (Mutable "
        "Instruments, CC BY-SA 3.0, github.com/pichenettes/eurorack, "
        "beads/hardware_design/panel); the name and mark were removed and the "
-       "Beadsy lettering added, and the adaptation is CC BY-SA 3.0 as well "
+       "Meru lettering added, and the adaptation is CC BY-SA 3.0 as well "
        "(creativecommons.org/licenses/by-sa/3.0). Mutable Instruments and "
        "Emilie Gillet are not "
-       "affiliated with Beadsy and do not endorse it. Thank you, Emilie, for the "
+       "affiliated with Meru and do not endorse it. The name: on a string of "
+       "prayer beads the meru is the bead that marks where the string ends, and "
+       "Beads was Emilie Gillet's last module. Thank you, Emilie, for the "
        "instrument and for publishing its source.",
        true},
   };
@@ -288,7 +290,7 @@ public:
   HelpButton() {
     set_id("beadsy-help-button");
     set_access_role(pulp::view::View::AccessRole::button);
-    set_access_label("About Beadsy and help");
+    set_access_label("About Meru and help");
     set_cursor(pulp::view::View::CursorStyle::pointer);
     set_focusable(true);
   }

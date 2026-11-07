@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(Beadsy VERSION 1.0.32 LANGUAGES CXX)
+project(Beadsy VERSION 1.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -217,10 +217,10 @@ endif()
 
 pulp_add_plugin(Beadsy
     FORMATS         VST3 CLAP LV2 AU AUv3 AAX Standalone
-    PLUGIN_NAME     "Beadsy"
+    PLUGIN_NAME     "Meru"
     BUNDLE_ID       "com.independent-audio.beadsy"
     MANUFACTURER    "Independent Audio"
-    VERSION         "1.0.32"
+    VERSION         "1.1.0"
     CATEGORY        Instrument
     ACCEPTS_MIDI
     PLUGIN_CODE     "Bead"
@@ -239,7 +239,7 @@ foreach(_fmt IN ITEMS VST3 CLAP LV2 AU AUv3 AAX Standalone)
             endif()
             target_include_directories(Beadsy_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
             target_compile_definitions(Beadsy_${_fmt} PRIVATE
-                BEADSY_NATIVE_EDITOR=1)
+                BEADSY_NATIVE_EDITOR=1 BEADSY_LAB_VARIANT=1)
             if(APPLE)
                 # Env-gated in-process UI proof driver (see beadsy_ui_proof.hpp).
                 target_sources(Beadsy_${_fmt} PRIVATE beadsy_ui_proof.mm)
@@ -269,10 +269,10 @@ endforeach()
 # source menus remain host-owned; this target simply exposes a real input bus.
 pulp_add_plugin(BeadsyFX
     FORMATS         VST3 CLAP AU AUv3 Standalone
-    PLUGIN_NAME     "Beadsy FX"
+    PLUGIN_NAME     "Meru FX"
     BUNDLE_ID       "com.independent-audio.beadsy-fx"
     MANUFACTURER    "Independent Audio"
-    VERSION         "1.0.32"
+    VERSION         "1.1.0"
     CATEGORY        Effect
     ACCEPTS_MIDI
     PLUGIN_CODE     "BdFX"
@@ -281,7 +281,7 @@ pulp_add_plugin(BeadsyFX
 
 foreach(_fmt IN ITEMS VST3 CLAP AU AUv3 Standalone)
     if(TARGET BeadsyFX_${_fmt})
-        target_compile_definitions(BeadsyFX_${_fmt} PRIVATE BEADSY_EFFECT_VARIANT=1)
+        target_compile_definitions(BeadsyFX_${_fmt} PRIVATE BEADSY_EFFECT_VARIANT=1 BEADSY_LAB_VARIANT=1)
         target_link_libraries(BeadsyFX_${_fmt} PRIVATE beadsy_beads_dsp)
         if(TARGET Pulp::view)
             target_link_libraries(BeadsyFX_${_fmt} PRIVATE Pulp::view)
@@ -305,60 +305,6 @@ foreach(_fmt IN ITEMS VST3 CLAP AU AUv3 Standalone)
     endif()
 endforeach()
 
-# Exploration builds: the same engine with the hardware's one real mode switch
-# (Source) visible and a software VCA (Note Gate) for keyboard play. Separate
-# identities so they install next to the shipping instrument and FX.
-pulp_add_plugin(BeadsyLab
-    FORMATS         VST3 CLAP AU Standalone
-    PLUGIN_NAME     "Beadsy Lab"
-    BUNDLE_ID       "com.independent-audio.beadsy-lab"
-    MANUFACTURER    "Independent Audio"
-    VERSION         "1.0.32"
-    CATEGORY        Instrument
-    ACCEPTS_MIDI
-    PLUGIN_CODE     "BdLb"
-    MANUFACTURER_CODE "Inde"
-)
-pulp_add_plugin(BeadsyLabFX
-    FORMATS         VST3 CLAP AU Standalone
-    PLUGIN_NAME     "Beadsy Lab FX"
-    BUNDLE_ID       "com.independent-audio.beadsy-lab-fx"
-    MANUFACTURER    "Independent Audio"
-    VERSION         "1.0.32"
-    CATEGORY        Effect
-    ACCEPTS_MIDI
-    PLUGIN_CODE     "BdLf"
-    MANUFACTURER_CODE "Inde"
-)
-foreach(_lab IN ITEMS BeadsyLab BeadsyLabFX)
-    foreach(_fmt IN ITEMS VST3 CLAP AU Standalone)
-        if(TARGET ${_lab}_${_fmt})
-            target_compile_definitions(${_lab}_${_fmt} PRIVATE BEADSY_LAB_VARIANT=1)
-            if(_lab STREQUAL "BeadsyLabFX")
-                target_compile_definitions(${_lab}_${_fmt} PRIVATE BEADSY_EFFECT_VARIANT=1)
-            endif()
-            # The AU instrument keeps its optional Main In + Side Chain buses:
-            # the SDK's AU v2 instrument adapter creates one input element per
-            # declared bus, so the aumu offers all three sources like VST3/CLAP.
-            target_link_libraries(${_lab}_${_fmt} PRIVATE beadsy_beads_dsp)
-            if(TARGET Pulp::view)
-                target_link_libraries(${_lab}_${_fmt} PRIVATE Pulp::view)
-                if(TARGET Pulp::host)
-                    target_link_libraries(${_lab}_${_fmt} PRIVATE Pulp::host)
-                endif()
-                target_include_directories(${_lab}_${_fmt} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-                target_compile_definitions(${_lab}_${_fmt} PRIVATE BEADSY_NATIVE_EDITOR=1)
-                if(APPLE)
-                    target_sources(${_lab}_${_fmt} PRIVATE beadsy_ui_proof.mm)
-                    target_compile_definitions(${_lab}_${_fmt} PRIVATE BEADSY_UI_PROOF=1)
-                    if(_fmt STREQUAL "Standalone")
-                        target_sources(${_lab}_${_fmt} PRIVATE beadsy_standalone_first_mouse.mm)
-                    endif()
-                endif()
-            endif()
-        endif()
-    endforeach()
-endforeach()
 if(TARGET Catch2::Catch2WithMain)
     add_executable(Beadsy-lab-test test_beadsy_lab.cpp)
     target_link_libraries(Beadsy-lab-test PRIVATE Catch2::Catch2WithMain beadsy_beads_dsp Pulp::format)

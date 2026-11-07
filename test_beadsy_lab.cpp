@@ -44,11 +44,12 @@ struct Rig {
 };
 }  // namespace
 
-TEST_CASE("Beadsy Lab identifies itself as its own instrument with both inputs") {
+TEST_CASE("Meru identifies itself under the Beadsy-era identity with both inputs") {
   beadsy::Beadsy processor;
   const auto descriptor = processor.descriptor();
-  REQUIRE(descriptor.name == "Beadsy Lab");
-  REQUIRE(descriptor.bundle_id == "com.independent_audio.beadsy-lab");
+  // The name changed; the identity did not, so saved sessions keep loading.
+  REQUIRE(descriptor.name == "Meru");
+  REQUIRE(descriptor.bundle_id == "com.independent_audio.beadsy");
   REQUIRE(descriptor.category == pulp::format::PluginCategory::Instrument);
   REQUIRE(descriptor.accepts_midi);
   REQUIRE(descriptor.input_buses.size() == 2);
@@ -63,7 +64,7 @@ TEST_CASE("Beadsy Lab identifies itself as its own instrument with both inputs")
   REQUIRE(store.info(beadsy::kMode)->range.max == 2.0f);
 }
 
-TEST_CASE("Beadsy Lab note gate follows the held keys on the internal synth") {
+TEST_CASE("Meru note gate follows the held keys on the internal synth") {
   Rig rig;
   // Silent until a note arrives (the instrument stays quiet on open).
   REQUIRE(rig.block() == 0.0f);
@@ -84,7 +85,7 @@ TEST_CASE("Beadsy Lab note gate follows the held keys on the internal synth") {
   REQUIRE(rig.block() > 0.005f);
 }
 
-TEST_CASE("Beadsy Lab with the gate off keeps the oscillator ringing like the hardware") {
+TEST_CASE("Meru with the gate off keeps the oscillator ringing like the hardware") {
   Rig rig;
   rig.store.set_value(beadsy::kNoteGate, 0.0f);
   rig.midi_in.add(pulp::midi::MidiEvent::note_on(0, 60, 100));
@@ -98,7 +99,7 @@ TEST_CASE("Beadsy Lab with the gate off keeps the oscillator ringing like the ha
   REQUIRE(rig.processor.note_gate_level() == 1.0f);
 }
 
-TEST_CASE("Beadsy Lab panel menu switches the source and the gate") {
+TEST_CASE("Meru panel menu switches the source and the gate") {
   beadsy::Beadsy processor;
   pulp::state::StateStore store;
   processor.set_state_store(&store);
@@ -143,7 +144,7 @@ TEST_CASE("Beadsy Lab panel menu switches the source and the gate") {
   REQUIRE(native->modulation_menu() != nullptr);
 }
 
-TEST_CASE("Beadsy Lab source chip sits in the band and opens the source menu on a left click") {
+TEST_CASE("Meru source chip sits in the band and opens the source menu on a left click") {
   beadsy::Beadsy processor;
   pulp::state::StateStore store;
   processor.set_state_store(&store);
@@ -183,7 +184,7 @@ TEST_CASE("Beadsy Lab source chip sits in the band and opens the source menu on 
   REQUIRE(has_main_in);
 }
 
-TEST_CASE("Beadsy Lab help button opens the acknowledgement panel and Escape closes it") {
+TEST_CASE("Meru help button opens the acknowledgement panel and Escape closes it") {
   beadsy::Beadsy processor;
   pulp::state::StateStore store;
   processor.set_state_store(&store);
@@ -248,7 +249,7 @@ TEST_CASE("Beadsy Lab help button opens the acknowledgement panel and Escape clo
   REQUIRE(native->help_panel() == nullptr);
 }
 
-TEST_CASE("Beadsy Lab note gate rows are inert unless the source is the internal synth") {
+TEST_CASE("Meru note gate rows are inert unless the source is the internal synth") {
   beadsy::Beadsy processor;
   pulp::state::StateStore store;
   processor.set_state_store(&store);

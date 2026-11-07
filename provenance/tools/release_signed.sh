@@ -1,18 +1,14 @@
 #!/bin/zsh
 # Sign, package, notarize and staple one installer set from a build directory.
-# Usage: release_signed.sh <build-dir> <version> <out-dir> [release|lab]
+# Usage: release_signed.sh <build-dir> <version> <out-dir>
 # Secrets come from ~/.config/pulp (pulp-sign.sh + secrets/notary.env); nothing
 # here prompts. The out dir must be new or empty.
 set -euo pipefail
-BUILD=${1:?build dir}; VERSION=${2:?version}; OUT=${3:?out dir}; SET=${4:-release}
+BUILD=${1:?build dir}; VERSION=${2:?version}; OUT=${3:?out dir}
 HERE=${0:a:h}
 STAGE="$OUT/signed-stage"
 mkdir -p "$STAGE/AU" "$STAGE/VST3" "$STAGE/CLAP" "$OUT/signed"
-if [[ "$SET" == "lab" ]]; then
-  NAMES=("Beadsy Lab" "Beadsy Lab FX"); PKG="$OUT/signed/Beadsy-Lab-$VERSION.pkg"
-else
-  NAMES=("Beadsy" "Beadsy FX"); PKG="$OUT/signed/Beadsy-$VERSION.pkg"
-fi
+NAMES=("Meru" "Meru FX"); PKG="$OUT/signed/Meru-$VERSION.pkg"
 for n in "${NAMES[@]}"; do
   ditto "$BUILD/$n.app" "$STAGE/$n.app"
   ditto "$BUILD/AU/$n.component" "$STAGE/AU/$n.component"
@@ -23,7 +19,7 @@ done
 for b in "$STAGE"/*.app "$STAGE"/AU/*.component "$STAGE"/VST3/*.vst3 "$STAGE"/CLAP/*.clap; do
   codesign --verify --deep --strict "$b" && echo "verified: $(basename "$b")"
 done
-"$HERE/build_test_pkg.sh" "$STAGE" "$VERSION" "$OUT/signed" "$SET"
+"$HERE/build_test_pkg.sh" "$STAGE" "$VERSION" "$OUT/signed"
 BUILT=$(ls -t "$OUT"/signed/*.pkg | head -1)
 [[ "$BUILT" == "$PKG" ]] || mv "$BUILT" "$PKG"
 ~/.config/pulp/pulp-sign.sh --installer "$PKG"

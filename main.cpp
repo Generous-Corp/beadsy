@@ -40,9 +40,9 @@ int main(int argc, char** argv) {
     if (!command) {
         std::cerr << "usage: "
 #if defined(BEADSY_EFFECT_VARIANT)
-                  << "Beadsy FX"
+                  << "Meru FX"
 #else
-                  << "Beadsy"
+                  << "Meru"
 #endif
                   << " [--load-state FILE] [--save-state FILE]\n";
         return 2;
@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
         if (command->load) {
             const auto result = beadsy::load_state(app, *command->load);
             if (!result.ok) {
-                std::cerr << "Beadsy state load failed: " << result.message << "\n";
+                std::cerr << "Meru state load failed: " << result.message << "\n";
                 app.stop();
                 return 1;
             }
@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
         if (command->save) {
             const auto result = beadsy::save_state(app, *command->save);
             if (!result.ok) {
-                std::cerr << "Beadsy state save failed: " << result.message << "\n";
+                std::cerr << "Meru state save failed: " << result.message << "\n";
                 app.stop();
                 return 1;
             }

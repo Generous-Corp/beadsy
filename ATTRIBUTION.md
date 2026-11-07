@@ -1,12 +1,12 @@
 # Attribution and non-affiliation
 
-Beadsy is an independent software instrument inspired by the Mutable Instruments Beads architecture and hardware workflow. We offer our sincere thanks to Emilie Gillet for the original work and for making the relevant source available under its stated licenses. Mutable Instruments and Emilie Gillet are not affiliated with or endorsing this project. Any redistributed upstream software or artwork will retain its original author, license, and attribution requirements.
+Meru is an independent software instrument inspired by the Mutable Instruments Beads architecture and hardware workflow. We offer our sincere thanks to Emilie Gillet for the original work and for making the relevant source available under its stated licenses. Mutable Instruments and Emilie Gillet are not affiliated with or endorsing this project. Any redistributed upstream software or artwork will retain its original author, license, and attribution requirements.
 
 Attribution for the adapted firmware and the panel artwork is given in LICENSES.md, in THIRD_PARTY_NOTICES.md, and in the plug-in's own help panel.
 
 ## Local evidence
 
-`provenance/source-manifest.json` records the exact Beads DSP origin, the `stmlib` commit, and the `waves.bin` lineage. The panel artwork is distributed under CC BY-SA 3.0 outside the MIT grant; Mutable Instruments names and marks are not Beadsy branding.
+`provenance/source-manifest.json` records the exact Beads DSP origin, the `stmlib` commit, and the `waves.bin` lineage. The panel artwork is distributed under CC BY-SA 3.0 outside the MIT grant; Mutable Instruments names and marks are not Meru branding.
 
 ## Upstream review basis (not bundled)
 

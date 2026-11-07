@@ -18,7 +18,7 @@
 TEST_CASE("Beadsy descriptor is an instrument") {
   auto proc = beadsy::create_beadsy();
   const auto desc = proc->descriptor();
-  REQUIRE(desc.name == "Beadsy");
+  REQUIRE(desc.name == "Meru");
   REQUIRE(desc.manufacturer == "Independent Audio");
   REQUIRE(desc.category == pulp::format::PluginCategory::Instrument);
   REQUIRE(desc.accepts_midi);
