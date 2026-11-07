@@ -281,8 +281,9 @@ private:
 /// automation/state changes repaint the LED as well as the button.
 class SeedModeControl final : public pulp::view::View {
 public:
-  /// Hold time that latches, from the firmware's long-press table.
-  static constexpr double kLatchHoldSeconds = 4.0;
+  /// A press shorter than this is a tap and toggles the latch; a longer hold
+  /// plays grains while held and restores the latch state on release.
+  static constexpr double kTapSeconds = 0.35;
 
   SeedModeControl() {
     set_id("beadsy-seed-mode");
@@ -298,7 +299,7 @@ public:
     mode_ = std::clamp(mode, 0, 2);
     const char *state = mode_ == 0 ? "off" : mode_ == 1 ? "on" : "locked";
     set_access_label(std::string("Seed Mode (") + state +
-                     "); hold for grains, hold 4 s to latch");
+                     "); tap to latch or unlatch, hold for a burst");
     request_repaint();
   }
   int mode() const { return mode_; }
@@ -1338,31 +1339,6 @@ public:
                                          mix(217.0f, 103.0f));
       }
       paint_button(62.0f, 110.5f, 3.2f, face);
-      // The hardware gives no cue during the four-second hold. A software
-      // button can: a ring grows around the face while it is held, and
-      // closes exactly when the latch would take.
-      if (seed_mode_ && seed_mode_->held() && seed_state < 2) {
-        const double t = std::clamp(
-            seed_mode_->held_seconds() / SeedModeControl::kLatchHoldSeconds, 0.0, 1.0);
-        if (t > 0.03) {
-          const float scale = std::min(panel_sx, panel_sy);
-          const float cx = content_x + 62.0f * panel_sx;
-          const float cy = content_y + (128.5f - 110.5f) * panel_sy;
-          const float r = 4.1f * scale;
-          constexpr int kSegments = 48;
-          const int n = std::max(1, static_cast<int>(std::lround(t * kSegments)));
-          canvas.set_stroke_color(on);
-          canvas.set_line_width(std::max(1.0f, 0.5f * scale));
-          const auto point = [&](int k) {
-            const float a = -1.5707963f + 6.2831853f * static_cast<float>(k) / kSegments;
-            return pulp::view::Point{cx + r * std::cos(a), cy + r * std::sin(a)};
-          };
-          for (int k = 0; k < n; ++k) {
-            const auto a = point(k), b = point(k + 1);
-            canvas.stroke_line(a.x, a.y, b.x, b.y);
-          }
-        }
-      }
     }
     // Cover the authored quality LED before drawing the single quality button.
     const auto mask_faceplate = [&](float cx_mm, float cy_mm, float radius_mm) {
@@ -1561,7 +1537,8 @@ public:
           if (!alive.expired())
             request_repaint();
         });
-    session->menu->set_min_width(250.0f);
+    if (session->menu)
+      session->menu->set_min_width(250.0f);
     return session->menu;
   }
 
@@ -1638,7 +1615,7 @@ public:
     session->target = id;
     auto alive = import_binding_lifetime_token();
     session->menu = detail::ModulationContextMenu::show(
-        root, detail::local_to_root(this, position), modulation_menu_items(session),
+        root, detail::local_to_root(this, position), modulation_items_for_presentation(session),
         [alive, this, session](std::optional<int> command) {
           session->menu = nullptr;
           if (alive.expired())
@@ -1658,7 +1635,8 @@ public:
           request_repaint();
         });
     open_modulation_context(id);
-    session->menu->set_min_width(250.0f);
+    if (session->menu)
+      session->menu->set_min_width(250.0f);
     return session->menu;
   }
 
@@ -1678,6 +1656,59 @@ private:
     bool all_targets = false;
     pulp::view::ContextMenu *menu = nullptr;
   };
+
+  /// The overlay gets the flat progressive-disclosure rows; a native menu
+  /// gets one "LFO n" submenu per lane holding that lane's rows, since a
+  /// platform menu has submenus instead of rows that rebuild in place.
+  std::vector<pulp::view::ContextMenu::Item> modulation_items_for_presentation(
+      const std::shared_ptr<ModulationMenuSession> &session) {
+    using Item = pulp::view::ContextMenu::Item;
+#if !__has_include(<pulp/view/native_context_menu.hpp>)
+    // An SDK without the native presentation only has the overlay rows.
+    return modulation_menu_items(session);
+#else
+    if (pulp::view::ContextMenu::resolve_presentation(std::nullopt) !=
+        pulp::view::ContextMenu::Presentation::native)
+      return modulation_menu_items(session);
+    std::vector<Item> items;
+    const auto flat_for = [&](std::size_t lane) {
+      const auto saved = session->lane;
+      session->lane = lane;
+      auto rows = modulation_menu_items(session);
+      session->lane = saved;
+      return rows;
+    };
+    const auto base = flat_for(session->lane);
+    items.push_back(base.front());  // "Reset <target>"
+    items.push_back(Item::make_separator());
+    for (std::size_t lane = 0; lane != 2; ++lane) {
+      const auto rows = flat_for(lane);
+      const std::string prefix = "LFO " + std::to_string(lane + 1);
+      Item group;
+      group.id = 200 + static_cast<int>(lane);
+      group.label = prefix;
+      group.has_submenu = true;
+      for (const auto &row : rows) {
+        if (row.label == prefix) {
+          auto enabled = row;
+          enabled.label = "Enabled";
+          group.submenu.push_back(enabled);
+        } else if (row.label == "Waveform" || row.label == "Rate" || row.label == "Depth") {
+          group.submenu.push_back(row);
+        } else if (row.label.rfind(prefix + " -> ", 0) == 0) {
+          auto target = row;
+          target.label = row.label.substr(prefix.size() + 1);  // "-> Pitch"
+          group.submenu.push_back(target);
+        }
+      }
+      items.push_back(std::move(group));
+    }
+    for (const auto &row : base)
+      if (row.label == "All targets…")
+        items.push_back(row);
+    return items;
+#endif
+  }
 
   std::vector<pulp::view::ContextMenu::Item> modulation_menu_items(
       const std::shared_ptr<ModulationMenuSession> &session) {
@@ -2021,17 +2052,22 @@ private:
     seed_mode_->set_mode(
         static_cast<int>(std::lround(store_.get_value(kSeedMode))));
     seed_mode_->set_on_press([this] {
-      // Hardware: a press plays grains for as long as the button is held and
-      // clears the latch; what the release does depends on how long it was.
+      // A mouse is not a panel button: a tap toggles the latch like FREEZE
+      // (the module needs a four-second hold for that), while a longer hold
+      // keeps the module's burst: grains play while held, then the latch
+      // state from before the press comes back.
       seed_ignore_release_ = false;
+      seed_latched_before_press_ =
+          std::lround(store_.get_value(kSeedMode)) == 2;
       store_.begin_gesture(kSeedMode);
       store_.set_value(kSeedMode, 1.0f);
     });
     seed_mode_->set_on_release([this](double held_seconds) {
-      if (!seed_ignore_release_)
-        store_.set_value(kSeedMode,
-                         held_seconds >= SeedModeControl::kLatchHoldSeconds ? 2.0f
-                                                                            : 0.0f);
+      if (!seed_ignore_release_) {
+        const bool tap = held_seconds < SeedModeControl::kTapSeconds;
+        const bool latched = tap ? !seed_latched_before_press_ : seed_latched_before_press_;
+        store_.set_value(kSeedMode, latched ? 2.0f : 0.0f);
+      }
       store_.end_gesture(kSeedMode);
     });
     seed_mode_->set_on_context_menu([this](pulp::view::Point position) {
@@ -2429,6 +2465,7 @@ private:
   std::vector<pulp::view::ParameterBinding> bindings_;
   SeedModeControl *seed_mode_ = nullptr;
   bool seed_ignore_release_ = false;
+  bool seed_latched_before_press_ = false;
   pulp::state::ListenerToken seed_mode_binding_;
   FreezeControl *freeze_mode_ = nullptr;
   pulp::state::ListenerToken freeze_mode_binding_;

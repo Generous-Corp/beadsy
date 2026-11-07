@@ -856,7 +856,7 @@ TEST_CASE("Beadsy binds source-backed auxiliary controls without decorative port
     }
 }
 
-TEST_CASE("Beadsy Seed button is momentary, latches on a long hold and unlatches on a short press") {
+TEST_CASE("Beadsy Seed button toggles the latch on a tap and plays a burst on a hold") {
     beadsy::Beadsy processor;
     pulp::state::StateStore store;
     processor.set_state_store(&store);
@@ -875,47 +875,36 @@ TEST_CASE("Beadsy Seed button is momentary, latches on a long hold and unlatches
     REQUIRE(freeze != nullptr);
     double now = 100.0;
     seed->set_clock([&] { return now; });
-    // Powers on latched, like the module; a tap unlatches.
+    const auto tap = [&] {
+        seed->on_mouse_down({});
+        now += 0.1;
+        seed->on_mouse_up({});
+    };
+    const auto hold = [&](double seconds) {
+        seed->on_mouse_down({});
+        REQUIRE(store.get_value(beadsy::kSeedMode) == 1.0f);  // grains while held
+        now += seconds;
+        seed->on_mouse_up({});
+    };
+
+    // Powers on latched, like the module.
     REQUIRE(seed->mode() == 2);
     REQUIRE(seed->access_label().find("locked") != std::string::npos);
-    seed->on_mouse_down({});
-    now += 0.1;
-    seed->on_mouse_up({});
+    REQUIRE(seed->held_seconds() == 0.0);
+
+    // A tap toggles the latch, like FREEZE.
+    tap();
     REQUIRE(store.get_value(beadsy::kSeedMode) == 0.0f);
-    REQUIRE(seed->mode() == 0);
     REQUIRE(seed->access_label().find("off") != std::string::npos);
-
-    // Held: grains play (ON) only while the button is down, and the hold
-    // time is readable for the progress ring.
-    REQUIRE(seed->held_seconds() == 0.0);
-    seed->on_mouse_down({});
-    REQUIRE(store.get_value(beadsy::kSeedMode) == 1.0f);
-    REQUIRE(seed->held());
-    now += 0.2;
-    REQUIRE(seed->held_seconds() == Catch::Approx(0.2));
-    seed->on_mouse_up({});
-    REQUIRE(seed->held_seconds() == 0.0);
-    REQUIRE(store.get_value(beadsy::kSeedMode) == 0.0f);
-    REQUIRE_FALSE(seed->held());
-
-    // A four-second hold latches on release. Halfway through, the ring
-    // around the face shows the progress; the render is the capture.
-    seed->on_mouse_down({});
-    now += beadsy::SeedModeControl::kLatchHoldSeconds * 0.6;
-    REQUIRE(seed->held_seconds() == Catch::Approx(2.4));
-    REQUIRE(pulp::view::render_to_file(*native, 350, 551,
-                                       (std::filesystem::temp_directory_path() / "beadsy-seed-hold.png").string(), 1.0f));
-    now += beadsy::SeedModeControl::kLatchHoldSeconds * 0.4;
-    seed->on_mouse_up({});
+    tap();
     REQUIRE(store.get_value(beadsy::kSeedMode) == 2.0f);
-    REQUIRE(seed->mode() == 2);
-    REQUIRE(seed->access_label().find("locked") != std::string::npos);
 
-    // A press clears the latch (grains while held), a short release leaves it off.
-    seed->on_mouse_down({});
-    REQUIRE(store.get_value(beadsy::kSeedMode) == 1.0f);
-    now += 0.1;
-    seed->on_mouse_up({});
+    // A hold is a burst: ON while held, then back to what it was.
+    hold(1.0);
+    REQUIRE(store.get_value(beadsy::kSeedMode) == 2.0f);
+    tap();
+    REQUIRE(store.get_value(beadsy::kSeedMode) == 0.0f);
+    hold(1.0);
     REQUIRE(store.get_value(beadsy::kSeedMode) == 0.0f);
 
     // FREEZE pressed while SEED is held latches SEED and does not freeze.
@@ -992,6 +981,8 @@ TEST_CASE("Beadsy top buttons receive clicks through the editor root") {
     pulp::state::StateStore store;
     processor.set_state_store(&store);
     processor.define_parameters(store);
+    // Seed powers on latched; the click below toggles it from unlatched.
+    store.set_value(beadsy::kSeedMode, 0.0f);
     auto editor = processor.create_view();
     auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
     REQUIRE(native != nullptr);
@@ -1013,11 +1004,8 @@ TEST_CASE("Beadsy top buttons receive clicks through the editor root") {
         // A click is a press and a release. Freeze toggles on the press; the
         // Seed button is momentary, so give its clock a four-second hold and
         // expect the latch, which proves both halves of the click arrived.
-        if (auto* seed = dynamic_cast<beadsy::SeedModeControl*>(button)) {
-            auto t = std::make_shared<double>(0.0);
-            seed->set_clock([t] { return *t += beadsy::SeedModeControl::kLatchHoldSeconds; });
-        }
         native->simulate_click(center);
+        // Freeze toggles on; Seed (driven from unlatched) toggles its latch on.
         REQUIRE(store.get_value(expected) == (expected == beadsy::kSeedMode ? 2.0f : 1.0f));
     }
 }
@@ -1436,6 +1424,8 @@ TEST_CASE("Beadsy toggles answer the host pointer verbs at the default size") {
     pulp::state::StateStore store;
     processor.set_state_store(&store);
     processor.define_parameters(store);
+    // Seed powers on latched; the click below toggles it from unlatched.
+    store.set_value(beadsy::kSeedMode, 0.0f);
     auto editor = processor.create_view();
     auto* native = dynamic_cast<beadsy::BeadsyEditor*>(editor.get());
     REQUIRE(native != nullptr);
@@ -1466,14 +1456,9 @@ TEST_CASE("Beadsy toggles answer the host pointer verbs at the default size") {
     REQUIRE(store.get_value(beadsy::kFreeze) == 0.0f);
     // Seed is momentary: a host press+release reads as a long hold here, so
     // the release latches it; the next press unlatches on its release.
-    {
-        auto t = std::make_shared<double>(0.0);
-        dynamic_cast<beadsy::SeedModeControl*>(seed)->set_clock(
-            [t] { return *t += beadsy::SeedModeControl::kLatchHoldSeconds; });
-    }
+    // A host press+release is a tap: it toggles the latch each time.
     press(beadsy_center(*seed));
     REQUIRE(store.get_value(beadsy::kSeedMode) == 2.0f);
-    dynamic_cast<beadsy::SeedModeControl*>(seed)->set_clock([] { return 0.0; });
     press(beadsy_center(*seed));
     REQUIRE(store.get_value(beadsy::kSeedMode) == 0.0f);
     press(beadsy_center(*quality));
@@ -1574,10 +1559,6 @@ TEST_CASE("Beadsy toggle faces follow the played modulation and presses step the
     REQUIRE(store.get_value(beadsy::kFreeze) == 1.0f);
     native->simulate_click(beadsy_center(*freeze));
     REQUIRE(store.get_value(beadsy::kFreeze) == 0.0f);
-    {
-        auto t = std::make_shared<double>(0.0);
-        seed->set_clock([t] { return *t += beadsy::SeedModeControl::kLatchHoldSeconds; });
-    }
     native->simulate_click(beadsy_center(*seed));
     REQUIRE(store.get_value(beadsy::kSeedMode) == 2.0f);
     store.clear_display_modulation(beadsy::kFreeze);

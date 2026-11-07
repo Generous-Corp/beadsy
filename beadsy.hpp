@@ -1294,7 +1294,13 @@ inline std::unique_ptr<pulp::format::Processor> create_beadsy() {
 inline std::unique_ptr<pulp::view::View> beadsy::Beadsy::create_view() {
 #if __has_include(<pulp/view/native_context_menu.hpp>)
   // Trial switch for the SDK's native menu presentation (NSMenu on macOS).
-  if (const char *native = std::getenv("BEADSY_NATIVE_MENUS"); native && *native == '1')
+  const char *native = std::getenv("BEADSY_NATIVE_MENUS");
+#if defined(BEADSY_NATIVE_MENUS_DEFAULT)
+  const bool native_default = true;
+#else
+  const bool native_default = false;
+#endif
+  if (native_default || (native && *native == '1'))
     pulp::view::ContextMenu::set_default_presentation(
         pulp::view::ContextMenu::Presentation::native);
 #endif

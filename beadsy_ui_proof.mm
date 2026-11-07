@@ -268,16 +268,14 @@ Steps steps_for(const std::string &step) {
   if (step == "layout") return {[](Proof &p) { p.report("after"); }};
   if (step == "click-freeze") return toggle(kFreezeX, kFreezeY, "freeze", 3);
   if (step == "click-seed") {
-    // Hardware semantics: ON while held, OFF on a short release, LOCKED after
-    // a four-second hold, unlatched by the next short press.
+    // A tap toggles the latch; a hold plays a burst and restores it.
     Steps s;
+    s.push_back([](Proof &p) { p.click(kSeedX, kSeedY); p.report("seed-tap-1"); });
+    s.push_back([](Proof &p) { p.click(kSeedX, kSeedY); p.report("seed-tap-2"); });
     s.push_back([](Proof &p) { p.press(kSeedX, kSeedY); p.report("seed-held"); });
-    s.push_back([](Proof &p) { p.release(kSeedX, kSeedY); p.report("seed-released"); });
-    s.push_back([](Proof &p) { p.press(kSeedX, kSeedY); p.report("seed-long-press-start"); });
-    for (int i = 0; i < 13; ++i)
+    for (int i = 0; i < 4; ++i)
       s.push_back([](Proof &) {});
-    s.push_back([](Proof &p) { p.release(kSeedX, kSeedY); p.report("seed-latched"); });
-    s.push_back([](Proof &p) { p.click(kSeedX, kSeedY); p.report("seed-unlatched"); });
+    s.push_back([](Proof &p) { p.release(kSeedX, kSeedY); p.report("seed-hold-released"); });
     return s;
   }
   if (step == "click-quality") return toggle(kQualityX, kQualityY, "quality", 2);
@@ -473,10 +471,6 @@ Steps steps_for(const std::string &step) {
       p.report("rate-hovered");
     });
     return s;
-  }
-  if (step == "show-seed-hold") {
-    // Press and keep holding so the frame capture shows the hold ring.
-    return {[](Proof &p) { p.press(kSeedX, kSeedY); p.report("seed-holding"); }};
   }
   if (step == "show-source" || step == "show-help") {
     // Open and leave open, so the frame capture shows the overlay itself.

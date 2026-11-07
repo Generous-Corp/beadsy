@@ -1,6 +1,10 @@
 #pragma once
 
 #include <pulp/view/context_menu.hpp>
+#if __has_include(<pulp/view/native_context_menu.hpp>)
+#include <pulp/view/native_context_menu.hpp>
+#define BEADSY_HAS_NATIVE_MENUS 1
+#endif
 #include <cmath>
 
 namespace beadsy::detail {
@@ -13,6 +17,14 @@ public:
   static ModulationContextMenu *show(
       pulp::view::View *root, pulp::view::Point position, std::vector<Item> items,
       std::function<void(std::optional<int>)> close) {
+#if defined(BEADSY_HAS_NATIVE_MENUS)
+    // Trial: the SDK's native presentation (BEADSY_NATIVE_MENUS=1 sets the
+    // process default). The platform menu owns its lifetime, so there is no
+    // view to return; callers null-check.
+    if (ContextMenu::resolve_presentation(std::nullopt) == ContextMenu::Presentation::native &&
+        pulp::view::show_native_context_menu(*root, position, std::move(items), std::move(close)))
+      return nullptr;
+#endif
     for (std::size_t i = root->child_count(); i > 0; --i) {
       if (auto *old = dynamic_cast<ContextMenu *>(root->child_at(i - 1))) {
         old->on_key_event({.key = pulp::view::KeyCode::escape, .is_down = true});
